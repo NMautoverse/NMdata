@@ -55,7 +55,7 @@ classify_matches <- function(matches) {
             ## number <- as.numeric(str_match(match, "BLOCK\\((\\d+)\\)")[1, 2])
             if(grepl("\\( *(\\d+) *\\)",match)){
                 number <- ## as.numeric(
-                    stri_match_all_regex(match, "BLOCK\\( *(\\d+) *\\)")[[1]][1, 2]
+                    stri_match_all_regex(match, "BLOCK\\s*\\( *(\\d+) *\\)")[[1]][1, 2]
                 ##)
             } else {
                 number <- "1"
