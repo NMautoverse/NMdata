@@ -15,10 +15,10 @@
 ##'     parameter sections. Default is
 ##'     \code{"\%init;\%idx;\%symbol;\%label;\%unit"}. Be careful to
 ##'     remember percentage symbols in front of any variable names.
-##' @param format.omega Like `fields`, applied to `$OMEGA`
-##'     section. Default is to reuse `fields`.
-##' @param format.sigma Like `fields`, applied to `$SIGMA`
-##'     section. Default is to reuse `fields.omega`.
+##' @param format.omega Like `format`, applied to `$OMEGA`
+##'     section. Default is to reuse `format`.
+##' @param format.sigma Like `format`, applied to `$SIGMA`
+##'     section. Default is to reuse `format.omega`.
 ##' @param unique.matches If TRUE, each line in the control stream is
 ##'     assigned to one parameter, at most. This means, if two
 ##'     parameters are listed in one line, the comments will only be
@@ -231,6 +231,12 @@ NMreadParsText <- function(file,lines,format,
     if(is.null(format)){
         format <- "%init;%idx;%symbol;%label;%unit"
     }
+    if(missing(format.omega)) format.omega <- NULL
+    if(is.null(format.omega)) format.omega <- format
+    if(missing(format.sigma)) format.sigma <- NULL
+    if(is.null(format.sigma)) format.sigma <- format.omega
+
+    
     if(is.function(format)) format <- format(lines)
     if(is.function(format.omega)) format.omega <- format.omega(lines)
     if(is.function(format.sigma)) format.sigma <- format.sigma(lines)
@@ -386,7 +392,8 @@ NMreadParsText <- function(file,lines,format,
     
     
 #### get.omega.comments must return line numbers
-    ## why is idx there? 
+    ## why is idx there?
+    
     omegas <- get.omega.comments(lines=lines,section="omega",format=format.omega)
     sigmas <- get.omega.comments(lines=lines,section="sigma",format=format.sigma)
 

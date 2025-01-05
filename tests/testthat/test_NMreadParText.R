@@ -212,3 +212,20 @@ $OMEGA  BLOCK(1) SAME")
 
 
 })
+
+
+test_that("muref SAEM - format.omega=NULL",{
+
+    fileRef <- "testReference/NMreadParText_08.rds"
+    file.mod <- "testData/nonmem/xgxr032.mod"
+    
+    
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+    res1 <- NMreadParsText(file.mod,format="%init;%symbol")    
+    res2 <- NMreadParsText(file.mod,format="%init;%symbol",format.omega=NULL)
+    
+    expect_equal(res1,res2)
+        
+})
