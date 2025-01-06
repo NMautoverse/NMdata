@@ -7,6 +7,9 @@
 ##' records. They can be in the format of one row per dose or repeated
 ##' dosing notation using \code{ADDL} and \code{II}.
 ##' @param data The data set to add the variables to.
+##' @param col.id The name of the column with the subject
+##'     identifier. All calculations are by default done by subject,
+##'     so this column name must be provided.
 ##' @param col.time Name of time column (created by
 ##'     \code{addTAPD()}). Default it \code{"TIME"}.
 ##' @param col.tpdos Name of the time of previous dose column (created
@@ -77,7 +80,7 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by="ID",SDOS=1,as.fun,col.ndoses){
+addTAPD <- function(data,col.id="ID",col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by=col.id,SDOS=1,as.fun,col.ndoses){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     

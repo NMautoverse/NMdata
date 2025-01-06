@@ -8,6 +8,7 @@ dose amount.}
 \usage{
 addTAPD(
   data,
+  col.id = "ID",
   col.time = "TIME",
   col.evid = "EVID",
   col.amt = "AMT",
@@ -21,7 +22,7 @@ addTAPD(
   subset.dos,
   subset.is.complete,
   order.evid = c(3, 0, 2, 4, 1),
-  by = "ID",
+  by = col.id,
   SDOS = 1,
   as.fun,
   col.ndoses
@@ -29,6 +30,10 @@ addTAPD(
 }
 \arguments{
 \item{data}{The data set to add the variables to.}
+
+\item{col.id}{The name of the column with the subject
+identifier. All calculations are by default done by subject,
+so this column name must be provided.}
 
 \item{col.time}{Name of time column (created by
 \code{addTAPD()}). Default it \code{"TIME"}.}
