@@ -10,8 +10,8 @@
 ##' @param col.id The name of the column with the subject
 ##'     identifier. All calculations are by default done by subject,
 ##'     so this column name must be provided.
-##' @param col.time Name of time column (created by
-##'     \code{addTAPD()}). Default it \code{"TIME"}.
+##' @param col.time Name of time column on which calculations of
+##'     relative times will be based. Default it \code{"TIME"}.
 ##' @param col.tpdos Name of the time of previous dose column (created
 ##'     by \code{addTAPD()}). Default is \code{"TPDOS"}. Set to
 ##'     \code{NULL} to not create this column.
