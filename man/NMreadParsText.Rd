@@ -35,11 +35,11 @@ parameter sections. Default is
 \code{"\%init;\%idx;\%symbol;\%label;\%unit"}. Be careful to
 remember percentage symbols in front of any variable names.}
 
-\item{format.omega}{Like `fields`, applied to `$OMEGA`
-section. Default is to reuse `fields`.}
+\item{format.omega}{Like `format`, applied to `$OMEGA`
+section. Default is to reuse `format`.}
 
-\item{format.sigma}{Like `fields`, applied to `$SIGMA`
-section. Default is to reuse `fields.omega`.}
+\item{format.sigma}{Like `format`, applied to `$SIGMA`
+section. Default is to reuse `format.omega`.}
 
 \item{spaces.split}{Is a blank in `fields` to be treated as a
 field seperator? Default is not to (i.e. neglect spaces in

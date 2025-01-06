@@ -31,17 +31,12 @@ addTAPD(
 \arguments{
 \item{data}{The data set to add the variables to.}
 
-<<<<<<< HEAD
 \item{col.id}{The name of the column with the subject
 identifier. All calculations are by default done by subject,
 so this column name must be provided.}
 
-\item{col.time}{Name of time column (created by
-\code{addTAPD()}). Default it \code{"TIME"}.}
-=======
 \item{col.time}{Name of time column on which calculations of
 relative times will be based. Default it \code{"TIME"}.}
->>>>>>> d216f2395da67159638bfa1fd1bad62ef7056dff
 
 \item{col.evid}{The name of the event ID column. This must exist
 in data. Default is EVID.}

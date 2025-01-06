@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMreadCtlPars.R
 \name{NMreadCtlPars}
 \alias{NMreadCtlPars}
-\title{Identify active elements in a parameter section}
+\title{Tabulate information from parameter sections in control streams}
 \usage{
 NMreadCtlPars(lines, section, as.fun)
 }
@@ -14,6 +14,6 @@ NMreadCtlPars(lines, section, as.fun)
 \item{as.fun}{See ?NMscanData}
 }
 \description{
-Identify active elements in a parameter section
+Tabulate information from parameter sections in control streams
 }
 \keyword{internal}
