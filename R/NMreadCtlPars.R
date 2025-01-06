@@ -4,16 +4,21 @@
 ##' a matrix, based on the length of the diagonal
 ##'
 ##' @keywords internal
-
+## triagSize(1:5)
 triagSize <- function(diagSize){
     ((diagSize^2)-diagSize)/2+diagSize
 }
-triagSize(1:5)
 
+
+##' Row numbers of elements in a triangular representation of a symmetric matrix
+##' @keywords internal
 
 itriag <- function(blocksize,istart=1,diag="lower"){
     rep(1:blocksize,times=1:blocksize)+istart-1
 }
+
+##' Column numbers of elements in a triangular representation of a symmetric matrix
+##' @keywords internal
 jtriag <- function(blocksize,istart=1,diag="lower"){
     unlist(lapply(1:blocksize,function(j) 1:j)) + istart-1
 }
@@ -22,29 +27,33 @@ jtriag <- function(blocksize,istart=1,diag="lower"){
 
 
 
-
+##' @keywords internal
 patterns <- function(){
     c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
-           "ll.init.ul"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init,ul)
-           "ll.init"="\\(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
-           "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
-           "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
-           "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
-           "same"="SAME"
+      "ll.init.ul"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init,ul)
+      "ll.init"="\\(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
+      "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
+      "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
+      "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
+      "same"="SAME"
       )
 }
 
-use.pattern <- function(name){
-    if(!name %in% names(patterns())){
-        stop(paste("pattern called", name,"not found"))
-    }
-    paste0("^",patterns()[[name]],"$")
-}
 
 
 classify_matches <- function(matches) {
     results <- list()
     
+
+    use.pattern <- function(name){
+        if(!name %in% names(patterns())){
+            stop(paste("pattern called", name,"not found"))
+        }
+        paste0("^",patterns()[[name]],"$")
+    }
+
+
+
     ##pattern.singlenum <- "-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?"
     pattern.singlenum <- "-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d)([eE][+-]?\\d+)?"
     for (match in matches) {
@@ -206,7 +215,7 @@ count_ij <- function(res){
 }
 
 
-##' Identify active elements in a parameter section
+##' Tabulate information from parameter sections in control streams
 ##' @param lines A control stream as text lines
 ##' @param section The section to read. Typically, "theta", "omega", or "sigma".
 ##' @param as.fun See ?NMscanData
@@ -257,8 +266,8 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     ## lines_cleaned <- str_replace(lines, ";.*", "")
     lines_cleaned <- gsub( ";.*", "",lines)
 
-    ### rewrite (init FIX) as init FIX
-    # Regular expression to match (init FIX) and (init FIXED)
+### rewrite (init FIX) as init FIX
+                                        # Regular expression to match (init FIX) and (init FIXED)
     lines_cleaned <- gsub(
         pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
         ## Replace with "init FIX"
