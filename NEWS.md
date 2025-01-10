@@ -13,6 +13,8 @@
 * `NMwriteSection` gains two new options for the `location` argument:
   "first" and "last".
 
+
+
 ## Bugfixes
 * `mat2dt()` was doing the opposite to what was specified by the
   `triangle` argument and returned the upper triangle when
@@ -22,6 +24,15 @@
   stream was modified.
 
 * `NMrelate()` was ignoring the `par.type` argument.
+
+## Other improvements
+* `addTAPD` has a few improvements on documentations and the following
+  improvements on code. Together they imply that `by` defaults to
+  `NMdataConf()$col.id`.
+
+ - `col.id` and `col.time` now respect `NMdataConf()` defaults.
+
+ - `by` defaults to value of `col.id`. 
 
 # NMdata 0.1.8
 

@@ -9,9 +9,11 @@
 ##' @param data The data set to add the variables to.
 ##' @param col.id The name of the column with the subject
 ##'     identifier. All calculations are by default done by subject,
-##'     so this column name must be provided.
+##'     so this column name must be provided. Default is controlled by
+##'     `?NMdataConf()`.
 ##' @param col.time Name of time column on which calculations of
 ##'     relative times will be based. Default it \code{"TIME"}.
+##'     Default is controlled by `?NMdataConf()`.
 ##' @param col.tpdos Name of the time of previous dose column (created
 ##'     by \code{addTAPD()}). Default is \code{"TPDOS"}. Set to
 ##'     \code{NULL} to not create this column.
@@ -80,7 +82,7 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.id="ID",col.time="TIME",col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by=col.id,SDOS=1,as.fun,col.ndoses){
+addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by,SDOS=1,as.fun,col.ndoses){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
@@ -91,6 +93,13 @@ addTAPD <- function(data,col.id="ID",col.time="TIME",col.evid="EVID",col.amt="AM
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     deprecatedArg("col.ndoses","col.doscumn",args=args)
+   
+    if(missing(col.id)) col.id <- NULL
+    col.id <- NMdataDecideOption("col.id",col.id)
+    if(missing(col.time)) col.time <- NULL
+    col.time <- NMdataDecideOption("col.time",col.time)
+    if(missing(by)) by <- NULL
+    if(is.null(by)) by <- col.id
     
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)

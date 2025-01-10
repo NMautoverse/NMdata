@@ -8,8 +8,8 @@ dose amount.}
 \usage{
 addTAPD(
   data,
-  col.id = "ID",
-  col.time = "TIME",
+  col.id,
+  col.time,
   col.evid = "EVID",
   col.amt = "AMT",
   col.tpdos = "TPDOS",
@@ -22,7 +22,7 @@ addTAPD(
   subset.dos,
   subset.is.complete,
   order.evid = c(3, 0, 2, 4, 1),
-  by = col.id,
+  by,
   SDOS = 1,
   as.fun,
   col.ndoses
@@ -33,10 +33,12 @@ addTAPD(
 
 \item{col.id}{The name of the column with the subject
 identifier. All calculations are by default done by subject,
-so this column name must be provided.}
+so this column name must be provided. Default is controlled by
+`?NMdataConf()`.}
 
 \item{col.time}{Name of time column on which calculations of
-relative times will be based. Default it \code{"TIME"}.}
+relative times will be based. Default it \code{"TIME"}.
+Default is controlled by `?NMdataConf()`.}
 
 \item{col.evid}{The name of the event ID column. This must exist
 in data. Default is EVID.}
