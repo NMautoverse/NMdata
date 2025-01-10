@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.922</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.923</span>
       </span>
     </div>
 
@@ -91,6 +91,12 @@
 <ul><li><p><code><a href="../reference/mat2dt.html">mat2dt()</a></code> was doing the opposite to what was specified by the <code>triangle</code> argument and returned the upper triangle when <code>triangle=lower</code> and vice versa.</p></li>
 <li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> would fail if the first section in a control stream was modified.</p></li>
 <li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> was ignoring the <code>par.type</code> argument.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-1-9">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-9"></a></h3>
+<ul><li><p><code>addTAPD</code> has a few improvements on documentations and the following improvements on code. Together they imply that <code>by</code> defaults to <code>NMdataConf()$col.id</code>.</p></li>
+<li><p><code>col.id</code> and <code>col.time</code> now respect <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> defaults.</p></li>
+<li><p><code>by</code> defaults to value of <code>col.id</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">

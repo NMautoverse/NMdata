@@ -19,7 +19,7 @@ dosing notation using ADDL and II."><meta property="og:image" content="https://n
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.922</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.923</span>
       </span>
     </div>
 
@@ -90,8 +90,8 @@ dosing notation using <code>ADDL</code> and <code>II</code>.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">addTAPD</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  col.id <span class="op">=</span> <span class="st">"ID"</span>,</span>
-<span>  col.time <span class="op">=</span> <span class="st">"TIME"</span>,</span>
+<span>  <span class="va">col.id</span>,</span>
+<span>  <span class="va">col.time</span>,</span>
 <span>  col.evid <span class="op">=</span> <span class="st">"EVID"</span>,</span>
 <span>  col.amt <span class="op">=</span> <span class="st">"AMT"</span>,</span>
 <span>  col.tpdos <span class="op">=</span> <span class="st">"TPDOS"</span>,</span>
@@ -104,7 +104,7 @@ dosing notation using <code>ADDL</code> and <code>II</code>.</p>
 <span>  <span class="va">subset.dos</span>,</span>
 <span>  <span class="va">subset.is.complete</span>,</span>
 <span>  order.evid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  by <span class="op">=</span> <span class="va">col.id</span>,</span>
+<span>  <span class="va">by</span>,</span>
 <span>  SDOS <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
 <span>  <span class="va">col.ndoses</span></span>
@@ -122,12 +122,14 @@ dosing notation using <code>ADDL</code> and <code>II</code>.</p>
 <dt id="arg-col-id">col.id<a class="anchor" aria-label="anchor" href="#arg-col-id"></a></dt>
 <dd><p>The name of the column with the subject
 identifier. All calculations are by default done by subject,
-so this column name must be provided.</p></dd>
+so this column name must be provided. Default is controlled by
+`?NMdataConf()`.</p></dd>
 
 
 <dt id="arg-col-time">col.time<a class="anchor" aria-label="anchor" href="#arg-col-time"></a></dt>
 <dd><p>Name of time column on which calculations of
-relative times will be based. Default it <code>"TIME"</code>.</p></dd>
+relative times will be based. Default it <code>"TIME"</code>.
+Default is controlled by `?NMdataConf()`.</p></dd>
 
 
 <dt id="arg-col-evid">col.evid<a class="anchor" aria-label="anchor" href="#arg-col-evid"></a></dt>
