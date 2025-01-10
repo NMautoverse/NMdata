@@ -19,8 +19,8 @@
 ##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
 ##'     argument is only used for generating the proposed $DATA text
-##'     to paste into the Nonmem control stream. To skip this feature,
-##'     use col.flagn=NULL. Default is defined by NMdataConf.
+##'     to paste into the Nonmem control stream. Default is defined by
+##'     `NMdataConf()`. To skip this feature, use `col.flagn=FALSE`.
 ##' @param rename For the $INPUT text proposal only. If you want to
 ##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
@@ -51,9 +51,9 @@
 ##'     used (probably only interesting if character values are
 ##'     supplied).
 ##' @param allow.char.TIME For the $INPUT text proposal only. Assume
-##'     Nonmem can read TIME and DATE even if it can't be translated to
-##'     numeric. This is necessary if using the 00:00 format. Default
-##'     is TRUE.
+##'     Nonmem can read TIME and DATE even if it can't be translated
+##'     to numeric. This is necessary if using the 00:00
+##'     format. Default is TRUE.
 ##' @param width If positive, will be passed to strwrap for the $INPUT
 ##'     text. If missing or NULL, strwrap will be called with default
 ##'     value. If negative or zero, strwrap will not be called.
@@ -65,7 +65,7 @@
 
 NMgenText <- function(data,
                       drop,
-                      col.flagn="FLAG",
+                      col.flagn,
                       rename,
                       copy,
                       file,
@@ -102,7 +102,9 @@ NMgenText <- function(data,
 
     
     if(missing(col.flagn)) col.flagn <- NULL
+
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(dir.data)) dir.data <- NULL
@@ -252,7 +254,7 @@ NMgenText <- function(data,
                      ,paste0("IGN=@")
                       )
 
-    if(!is.null(col.flagn)&&col.flagn%in%colnames.nm){
+    if( !(is.logical(col.flagn)&&!col.flagn) && col.flagn%in%colnames.nm ){
         text.nm.data <- c(text.nm.data,
                           paste0("IGNORE=(",col.flagn,".NE.0)")
                           )

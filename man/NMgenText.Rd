@@ -8,7 +8,7 @@ control streams.}
 NMgenText(
   data,
   drop,
-  col.flagn = "FLAG",
+  col.flagn,
   rename,
   copy,
   file,
@@ -33,8 +33,8 @@ in $INPUT and can be read by NONMEM.}
 \item{col.flagn}{Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for generating the proposed $DATA text
-to paste into the Nonmem control stream. To skip this feature,
-use col.flagn=NULL. Default is defined by NMdataConf.}
+to paste into the Nonmem control stream. Default is defined by
+`NMdataConf()`. To skip this feature, use `col.flagn=FALSE`.}
 
 \item{rename}{For the $INPUT text proposal only. If you want to
 rename columns in NONMEM $DATA, NMwriteData can adjust the
@@ -72,9 +72,9 @@ used (probably only interesting if character values are
 supplied).}
 
 \item{allow.char.TIME}{For the $INPUT text proposal only. Assume
-Nonmem can read TIME and DATE even if it can't be translated to
-numeric. This is necessary if using the 00:00 format. Default
-is TRUE.}
+Nonmem can read TIME and DATE even if it can't be translated
+to numeric. This is necessary if using the 00:00
+format. Default is TRUE.}
 
 \item{width}{If positive, will be passed to strwrap for the $INPUT
 text. If missing or NULL, strwrap will be called with default
