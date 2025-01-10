@@ -9,7 +9,9 @@
 ##' nm.drop, the list is stopped. Only exception is TIME which is not
 ##' tested for whether character or not.
 ##'
-##' @param data The data that NONMEM will read.
+##' @param data The data that NONMEM will read. Either as a
+##'     `data.frame`, of if a path to an rds or a delimited text file,
+##'     the data will automatically be read first.
 ##' @param drop Only used for generation of proposed text for INPUT
 ##'     section. Columns to drop in Nonmem $INPUT. This has two
 ##'     implications. One is that the proposed $INPUT indicates =DROP
@@ -96,7 +98,13 @@ NMgenText <- function(data,
     pseudo <- copy
     rm(copy)
 
-    
+    if(is.character(data)){
+        if(tolower(fnExtension(data))=="rds") {
+            data <- readRDS(data)
+        } else {
+            data <- NMreadCsv(data)
+        }
+    }
     if(!is.data.frame(data)) messageWrap("data must be a data.frame",fun.msg=stop)    
     data <- copy(as.data.table(data))
 

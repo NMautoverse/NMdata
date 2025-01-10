@@ -57,3 +57,11 @@ test_that("capitalize",{
     expect_equal_to_reference(res,fileRef)
 })
 
+test_that("basic - from file",{
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    res.data <- NMgenText(pk)
+    res.rds <- NMgenText(data="testData/data/xgxr2.rds")
+    res.csv <- NMgenText(data="testData/data/xgxr2.csv")
+    expect_equal(res.data,res.rds)
+    expect_equal(res.rds,res.csv)
+})
