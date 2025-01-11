@@ -99,7 +99,7 @@ tested for whether character or not.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMgenText</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">drop</span>,</span>
-<span>  col.flagn <span class="op">=</span> <span class="st">"FLAG"</span>,</span>
+<span>  <span class="va">col.flagn</span>,</span>
 <span>  <span class="va">rename</span>,</span>
 <span>  <span class="va">copy</span>,</span>
 <span>  <span class="va">file</span>,</span>
@@ -133,8 +133,8 @@ in $INPUT and can be read by NONMEM.</p></dd>
 <dd><p>Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for generating the proposed $DATA text
-to paste into the Nonmem control stream. To skip this feature,
-use col.flagn=NULL. Default is defined by NMdataConf.</p></dd>
+to paste into the Nonmem control stream. Default is defined by
+`NMdataConf()`. To skip this feature, use `col.flagn=FALSE`.</p></dd>
 
 
 <dt id="arg-rename">rename<a class="anchor" aria-label="anchor" href="#arg-rename"></a></dt>
@@ -186,9 +186,9 @@ supplied).</p></dd>
 
 <dt id="arg-allow-char-time">allow.char.TIME<a class="anchor" aria-label="anchor" href="#arg-allow-char-time"></a></dt>
 <dd><p>For the $INPUT text proposal only. Assume
-Nonmem can read TIME and DATE even if it can't be translated to
-numeric. This is necessary if using the 00:00 format. Default
-is TRUE.</p></dd>
+Nonmem can read TIME and DATE even if it can't be translated
+to numeric. This is necessary if using the 00:00
+format. Default is TRUE.</p></dd>
 
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
