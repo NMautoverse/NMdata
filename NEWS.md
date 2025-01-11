@@ -4,16 +4,19 @@
 * `NMreadCtlPars()` adds ability to read the parameter structure as
   specified in a control stream, including initial values, lower/upper
   bounds and FIX information. It automatically allocates these values
-  to parameter indexes, like THETA(I) and OMEGA(I,J).
+  to parameter indexes, like `THETA(I)` and `OMEGA(I,J)`.
   
 * `NMreadParsText()` now uses `NMreadCtlPars()` by default to index
   parameters. You can still override this by specifying an index
   column (the old default) for all or some of the parameter sections.
 
-* `NMwriteSection` gains two new options for the `location` argument:
-  "first" and "last".
+* `NMwriteSection()` gains two new options for the `location`
+  argument: "first" and "last".
 
-
+* `NMgenText()` can now be run on a data file. `NMgenText()` suggest
+  `$DATA` and `$INPUT` sections based on a data set. Previously a data
+  object had to be passed to the function. Now also just a path to the
+  data set on file can be used.
 
 ## Bugfixes
 * `mat2dt()` was doing the opposite to what was specified by the

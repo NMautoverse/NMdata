@@ -245,25 +245,38 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     if(is.null(section)) {
         stop("section must be supplied") 
     }
-
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     section <- sub("\\$","",section)
     section <- cleanSpaces(section)
     section <- toupper(section)
-
+    
     if(length(section)>1) stop("Only one section can be handled at a time.")
     ## We want to keep everything, even empty lines so we can keep track of line numbers
     lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
     
     if(length(lines)==0) return(NULL)
 
-    
     pattern <- paste(patterns(),collapse="|")
+
     
+    
+    dt.lines <- data.table(linenum=1:length(lines),text=lines)
     ## Preprocess to remove comments (everything after ";")
-    ## lines_cleaned <- str_replace(lines, ";.*", "")
+    dt.lines[,text.after:=sub("^[^;]*;","",text)]
+    ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",patterns()[1],")\\b.*"),"\\1",text)]
+    ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",pattern,")\\b.*"),"\\1",text)]
+    dt.lines[,text.clean:=gsub( ";.*", "",text)]
+    dt.lines[,text_clean:=gsub(
+        pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
+        ## Replace with "init FIX"
+        replacement = "\\1 FIX",
+        x=text.clean)]
+
+    if(F){
+    ## Preprocess to remove comments (everything after ";")
     lines_cleaned <- gsub( ";.*", "",lines)
 
 ### rewrite (init FIX) as init FIX
@@ -276,8 +289,11 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     
                                         # Extract matches
     ## matches <- str_extract_all(lines_cleaned, pattern)
-    
+    pattern <- paste(patterns(),collapse="|")
     matches <- stri_extract_all_regex(lines_cleaned, pattern)
+    }
+    
+    matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
     
     ## Function to classify matches and insert NA where applicable
 
@@ -345,7 +361,9 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     
     
 
-
+    ## list(lines=as.fun(dt.lines),
+    ##      elements=as.fun(res)
+    ##      )
     as.fun(res)
 }
 
