@@ -84,19 +84,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadCtlPars</span><span class="op">(</span><span class="va">lines</span>, <span class="va">section</span>, <span class="va">as.fun</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadCtlPars</span><span class="op">(</span><span class="va">file</span>, <span class="va">lines</span>, <span class="va">section</span>, <span class="va">as.fun</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-lines">lines<a class="anchor" aria-label="anchor" href="#arg-lines"></a></dt>
-<dd><p>A control stream as text lines</p></dd>
+<dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
+<dd><p>Path to a control stream. See `lines` too.</p></dd>
+
+
+<dt id="arg-lines">lines<a class="anchor" aria-label="anchor" href="#arg-lines"></a></dt>
+<dd><p>A control stream as text lines. Use this or `file`.</p></dd>
 
 
 <dt id="arg-section">section<a class="anchor" aria-label="anchor" href="#arg-section"></a></dt>
-<dd><p>The section to read. Typically, "theta", "omega", or "sigma".</p></dd>
+<dd><p>The section to read. Typically, "theta", "omega",
+or "sigma". Default is those three.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
