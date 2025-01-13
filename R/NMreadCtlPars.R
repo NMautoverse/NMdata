@@ -212,13 +212,15 @@ count_ij <- function(res){
 
 
 ##' Tabulate information from parameter sections in control streams
-##' @param lines A control stream as text lines
-##' @param section The section to read. Typically, "theta", "omega", or "sigma".
+##' @param file Path to a control stream. See `lines` too.
+##' @param lines A control stream as text lines. Use this or `file`.
+##' @param section The section to read. Typically, "theta", "omega",
+##'     or "sigma". Default is those three.
 ##' @param as.fun See ?NMscanData
 ##' @import stringi
 ##' @keywords internal
-##' @export 
-NMreadCtlPars <- function(lines,section,as.fun) {
+##' @export
+NMreadCtlPars <- function(file,lines,section,as.fun) {
 
     . <- NULL
     blocksize <- NULL
@@ -234,6 +236,10 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     parblock <- NULL
     par.type <- NULL
     string <- NULL
+    text <- NULL
+    text.after <- NULL
+    text.before <- NULL
+    text.clean <- NULL
     type.elem <- NULL
     value.elem <- NULL
     
@@ -254,6 +260,12 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     ## lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
     ## if(length(lines)==0) return(NULL)
 
+    
+    if(missing(lines)) lines <- NULL
+    if(missing(file)) file <- NULL
+    ### this is assuming there is only one file, or that lines contains only one control stream.
+    lines <- getLines(file=file,lines=lines)
+    
     section <- unique(section)
     if(!all(section%in%c("THETA","OMEGA","SIGMA"))) stop("section cannot be other than THETA, OMEGA and SIGMA.")
     dt.lines <- rbindlist(
@@ -291,6 +303,7 @@ NMreadCtlPars <- function(lines,section,as.fun) {
                   x=text.clean)]
 
     getMatches <- function(dt.lines){
+        text.clean <- NULL
         matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
         
         ## Function to classify matches and insert NA where applicable

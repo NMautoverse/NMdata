@@ -9,7 +9,7 @@ test_that("basic",{
     NMdataConf(as.fun="data.table")
 
     lines <- readLines(file.mod)
-    res1 <- NMreadCtlPars(lines)
+    res1 <- NMreadCtlPars(lines=lines)
 
     res1
     

@@ -1,3 +1,14 @@
+##' read lines as needed
+##'
+##' Functions that take file and lines arguments can use this function
+##' to derive lines no matter what was provided.
+##'
+##' @param as.one If the `file` argument is used and if `as.one` is
+##'     TRUE, the file(s) are read and put into a `data.table` with a
+##'     model column and a `text` column. Default is FALSE. Be careful
+##'     with this, as it returns different formats whether the `file`
+##'     or the `lines` argument is used.
+##' 
 ##' @keywords internal
 
 getLines <- function(file,lines,linesep="\n",simplify=TRUE,col.model,modelname,as.one){

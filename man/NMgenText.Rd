@@ -21,7 +21,9 @@ NMgenText(
 )
 }
 \arguments{
-\item{data}{The data that NONMEM will read.}
+\item{data}{The data that NONMEM will read. Either as a
+`data.frame`, of if a path to an rds or a delimited text file,
+the data will automatically be read first.}
 
 \item{drop}{Only used for generation of proposed text for INPUT
 section. Columns to drop in Nonmem $INPUT. This has two
