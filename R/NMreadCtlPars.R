@@ -26,7 +26,7 @@ jtriag <- function(blocksize,istart=1,diag="lower"){
 ## jtriag(3,istart=2)
 
 
-
+#### these are the patterns used to identfy the different types of elements in parameter sections. It would be better to dfine them inside NMreadCtlPars() and pass them to classify_matches.
 ##' @keywords internal
 patterns <- function(){
     c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
@@ -175,9 +175,7 @@ count_ij <- function(res){
         this.bsize <- 1
 
         if(res[parnum==parcount,unique(inblock)==TRUE]){
-            
-            
-### assign i and j to all
+            ## assign i and j to all
             this.parblock <- res[parnum==parcount,unique(parblock)]
             this.res <- res[ parblock==this.parblock  & type.elem%in%c("init","ll","ul")]
             this.bsize <- this.res[,unique(blocksize)]
@@ -201,8 +199,6 @@ count_ij <- function(res){
     
     res <- mergeCheck(res,dt.ij,by="parnum",all.x=TRUE,quiet=TRUE)
 
-    
-    ## browser()
     if(any(res[,inblock])){
         res[inblock==TRUE,iblock:=min(i,na.rm=TRUE),by=parblock]
     }
@@ -243,7 +239,7 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     
     if(missing(section)) section <- NULL
     if(is.null(section)) {
-        stop("section must be supplied") 
+        section <- cc("theta","omega","sigma")
     }
     
     if(missing(as.fun)) as.fun <- NULL
@@ -253,117 +249,123 @@ NMreadCtlPars <- function(lines,section,as.fun) {
     section <- cleanSpaces(section)
     section <- toupper(section)
     
-    if(length(section)>1) stop("Only one section can be handled at a time.")
+    ## if(length(section)>1) stop("Only one section can be handled at a time.")
     ## We want to keep everything, even empty lines so we can keep track of line numbers
-    lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
-    
-    if(length(lines)==0) return(NULL)
+    ## lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
+    ## if(length(lines)==0) return(NULL)
 
+    section <- unique(section)
+    if(!all(section%in%c("THETA","OMEGA","SIGMA"))) stop("section cannot be other than THETA, OMEGA and SIGMA.")
+    dt.lines <- rbindlist(
+        lapply(section,function(sec)
+            data.table(text=NMreadSection(lines=lines,section=sec,keep.empty=TRUE,keep.comments=TRUE))[
+               ,linenum:=.I][
+               ,par.type:=sec]
+            
+            )
+    )
+    
+    
     pattern <- paste(patterns(),collapse="|")
 
     
     
-    dt.lines <- data.table(linenum=1:length(lines),text=lines)
+### dt.lines <- data.table(linenum=1:length(lines),text=lines)
+
     ## Preprocess to remove comments (everything after ";")
-    dt.lines[,text.after:=sub("^[^;]*;","",text)]
+    ## dt.lines[,text.after:=sub("^[^;]*;","",text)]
+    ## dt.lines[grepl(";", text),text.after:= gsub(";.*", "", text)]
+    dt.lines[grepl(";", text),text.after:=sub("^[^;]*;","",text)]
+    ## dt.lines[is.na(text.after),text.after:=""]
+    
     ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",patterns()[1],")\\b.*"),"\\1",text)]
     ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",pattern,")\\b.*"),"\\1",text)]
-    dt.lines[,text.clean:=gsub( ";.*", "",text)]
-    dt.lines[,text_clean:=gsub(
-        pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
-        ## Replace with "init FIX"
-        replacement = "\\1 FIX",
-        x=text.clean)]
+    dt.lines[grepl(pattern,text,perl=TRUE),text.before:=sub(paste0("(.*?)(?:",pattern,").*"),"\\1",text,perl=TRUE)]
+    ## dt.lines[is.na(text.before),text.before:=""]
 
-    if(F){
-    ## Preprocess to remove comments (everything after ";")
-    lines_cleaned <- gsub( ";.*", "",lines)
+    dt.lines[,text.clean:=gsub( " *;.*", "",text)]
+    dt.lines[,text.clean:=gsub(
+                  pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
+                  ## Replace with "init FIX"
+                  replacement = "\\1 FIX",
+                  x=text.clean)]
 
-### rewrite (init FIX) as init FIX
-                                        # Regular expression to match (init FIX) and (init FIXED)
-    lines_cleaned <- gsub(
-        pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
-        ## Replace with "init FIX"
-        replacement = "\\1 FIX",
-        x=lines_cleaned)
-    
-                                        # Extract matches
-    ## matches <- str_extract_all(lines_cleaned, pattern)
-    pattern <- paste(patterns(),collapse="|")
-    matches <- stri_extract_all_regex(lines_cleaned, pattern)
+    getMatches <- function(dt.lines){
+        matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
+        
+        ## Function to classify matches and insert NA where applicable
+
+
+
+        matches.list <- lapply(seq_along(matches),function(I){
+            match <- matches[[I]]
+            if(length(match)==0) return(NULL)
+            data.table(linenum=I,string=match)
+        })
+        dt.match <- rbindlist(matches.list)
+
+        ## elemnum counts the fidings. It is an arbitrary counter because it groups (ll,init,ul) together but not FIX. It really can't be used for anything beyond this function so should not be exported.
+        dt.match[,elemnum:=.I]
+        dt.match
     }
-    
-    matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
-    
-    ## Function to classify matches and insert NA where applicable
 
-
-
-    matches.list <- lapply(seq_along(matches),function(I){
-        match <- matches[[I]]
-        if(length(match)==0) return(NULL)
-        data.table(linenum=I,string=match)
-    })
-    dt.match <- rbindlist(matches.list)
-
-    ## elemnum counts the fidings. It is an arbitrary counter because it groups (ll,init,ul) together but not FIX. It really can't be used for anything beyond this function so should not be exported.
-    dt.match[,elemnum:=.I]
 
     
-    res <- dt.match[,classify_matches(string),by=.(linenum,elemnum)]
+    dt.matches <- dt.lines[,getMatches(.SD),by=.(par.type)]
+    
+    res <- dt.matches[,classify_matches(string),by=.(par.type,linenum,elemnum)]
 
     ## count parameter number - init,ll,ul,FIX will all be assigned to one parameter number
-    res[,parnum:=NA_integer_]
-    this.parnum <- 0
-    prev.type <- "init"
-    for(r in 1:nrow(res)){
-        this.type <- res[r,type.elem]
+    res.list <- split(res,by="par.type")
+    res.list <- lapply(res.list,function(res){
+        res[,parnum:=NA_integer_]
+        this.parnum <- 0
+        prev.type <- "init"
+        for(r in 1:nrow(res)){
+            this.type <- res[r,type.elem]
                                         #  if(this.type!="BLOCK") {
                                         # }
-        if( this.type == "BLOCK" ||
-            (this.type == "ll" && prev.type!="BLOCK" ) ||
-            (this.type == "init" && !prev.type %in% c("BLOCK","ll")) ){
-            this.parnum <- this.parnum + 1
+            if( this.type == "BLOCK" ||
+                (this.type == "ll" && prev.type!="BLOCK" ) ||
+                (this.type == "init" && !prev.type %in% c("BLOCK","ll")) ){
+                this.parnum <- this.parnum + 1
+            }
+            res[r,parnum:=this.parnum]
+            prev.type <- this.type
         }
-        res[r,parnum:=this.parnum]
-        prev.type <- this.type
-    }
+        
+        ##res[,blocksize:=1]
+        res[type.elem=="BLOCK",parblock:=as.integer(parnum)]
+        res[type.elem=="BLOCK",blocksize:=as.integer(value.elem)]
+        res[type.elem=="BLOCK",lastblockmax:=triagSize(blocksize)+parnum-1]
+        res[,lastblockmax:=nafill(lastblockmax,type="locf")]
+
+        
+
+        ## assign i,j
+
+        res[,inblock:=FALSE]
+        res[parnum<=lastblockmax,inblock:=TRUE]
+        res[inblock==TRUE,blocksize:=nafill(blocksize,type="locf")]
+        res[inblock==FALSE,blocksize:=1]
+        res[inblock==TRUE,parblock:=nafill(parblock,type="locf")]
+
+        res <- count_ij(res)
+        res[,parblock:=NULL]
+        ##res[,par.type:=section]
+        res[par.type=="THETA",j:=NA]
+        res
+    })
+
+    res <- rbindlist(res.list)
+    ## as.fun(res)
+
+    setcolorder(dt.lines,cc(par.type,linenum,text,text.clean,text.before,text.after))
     
-    ##res[,blocksize:=1]
-    res[type.elem=="BLOCK",parblock:=as.integer(parnum)]
-    res[type.elem=="BLOCK",blocksize:=as.integer(value.elem)]
-    res[type.elem=="BLOCK",lastblockmax:=triagSize(blocksize)+parnum-1]
-    res[,lastblockmax:=nafill(lastblockmax,type="locf")]
+    list(lines=as.fun(dt.lines),
+         elements=as.fun(res)
+         )
 
-    if(F){
-        res[,does.count:=TRUE]
-        res[type.elem%in%c("BLOCK","FIX"),does.count:=FALSE]
-        res[,elem:=elemnum]
-        res[!does.count==TRUE,elem:=NA]
-        res[,elem:=nafill(elem,type="nocb")]
-        res[,elem:=nafill(elem,type="locf")]
-        res[,elem:=.GRP,by=elem]
-    }
-    
 
-    ## assign i,j
-
-    res[,inblock:=FALSE]
-    res[parnum<=lastblockmax,inblock:=TRUE]
-    res[inblock==TRUE,blocksize:=nafill(blocksize,type="locf")]
-    res[inblock==FALSE,blocksize:=1]
-    res[inblock==TRUE,parblock:=nafill(parblock,type="locf")]
-
-    res <- count_ij(res)
-    res[,parblock:=NULL]
-    res[,par.type:=section]
-    res[par.type=="THETA",j:=NA]
-    
-    
-
-    ## list(lines=as.fun(dt.lines),
-    ##      elements=as.fun(res)
-    ##      )
-    as.fun(res)
 }
 
