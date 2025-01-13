@@ -4,12 +4,15 @@
 \alias{NMreadCtlPars}
 \title{Tabulate information from parameter sections in control streams}
 \usage{
-NMreadCtlPars(lines, section, as.fun)
+NMreadCtlPars(file, lines, section, as.fun)
 }
 \arguments{
-\item{lines}{A control stream as text lines}
+\item{file}{Path to a control stream. See `lines` too.}
 
-\item{section}{The section to read. Typically, "theta", "omega", or "sigma".}
+\item{lines}{A control stream as text lines. Use this or `file`.}
+
+\item{section}{The section to read. Typically, "theta", "omega",
+or "sigma". Default is those three.}
 
 \item{as.fun}{See ?NMscanData}
 }

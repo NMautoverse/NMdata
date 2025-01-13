@@ -426,7 +426,9 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMreadCtlPars
-**** classify_matches should maintain character values, not numeric
+**** TODO [#A] get rid of stringi
+**** TODO [#A] Make return of a ext style parameter table defautl
+**** DONE classify_matches should maintain character values, not numeric
 *** NMreadExt
 **** DONE Support Laplacian
 Laplacian Conditional Estimation
