@@ -428,6 +428,7 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMreadCtlPars
 **** TODO [#A] get rid of stringi
 **** TODO [#A] Make return of a ext style parameter table defautl
+**** TODO [#A] Rename to NMreadInits() ?
 **** DONE classify_matches should maintain character values, not numeric
 *** NMreadExt
 **** DONE Support Laplacian
