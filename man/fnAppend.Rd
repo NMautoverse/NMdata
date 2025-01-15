@@ -19,8 +19,8 @@ more than 10 files, and your counter will be 01, 02,..,
 \item{sep}{The separator between the existing file name (until
 extension) and the addition.}
 
-\item{allow.noext}{Allow `fn` to be string(s) witout extensions?
-Default is `FALSE` in wich case an error will be thrown if
+\item{allow.noext}{Allow `fn` to be string(s) without extensions?
+Default is `FALSE` in which case an error will be thrown if
 `fn` contains strings without extensions. If `TRUE`, `x` will
 be appended to fn in these cases.}
 }

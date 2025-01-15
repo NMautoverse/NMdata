@@ -426,10 +426,10 @@ issued. Once done, NMgetSection must be updated as well.
 *** NMisNumeric
 **** DONE NA_character is not recognized as numeric
 *** NMreadCtlPars
-**** TODO [#A] Handle SAME in initsToExt
+**** DONE Handle SAME in initsToExt
 **** DONE get rid of stringi
 **** DONE Make return of a ext style parameter table default
-**** TODO [#A] Rename to NMreadInits() ?
+**** DONE Rename to NMreadInits()
 **** DONE Rename ll to lower and ul to upper
 **** DONE classify_matches should maintain character values, not numeric
 *** NMreadExt
@@ -458,7 +458,6 @@ like ; 1; CL ; [mL/h]
 in which case "; [" is a delimiter
 **** DONE Empty fields make it break
 Like ;1;CL;;;mL/h
-**** TODO [#B] Handle SAME
 ***** DONE Include test so we at least know what happens
 *** NMreadSection
 **** DONE error returned when return="idx" and no section specified     :Bug: 
