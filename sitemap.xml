@@ -30,8 +30,8 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMorderColumns.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadCov.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadCsv.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadCtlPars.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadExt.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadInits.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadParsText.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadPhi.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadSection.html</loc></url>
@@ -72,6 +72,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/getFilePaths.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/getLines.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/index.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/initsToExt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/is.NMdata.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/itriag.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/jtriag.html</loc></url>

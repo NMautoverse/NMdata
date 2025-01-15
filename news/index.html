@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.925</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.932</span>
       </span>
     </div>
 
@@ -82,8 +82,8 @@
 <h2 class="page-header" data-toc-text="0.1.9" id="nmdata-019">NMdata 0.1.9<a class="anchor" aria-label="anchor" href="#nmdata-019"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-9">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-9"></a></h3>
-<ul><li><p><code><a href="../reference/NMreadCtlPars.html">NMreadCtlPars()</a></code> adds ability to read the parameter structure as specified in a control stream, including initial values, lower/upper bounds and FIX information. It automatically allocates these values to parameter indexes, like <code>THETA(I)</code> and <code>OMEGA(I,J)</code>.</p></li>
-<li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now uses <code><a href="../reference/NMreadCtlPars.html">NMreadCtlPars()</a></code> by default to index parameters. You can still override this by specifying an index column (the old default) for all or some of the parameter sections.</p></li>
+<ul><li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> adds ability to read the parameter structure as specified in a control stream, including initial values, lower/upper bounds and FIX information. It automatically allocates these values to parameter indexes, like <code>THETA(I)</code> and <code>OMEGA(I,J)</code>.</p></li>
+<li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now uses <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> by default to index parameters. You can still override this by specifying an index column (the old default) for all or some of the parameter sections.</p></li>
 <li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> gains two new options for the <code>location</code> argument: “first” and “last”.</p></li>
 <li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> can now be run on a data file. <code><a href="../reference/NMgenText.html">NMgenText()</a></code> suggest <code>$DATA</code> and <code>$INPUT</code> sections based on a data set. Previously a data object had to be passed to the function. Now also just a path to the data set on file can be used.</p></li>
 </ul></div>
@@ -92,6 +92,7 @@
 <ul><li><p><code><a href="../reference/mat2dt.html">mat2dt()</a></code> was doing the opposite to what was specified by the <code>triangle</code> argument and returned the upper triangle when <code>triangle=lower</code> and vice versa.</p></li>
 <li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> would fail if the first section in a control stream was modified.</p></li>
 <li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> was ignoring the <code>par.type</code> argument.</p></li>
+<li><p><code><a href="../reference/dt2mat.html">dt2mat()</a></code> would only work on <code>data.table</code>s. Support for other <code>data.frame</code>s added.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-1-9">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-9"></a></h3>
