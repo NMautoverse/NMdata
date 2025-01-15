@@ -64,7 +64,8 @@ classify_matches <- function(matches) {
             ## number <- as.numeric(str_match(match, "BLOCK\\((\\d+)\\)")[1, 2])
             if(grepl("\\( *(\\d+) *\\)",match)){
                 number <- ## as.numeric(
-                    stri_match_all_regex(match, "BLOCK\\s*\\( *(\\d+) *\\)")[[1]][1, 2]
+                    ## stri_match_all_regex(match, "BLOCK\\s*\\( *(\\d+) *\\)")[[1]][1, 2]
+                    regmatches(match, regexec("BLOCK\\s*\\( *(\\d+) *\\)",match)[[1]][2]
                 ##)
             } else {
                 number <- "1"
@@ -85,7 +86,8 @@ classify_matches <- function(matches) {
             ## Split (ll,init,ul)
             ## nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
             nums <- ## as.numeric(
-                stri_match_all_regex(match, pattern.singlenum)[[1]][, 1]
+                ## stri_match_all_regex(match, pattern.singlenum)[[1]][, 1]
+                regmatches(match, gregexpr(pattern.singlenum,match,perl=TRUE))[[1]]
             ## )
             results <- append(results, list(list(
                                            string.elem = match,
@@ -106,7 +108,8 @@ classify_matches <- function(matches) {
                                         # Split (ll,init)
             ## nums <- as.numeric(str_match_all(match, "-?\\d+(\\.\\d+)?")[[1]][, 1])
             nums <- ## as.numeric(
-                stri_match_all_regex(match, pattern.singlenum)[[1]][, 1]
+                ## stri_match_all_regex(match, pattern.singlenum)[[1]][, 1]
+                regmatches(match, gregexpr(pattern.singlenum,match,perl=TRUE))[[1]]
             ## )
             results <- append(results, list(list(
                                            string.elem = match,
@@ -122,7 +125,8 @@ classify_matches <- function(matches) {
                                         # Extract init from (init)
             ## nums <- as.numeric(str_match(match, "-?\\d+(\\.\\d+)?")[1, 1])
             nums <- ## as.numeric(
-                stri_match_all_regex(match, pattern.singlenum)[[1]][1, 1]
+                ## stri_match_all_regex(match, pattern.singlenum)[[1]][1, 1]
+                regmatches(match, gregexpr(pattern.singlenum,match,perl=TRUE))[[1]]
             ## )
             results <- append(results, list(list(
                                            string.elem = match,
