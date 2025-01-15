@@ -1,12 +1,12 @@
 # NMdata 0.1.9
 
 ## New features
-* `NMreadCtlPars()` adds ability to read the parameter structure as
+* `NMreadInits()` adds ability to read the parameter structure as
   specified in a control stream, including initial values, lower/upper
   bounds and FIX information. It automatically allocates these values
   to parameter indexes, like `THETA(I)` and `OMEGA(I,J)`.
   
-* `NMreadParsText()` now uses `NMreadCtlPars()` by default to index
+* `NMreadParsText()` now uses `NMreadInits()` by default to index
   parameters. You can still override this by specifying an index
   column (the old default) for all or some of the parameter sections.
 
