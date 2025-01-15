@@ -427,8 +427,9 @@ issued. Once done, NMgetSection must be updated as well.
 **** DONE NA_character is not recognized as numeric
 *** NMreadCtlPars
 **** TODO [#A] get rid of stringi
-**** TODO [#A] Make return of a ext style parameter table defautl
+**** DONE Make return of a ext style parameter table default
 **** TODO [#A] Rename to NMreadInits() ?
+**** DONE Rename ll to lower and ul to upper
 **** DONE classify_matches should maintain character values, not numeric
 *** NMreadExt
 **** DONE Support Laplacian

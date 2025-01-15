@@ -18,5 +18,15 @@ test_that("basic",{
         
 })
 
+file.mod <- "/data/home/philipde/wdirs/NMdata/inst/examples/nonmem/xgxr133.mod"
+file.mod <- "/data/home/philipde/wdirs/NMsim/tests/testthat/testData/nonmem/xgxr021com.mod"
+res1 <- NMreadCtlPars(file=file.mod,return="all")
+res1
+ext <- NMreadExt(file.mod)
+NMreadSection(file.mod,section="OMEGA")
+res1$elements
 
-
+head(ext)
+dcast(res1$elements,par.type+i+j~type.elem,value.var="value.elem")
+setDT(res1)
+res1$elements[,.(par.type,parameter,par.name,i,j,value,lower,upper,FIX)]

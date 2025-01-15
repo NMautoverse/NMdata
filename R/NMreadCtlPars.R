@@ -55,7 +55,7 @@ classify_matches <- function(matches) {
 
 
     ##pattern.singlenum <- "-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?"
-    pattern.singlenum <- "-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d)([eE][+-]?\\d+)?"
+    pattern.singlenum <- "-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?"
     for (match in matches) {
         ## if (grepl("^BLOCK\\(\\d+\\)$",match)) {
         if (grepl(use.pattern("block"),match)) {
@@ -89,7 +89,7 @@ classify_matches <- function(matches) {
             ## )
             results <- append(results, list(list(
                                            string.elem = match,
-                                           type.elem = "ll",
+                                           type.elem = "lower",
                                            value.elem = nums[1]
                                        )))
             results <- append(results, list(list(
@@ -99,7 +99,7 @@ classify_matches <- function(matches) {
                                        )))
             results <- append(results, list(list(
                                            string.elem = match,
-                                           type.elem = "ul",
+                                           type.elem = "upper",
                                            value.elem = nums[3]
                                        )))
         } else if (grepl( use.pattern("ll.init"),match)) {
@@ -110,7 +110,7 @@ classify_matches <- function(matches) {
             ## )
             results <- append(results, list(list(
                                            string.elem = match,
-                                           type.elem = "ll",
+                                           type.elem = "lower",
                                            value.elem = nums[1]
                                        )))
             results <- append(results, list(list(
@@ -177,7 +177,7 @@ count_ij <- function(res){
         if(res[parnum==parcount,unique(inblock)==TRUE]){
             ## assign i and j to all
             this.parblock <- res[parnum==parcount,unique(parblock)]
-            this.res <- res[ parblock==this.parblock  & type.elem%in%c("init","ll","ul")]
+            this.res <- res[ parblock==this.parblock  & type.elem%in%c("init","lower","upper")]
             this.bsize <- this.res[,unique(blocksize)]
 
             this.dt.ij <- data.table(parnum=parcount+seq(0,triagSize(this.bsize)-1),
@@ -220,7 +220,7 @@ count_ij <- function(res){
 ##' @import stringi
 ##' @keywords internal
 ##' @export
-NMreadCtlPars <- function(file,lines,section,as.fun) {
+NMreadCtlPars <- function(file,lines,section,return="pars",as.fun) {
 
     . <- NULL
     blocksize <- NULL
@@ -248,9 +248,11 @@ NMreadCtlPars <- function(file,lines,section,as.fun) {
         section <- cc("theta","omega","sigma")
     }
     
+    return <- match.arg(return,choices=c("pars","all"))
+
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
-    
+
     section <- sub("\\$","",section)
     section <- cleanSpaces(section)
     section <- toupper(section)
@@ -263,7 +265,7 @@ NMreadCtlPars <- function(file,lines,section,as.fun) {
     
     if(missing(lines)) lines <- NULL
     if(missing(file)) file <- NULL
-    ### this is assuming there is only one file, or that lines contains only one control stream.
+### this is assuming there is only one file, or that lines contains only one control stream.
     lines <- getLines(file=file,lines=lines)
     
     section <- unique(section)
@@ -336,26 +338,21 @@ NMreadCtlPars <- function(file,lines,section,as.fun) {
         prev.type <- "init"
         for(r in 1:nrow(res)){
             this.type <- res[r,type.elem]
-                                        #  if(this.type!="BLOCK") {
-                                        # }
             if( this.type == "BLOCK" ||
-                (this.type == "ll" && prev.type!="BLOCK" ) ||
-                (this.type == "init" && !prev.type %in% c("BLOCK","ll")) ){
+                (this.type == "lower" && prev.type!="BLOCK" ) ||
+                (this.type == "init" && !prev.type %in% c("BLOCK","lower")) ){
                 this.parnum <- this.parnum + 1
             }
             res[r,parnum:=this.parnum]
             prev.type <- this.type
         }
         
-        ##res[,blocksize:=1]
+
         res[type.elem=="BLOCK",parblock:=as.integer(parnum)]
         res[type.elem=="BLOCK",blocksize:=as.integer(value.elem)]
         res[type.elem=="BLOCK",lastblockmax:=triagSize(blocksize)+parnum-1]
         res[,lastblockmax:=nafill(lastblockmax,type="locf")]
 
-        
-
-        ## assign i,j
 
         res[,inblock:=FALSE]
         res[parnum<=lastblockmax,inblock:=TRUE]
@@ -371,14 +368,46 @@ NMreadCtlPars <- function(file,lines,section,as.fun) {
     })
 
     res <- rbindlist(res.list)
-    ## as.fun(res)
-
+    
+    pars <- initsToExt(res)
+    if(return=="pars") return(as.fun(pars))
+    
     setcolorder(dt.lines,cc(par.type,linenum,text,text.clean,text.before,text.after))
     
-    list(lines=as.fun(dt.lines),
+    list(pars=as.fun(pars),
+         lines=as.fun(dt.lines),
          elements=as.fun(res)
          )
 
-
 }
 
+
+##' @keywords internal
+initsToExt <- function(elements){
+
+    ## res <- copy(data$elements)
+
+
+    els.w <- dcast(elements[type.elem%in%cc(init,lower,upper,FIX)],par.type+i+j+iblock+blocksize~type.elem,value.var="value.elem")
+
+    els.w[,init:=as.numeric(init)]
+
+    if(!"FIX"%in% colnames(els.w)) els.w[,FIX:=0L]
+    els.w[,FIX:=as.integer(FIX)]
+    els.w[is.na(FIX),FIX:=0L]
+
+    if(!"lower"%in% colnames(els.w)) els.w[,lower:=NA_real_]
+    
+    if(!"upper"%in% colnames(els.w)) els.w[,upper:=NA_real_]
+    
+    els.w[par.type=="THETA",parameter:=paste0(par.type,i)]
+    els.w[par.type%in%c("OMEGA","SIGMA"),parameter:=sprintf("%s(%d,%d)",par.type,i,j)]
+    els.w[,par.name:=parameter]
+    els.w[par.type=="THETA",par.name:=sprintf("%s(%d)",par.type,i)]
+
+
+
+    els.w[,.(par.type,parameter,par.name,i,j,iblock,blocksize,init,lower,upper,FIX)]
+
+    els.w
+}
