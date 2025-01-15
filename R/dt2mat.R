@@ -37,6 +37,14 @@ dt2mat <- function(pars,dt.subset="unique",max.i,fill=0,col.value) {
     est <- NULL
     i <- NULL
     j <- NULL
+
+    if(is.data.table(pars)){
+        pars <- copy(pars)
+    } else {
+        pars <- as.data.table(pars)   
+    }    
+
+    
     if(missing(col.value)) col.value <- NULL
     if(is.null(col.value)) {
         if("value"%in%colnames(pars)) {

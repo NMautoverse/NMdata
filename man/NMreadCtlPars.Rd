@@ -4,7 +4,7 @@
 \alias{NMreadCtlPars}
 \title{Tabulate information from parameter sections in control streams}
 \usage{
-NMreadCtlPars(file, lines, section, as.fun)
+NMreadCtlPars(file, lines, section, return = "pars", as.fun)
 }
 \arguments{
 \item{file}{Path to a control stream. See `lines` too.}

@@ -28,6 +28,9 @@
 
 * `NMrelate()` was ignoring the `par.type` argument.
 
+* `dt2mat()` would only work on `data.table`s. Support for other
+  `data.frame`s added.
+
 ## Other improvements
 * `addTAPD` has a few improvements on documentations and the following
   improvements on code. Together they imply that `by` defaults to

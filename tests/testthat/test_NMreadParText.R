@@ -35,9 +35,9 @@ test_that("muref SAEM",{
     expect_equal_to_reference(res,fileRef)
     
     if(F){
-    NMreadSection(file.mod,section="theta")
-    res
-    readRDS(fileRef)
+        NMreadSection(file.mod,section="theta")
+        res
+        readRDS(fileRef)
     }
     
 })
@@ -227,5 +227,5 @@ test_that("muref SAEM - format.omega=NULL",{
     res2 <- NMreadParsText(file.mod,format="%init;%symbol",format.omega=NULL)
     
     expect_equal(res1,res2)
-        
+    
 })

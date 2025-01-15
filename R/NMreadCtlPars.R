@@ -65,7 +65,7 @@ classify_matches <- function(matches) {
             if(grepl("\\( *(\\d+) *\\)",match)){
                 number <- ## as.numeric(
                     ## stri_match_all_regex(match, "BLOCK\\s*\\( *(\\d+) *\\)")[[1]][1, 2]
-                    regmatches(match, regexec("BLOCK\\s*\\( *(\\d+) *\\)",match)[[1]][2]
+                    regmatches(match, regexec("BLOCK\\s*\\( *(\\d+) *\\)",match))[[1]][2]
                 ##)
             } else {
                 number <- "1"
@@ -221,7 +221,6 @@ count_ij <- function(res){
 ##' @param section The section to read. Typically, "theta", "omega",
 ##'     or "sigma". Default is those three.
 ##' @param as.fun See ?NMscanData
-##' @import stringi
 ##' @keywords internal
 ##' @export
 NMreadCtlPars <- function(file,lines,section,return="pars",as.fun) {
@@ -274,13 +273,17 @@ NMreadCtlPars <- function(file,lines,section,return="pars",as.fun) {
     
     section <- unique(section)
     if(!all(section%in%c("THETA","OMEGA","SIGMA"))) stop("section cannot be other than THETA, OMEGA and SIGMA.")
+    
     dt.lines <- rbindlist(
-        lapply(section,function(sec)
-            data.table(text=NMreadSection(lines=lines,section=sec,keep.empty=TRUE,keep.comments=TRUE))[
+        lapply(section,function(sec){
+            dt.l <- data.table(text=NMreadSection(lines=lines,section=sec,keep.empty=TRUE,keep.comments=TRUE))
+            if(nrow(dt.l)==0) return(NULL)
+            dt.l[
                ,linenum:=.I][
                ,par.type:=sec]
-            
-            )
+            dt.l
+                        })
+,fill=TRUE
     )
     
     
@@ -302,6 +305,8 @@ NMreadCtlPars <- function(file,lines,section,return="pars",as.fun) {
     ## dt.lines[is.na(text.before),text.before:=""]
 
     dt.lines[,text.clean:=gsub( " *;.*", "",text)]
+    dt.lines[,text.clean:=cleanSpaces(text.clean)]
+    ## If inside parentheses, move FIX(ED) to after parentheses
     dt.lines[,text.clean:=gsub(
                   pattern = "\\(\\s*(-?\\d+(\\.\\d+)?(?:[eE][+-]?\\d+)?)\\s+FIX(?:ED)?\\s*\\)",
                   ## Replace with "init FIX"
@@ -389,13 +394,38 @@ NMreadCtlPars <- function(file,lines,section,return="pars",as.fun) {
 ##' @keywords internal
 initsToExt <- function(elements){
 
-    ## res <- copy(data$elements)
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
-
+    . <- NULL
+    blocksize <- NULL
+    FIX <- NULL
+    iblock <- NULL
+    init <- NULL
+    init.num <- NULL
+    i <- NULL
+    j <- NULL
+    lower <- NULL
+    upper <- NULL
+    par.type <- NULL
+    parameter <- NULL
+    par.name <- NULL
+    type.elem <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
+    
     els.w <- dcast(elements[type.elem%in%cc(init,lower,upper,FIX)],par.type+i+j+iblock+blocksize~type.elem,value.var="value.elem")
 
-    els.w[,init:=as.numeric(init)]
-
+###  init=SAME may not work for blocksizes>1
+    if("init"%in%colnames(els.w)){
+        
+        suppressWarnings(els.w[,init.num:=as.numeric(init)])
+        els.w[!is.na(init.num)|init=="SAME",init.num:=nafill(init.num,type="locf")]
+        els.w[,init:=init.num]
+        els.w[,init.num:=NULL]
+    } else {
+        ## not sure this will ever happen
+        els.w[,init:=NA_real_]
+    }
     if(!"FIX"%in% colnames(els.w)) els.w[,FIX:=0L]
     els.w[,FIX:=as.integer(FIX)]
     els.w[is.na(FIX),FIX:=0L]
@@ -411,7 +441,8 @@ initsToExt <- function(elements){
 
 
 
-    els.w[,.(par.type,parameter,par.name,i,j,iblock,blocksize,init,lower,upper,FIX)]
-
+    els.w <- els.w[,.(par.type,parameter,par.name,i,j,iblock,blocksize,init,lower,upper,FIX)]
+    els.w <- els.w[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+    
     els.w
 }
