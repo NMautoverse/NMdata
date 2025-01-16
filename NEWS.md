@@ -1,12 +1,20 @@
 # NMdata 0.1.9
 
 ## New features
-* `NMreadInits()` adds ability to read the parameter structure as
-  specified in a control stream, including initial values, lower/upper
-  bounds and FIX information. It automatically allocates these values
-  to parameter indexes, like `THETA(I)` and `OMEGA(I,J)`.
+* `NMreadInits()` is a new function adding the ability to read the
+  parameter structure as specified in a control stream, including
+  initial values, lower/upper bounds and FIX information. It
+  automatically allocates these values to parameter indexes, like
+  `THETA(I)` and `OMEGA(I,J)`. It by default returns a table of
+  parameters and values in a format similar to `NMreadExt()`, and if
+  requested it can return detailed information about the text lines
+  and each element read in the control stream to derive this parameter
+  table. These details can be used to edit the values and write back
+  the information in a control stream with consistent
+  formatting. NMsim::NMwriteInits() does this allowing NMsim() to edit
+  the `$THETA`, `$OMEGA` and `$SIGMA` sections.
   
-* `NMreadParsText()` now uses `NMreadInits()` by default to index
+* `NMreadParsText()` now by default uses `NMreadInits()` to index
   parameters. You can still override this by specifying an index
   column (the old default) for all or some of the parameter sections.
 

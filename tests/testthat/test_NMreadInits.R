@@ -11,8 +11,9 @@ test_that("basic",{
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-    res1
-    
+cat(paste(res1$lines$text.before,collapse=":"),"\n")
+cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
+
     expect_equal_to_reference(res1,fileRef)
 
     
