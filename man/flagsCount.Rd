@@ -17,6 +17,7 @@ flagsCount(
   name.all.data = "All available data",
   grp.incomp = "EVID",
   save = TRUE,
+  quiet = FALSE,
   as.fun = NULL
 )
 }
@@ -68,6 +69,8 @@ when counting flags.}
 
 \item{save}{Save file? Default is TRUE, meaning that a file will
 be written if file argument is supplied.}
+
+\item{quiet}{Suppress non-critical messages? Default is `FALSE`.}
 
 \item{as.fun}{The default is to return a data.table if input data
 is a data.table, and return a data.frame for all other input

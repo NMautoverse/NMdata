@@ -40,6 +40,7 @@
 ##'     be written if file argument is supplied.
 ##' @param flagc.0 The character flag to assign to rows that are not
 ##'     matched by exclusion conditions (numerical flag 0).
+##' @param quiet Suppress non-critical messages? Default is `FALSE`.
 ##' @param as.fun The default is to return a data.table if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -88,7 +89,9 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                        by=NULL, flags.increasing=FALSE,
                        flagc.0="Analysis set",
                        name.all.data="All available data",
-                       grp.incomp="EVID",save=TRUE,as.fun=NULL){
+                       grp.incomp="EVID",save=TRUE,
+                       quiet=FALSE,
+                       as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -293,7 +296,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
     if(!is.null(file)&&save){
         fwrite(allres,file=file,quote=FALSE,row.names=F)
-        cat(paste0("Table written to ",file,"\n"))
+        if(!quiet) message(paste0("Table written to ",file,"\n"))
     }
 
     

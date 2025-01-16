@@ -6,7 +6,7 @@ test_that("basic",{
     file.mod <- "testData/nonmem/xgxr032.mod"
     
     NMdataConf(reset=T)
-    NMdataConf(as.fun="data.table")
+    ## NMdataConf(as.fun="data.table")
 
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
@@ -31,7 +31,7 @@ test_that("with OMEGA block",{
 })
 
 test_that("OMEGA SAME",{
-
+    NMdataConf(reset=T)
     fileRef <- "testReference/NMreadInits_03.rds"
     
     text <- c("
