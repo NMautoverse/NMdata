@@ -6,13 +6,15 @@ test_that("basic",{
     file.mod <- "testData/nonmem/xgxr032.mod"
     
     NMdataConf(reset=T)
-    ## NMdataConf(as.fun="data.table")
+    NMdataConf(as.fun="data.table")
 
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-cat(paste(res1$lines$text.before,collapse=":"),"\n")
-cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
+res1$lines[grepl("^ +$",text.before),text.before:=""]
+    
+## cat(paste(res1$lines$text.before,collapse=":"),"\n")
+## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
 
     expect_equal_to_reference(res1,fileRef)
 
