@@ -86,6 +86,7 @@
 <li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now by default uses <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> to index parameters. You can still override this by specifying an index column (the old default) for all or some of the parameter sections.</p></li>
 <li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> gains two new options for the <code>location</code> argument: “first” and “last”.</p></li>
 <li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> can now be run on a data file. <code><a href="../reference/NMgenText.html">NMgenText()</a></code> suggest <code>$DATA</code> and <code>$INPUT</code> sections based on a data set. Previously a data object had to be passed to the function. Now also just a path to the data set on file can be used.</p></li>
+<li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now append to strings that do not have a file name extension. <code><a href="../reference/fnAppend.html">fnAppend()</a></code> is mainly intended for editing file names with file name extensions but for programming purposes, this generalization is useful.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-9">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-9"></a></h3>
@@ -102,6 +103,7 @@
 <li><p><code>by</code> defaults to value of <code>col.id</code>.</p></li>
 <li><p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> did not check for missing (NA) values on dose events. Checks now capture this.</p></li>
 <li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> now looks up <code>col.flagn</code> using <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> for default value.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> can now control stamping using <code>args.stamp</code> even if no <code>script</code> is provided.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
