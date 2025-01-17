@@ -11,7 +11,8 @@ test_that("basic",{
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-    res1$lines[grepl("^ +$",text.before),text.before:=""]
+    ## res1$lines[grepl("^ +$",text.before),text.before:=""]
+    res1$lines[,text.before:=""]
     
     ## cat(paste(res1$lines$text.before,collapse=":"),"\n")
     ## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
@@ -33,7 +34,8 @@ test_that("with OMEGA block",{
     file.mod <- "testData/nonmem/xgxr133.mod"
     res1 <- NMreadInits(file=file.mod,return="all")
 
-    res1$lines[grepl("^ +$",text.before),text.before:=""]
+    ## res1$lines[grepl("^ +$",text.before),text.before:=""]
+    res1$lines[,text.before:=""]
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
@@ -59,6 +61,7 @@ $OMEGA  BLOCK(1) SAME
 $OMEGA  BLOCK(1) SAME")
 
     res1 <- NMreadInits(lines=text,return="all")
+    res1$lines[,text.before:=""]
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
