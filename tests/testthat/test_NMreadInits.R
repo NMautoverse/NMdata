@@ -13,8 +13,8 @@ test_that("basic",{
 
     res1$lines[grepl("^ +$",text.before),text.before:=""]
     
-## cat(paste(res1$lines$text.before,collapse=":"),"\n")
-## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
+    ## cat(paste(res1$lines$text.before,collapse=":"),"\n")
+    ## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
@@ -26,11 +26,14 @@ test_that("basic",{
 
 test_that("with OMEGA block",{
     NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMreadInits_02.rds"
 
     file.mod <- "testData/nonmem/xgxr133.mod"
     res1 <- NMreadInits(file=file.mod,return="all")
+
+    res1$lines[grepl("^ +$",text.before),text.before:=""]
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
@@ -41,6 +44,8 @@ test_that("with OMEGA block",{
 
 test_that("OMEGA SAME",{
     NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
     fileRef <- "testReference/NMreadInits_03.rds"
     
     text <- c("

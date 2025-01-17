@@ -25,7 +25,12 @@
   `$DATA` and `$INPUT` sections based on a data set. Previously a data
   object had to be passed to the function. Now also just a path to the
   data set on file can be used.
-  
+
+* `fnAppend()` can now append to strings that do not have a file name
+  extension. `fnAppend()` is mainly intended for editing file names
+  with file name extensions but for programming purposes, this
+  generalization is useful.
+
 
 ## Bugfixes
 * `NMreadExt()` was incorrectly calculating blocksize for some
@@ -58,6 +63,8 @@
 * `NMgenText()` now looks up `col.flagn` using `NMdataConf()` for
   default value.
 
+* `NMwriteData()` can now control stamping using `args.stamp` even if
+  no `script` is provided.
 
 # NMdata 0.1.8
 
