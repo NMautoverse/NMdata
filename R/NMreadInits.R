@@ -446,5 +446,5 @@ initsToExt <- function(elements){
     pars <- pars[,.(par.type,parameter,par.name,i,j,iblock,blocksize,init,lower,upper,FIX)]
     pars <- pars[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
     
-    pars
+    pars[]
 }

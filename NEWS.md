@@ -25,8 +25,12 @@
   `$DATA` and `$INPUT` sections based on a data set. Previously a data
   object had to be passed to the function. Now also just a path to the
   data set on file can be used.
+  
 
 ## Bugfixes
+* `NMreadExt()` was incorrectly calculating blocksize for some
+  OMEGAs. Thanks to Brian Reilly for proposing a bugfix!
+
 * `mat2dt()` was doing the opposite to what was specified by the
   `triangle` argument and returned the upper triangle when
   `triangle=lower` and vice versa.
@@ -39,7 +43,7 @@
 * `dt2mat()` would only work on `data.table`s. Support for other
   `data.frame`s added.
 
-## Other improvements
+## Other minor improvements
 * `addTAPD()` has a few improvements on documentations and the following
   improvements on code. Together they imply that `by` defaults to
   `NMdataConf()$col.id`.
@@ -50,6 +54,10 @@
 
 * `NMcheckData()` did not check for missing (NA) values on dose
   events. Checks now capture this.
+
+* `NMgenText()` now looks up `col.flagn` using `NMdataConf()` for
+  default value.
+
 
 # NMdata 0.1.8
 

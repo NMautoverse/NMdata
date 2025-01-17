@@ -11,12 +11,15 @@ test_that("basic",{
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-    ## res1$lines[grepl("^ +$",text.before),text.before:=""]
+    res1$lines[grepl("^ +$",text.before),text.before:=""]
     
 ## cat(paste(res1$lines$text.before,collapse=":"),"\n")
 ## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
 
-    expect_equal_to_reference(res1,fileRef)
+    ## expect_equal_to_reference(res1,fileRef)
+    expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
+    expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
     
 })
@@ -29,7 +32,10 @@ test_that("with OMEGA block",{
     file.mod <- "testData/nonmem/xgxr133.mod"
     res1 <- NMreadInits(file=file.mod,return="all")
 
-    expect_equal_to_reference(res1,fileRef)
+    ## expect_equal_to_reference(res1,fileRef)
+    expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
+    expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
 })
 
@@ -49,5 +55,10 @@ $OMEGA  BLOCK(1) SAME")
 
     res1 <- NMreadInits(lines=text,return="all")
 
-    expect_equal_to_reference(res1,fileRef)
+    ## expect_equal_to_reference(res1,fileRef)
+    expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
+    expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
+
+
 })
