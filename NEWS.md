@@ -40,13 +40,16 @@
   `data.frame`s added.
 
 ## Other improvements
-* `addTAPD` has a few improvements on documentations and the following
+* `addTAPD()` has a few improvements on documentations and the following
   improvements on code. Together they imply that `by` defaults to
   `NMdataConf()$col.id`.
 
  - `col.id` and `col.time` now respect `NMdataConf()` defaults.
 
  - `by` defaults to value of `col.id`. 
+
+* `NMcheckData()` did not check for missing (NA) values on dose
+  events. Checks now capture this.
 
 # NMdata 0.1.8
 

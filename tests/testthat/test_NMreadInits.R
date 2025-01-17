@@ -11,7 +11,7 @@ test_that("basic",{
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-res1$lines[grepl("^ +$",text.before),text.before:=""]
+    res1$lines[grepl("^ +$",text.before),text.before:=""]
     
 ## cat(paste(res1$lines$text.before,collapse=":"),"\n")
 ## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")

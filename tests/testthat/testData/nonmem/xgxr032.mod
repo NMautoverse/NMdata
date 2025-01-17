@@ -44,7 +44,7 @@ $THETA  (.1)             ; LTVKA
 $THETA  (3)             ; LTVV2
 $THETA  (1)             ; LTVCL
 $THETA  (4)             ; LTVV3
-$THETA  (-1)             ; LTVQ
+$THETA  (-1)            ; LTVQ
 
 $OMEGA 0 FIX
 $OMEGA 0.1
