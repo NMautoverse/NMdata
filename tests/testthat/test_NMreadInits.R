@@ -11,7 +11,7 @@ test_that("basic",{
     lines <- readLines(file.mod)
     res1 <- NMreadInits(lines=lines,return="all")
 
-    res1$lines[grepl("^ +$",text.before),text.before:=""]
+    ## res1$lines[grepl("^ +$",text.before),text.before:=""]
     
 ## cat(paste(res1$lines$text.before,collapse=":"),"\n")
 ## cat(paste(readRDS(fileRef)$lines$text.before,collapse=":"),"\n")
@@ -42,7 +42,7 @@ $THETA
 (0,0.1) ; THE1      - 30) 1st theta
  (0,4.2) ; THE2        - 31) 2nd theta
 $OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
- $OMEGA  BLOCK(1)
+$OMEGA  BLOCK(1)
  0.547465  ; IOV.TH1  ; 2 ;IOV
 $OMEGA  BLOCK(1) SAME
 $OMEGA  BLOCK(1) SAME")

@@ -49,7 +49,7 @@ $THETA  (.1)             ; 1 : LTVKA ; Absorption rate [1/h] ; log
 $THETA  (3)             ; 2 : LTVV2 ;  Central volume [L] ; log
 $THETA  (1)             ; 3 : LTVCL ; Clearance [L/h] ; log
 $THETA  (4)             ; 4 : LTVV3 ; Peripheral volume [L] ; log
-$THETA  (-1)             ; 5 : LTVQ ; Intercomparmental clearance [L/h] ; log
+$THETA  (-10,-1)             ; 5 : LTVQ ; Intercomparmental clearance [L/h] ; log
 $THETA .1              ; 6 : AGEEFF ; Age effect on clearance []; log
 
 $OMEGA 0 FIX ; 1 : BSV.KA ; KA Between-subject variability
