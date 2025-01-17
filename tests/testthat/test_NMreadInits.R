@@ -1,5 +1,13 @@
 context("NMreadInits")
 
+### I had to run these with as.fun=data.table and skip testing of
+### lines$text.before to make them work on githubs different
+### arcitectures. I am not sure if the data.table step is needed, but
+### I think it was. Inserted this to drop testing text.before.
+##   res1$lines[,text.before:=""]
+### the reg expressions must evaluate differently on different architectures
+
+
 test_that("basic",{
 
     fileRef <- "testReference/NMreadInits_01.rds"
