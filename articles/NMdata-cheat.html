@@ -180,12 +180,14 @@ across data sets before merging or stacking.</p>
 <span><span class="co">#&gt;    &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:   covs   150     2</span></span>
 <span><span class="co">#&gt; 2:  covs2   150     2</span></span>
+<span><span class="co">#&gt; c("covs", "covs2")c(150, 150)c(2, 2)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns that differ:</span></span>
 <span><span class="co">#&gt;     column    covs     covs2</span></span>
 <span><span class="co">#&gt;     &lt;char&gt;  &lt;char&gt;    &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: WEIGHTB numeric      &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2:    race    &lt;NA&gt; character</span></span>
+<span><span class="co">#&gt; c("WEIGHTB", "race")c("numeric", NA)c(NA, "character")</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Columns where no differences were found: ID.</span></span></code></pre></div>
 <p>Use the <code>cols.wanted</code> argument for the overview to
@@ -323,10 +325,10 @@ here.</p>
 <span><span class="va">res.debug</span><span class="op">$</span><span class="va">tables</span></span>
 <span><span class="co">#&gt;    source       name  nrow  ncol   nid filetype          file.mtime</span></span>
 <span><span class="co">#&gt;    &lt;char&gt;     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;char&gt;              &lt;POSc&gt;</span></span>
-<span><span class="co">#&gt; 1:  input pkdata.csv  1502    23   150      csv 2025-01-18 19:52:23</span></span>
-<span><span class="co">#&gt;                  file.logtime                         file has.col.row</span></span>
-<span><span class="co">#&gt;                        &lt;char&gt;                       &lt;char&gt;      &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt; 1: 2025-01-18 19:52:23.123271 nonmem/../derived/pkdata.csv        TRUE</span></span>
+<span><span class="co">#&gt; 1:  input pkdata.csv  1502    23   150      csv 2025-01-18 20:17:11</span></span>
+<span><span class="co">#&gt;                 file.logtime                         file has.col.row</span></span>
+<span><span class="co">#&gt;                       &lt;char&gt;                       &lt;char&gt;      &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1: 2025-01-18 20:17:11.05101 nonmem/../derived/pkdata.csv        TRUE</span></span>
 <span><span class="co">#&gt;    has.col.id</span></span>
 <span><span class="co">#&gt;        &lt;lgcl&gt;</span></span>
 <span><span class="co">#&gt; 1:       TRUE</span></span></code></pre></div>
@@ -479,7 +481,7 @@ a complete list of data columns and their origin.</p>
 <span><span class="co">#&gt; [1] "NMdata-cheat.Rmd"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $CreationTime</span></span>
-<span><span class="co">#&gt; [1] "2025-01-18 19:52:23.123271"</span></span>
+<span><span class="co">#&gt; [1] "2025-01-18 20:17:11.05101"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $writtenTo</span></span>
 <span><span class="co">#&gt; [1] "derived/pkdata.rds derived/pkdata.csv"</span></span>

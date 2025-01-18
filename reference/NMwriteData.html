@@ -109,7 +109,7 @@ in the file argument.</p>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">args.NMgenText</span>,</span>
 <span>  csv.trunc.as.nm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  genText <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">genText</span>,</span>
 <span>  save <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">write.csv</span>,</span>
 <span>  <span class="va">write.rds</span>,</span>
@@ -209,8 +209,8 @@ post-processing.</p></dd>
 
 <dt id="arg-gentext">genText<a class="anchor" aria-label="anchor" href="#arg-gentext"></a></dt>
 <dd><p>Run and report results of NMgenText? Default is
-TRUE. You may want to disable this if data set is not for
-Nonmem.</p></dd>
+`TRUE` if a csv file is written, otherwise `FALSE`. You may
+want to disable this if data set is not for Nonmem.</p></dd>
 
 
 <dt id="arg-save">save<a class="anchor" aria-label="anchor" href="#arg-save"></a></dt>
