@@ -1,5 +1,4 @@
 ##' add Omega correlations to a parameter table
-
 ##' @param pars A parameter table, like returned by `NMreadExt()`.
 ##' @param by The name of a column, as a string. Calculate the
 ##'     correlations within a grouping variable?  This will often be a
@@ -42,11 +41,30 @@ addOmegaCorr <- function(pars,by=NULL,as.fun,col.value="value"){
     res.list <- lapply(
         pars.list,
         function(x){
-            Sigma <- dt2mat(x[par.type=="OMEGA"],col.value=col.value)
-            mat.cor <- suppressWarnings(cov2cor(Sigma))
-            dt.cor <- mat2dt(mat.cor,triangle="all")
+
+            x.omega <- x[par.type=="OMEGA"]
+            dt.cor <- NULL
+            if(nrow(x.omega)){
+                Sigma <- dt2mat(x.omega,col.value=col.value)
+                mat.cor <- suppressWarnings(cov2cor(Sigma))
+                dt.cor.1 <- mat2dt(mat.cor,triangle="all",as.fun="data.table")[,par.type:="OMEGA"]
+                ##x <- mergeCheck(x,dt.cor[,.(par.type="OMEGA",i,j,corr=get(col.value))],by=cc(par.type,i,j),all.x=TRUE,quiet=TRUE)
+                dt.cor <- rbind(dt.cor,dt.cor.1)
+            }
             
-            x <- mergeCheck(x,dt.cor[,.(par.type="OMEGA",i,j,corr=get(col.value))],by=cc(par.type,i,j),all.x=TRUE)
+            x.sigma <- x[par.type=="SIGMA"]
+            if(nrow(x.sigma)){
+                Sigma <- dt2mat(x.sigma,col.value=col.value)
+                mat.cor <- suppressWarnings(cov2cor(Sigma))
+                dt.cor.1 <- mat2dt(mat.cor,triangle="all",as.fun="data.table")[,par.type:="SIGMA"]
+                ## x <- mergeCheck(x,dt.cor[,.(par.type="SIGMA",i,j,corr=get(col.value))],by=cc(par.type,i,j),all.x=TRUE,quiet=TRUE)
+                dt.cor <- rbind(dt.cor,dt.cor.1)
+            }
+            if(!is.null(dt.cor)){
+                dt.cor <- dt.cor[,.(par.type,i,j,corr=get(col.value))]
+                dt.cor[is.nan(corr),corr:=0]
+                x <- mergeCheck(x,dt.cor,by=cc(par.type,i,j),all.x=TRUE,quiet=TRUE)
+            }
             x
         })
     
