@@ -104,18 +104,23 @@
 or "sigma". Default is those three.</p></dd>
 
 
+<dt id="arg-return">return<a class="anchor" aria-label="anchor" href="#arg-return"></a></dt>
+<dd><p>By default (when <code>return="pars"</code>, a parameter
+table with initial values, FIX, lower and upper bounds etc. In
+most cases, that is what is needed to derive information about
+parameter definitions. If <code>return="all"</code>, two additional
+tables are returned which can be used if the aim is to modify
+and write the resulting parameters to a control stream.</p></dd>
+
+
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
 <dd><p>See ?NMscanData</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>By default (when <code>return="pars"</code>, a parameter table
-    with initial values, FIX, lower and upper bounds etc. In most
-    cases, that is what is needed to derive information about
-    parameter definitions. If <code>return="all"</code>, two additional
-    tables are returned which can be used if the aim is to modify
-    and write the resulting parameters to a control stream.</p>
+    <p>A `data.frame` with parameter values. If `return="all"`, a
+    list of three tables.</p>
     </div>
 
   </div>
