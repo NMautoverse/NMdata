@@ -219,30 +219,31 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     ADDL <- NULL
     AMT <- NULL
     CMT <- NULL
+    column <- NULL
+    check <- NULL
+    checkTimeInc <- NULL
+    cov <- NULL
     ## DV <- NULL
     EVID <- NULL
     ID.jump <- NULL
     ## ID <- NULL
     II <- NULL
-    MDVDV <- NULL
-    MDV <- NULL
-    N <- NULL
-    Nrep <- NULL
-    RATE <- NULL
-    ROW <- NULL
-    SS <- NULL
-    column <- NULL
-    check <- NULL
-    checkTimeInc <- NULL
-    cov <- NULL
-    newID <- NULL
     isnewID <- NULL
     level <- NULL
-    occ <- NULL
-    reset <- NULL
-    variable <- NULL
-    NUID <- NULL
+    MDVDV <- NULL
+    MDV <- NULL
+    newID <- NULL
     NidByUID <- NULL
+    Nids <- NULL
+    Nrep <- NULL
+    Nrows <- NULL
+    NUID <- NULL
+    occ <- NULL
+    RATE <- NULL
+    reset <- NULL
+    ROW <- NULL
+    SS <- NULL
+    variable <- NULL
     usubjNotUnique <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks

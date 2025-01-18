@@ -16,7 +16,14 @@ or "sigma". Default is those three.}
 
 \item{as.fun}{See ?NMscanData}
 }
+\value{
+By default (when \code{return="pars"}, a parameter table
+    with initial values, FIX, lower and upper bounds etc. In most
+    cases, that is what is needed to derive information about
+    parameter definitions. If \code{return="all"}, two additional
+    tables are returned which can be used if the aim is to modify
+    and write the resulting parameters to a control stream.
+}
 \description{
 Tabulate information from parameter sections in control streams
 }
-\keyword{internal}

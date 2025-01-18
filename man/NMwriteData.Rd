@@ -17,7 +17,7 @@ NMwriteData(
   quiet,
   args.NMgenText,
   csv.trunc.as.nm = FALSE,
-  genText = TRUE,
+  genText,
   save = TRUE,
   write.csv,
   write.rds,
@@ -88,8 +88,8 @@ columns of non-numeric class like character and factor for
 post-processing.}
 
 \item{genText}{Run and report results of NMgenText? Default is
-TRUE. You may want to disable this if data set is not for
-Nonmem.}
+`TRUE` if a csv file is written, otherwise `FALSE`. You may
+want to disable this if data set is not for Nonmem.}
 
 \item{save}{Save defined files? Default is TRUE. If a variable is
 used to control whether a script generates outputs (say

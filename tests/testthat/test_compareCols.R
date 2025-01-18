@@ -120,3 +120,20 @@ test_that("list.data",{
     expect_equal(res1,res2)
 
 })
+
+test_that("basic - not quiet",{
+
+    fileRef <- "testReference/compareCols_06.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    pk.reduced <- pk[1:(.N%/%2)]
+    pk.reduced[,CYCLE:=NULL]
+    pk.reduced[,AMT:=as.character(AMT)]
+
+
+    suppressMessages(res1 <- compareCols(pk,pk.reduced,quiet=FALSE))
+
+    expect_equal_to_reference(res1,fileRef)
+
+})
