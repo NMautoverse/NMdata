@@ -209,7 +209,12 @@ count_ij <- function(res){
 ##' @param section The section to read. Typically, "theta", "omega",
 ##'     or "sigma". Default is those three.
 ##' @param as.fun See ?NMscanData
-##' @keywords internal
+##' @return By default (when \code{return="pars"}, a parameter table
+##'     with initial values, FIX, lower and upper bounds etc. In most
+##'     cases, that is what is needed to derive information about
+##'     parameter definitions. If \code{return="all"}, two additional
+##'     tables are returned which can be used if the aim is to modify
+##'     and write the resulting parameters to a control stream.
 ##' @export
 NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 

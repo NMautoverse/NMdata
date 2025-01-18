@@ -44,8 +44,8 @@
 ##'     removed. RData is not a adequate format for a dataset (but is
 ##'     for environments). Please use write.rds instead.
 ##' @param genText Run and report results of NMgenText? Default is
-##'     TRUE. You may want to disable this if data set is not for
-##'     Nonmem.
+##'     `TRUE` if a csv file is written, otherwise `FALSE`. You may
+##'     want to disable this if data set is not for Nonmem.
 ##' @param save Save defined files? Default is TRUE. If a variable is
 ##'     used to control whether a script generates outputs (say
 ##'     \code{writeOutputs=TRUE/FALSE)}, if you use
@@ -104,7 +104,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
                         script,args.stamp,
                         args.fwrite, args.rds, args.RData, args.write_fst,
                         quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
-                        genText=TRUE,
+                        genText,
                         save=TRUE,
 ### deprecated write.xxx arguments
                         write.csv,write.rds,
@@ -172,6 +172,9 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     write.csv <- "csv" %in% formats.write
     write.RData <- "rdata" %in% formats.write
     write.fst <- "fst" %in% formats.write
+
+    if(missing(genText)) genText <- NULL
+    if(is.null(genText)) genText <- "csv"%in%formats.write
     
     name.data <- deparse(substitute(data))
     
@@ -291,6 +294,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         }
     }
 
+    
 ### csv.trunc.as.nm
     if(csv.trunc.as.nm && !genText){
         messageWrap("when csv.trunc.as.nm==TRUE, genText must be TRUE too. Use quiet=TRUE to avoid text in console.",fun.msg=stop)

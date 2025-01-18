@@ -189,3 +189,27 @@ test_that("No newfile supplied",{
 
 })
 
+test_that("new section as a function",{
+
+    fileRef <- "testReference/NMwriteSection_08.rds"
+
+    infile <- "testData/nonmem/xgxr011.mod"
+    ## outfile <- "testOutput/NMwriteSection_07.mod"
+    ## file.copy("testData/nonmem/xgxr011.mod",outfile)
+    
+    ##newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    ## section <- "problem"
+    res1 <- NMwriteSection(files=infile
+                          ,section="problem"
+                          ,newlines=function(x)c(x,"an added line")
+                          ,write=FALSE
+                   )
+    
+    res <- list(in1=NMreadSection(infile,section="problem")
+               ,out1=NMreadSection(lines=res1,section="problem")
+                )
+    
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+

@@ -472,7 +472,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
             setorderv(findings,c(c.row,"column","check"))
 
             
-            summary.findings <- findings[,.(.N,Nid=uniqueN(get(col.id)[!is.na(get(col.id))])),by=.(column,check)]
+            summary.findings <- findings[,.(Nids=uniqueN(get(col.id)[!is.na(get(col.id))]),Nrows=.N),by=.(level,check,column)]
+            summary.findings[level=="column",Nids:=NA]
+            summary.findings[level=="column",Nrows:=NA]
+            summary.findings[level=="ID",Nrows:=NA]
+            summary.findings[,level:=NULL]
             
             if(!quiet) print(summary.findings,row.names=FALSE)
 
