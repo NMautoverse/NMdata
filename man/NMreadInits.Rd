@@ -14,15 +14,18 @@ NMreadInits(file, lines, section, return = "pars", as.fun)
 \item{section}{The section to read. Typically, "theta", "omega",
 or "sigma". Default is those three.}
 
+\item{return}{By default (when \code{return="pars"}, a parameter
+table with initial values, FIX, lower and upper bounds etc. In
+most cases, that is what is needed to derive information about
+parameter definitions. If \code{return="all"}, two additional
+tables are returned which can be used if the aim is to modify
+and write the resulting parameters to a control stream.}
+
 \item{as.fun}{See ?NMscanData}
 }
 \value{
-By default (when \code{return="pars"}, a parameter table
-    with initial values, FIX, lower and upper bounds etc. In most
-    cases, that is what is needed to derive information about
-    parameter definitions. If \code{return="all"}, two additional
-    tables are returned which can be used if the aim is to modify
-    and write the resulting parameters to a control stream.
+A `data.frame` with parameter values. If `return="all"`, a
+    list of three tables.
 }
 \description{
 Tabulate information from parameter sections in control streams

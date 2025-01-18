@@ -232,6 +232,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     level <- NULL
     MDVDV <- NULL
     MDV <- NULL
+    N <- NULL
     newID <- NULL
     NidByUID <- NULL
     Nids <- NULL

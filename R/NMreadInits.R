@@ -208,13 +208,15 @@ count_ij <- function(res){
 ##' @param lines A control stream as text lines. Use this or `file`.
 ##' @param section The section to read. Typically, "theta", "omega",
 ##'     or "sigma". Default is those three.
-##' @param as.fun See ?NMscanData
-##' @return By default (when \code{return="pars"}, a parameter table
-##'     with initial values, FIX, lower and upper bounds etc. In most
-##'     cases, that is what is needed to derive information about
+##' @param return By default (when \code{return="pars"}, a parameter
+##'     table with initial values, FIX, lower and upper bounds etc. In
+##'     most cases, that is what is needed to derive information about
 ##'     parameter definitions. If \code{return="all"}, two additional
 ##'     tables are returned which can be used if the aim is to modify
 ##'     and write the resulting parameters to a control stream.
+##' @param as.fun See ?NMscanData
+##' @return A `data.frame` with parameter values. If `return="all"`, a
+##'     list of three tables.
 ##' @export
 NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 
