@@ -31,6 +31,10 @@
   with file name extensions but for programming purposes, this
   generalization is useful.
 
+* `addCor()` is a new function, deprecating
+  `addOmegaCorr()`. `addCor()` works similarly and adds correlations
+  for both `OMEGA` and `SIGMA` elements, as found in provided
+  parameter table.
 
 ## Bugfixes
 * `NMreadExt()` was incorrectly calculating blocksize for some
@@ -64,7 +68,8 @@
   default value.
 
 * `NMwriteData()` can now control stamping using `args.stamp` even if
-  no `script` is provided.
+  no `script` is provided. Also, it now only runs `NMgenText()` if
+  writing csv files.
 
 # NMdata 0.1.8
 

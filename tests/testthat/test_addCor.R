@@ -1,5 +1,5 @@
 library(data.table)
-context("addOmegaCorr")
+context("addCor")
 
 test_that("basic",{
 
@@ -8,7 +8,7 @@ test_that("basic",{
 
     ext <- NMreadExt(file.mod)
 
-    res1 <- addOmegaCorr(ext)
+    res1 <- addCor(ext)
 
     res1
     expect_equal_to_reference(res1,fileRef)

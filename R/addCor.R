@@ -1,4 +1,4 @@
-##' add Omega correlations to a parameter table
+##' add correlations of off-diagonal OMEGA and SIGMA elements to a parameter table
 ##' @param pars A parameter table, like returned by `NMreadExt()`.
 ##' @param by The name of a column, as a string. Calculate the
 ##'     correlations within a grouping variable?  This will often be a
@@ -14,14 +14,15 @@
 ##' 
 ## Can be exported but needs as.fun and return
 
-addOmegaCorr <- function(pars,by=NULL,as.fun,col.value="value"){
+addCor <- function(pars,by=NULL,as.fun,col.value="value"){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     . <- NULL
-    par.type <- NULL
+    corr <- NULL
     i <- NULL
     j <- NULL
+    par.type <- NULL
     value <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
@@ -71,3 +72,18 @@ addOmegaCorr <- function(pars,by=NULL,as.fun,col.value="value"){
     as.fun(rbindlist(res.list))
 }
 
+
+
+##' Deprecated: use addCor. Add correlations to parameter table
+##'
+##' Anything arguments are passed to `addCor()`. See `?addCor()`.
+##' 
+##' @param ... Passed to addCor
+##' @export
+## Deprecated with 0.1.9 Jan 2025
+
+addOmegaCorr <- function(...){
+    .Deprecated("addCor")
+    addCor(...)
+
+}

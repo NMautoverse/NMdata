@@ -53,7 +53,7 @@
 ##'     control stream comments, define the name of that field in
 ##'     `format` and tell `NMreadParsTab()` to use this idx to
 ##'     organize especially OMEGA and SIGMA elements by pointing to it
-##'     with `field.idx`. The default is to look for a varible called
+##'     with `field.idx`. The default is to look for a variable called
 ##'     `idx`. If the index has values like 1-2 on an OMEGA or SIGMA
 ##'     row, the row is interpreted as the covariance between
 ##'     OMEGA/SIGMA 1 and 2.
@@ -334,20 +334,6 @@ NMreadParsText <- function(file,lines,format,
             fill=TRUE)
         colnames(dt.pars) <- c(res.fields$fields[1:(ncol(dt.pars)-1)],"linenum")
         
-        if(F){
-            ## Remove empty lines and lines that are comments only. NMreadSection() does not have a way to do this.
-            lines.thetas <- sub(pattern="^ *;.*$",replacement="",x=lines.thetas)
-            ## these will confuse in omega/sigma sections with the current method. For those, numbering has to be done if off-diag elements are defined.
-            lines.thetas <- gsub("BLOCK(.+)","",lines.thetas)
-            lines.thetas <- lines.thetas[!grepl("^ *$",lines.thetas)]
-
-            thetas.list <- lapply(lines.thetas,fun.get.fields,res.fields)
-            thetas <- rbindlist(thetas.list,fill=TRUE)
-            colnames(thetas) <- res.fields$fields[1:ncol(thetas)]
-
-        }
-        
-
 
         dt.pars[,par.type:=toupper(section)]
 

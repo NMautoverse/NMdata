@@ -39,7 +39,7 @@
 ##' @keywords internal
 
 searchColRow <- function(file,file.mod=file.mod,dir.data,file.data,translate.input,formats.read,args.fread,col.id,tab.row){
-
+    
     dia <- suppressWarnings(NMscanInput(file
                                        ,file.mod=file.mod
                                        ,dir.data=dir.data
