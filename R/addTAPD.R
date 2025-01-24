@@ -84,6 +84,8 @@
 
 addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by,SDOS=1,as.fun,col.ndoses){
 
+    
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
     nmexpand <- NULL
@@ -93,7 +95,7 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     deprecatedArg("col.ndoses","col.doscumn",args=args)
-   
+    
     if(missing(col.id)) col.id <- NULL
     col.id <- NMdataDecideOption("col.id",col.id)
     if(missing(col.time)) col.time <- NULL
@@ -143,7 +145,7 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
     ## report if columns will be overwriten
     cols.exist <- intersect(colnames(data),c(col.tpdos,col.tapd,col.doscumn,col.pdosamt,col.doscuma))
     if(length(cols.exist)){
-        messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=warning)
+        messageWrap(paste0("Columns will be overwritten: ",paste(cols.exist,collapse=", ")),fun.msg=message)
     }
 
     ## row identifier for reordering data back to original order after modifications
@@ -181,6 +183,9 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
         }
         ## previous dose amount
         if(!is.null(col.pdosamt)){
+            if(col.pdosamt%in%colnames(data)){
+                data[,(col.pdosamt):=NULL]
+            }
             col.pdosamt.tmp <- tmpcol(data,base="tmpcol.pdosamt")
             data[,(col.pdosamt.tmp):=NA_real_]
             
@@ -190,6 +195,9 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
         }
         ## DOSCUMA - Cumulative Amount of Dose Received
         if(!is.null(col.doscuma)){
+            if(col.doscuma%in%colnames(data)){
+                data[,(col.doscuma):=NULL]
+            }
             data[get(col.event)==TRUE&!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt))/SDOS,by=by]
             data[,(col.doscuma):=nafill(c(0,get(col.doscuma)),type="locf")[-1],by=by]
         }
