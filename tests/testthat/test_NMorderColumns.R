@@ -21,6 +21,11 @@ test_that("last NULL",{
         dtres
        ,fileRef)
 
+    if(F){
+        dtres
+        readRDS(fileRef)
+        }
+    
 })
 
 test_that("Non-numeric DATE and TIME",{

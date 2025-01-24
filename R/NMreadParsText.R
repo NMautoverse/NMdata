@@ -78,6 +78,9 @@
 ##' \code{SAME} elements in \code{$OMEGA} will be skipped altogether.
 ##' @examples
 ##'
+##' ## setDTthreads() is only needed for CRAN. Users should not do this.
+##' data.table::setDTthreads(1)
+##' ## end setDTthreads() for CRAN
 ##' 
 ##' ## notice, examples on explicitly stated lines. Most often in
 ##' ## practice, one would use the file argument to automatically

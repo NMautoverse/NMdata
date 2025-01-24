@@ -12,23 +12,25 @@ triagSize <- function(diagSize){
 
 ##' Row numbers of elements in a triangular representation of a symmetric matrix
 ##' @keywords internal
+## itriag(3,istart=2)
 
 itriag <- function(blocksize,istart=1,diag="lower"){
+    if(diag!="lower") stop("only diag=lower supported")
     rep(1:blocksize,times=1:blocksize)+istart-1
 }
 
 ##' Column numbers of elements in a triangular representation of a symmetric matrix
 ##' @keywords internal
+## jtriag(3,istart=2)
 jtriag <- function(blocksize,istart=1,diag="lower"){
+    if(diag!="lower") stop("only diag=lower supported")
     unlist(lapply(1:blocksize,function(j) 1:j)) + istart-1
 }
-## itriag(3,istart=2)
-## jtriag(3,istart=2)
 
 
 
-
-
+##' @keywords internal
+##' @import data.table
 classify_matches <- function(matches,patterns) {
     results <- list()
     
@@ -144,7 +146,9 @@ classify_matches <- function(matches,patterns) {
     return(rbindlist(results))
 }
 
-
+##' Assign i and j indexes based on parameter section text
+##' @param res elements as detected by `NMreadInits()`
+##' @import data.table
 ##' @keywords internal
 
 count_ij <- function(res){
@@ -217,6 +221,8 @@ count_ij <- function(res){
 ##' @param as.fun See ?NMscanData
 ##' @return A `data.frame` with parameter values. If `return="all"`, a
 ##'     list of three tables.
+##' @import data.table
+##' @import NMdata
 ##' @export
 NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 
@@ -400,6 +406,7 @@ patterns <-
 
 ##' Convert inits elements to a parameter data.frame
 ##' @param elements The elements object produced by `NMreadInits()`.
+##' @import data.table
 ##' @keywords internal
 initsToExt <- function(elements){
 

@@ -82,7 +82,7 @@ reference:
   - NMreadParsText
   - NMrelate
   - NMinfo
-  - addOmegaCorr
+  - addCor
 - title: Checking and Debugging
   desc: Functions for checking data and input control streams
   contents:

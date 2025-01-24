@@ -1,5 +1,8 @@
-
 context("splitFields")
+
+library(data.table)
+data.table::setDTthreads(1)
+
 test_that("basic",{
 
     fileRef <- "testReference/splitFields_01.rds"
@@ -17,6 +20,9 @@ test_that("basic",{
 
 
 context("NMreadParText")
+
+library(data.table)
+data.table::setDTthreads(1)
 
 readRef <- FALSE
 
