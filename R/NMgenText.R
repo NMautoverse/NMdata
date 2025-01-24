@@ -110,7 +110,6 @@ NMgenText <- function(data,
 
     
     if(missing(col.flagn)) col.flagn <- NULL
-
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
 
     if(missing(quiet)) quiet <- NULL
