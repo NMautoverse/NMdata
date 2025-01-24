@@ -133,10 +133,18 @@ NMorderColumns <- function(data,
     }
     if(missing(first)) first <- NULL
     if(missing(last)) last <- NULL
+
+    if(!is.null(first)&&!is.null(last)) {
+        if(length(intersect(first,last))){
+            stop("first and last overlap. This does not make sense.")
+        }
+    }
     
     first1 <- c(col.row,col.id,col.nomtime,"DATE",col.time,"EVID","CMT","AMT","II","ADDL","RATE",
-                "SS",col.dv,"MDV")
-    first2 <- c(col.flagn,"OCC","GRP","TRIAL","STUDY","DRUG","ROUTE")
+                "SS",col.dv,"MDV",col.flagn)
+    ## if a variable is specified in last, we should not prioritize
+    first1 <- setdiff(first1,last)
+    first2 <- c("OCC","GRP","TRIAL","STUDY","DRUG","ROUTE")
 
     
     nms <- names(data)
@@ -144,6 +152,7 @@ NMorderColumns <- function(data,
     if(!quiet && length(nms.dup)) messageWrap(paste0("Duplicated column names:\n",paste(nms.dup,collapse=", ")),fun.msg=warning)
 
     first <- c(first1,first)
+    first <- unique(first)
 
     dt.names <- data.table(name=colnames(data))
     if(chars.last){
