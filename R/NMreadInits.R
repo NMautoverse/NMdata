@@ -222,7 +222,6 @@ count_ij <- function(res){
 ##' @return A `data.frame` with parameter values. If `return="all"`, a
 ##'     list of three tables.
 ##' @import data.table
-##' @import NMdata
 ##' @export
 NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 
