@@ -22,7 +22,7 @@ values as obtained with `NMreadExt`."><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.942</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.9</span>
       </span>
     </div>
 
@@ -172,7 +172,7 @@ CL and V.</p></dd>
 control stream comments, define the name of that field in
 `format` and tell `NMreadParsTab()` to use this idx to
 organize especially OMEGA and SIGMA elements by pointing to it
-with `field.idx`. The default is to look for a varible called
+with `field.idx`. The default is to look for a variable called
 `idx`. If the index has values like 1-2 on an OMEGA or SIGMA
 row, the row is interpreted as the covariance between
 OMEGA/SIGMA 1 and 2.</p></dd>
@@ -244,6 +244,9 @@ counted.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## setDTthreads() is only needed for CRAN. Users should not do this.</span></span></span>
+<span class="r-in"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## end setDTthreads() for CRAN</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## notice, examples on explicitly stated lines. Most often in</span></span></span>
 <span class="r-in"><span><span class="co">## practice, one would use the file argument to automatically</span></span></span>

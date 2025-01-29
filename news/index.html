@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.8.942</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.9</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.9" id="nmdata-019">NMdata 0.1.9<a class="anchor" aria-label="anchor" href="#nmdata-019"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.9" id="nmdata-019">NMdata 0.1.9<small>2025-01-24</small><a class="anchor" aria-label="anchor" href="#nmdata-019"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-9">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-9"></a></h3>
 <ul><li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> is a new function adding the ability to read the parameter structure as specified in a control stream, including initial values, lower/upper bounds and FIX information. It automatically allocates these values to parameter indexes, like <code>THETA(I)</code> and <code>OMEGA(I,J)</code>. It by default returns a table of parameters and values in a format similar to <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code>, and if requested it can return detailed information about the text lines and each element read in the control stream to derive this parameter table. These details can be used to edit the values and write back the information in a control stream with consistent formatting. NMsim::NMwriteInits() does this allowing NMsim() to edit the <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections.</p></li>
@@ -87,6 +87,7 @@
 <li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> gains two new options for the <code>location</code> argument: “first” and “last”.</p></li>
 <li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> can now be run on a data file. <code><a href="../reference/NMgenText.html">NMgenText()</a></code> suggest <code>$DATA</code> and <code>$INPUT</code> sections based on a data set. Previously a data object had to be passed to the function. Now also just a path to the data set on file can be used.</p></li>
 <li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now append to strings that do not have a file name extension. <code><a href="../reference/fnAppend.html">fnAppend()</a></code> is mainly intended for editing file names with file name extensions but for programming purposes, this generalization is useful.</p></li>
+<li><p><code><a href="../reference/addCor.html">addCor()</a></code> is a new function, deprecating <code><a href="../reference/addOmegaCorr.html">addOmegaCorr()</a></code>. <code><a href="../reference/addCor.html">addCor()</a></code> works similarly and adds correlations for both <code>OMEGA</code> and <code>SIGMA</code> elements, as found in provided parameter table.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-9">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-9"></a></h3>
@@ -103,7 +104,7 @@
 <li><p><code>by</code> defaults to value of <code>col.id</code>.</p></li>
 <li><p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> did not check for missing (NA) values on dose events. Checks now capture this.</p></li>
 <li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> now looks up <code>col.flagn</code> using <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> for default value.</p></li>
-<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> can now control stamping using <code>args.stamp</code> even if no <code>script</code> is provided.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> can now control stamping using <code>args.stamp</code> even if no <code>script</code> is provided. Also, it now only runs <code><a href="../reference/NMgenText.html">NMgenText()</a></code> if writing csv files.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
