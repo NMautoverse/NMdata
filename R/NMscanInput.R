@@ -18,7 +18,7 @@
 ##'     for and use if found. Default is c("rds","csv") which means
 ##'     \code{rds} will be used if found, and \code{csv} if
 ##'     not. \code{fst} is possible too. Default can be modified using
-##'     \code{NMdataConf()}. 
+##'     \code{NMdataConf()}.
 ##' @param file.mod The input control stream file path. Default is to
 ##'     look for \"file\" with extension changed to .mod (PSN
 ##'     style). You can also supply the path to the file, or you can
@@ -38,14 +38,16 @@
 ##'     used, the control streams are not used at all.
 ##' @param apply.filters If TRUE (default), IGNORE and ACCEPT
 ##'     statements in the Nonmem control streams are applied before
-##'     returning the data.
+##'     returning the data. This affects what rows are returned, not
+##'     columns.
 ##' @param translate If TRUE (default), data columns are named as
-##'     interpreted by Nonmem (in $INPUT). If data file contains more
-##'     columns than mentioned in $INPUT, these will be named as in
-##'     data file (if data file contains named variables).
+##'     interpreted by Nonmem (in `$INPUT`).
 ##' @param recover.cols recover columns that were not used in the
-##'     Nonmem control stream? Default is TRUE. Can only be negative
-##'     when translate=FALSE.
+##'     Nonmem control stream? This means adding column from the input
+##'     data file that are not used in `$INPUT`. If data file contains
+##'     more columns than mentioned in `$INPUT`, these will be named
+##'     as in data file (if data file contains named variables). This
+##'     affects what columns are returned, not rows.
 ##' @param details If TRUE, metadata is added to output. In this case,
 ##'     you get a list. Typically, this is mostly useful if
 ##'     programming up functions which behavior must depend on
@@ -53,14 +55,14 @@
 ##' @param col.id The name of the subject ID column. Optional and only
 ##'     used to calculate number of subjects in data. Default is
 ##'     modified by NMdataConf.
-##' @param col.row The name of the row counter column. Optional and only
-##'     used to check whether the row counter is in the data.
+##' @param col.row The name of the row counter column. Optional and
+##'     only used to check whether the row counter is in the data.
 ##' @param quiet Default is to inform a little, but TRUE is useful for
 ##'     non-interactive stuff.
 ##' @param args.fread List of arguments passed to fread. Notice that
 ##'     except for "input" and "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
-##'     can be configured using NMdataConf.
+##'     can be configured using `NMdataConf()`.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -68,14 +70,14 @@
 ##'     NMdataConf.
 ##' @param invert If TRUE, the data rows that are dismissed by the
 ##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
-##'     returned. Only used if apply.filters is TRUE.
+##'     returned. Only used if `apply.filters` is `TRUE`.
 ##' @param applyFilters Deprecated - use apply.filters.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite
 ##'     \code{formats.read}, and only formats \code{rds} and
-##'     \code{csv} can be used. 
-##' @details Columns that are dropped (using DROP or SKIP in $INPUT)
-##'     in the model will be included in the output.
+##'     \code{csv} can be used.
+##' @details Columns that are dropped (using `DROP` or `SKIP` in
+##'     `$INPUT`) in the model will be included in the output.
 ##'
 ##' It may not work if a column is dropped, and a new column is
 ##' renamed to the same name. Say you have DV and CONC as the only two

@@ -155,7 +155,7 @@ NMreadParsText <- function(file,lines,format,
     OMEGA <- NULL
     SIGMA <- NULL
 
-
+    
 
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
@@ -322,15 +322,15 @@ NMreadParsText <- function(file,lines,format,
         dt.lines[,text.clean:=sub(paste0("\\$",section),"",text.clean,ignore.case=TRUE)]
         dt.lines[,text.clean:=gsub("BLOCK(.+)","",text.clean)]
         dt.lines[,text.clean:=sub("^ *$","",text.clean)]
-
+## drop empty lines
+        ## drop empty lines. An empty line contains only " " and ;
+        dt.lines[,text.clean:=gsub("^[\\s;]+$","",text.clean,perl=TRUE)]
         
-
-        ### lapply is needed because the data table way fails when results have different numbers of columns
         ## dt.pars <- dt.lines[text.clean!="",fun.get.fields(text.clean,res.fields),by=linenum]
         dt.lines.reduced <- dt.lines[text.clean!=""]
 
         
-        
+        ## lapply is needed because the data table way fails when results have different numbers of columns        
         dt.pars <- rbindlist(lapply(1:nrow(dt.lines.reduced),function(Nrow){
             fun.get.fields(dt.lines.reduced[Nrow,text.clean],res.fields)[,linenum:=dt.lines.reduced[Nrow,linenum]]
         }),
@@ -353,7 +353,6 @@ NMreadParsText <- function(file,lines,format,
     get.omega.comments <- function(lines,section,format){
         
         res.fields <- splitFields(format,spaces.split=spaces.split)
-        
 
         omegas <- get.comments(lines=lines,section=section,res.fields=res.fields)
         if(is.null(omegas)) return(NULL)
