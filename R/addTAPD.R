@@ -82,7 +82,7 @@
 ##' @family DataCreate
 
 
-addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by,SDOS=1,as.fun,col.ndoses){
+addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos="TPDOS",col.tapd="TAPD",col.pdosamt="PDOSAMT",col.doscuma="DOSCUMA",col.doscumn="DOSCUMN",prefix.cols,suffix.cols,subset.dos,subset.is.complete,order.evid = c(3,0,2,4,1),by,SDOS=1,quiet,as.fun,col.ndoses){
 
     
     
@@ -100,6 +100,8 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
     col.id <- NMdataDecideOption("col.id",col.id)
     if(missing(col.time)) col.time <- NULL
     col.time <- NMdataDecideOption("col.time",col.time)
+    if(missing(quiet)) quiet <- NULL
+    quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(by)) by <- NULL
     if(is.null(by)) by <- col.id
     
