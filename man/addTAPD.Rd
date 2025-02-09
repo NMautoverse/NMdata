@@ -24,6 +24,7 @@ addTAPD(
   order.evid = c(3, 0, 2, 4, 1),
   by,
   SDOS = 1,
+  quiet,
   as.fun,
   col.ndoses
 )
