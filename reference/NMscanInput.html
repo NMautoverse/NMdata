@@ -166,20 +166,22 @@ used, the control streams are not used at all.</p></dd>
 <dt id="arg-apply-filters">apply.filters<a class="anchor" aria-label="anchor" href="#arg-apply-filters"></a></dt>
 <dd><p>If TRUE (default), IGNORE and ACCEPT
 statements in the Nonmem control streams are applied before
-returning the data.</p></dd>
+returning the data. This affects what rows are returned, not
+columns.</p></dd>
 
 
 <dt id="arg-translate">translate<a class="anchor" aria-label="anchor" href="#arg-translate"></a></dt>
 <dd><p>If TRUE (default), data columns are named as
-interpreted by Nonmem (in $INPUT). If data file contains more
-columns than mentioned in $INPUT, these will be named as in
-data file (if data file contains named variables).</p></dd>
+interpreted by Nonmem (in `$INPUT`).</p></dd>
 
 
 <dt id="arg-recover-cols">recover.cols<a class="anchor" aria-label="anchor" href="#arg-recover-cols"></a></dt>
 <dd><p>recover columns that were not used in the
-Nonmem control stream? Default is TRUE. Can only be negative
-when translate=FALSE.</p></dd>
+Nonmem control stream? This means adding column from the input
+data file that are not used in `$INPUT`. If data file contains
+more columns than mentioned in `$INPUT`, these will be named
+as in data file (if data file contains named variables). This
+affects what columns are returned, not rows.</p></dd>
 
 
 <dt id="arg-details">details<a class="anchor" aria-label="anchor" href="#arg-details"></a></dt>
@@ -196,8 +198,8 @@ modified by NMdataConf.</p></dd>
 
 
 <dt id="arg-col-row">col.row<a class="anchor" aria-label="anchor" href="#arg-col-row"></a></dt>
-<dd><p>The name of the row counter column. Optional and only
-used to check whether the row counter is in the data.</p></dd>
+<dd><p>The name of the row counter column. Optional and
+only used to check whether the row counter is in the data.</p></dd>
 
 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
@@ -209,13 +211,13 @@ non-interactive stuff.</p></dd>
 <dd><p>List of arguments passed to fread. Notice that
 except for "input" and "file", you need to supply all
 arguments to fread if you use this argument. Default values
-can be configured using NMdataConf.</p></dd>
+can be configured using `NMdataConf()`.</p></dd>
 
 
 <dt id="arg-invert">invert<a class="anchor" aria-label="anchor" href="#arg-invert"></a></dt>
 <dd><p>If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
-returned. Only used if apply.filters is TRUE.</p></dd>
+returned. Only used if `apply.filters` is `TRUE`.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
@@ -243,8 +245,8 @@ provided (though not recommended), this will overwrite
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>Columns that are dropped (using DROP or SKIP in $INPUT)
-    in the model will be included in the output.</p>
+    <p>Columns that are dropped (using `DROP` or `SKIP` in
+    `$INPUT`) in the model will be included in the output.</p>
 <p>It may not work if a column is dropped, and a new column is
 renamed to the same name. Say you have DV and CONC as the only two
 columns (not possible but illustrative), and in Nonmem you do
