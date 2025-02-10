@@ -60,16 +60,18 @@ used, the control streams are not used at all.}
 
 \item{apply.filters}{If TRUE (default), IGNORE and ACCEPT
 statements in the Nonmem control streams are applied before
-returning the data.}
+returning the data. This affects what rows are returned, not
+columns.}
 
 \item{translate}{If TRUE (default), data columns are named as
-interpreted by Nonmem (in $INPUT). If data file contains more
-columns than mentioned in $INPUT, these will be named as in
-data file (if data file contains named variables).}
+interpreted by Nonmem (in `$INPUT`).}
 
 \item{recover.cols}{recover columns that were not used in the
-Nonmem control stream? Default is TRUE. Can only be negative
-when translate=FALSE.}
+Nonmem control stream? This means adding column from the input
+data file that are not used in `$INPUT`. If data file contains
+more columns than mentioned in `$INPUT`, these will be named
+as in data file (if data file contains named variables). This
+affects what columns are returned, not rows.}
 
 \item{details}{If TRUE, metadata is added to output. In this case,
 you get a list. Typically, this is mostly useful if
@@ -80,8 +82,8 @@ properties of the output. See details.}
 used to calculate number of subjects in data. Default is
 modified by NMdataConf.}
 
-\item{col.row}{The name of the row counter column. Optional and only
-used to check whether the row counter is in the data.}
+\item{col.row}{The name of the row counter column. Optional and
+only used to check whether the row counter is in the data.}
 
 \item{quiet}{Default is to inform a little, but TRUE is useful for
 non-interactive stuff.}
@@ -89,11 +91,11 @@ non-interactive stuff.}
 \item{args.fread}{List of arguments passed to fread. Notice that
 except for "input" and "file", you need to supply all
 arguments to fread if you use this argument. Default values
-can be configured using NMdataConf.}
+can be configured using `NMdataConf()`.}
 
 \item{invert}{If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
-returned. Only used if apply.filters is TRUE.}
+returned. Only used if `apply.filters` is `TRUE`.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
@@ -121,8 +123,8 @@ and it can also read an rds or fst file instead of the delimited
 text file used by Nonmem.
 }
 \details{
-Columns that are dropped (using DROP or SKIP in $INPUT)
-    in the model will be included in the output.
+Columns that are dropped (using `DROP` or `SKIP` in
+    `$INPUT`) in the model will be included in the output.
 
 It may not work if a column is dropped, and a new column is
 renamed to the same name. Say you have DV and CONC as the only two

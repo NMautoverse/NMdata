@@ -54,16 +54,17 @@
 ##'     are simultaneous events of different event types within
 ##'     subjects. Typically if using nominal time, it may be important
 ##'     to specify whether samples at dosing times are pre-dose
-##'     samples. The default is c(3,0,4,1,2) - i.e. samples and
+##'     samples. The default is `c(3,0,4,1,2)` - i.e. samples and
 ##'     simulations are pre-dose. See details.
 ##' @param by Columns to do calculations within. Default is ID.
 ##' @param SDOS Scaling value for columns related to dose amount,
 ##'     relative to AMT values. col.pdosamt and col.doscuma are
 ##'     affected and will be derived as AMT/SDOSE.
+##' @param quiet Suppress messages? Default can be set using `NMdataConf()`.
 ##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say tibble::as_tibble) in as.fun to convert to
+##'     a function (say `tibble::as_tibble`) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
-##'     as.fun="data.table". The default can be configured using
+##'     `as.fun="data.table"`. The default can be configured using
 ##'     NMdataConf.
 ##' @param col.ndoses Deprecated. Use col.doscumn instead.
 ##' @details addTAPD does not require the data to be ordered, and it

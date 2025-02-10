@@ -24,6 +24,7 @@ addTAPD(
   order.evid = c(3, 0, 2, 4, 1),
   by,
   SDOS = 1,
+  quiet,
   as.fun,
   col.ndoses
 )
@@ -91,7 +92,7 @@ dose combination of EVID and AMT columns.}
 are simultaneous events of different event types within
 subjects. Typically if using nominal time, it may be important
 to specify whether samples at dosing times are pre-dose
-samples. The default is c(3,0,4,1,2) - i.e. samples and
+samples. The default is `c(3,0,4,1,2)` - i.e. samples and
 simulations are pre-dose. See details.}
 
 \item{by}{Columns to do calculations within. Default is ID.}
@@ -100,10 +101,12 @@ simulations are pre-dose. See details.}
 relative to AMT values. col.pdosamt and col.doscuma are
 affected and will be derived as AMT/SDOSE.}
 
+\item{quiet}{Suppress messages? Default can be set using `NMdataConf()`.}
+
 \item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
+a function (say `tibble::as_tibble`) in as.fun to convert to
 something else. If data.tables are wanted, use
-as.fun="data.table". The default can be configured using
+`as.fun="data.table"`. The default can be configured using
 NMdataConf.}
 
 \item{col.ndoses}{Deprecated. Use col.doscumn instead.}

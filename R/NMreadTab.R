@@ -107,9 +107,13 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
 
-    if(missing(skip)){
-        skip <- 1
-        if(!header) skip <- 0
+    if(missing(skip) || is.null(skip)){
+        firstline <- readLines(file,n=1)
+        skip <- 0
+        if(grepl(" *TABLE +NO\\.[ \\s]*[0-9]+",firstline)){
+            skip <- 1
+        }
+        ##if(!header) skip <- 0
     }
     dt1 <- fread(file,fill=TRUE,header=header,skip=skip,...)
     ## dt1 <- fread(file,fill=TRUE,...)
@@ -128,6 +132,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
 
     
     if(skip==1){
+        ## putting skipped lines back in so we can count tables
         title.tab1 <- data.table(readLines(file,n=1))
         colnames(title.tab1) <- colnames(dt1)[1]
         dt1 <- rbind(title.tab1,dt1,fill=TRUE)
