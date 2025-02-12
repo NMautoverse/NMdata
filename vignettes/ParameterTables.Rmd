@@ -1,5 +1,5 @@
 ---
-title: "Parameter Tables"
+title: "Flexible Creation of Parameter Tables"
 output:
 rmarkdown::html_vignette:
     toc: true
@@ -146,7 +146,7 @@ See more examples in `?NMreadParsText()` to better understand how you can tweak 
 
 ## Merge parameter estimates and parameter labels
 
-And we can format a parameter table with labels merging with the ext file:
+And we can format a parameter table with labels merging with the `.ext` file:
 
 ```{r}
 partab2 <- mergeCheck(pars.ext,
@@ -162,7 +162,7 @@ kable(partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/valu
 
 ```
 
-The left join we did with `mergeCheck` includes all parameters from the ext file. In this case we want to skip all the off-diagonals in $OMEGA and $SIGMA because they are not estimated. Let's just look at the onese that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
+The left join we did with `mergeCheck` includes all parameters from the `.ext` file. In this case we want to skip all the off-diagonals in `$OMEGA` and `$SIGMA` because they are not estimated. Let's just look at the ones that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
 
 ```{r}
 partab2[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] |>
@@ -175,6 +175,8 @@ based on the estimated standard error on the log scale. But we are
 getting close.
 
 ### Add shrinkage
+Shrinkage estimates can be taken from the `.ext` file using `NMreadShk()`. Notice, depending on the Nonmem version multiple different shrinkage estimates are provided (and fetched by `NMreadShk`). Here, we just include the SD-based `\\eta`-shrinkages.
+
 ```{r}
 shk <- NMreadShk(file.mod)
 
@@ -184,10 +186,11 @@ partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans
 ```
 
 ### Correlation estimates
+A simple function `addCor()` is available to calculate estimated correlations of random effects. `addCor()` simply applies `stats::cov2cor()` to get the correlations from the variance-covariance matrices `$SIGMA` and `$OMEGA`.
 
 ```{r}
 
-Partab4 <- NMdata::addOmegaCorr(partab2)
+Partab4 <- NMdata::addCor(partab2)
 kable(Partab4)
 ```
 

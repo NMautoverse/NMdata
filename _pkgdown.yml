@@ -34,6 +34,8 @@ navbar:
         href: https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html
       - text: 'NMscanData: find and combine all output and input data'
         href: articles/NMscanData.html
+      - text: 'Flexible Creation of Parameter Tables'
+        href: articles/ParameterTables.html
       - text: Data Preparation Tools
         href: articles/DataPrepare.html
       - text: FAQ
