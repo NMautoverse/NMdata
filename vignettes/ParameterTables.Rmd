@@ -1,14 +1,20 @@
 ---
 title: "Flexible Creation of Parameter Tables"
+author: 
+  - name: "Philip Delff"
 output:
-rmarkdown::html_vignette:
-    toc: true
+    html_document:
+      toc: true
+      toc_depth: 4
+      toc_float: true
+      number_sections: false
+      df_print: kable
+      editor_options:
+        chunk_output_type: inline
+      code_folding: show
 Suggests: markdown
-VignetteBuilder: knitr
-vignette: >
-  %\VignetteIndexEntry{02ParameterTables}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: true
 header-includes:
 - \usepackage{ae}
 ---
@@ -63,11 +69,8 @@ Notice, this vignette zooms in on how to read, label and format "parameter estim
 Before getting into how to translate the Nonmem parameters, it is worth mentioning how to even just read the parameter estimates with `NMdata`. A lot of the relevant information is stored in the `.ext` file and can be read using `NMreadExt()`.
 
 ```{r}
-## file.mod <- system.file("examples/nonmem/xgxr001.mod",package="NMdata")
-## file.mod <- system.file("examples/nonmem/xgxr132.mod",package="NMdata")
 file.mod <- system.file("examples/nonmem/xgxr133.mod",package="NMdata")
 
-##NMreadExt(file.mod,return="objv")
 pars.ext <- NMreadExt(file.mod)
 
 ```
@@ -76,7 +79,7 @@ This does provide a basic parameter table.
 
 ```{r}
 
-pars.ext[,.(par.name,FIX,value,se)] |> kable()
+pars.ext[,.(par.name,FIX,value,se)] 
 
 ```
 
@@ -112,10 +115,10 @@ quiet <- NMreadSection(file.mod)[c("THETA","OMEGA","SIGMA")] |> lapply(function(
 ```{r}
 partab <- NMreadParsText(file.mod,format="%init;%idx:%symbol;%label[%unit];%trans",
                          format.sigma="%init;%symbol-%label")
-kable(partab)
+partab
 ```
 
-Notice a couple of things here. 
+Notice a few things here. 
 
 * A variable must be defined in the format by using a `%` followed by alphanumeric characters. 
 
@@ -138,9 +141,12 @@ the unit is skipped on `THETA(A) - AGEEFF`.
 
 `format` always applies to `$THETA` and is inherited to use for `$OMEGA` if `format.omega` is not supplied. The format used for `$OMEGA` is inherited for `$SIGMA` if `format.sigma` is not provided.
 
-* An index variable is only needed when off-diagonal elements are included
+* An index variable called `idx` was included, helping the modeler
+  keeping track of the parameter indexes in the control stream. As of
+  NMdata 0.1.9 is this by default not used and all `i` and `j` values
+  are automatically identified.
 
-In this example, the correlation between two `$OMEGA` elements is estimated. `NMreadParsText()` cannot figure out on its own how to connect comments to those off-diagonal elements in `$OMEGA` and/or `$SIGMA`. Currently, an index variable must be included with the `i-j` format for these to be read correctly. The name of the column to be used as the index variable can be controlled using the `field.idx` argument.
+In this example, the correlation between two `$OMEGA` elements is estimated. `NMreadParsText()` needs the off-diagonal elements in `$OMEGA` and/or `$SIGMA` to be on their own lines to connect comments to them. If a diagonal element and an off-diagonal element is on the same line, `NMreadParsText()` will assign the comments to the diagonal element. It may not be worth adding comments to off-diagonal elements because they are simply covariances of already labeled diagonal elements. A simple postprocessing step can therefore be used to add them.
 
 See more examples in `?NMreadParsText()` to better understand how you can tweak the formats to match your needs.
 
@@ -158,15 +164,14 @@ partab2 <- mergeCheck(pars.ext,
            )
 partab2[,value.trans:=value]
 partab2[trans=="log",value.trans:=exp(value)]
-kable(partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)])
+partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)]
 
 ```
 
 The left join we did with `mergeCheck` includes all parameters from the `.ext` file. In this case we want to skip all the off-diagonals in `$OMEGA` and `$SIGMA` because they are not estimated. Let's just look at the ones that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
 
 ```{r}
-partab2[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] |>
-    kable()
+partab2[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] 
 ```
 
 We need to explain that RSE's were calculated on the log scale for the
@@ -181,8 +186,7 @@ Shrinkage estimates can be taken from the `.ext` file using `NMreadShk()`. Notic
 shk <- NMreadShk(file.mod)
 
 partab3 <- mergeCheck(partab2,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShkSD=percent(EtaShkSD/100))],by="par.name",all.x=TRUE)
-partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] |>
-    kable()
+partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] 
 ```
 
 ### Correlation estimates
@@ -191,7 +195,7 @@ A simple function `addCor()` is available to calculate estimated correlations of
 ```{r}
 
 Partab4 <- NMdata::addCor(partab2)
-kable(Partab4)
+Partab4
 ```
 
 ### Editing information in the parameter table
@@ -224,7 +228,7 @@ mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x",all.x
 ```
 
 
-### Identifying the parameter names from code
+### Identifying the parameter names from `$PK` or `$PRED` code
 In the last example, all we used from the control stream was the `symbol`, i.e. an abbreviated parameter name. The rest was merged in from a table maintained in a csv file.
 
 
@@ -234,7 +238,7 @@ In the last example, all we used from the control stream was the `symbol`, i.e. 
 labs.auto <- NMrelate(file.mod)
 labs.auto[,symbol:=label]
 labs.auto[par.type=="OMEGA",symbol:=paste0("BSV.",symbol)]
-kable(labs.auto)
+labs.auto
 
 mergeCheck(labs.auto[,.(par.name,symbol)],tab.offline,by="symbol",all.x=T)
 ```
@@ -291,7 +295,7 @@ pars.aug[grepl("LTV",symbol),value.trans:=exp(value)]
 ## pars.aug
 
 
-kable(pars.aug[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)])
+pars.aug[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)]
 
 
 ```
