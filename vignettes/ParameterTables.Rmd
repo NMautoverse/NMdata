@@ -114,7 +114,8 @@ quiet <- NMreadSection(file.mod)[c("THETA","OMEGA","SIGMA")] |> lapply(function(
 
 ```{r}
 partab <- NMreadParsText(file.mod,format="%init;%idx:%symbol;%label[%unit];%trans",
-                         format.sigma="%init;%symbol-%label")
+                         format.sigma="%init;%symbol-%label",
+                         as.fun="data.table")
 partab
 ```
 
@@ -159,19 +160,21 @@ partab2 <- mergeCheck(pars.ext,
            partab,
            by="parameter",
            all.x=TRUE,
-           fun.commoncols="drop.y",
+           common.cols="drop.y",
            quiet=TRUE
            )
 partab2[,value.trans:=value]
 partab2[trans=="log",value.trans:=exp(value)]
-partab2[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)]
-
+partab2[,Estimate:=NMcalc::signif2(value.trans,3)][
+   ,RSE:=scales::percent(se/value,accuracy=.1)]
+partab.print <- partab2[,.(par.name,symbol,FIX,label,unit,Estimate,RSE=RSE)]
+partab.print
 ```
 
 The left join we did with `mergeCheck` includes all parameters from the `.ext` file. In this case we want to skip all the off-diagonals in `$OMEGA` and `$SIGMA` because they are not estimated. Let's just look at the ones that were estimated. In many cases some fixed parameters can be relevant to include in a parameter table, and then you need to modify this step. 
 
 ```{r}
-partab2[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1))] 
+partab.print <- partab.print[FIX==0,.(par.name,symbol,label,unit,Estimate,RSE)] 
 ```
 
 We need to explain that RSE's were calculated on the log scale for the
@@ -185,8 +188,8 @@ Shrinkage estimates can be taken from the `.ext` file using `NMreadShk()`. Notic
 ```{r}
 shk <- NMreadShk(file.mod)
 
-partab3 <- mergeCheck(partab2,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShkSD=percent(EtaShkSD/100))],by="par.name",all.x=TRUE)
-partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] 
+partab.print2 <- mergeCheck(partab.print,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShkSD=percent(EtaShkSD/100))],by="par.name",all.x=TRUE)
+partab.print2
 ```
 
 ## Correlation estimates
@@ -195,7 +198,7 @@ A simple function `addCor()` is available to calculate estimated correlations of
 ```{r}
 
 Partab4 <- NMdata::addCor(partab2)
-Partab4
+Partab4[FIX==0,.(par.name,symbol,FIX,label,unit,Estimate,RSE=RSE,corr)]
 ```
 
 ## Adding initial values and bounds
@@ -226,13 +229,13 @@ parameter tables after finalizing the control stream.
 
 ```{r,include=FALSE,eval=FALSE}
 ### dont do this - csv has been edited
-tab.csv <- partab[,.(symbol,label,unit)]
-fwrite(tab.csv,file="derived/partab_offline.csv")
+## tab.csv <- partab[,.(symbol,label,unit)]
+## fwrite(tab.csv,file="derived/partab_offline.csv")
 ```
 
 ```{r}
 tab.offline <- read.csv("derived/partab_offline.csv")
-mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x",all.x=T)
+mergeCheck(partab2[FIX==0],tab.offline,by="symbol",common.cols="drop.x",all.x=T)
 ```
 
 
