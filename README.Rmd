@@ -61,6 +61,8 @@ the
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
 <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
 
+Also, check out the most recent vignette on [Flexible Creation of Parameter Tables](https://NMautoverse.github.io/NMdata/articles/ParameterTables.html) using NMdata.
+
 ### How to install
 `NMdata` is on [CRAN](https://cran.r-project.org/package=NMdata) and [MPN](https://mpn.metworx.com/docs/packages/NMdata). To install from the package archive you are already using, do:
 
