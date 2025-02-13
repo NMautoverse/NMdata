@@ -27,11 +27,6 @@
 ##'     note that writing RData is deprecated.
 ##' @param args.write_fst An optional list of arguments to be passed
 ##'     to write_fst.
-##' @param col.flagn Name of a numeric column with zero value for rows
-##'     to include in Nonmem run, non-zero for rows to skip. The
-##'     argument is only used for generating the proposed $DATA text
-##'     to paste into the Nonmem control stream. To skip this feature,
-##'     use col.flagn=NULL.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
@@ -70,6 +65,12 @@
 ##'     writing a lean (narrow) csv file for Nonmem while keeping
 ##'     columns of non-numeric class like character and factor for
 ##'     post-processing.
+##' @param col.flagn Deprecated, use
+##'     args.NMgenText=list(col.flagn="column.name"). Name of a
+##'     numeric column with zero value for rows to include in Nonmem
+##'     run, non-zero for rows to skip. The argument is only used for
+##'     generating the proposed $DATA text to paste into the Nonmem
+##'     control stream. To skip this feature, use `col.flagn=FALSE`.
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use

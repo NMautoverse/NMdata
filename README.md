@@ -31,7 +31,7 @@ can be tedious, and mistakes can lead to hours of frustration. NMdata
 provides useful tools (including automated checks) for these trivial
 tasks.
 
-### NMdata is not a silo
+### Flexibility first
 
 Any functionality in the NMdata can be used independently of the rest of
 the package, and NMdata is not intended to force you to change any
@@ -142,8 +142,9 @@ NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
 ```
 
-`NMscanData` is very general, and should work with all kinds of models,
-and all kinds of other software and configurations. Take a look at [this
+`NMscanData()` is very general, and should work with all kinds of
+models, and all kinds of other software and configurations. Take a look
+at [this
 vignette](https://nmautoverse.github.io/NMdata/articles/NMscanData.html)
 for more info on the NONMEM data reader. Then you will learn how to
 access the meta data that will allow you to trace every step that was
@@ -161,6 +162,8 @@ res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
                       file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
 #> $DATA section extracted
 #> Based on that, data files related to this file were expected:
+#> $DATA section extracted
+#> Based on that, data files related to this file were expected:
 gmean <- function(x)exp(mean(log(x)))
 res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
 obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
@@ -171,8 +174,9 @@ ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
     theme_bw()+
     theme(legend.position="bottom")
 #> Warning: Transformation introduced infinite values in continuous y-axis
-
-#> Warning: Transformation introduced infinite values in continuous y-axis
+#> Transformation introduced infinite values in continuous y-axis
+#> Warning: Removed 1 row containing missing values (`geom_line()`).
+#> Warning: Removed 751 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-NMscanMultiple-plot-1.png" width="100%" />

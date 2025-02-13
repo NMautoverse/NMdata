@@ -55,7 +55,7 @@ $THETA .1              ; 6 : AGEEFF ; Age effect on clearance []; log
 $OMEGA 0 FIX ; 1 : BSV.KA ; KA Between-subject variability
 $OMEGA BLOCK(2)
 0.1   ; 2 : BSV.V2 ; V2 Between-subject variability
- 0.01   ; 2-3 : Cov.BSV.V2-CL ; V2 Between-subject variability
+ 0.01   ; 2-3 : Cov.BSV.V2-CL ; V2-CL Covariance
  0.1   ; 3 : BSV.CL ; CL Between-subject variability
 $OMEGA 0 FIX ; 4 : BSV.V3 ; V3 Between-subject variability
 $OMEGA 0 FIX ; 5 : BSV.Q  ; Q Between-subject variability
