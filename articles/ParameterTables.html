@@ -108,7 +108,9 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Flexible Creation of Parameter Tables</h1>
-            
+                        <h4 data-toc-skip class="author">Philip
+Delff</h4>
+                        
       
       <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/ParameterTables.Rmd" class="external-link"><code>vignettes/ParameterTables.Rmd</code></a></small>
       <div class="hidden name"><code>ParameterTables.Rmd</code></div>
@@ -182,16 +184,14 @@ worth mentioning how to even just read the parameter estimates with
 <code>.ext</code> file and can be read using
 <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## file.mod &lt;- system.file("examples/nonmem/xgxr001.mod",package="NMdata")</span></span>
-<span><span class="co">## file.mod &lt;- system.file("examples/nonmem/xgxr132.mod",package="NMdata")</span></span>
-<span><span class="va">file.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr133.mod"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">file.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr133.mod"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">##NMreadExt(file.mod,return="objv")</span></span>
 <span><span class="va">pars.ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadExt.html">NMreadExt</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span></code></pre></div>
 <p>This does provide a basic parameter table.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">pars.ext</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">FIX</span>,<span class="va">value</span>,<span class="va">se</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu">kable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pars.ext</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">FIX</span>,<span class="va">value</span>,<span class="va">se</span><span class="op">)</span><span class="op">]</span> </span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <thead><tr class="header">
 <th align="left">par.name</th>
@@ -346,6 +346,7 @@ worth mentioning how to even just read the parameter estimates with
 </tr>
 </tbody>
 </table>
+</div>
 <p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> does return more than that. These are all
 the columns available:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -384,7 +385,7 @@ stream contain consistently formatted information we can use.</p>
 <span><span class="co">#&gt; $OMEGA 0 FIX ; 1 : BSV.KA ; KA Between-subject variability</span></span>
 <span><span class="co">#&gt; $OMEGA BLOCK(2)</span></span>
 <span><span class="co">#&gt; 0.1   ; 2 : BSV.V2 ; V2 Between-subject variability</span></span>
-<span><span class="co">#&gt;  0.01   ; 2-3 : Cov.BSV.V2-CL ; V2 Between-subject variability</span></span>
+<span><span class="co">#&gt;  0.01   ; 2-3 : Cov.BSV.V2-CL ; V2-CL Covariance</span></span>
 <span><span class="co">#&gt;  0.1   ; 3 : BSV.CL ; CL Between-subject variability</span></span>
 <span><span class="co">#&gt; $OMEGA 0 FIX ; 4 : BSV.V3 ; V3 Between-subject variability</span></span>
 <span><span class="co">#&gt; $OMEGA 0 FIX ; 5 : BSV.Q  ; Q Between-subject variability </span></span>
@@ -407,7 +408,8 @@ mimick that in the <code>format</code> arguments to
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadParsText.html">NMreadParsText</a></span><span class="op">(</span><span class="va">file.mod</span>,format<span class="op">=</span><span class="st">"%init;%idx:%symbol;%label[%unit];%trans"</span>,</span>
 <span>                         format.sigma<span class="op">=</span><span class="st">"%init;%symbol-%label"</span><span class="op">)</span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">partab</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">partab</span></span></code></pre></div>
+<div class="kable-table">
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="5%">
@@ -544,7 +546,7 @@ mimick that in the <code>format</code> arguments to
 <td align="left">0.01</td>
 <td align="left">2-3</td>
 <td align="left">Cov.BSV.V2-CL</td>
-<td align="left">V2 Between-subject variability</td>
+<td align="left">V2-CL Covariance</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">OMEGA</td>
@@ -620,7 +622,8 @@ mimick that in the <code>format</code> arguments to
 </tr>
 </tbody>
 </table>
-<p>Notice a couple of things here.</p>
+</div>
+<p>Notice a few things here.</p>
 <ul>
 <li>A variable must be defined in the format by using a <code>%</code>
 followed by alphanumeric characters.</li>
@@ -659,17 +662,21 @@ inherited to use for <code>$OMEGA</code> if <code>format.omega</code> is
 not supplied. The format used for <code>$OMEGA</code> is inherited for
 <code>$SIGMA</code> if <code>format.sigma</code> is not provided.</p>
 <ul>
-<li>An index variable is only needed when off-diagonal elements are
-included</li>
+<li>An index variable called <code>idx</code> was included, helping the
+modeler keeping track of the parameter indexes in the control stream. As
+of NMdata 0.1.9 is this by default not used and all <code>i</code> and
+<code>j</code> values are automatically identified.</li>
 </ul>
 <p>In this example, the correlation between two <code>$OMEGA</code>
-elements is estimated. <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> cannot figure out
-on its own how to connect comments to those off-diagonal elements in
-<code>$OMEGA</code> and/or <code>$SIGMA</code>. Currently, an index
-variable must be included with the <code>i-j</code> format for these to
-be read correctly. The name of the column to be used as the index
-variable can be controlled using the <code>field.idx</code>
-argument.</p>
+elements is estimated. <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> needs the
+off-diagonal elements in <code>$OMEGA</code> and/or <code>$SIGMA</code>
+to be on their own lines to connect comments to them. If a diagonal
+element and an off-diagonal element is on the same line,
+<code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> will assign the comments to the diagonal
+element. It may not be worth adding comments to off-diagonal elements
+because they are simply covariances of already labeled diagonal
+elements. A simple postprocessing step can therefore be used to add
+them.</p>
 <p>See more examples in <code>?NMreadParsText()</code> to better
 understand how you can tweak the formats to match your needs.</p>
 </div>
@@ -689,7 +696,8 @@ understand how you can tweak the formats to match your needs.</p>
 <span><span class="co">#&gt; "fun.commoncols" argument deprecated. Use "common.cols" instead.</span></span>
 <span><span class="va">partab2</span><span class="op">[</span>,<span class="va">value.trans</span><span class="op">:=</span><span class="va">value</span><span class="op">]</span></span>
 <span><span class="va">partab2</span><span class="op">[</span><span class="va">trans</span><span class="op">==</span><span class="st">"log"</span>,<span class="va">value.trans</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">partab2</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">FIX</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="va">value.trans</span>,RSE<span class="op">=</span><span class="va">se</span><span class="op">/</span><span class="va">value</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">partab2</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">FIX</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="va">value.trans</span>,RSE<span class="op">=</span><span class="va">se</span><span class="op">/</span><span class="va">value</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <colgroup>
 <col width="12%">
@@ -804,7 +812,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">OMEGA(3,2)</td>
 <td align="left">Cov.BSV.V2-CL</td>
 <td align="right">0</td>
-<td align="left">V2 Between-subject variability</td>
+<td align="left">V2-CL Covariance</td>
 <td align="left">NA</td>
 <td align="right">-0.0478580</td>
 <td align="right">-0.5315162</td>
@@ -928,6 +936,7 @@ understand how you can tweak the formats to match your needs.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <p>The left join we did with <code>mergeCheck</code> includes all
 parameters from the <code>.ext</code> file. In this case we want to skip
 all the off-diagonals in <code>$OMEGA</code> and <code>$SIGMA</code>
@@ -935,8 +944,8 @@ because they are not estimated. Let’s just look at the ones that were
 estimated. In many cases some fixed parameters can be relevant to
 include in a parameter table, and then you need to modify this step.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">partab2</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="fu">NMcalc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/NMcalc/man/signif2.html" class="external-link">signif2</a></span><span class="op">(</span><span class="va">value.trans</span>,<span class="fl">3</span><span class="op">)</span>,RSE<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">se</span><span class="op">/</span><span class="va">value</span>,accuracy<span class="op">=</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">kable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">partab2</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="fu">NMcalc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/NMcalc/man/signif2.html" class="external-link">signif2</a></span><span class="op">(</span><span class="va">value.trans</span>,<span class="fl">3</span><span class="op">)</span>,RSE<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">se</span><span class="op">/</span><span class="va">value</span>,accuracy<span class="op">=</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> </span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <colgroup>
 <col width="14%">
@@ -1014,7 +1023,7 @@ include in a parameter table, and then you need to modify this step.</p>
 <tr class="even">
 <td align="left">OMEGA(3,2)</td>
 <td align="left">Cov.BSV.V2-CL</td>
-<td align="left">V2 Between-subject variability</td>
+<td align="left">V2-CL Covariance</td>
 <td align="left">NA</td>
 <td align="left">-0.0479</td>
 <td align="left">-53.2%</td>
@@ -1037,6 +1046,7 @@ include in a parameter table, and then you need to modify this step.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <p>We need to explain that RSE’s were calculated on the log scale for
 the transformed parameters. We could also want to add confidence
 intervals based on the estimated standard error on the log scale. But we
@@ -1054,8 +1064,8 @@ multiple different shrinkage estimates are provided (and fetched by
 <span></span>
 <span><span class="va">partab3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">partab2</span>,<span class="va">shk</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,Pval<span class="op">=</span><span class="fu">signif2</span><span class="op">(</span><span class="va">Pval</span>,<span class="fl">2</span><span class="op">)</span>,<span class="va">etabar</span>,EtaShkSD<span class="op">=</span><span class="fu">percent</span><span class="op">(</span><span class="va">EtaShkSD</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,by<span class="op">=</span><span class="st">"par.name"</span>,all.x<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column(s) added: Pval, etabar, EtaShkSD</span></span>
-<span><span class="va">partab3</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="fu">NMcalc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/NMcalc/man/signif2.html" class="external-link">signif2</a></span><span class="op">(</span><span class="va">value.trans</span>,<span class="fl">3</span><span class="op">)</span>,RSE<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">se</span><span class="op">/</span><span class="va">value</span>,accuracy<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>,<span class="va">Pval</span>,<span class="va">etabar</span>,<span class="va">EtaShkSD</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">kable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">partab3</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="fu">NMcalc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/NMcalc/man/signif2.html" class="external-link">signif2</a></span><span class="op">(</span><span class="va">value.trans</span>,<span class="fl">3</span><span class="op">)</span>,RSE<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">se</span><span class="op">/</span><span class="va">value</span>,accuracy<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>,<span class="va">Pval</span>,<span class="va">etabar</span>,<span class="va">EtaShkSD</span><span class="op">)</span><span class="op">]</span> </span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <colgroup>
 <col width="10%">
@@ -1160,7 +1170,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <tr class="even">
 <td align="left">OMEGA(3,2)</td>
 <td align="left">Cov.BSV.V2-CL</td>
-<td align="left">V2 Between-subject variability</td>
+<td align="left">V2-CL Covariance</td>
 <td align="left">NA</td>
 <td align="left">-0.0479</td>
 <td align="left">-53.2%</td>
@@ -1193,6 +1203,7 @@ multiple different shrinkage estimates are provided (and fetched by
 </tbody>
 </table>
 </div>
+</div>
 <div class="section level3">
 <h3 id="correlation-estimates">Correlation estimates<a class="anchor" aria-label="anchor" href="#correlation-estimates"></a>
 </h3>
@@ -1204,7 +1215,8 @@ variance-covariance matrices <code>$SIGMA</code> and
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">Partab4</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="../reference/addCor.html">addCor</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">)</span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">Partab4</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">Partab4</span></span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1604,7 +1616,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="left">0.01</td>
 <td align="left">2-3</td>
 <td align="left">Cov.BSV.V2-CL</td>
-<td align="left">V2 Between-subject variability</td>
+<td align="left">V2-CL Covariance</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="right">-0.0478580</td>
@@ -2016,6 +2028,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 </tbody>
 </table>
 </div>
+</div>
 <div class="section level3">
 <h3 id="editing-information-in-the-parameter-table">Editing information in the parameter table<a class="anchor" aria-label="anchor" href="#editing-information-in-the-parameter-table"></a>
 </h3>
@@ -2038,58 +2051,377 @@ after finalizing the control stream.</p>
 <code class="sourceCode R"><span><span class="va">tab.offline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"derived/partab_offline.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,fun.commoncols<span class="op">=</span><span class="st">"drop.x"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt; "fun.commoncols" argument deprecated. Use "common.cols" instead.</span></span>
-<span><span class="co">#&gt; Column(s) added: label, unit</span></span>
-<span><span class="co">#&gt;       model TABLENO NMREP table.step par.type  parameter   par.name     i     j</span></span>
-<span><span class="co">#&gt;      &lt;char&gt;   &lt;num&gt; &lt;int&gt;     &lt;char&gt;   &lt;char&gt;     &lt;char&gt;     &lt;fctr&gt; &lt;int&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1: xgxr133       2     1        IMP    THETA     THETA1   THETA(1)     1    NA</span></span>
-<span><span class="co">#&gt;  2: xgxr133       2     1        IMP    THETA     THETA2   THETA(2)     2    NA</span></span>
-<span><span class="co">#&gt;  3: xgxr133       2     1        IMP    THETA     THETA3   THETA(3)     3    NA</span></span>
-<span><span class="co">#&gt;  4: xgxr133       2     1        IMP    THETA     THETA4   THETA(4)     4    NA</span></span>
-<span><span class="co">#&gt;  5: xgxr133       2     1        IMP    THETA     THETA5   THETA(5)     5    NA</span></span>
-<span><span class="co">#&gt;  6: xgxr133       2     1        IMP    THETA     THETA6   THETA(6)     6    NA</span></span>
-<span><span class="co">#&gt;  7: xgxr133       2     1        IMP    OMEGA OMEGA(2,2) OMEGA(2,2)     2     2</span></span>
-<span><span class="co">#&gt;  8: xgxr133       2     1        IMP    OMEGA OMEGA(3,2) OMEGA(3,2)     3     2</span></span>
-<span><span class="co">#&gt;  9: xgxr133       2     1        IMP    OMEGA OMEGA(3,3) OMEGA(3,3)     3     3</span></span>
-<span><span class="co">#&gt; 10: xgxr133       2     1        IMP    SIGMA SIGMA(1,1) SIGMA(1,1)     1     1</span></span>
-<span><span class="co">#&gt;       FIX      value     cond   eigCor    partLik         se seStdDevCor</span></span>
-<span><span class="co">#&gt;     &lt;num&gt;      &lt;num&gt;    &lt;num&gt;    &lt;num&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:     0  0.8028730 22.32860 0.129310  0.6574150 0.06421820  0.00000000</span></span>
-<span><span class="co">#&gt;  2:     0  4.3165400  0.12931 0.401499 -0.8741820 0.05862680  0.00000000</span></span>
-<span><span class="co">#&gt;  3:     0  2.5524100  2.88730 0.429168 -0.3923980 0.09163550  0.00000000</span></span>
-<span><span class="co">#&gt;  4:     0  5.1554800  0.00000 0.481360 -2.6760700 0.25478300  0.00000000</span></span>
-<span><span class="co">#&gt;  5:     0  2.1515900  0.00000 0.773260  3.3035300 0.06475840  0.00000000</span></span>
-<span><span class="co">#&gt;  6:     0  0.4427680  0.00000 0.870593  0.0673492 0.14054200  0.00000000</span></span>
-<span><span class="co">#&gt;  7:     0  0.1737760  0.00000 0.000000  0.6164530 0.03122730  0.03745490</span></span>
-<span><span class="co">#&gt;  8:     0 -0.0478580  0.00000 0.000000  1.2065900 0.02543730  0.11353100</span></span>
-<span><span class="co">#&gt;  9:     0  0.2542050  0.00000 0.000000  0.7464250 0.04339480  0.04303430</span></span>
-<span><span class="co">#&gt; 10:     0  0.0812994  0.00000 1.107170 16.4170000 0.00543208  0.00952561</span></span>
-<span><span class="co">#&gt;     stdDevCor termStat        est iblock blocksize   init    idx        symbol</span></span>
-<span><span class="co">#&gt;         &lt;num&gt;    &lt;num&gt;      &lt;num&gt;  &lt;int&gt;     &lt;int&gt; &lt;char&gt; &lt;char&gt;        &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:  0.000000        0  0.8028730     NA        NA   (.1)      1         LTVKA</span></span>
-<span><span class="co">#&gt;  2:  0.000000        0  4.3165400     NA        NA    (3)      2         LTVV2</span></span>
-<span><span class="co">#&gt;  3:  0.000000        0  2.5524100     NA        NA    (1)      3         LTVCL</span></span>
-<span><span class="co">#&gt;  4:  0.000000        0  5.1554800     NA        NA    (4)      4         LTVV3</span></span>
-<span><span class="co">#&gt;  5:  0.000000        0  2.1515900     NA        NA   (-1)      5          LTVQ</span></span>
-<span><span class="co">#&gt;  6:  0.000000        0  0.4427680     NA        NA     .1      6        AGEEFF</span></span>
-<span><span class="co">#&gt;  7:  0.416864        0  0.1737760      2         2    0.1      2        BSV.V2</span></span>
-<span><span class="co">#&gt;  8: -0.227702        0 -0.0478580      2         2   0.01    2-3 Cov.BSV.V2-CL</span></span>
-<span><span class="co">#&gt;  9:  0.504188        0  0.2542050      2         2    0.1      3        BSV.CL</span></span>
-<span><span class="co">#&gt; 10:  0.285130        0  0.0812994      1         1    0.1      1          SigP</span></span>
-<span><span class="co">#&gt;      trans value.trans                                        label   unit</span></span>
-<span><span class="co">#&gt;     &lt;char&gt;       &lt;num&gt;                                       &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:    log   2.2319441                              Absorption rate    1/h</span></span>
-<span><span class="co">#&gt;  2:    log  74.9289252                               Central volume      L</span></span>
-<span><span class="co">#&gt;  3:    log  12.8380061                                    Clearance    L/h</span></span>
-<span><span class="co">#&gt;  4:    log 173.3790087                            Peripheral volume      L</span></span>
-<span><span class="co">#&gt;  5:    log   8.5985192                 Intercompartmental clearance    L/h</span></span>
-<span><span class="co">#&gt;  6:    log   1.5570111                      Age effect on clearance       </span></span>
-<span><span class="co">#&gt;  7:   &lt;NA&gt;   0.1737760 Between-subject variability - Central volume       </span></span>
-<span><span class="co">#&gt;  8:   &lt;NA&gt;  -0.0478580                                         &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  9:   &lt;NA&gt;   0.2542050      Between-subject variability - Clearance       </span></span>
-<span><span class="co">#&gt; 10:   &lt;NA&gt;   0.0812994                                         &lt;NA&gt;   &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; Column(s) added: label, unit</span></span></code></pre></div>
+<div class="kable-table">
+<table class="table">
+<colgroup>
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="4%">
+<col width="3%">
+<col width="4%">
+<col width="4%">
+<col width="1%">
+<col width="1%">
+<col width="1%">
+<col width="4%">
+<col width="3%">
+<col width="3%">
+<col width="4%">
+<col width="3%">
+<col width="4%">
+<col width="3%">
+<col width="3%">
+<col width="4%">
+<col width="2%">
+<col width="3%">
+<col width="1%">
+<col width="1%">
+<col width="5%">
+<col width="2%">
+<col width="4%">
+<col width="16%">
+<col width="1%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">model</th>
+<th align="right">TABLENO</th>
+<th align="right">NMREP</th>
+<th align="left">table.step</th>
+<th align="left">par.type</th>
+<th align="left">parameter</th>
+<th align="left">par.name</th>
+<th align="right">i</th>
+<th align="right">j</th>
+<th align="right">FIX</th>
+<th align="right">value</th>
+<th align="right">cond</th>
+<th align="right">eigCor</th>
+<th align="right">partLik</th>
+<th align="right">se</th>
+<th align="right">seStdDevCor</th>
+<th align="right">stdDevCor</th>
+<th align="right">termStat</th>
+<th align="right">est</th>
+<th align="right">iblock</th>
+<th align="right">blocksize</th>
+<th align="left">init</th>
+<th align="left">idx</th>
+<th align="left">symbol</th>
+<th align="left">trans</th>
+<th align="right">value.trans</th>
+<th align="left">label</th>
+<th align="left">unit</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0.8028730</td>
+<td align="right">22.32860</td>
+<td align="right">0.129310</td>
+<td align="right">0.6574150</td>
+<td align="right">0.0642182</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">0.8028730</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">(.1)</td>
+<td align="left">1</td>
+<td align="left">LTVKA</td>
+<td align="left">log</td>
+<td align="right">2.2319441</td>
+<td align="left">Absorption rate</td>
+<td align="left">1/h</td>
+</tr>
+<tr class="even">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
+<td align="right">2</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">4.3165400</td>
+<td align="right">0.12931</td>
+<td align="right">0.401499</td>
+<td align="right">-0.8741820</td>
+<td align="right">0.0586268</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">4.3165400</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">(3)</td>
+<td align="left">2</td>
+<td align="left">LTVV2</td>
+<td align="left">log</td>
+<td align="right">74.9289252</td>
+<td align="left">Central volume</td>
+<td align="left">L</td>
+</tr>
+<tr class="odd">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
+<td align="right">3</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">2.5524100</td>
+<td align="right">2.88730</td>
+<td align="right">0.429168</td>
+<td align="right">-0.3923980</td>
+<td align="right">0.0916355</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">2.5524100</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">(1)</td>
+<td align="left">3</td>
+<td align="left">LTVCL</td>
+<td align="left">log</td>
+<td align="right">12.8380061</td>
+<td align="left">Clearance</td>
+<td align="left">L/h</td>
+</tr>
+<tr class="even">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">5.1554800</td>
+<td align="right">0.00000</td>
+<td align="right">0.481360</td>
+<td align="right">-2.6760700</td>
+<td align="right">0.2547830</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">5.1554800</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">(4)</td>
+<td align="left">4</td>
+<td align="left">LTVV3</td>
+<td align="left">log</td>
+<td align="right">173.3790087</td>
+<td align="left">Peripheral volume</td>
+<td align="left">L</td>
+</tr>
+<tr class="odd">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">2.1515900</td>
+<td align="right">0.00000</td>
+<td align="right">0.773260</td>
+<td align="right">3.3035300</td>
+<td align="right">0.0647584</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">2.1515900</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">(-1)</td>
+<td align="left">5</td>
+<td align="left">LTVQ</td>
+<td align="left">log</td>
+<td align="right">8.5985192</td>
+<td align="left">Intercompartmental clearance</td>
+<td align="left">L/h</td>
+</tr>
+<tr class="even">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">THETA</td>
+<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0.4427680</td>
+<td align="right">0.00000</td>
+<td align="right">0.870593</td>
+<td align="right">0.0673492</td>
+<td align="right">0.1405420</td>
+<td align="right">0.0000000</td>
+<td align="right">0.000000</td>
+<td align="right">0</td>
+<td align="right">0.4427680</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="left">.1</td>
+<td align="left">6</td>
+<td align="left">AGEEFF</td>
+<td align="left">log</td>
+<td align="right">1.5570111</td>
+<td align="left">Age effect on clearance</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">OMEGA</td>
+<td align="left">OMEGA(2,2)</td>
+<td align="left">OMEGA(2,2)</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0.1737760</td>
+<td align="right">0.00000</td>
+<td align="right">0.000000</td>
+<td align="right">0.6164530</td>
+<td align="right">0.0312273</td>
+<td align="right">0.0374549</td>
+<td align="right">0.416864</td>
+<td align="right">0</td>
+<td align="right">0.1737760</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">0.1</td>
+<td align="left">2</td>
+<td align="left">BSV.V2</td>
+<td align="left">NA</td>
+<td align="right">0.1737760</td>
+<td align="left">Between-subject variability - Central volume</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">OMEGA</td>
+<td align="left">OMEGA(3,2)</td>
+<td align="left">OMEGA(3,2)</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">-0.0478580</td>
+<td align="right">0.00000</td>
+<td align="right">0.000000</td>
+<td align="right">1.2065900</td>
+<td align="right">0.0254373</td>
+<td align="right">0.1135310</td>
+<td align="right">-0.227702</td>
+<td align="right">0</td>
+<td align="right">-0.0478580</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">0.01</td>
+<td align="left">2-3</td>
+<td align="left">Cov.BSV.V2-CL</td>
+<td align="left">NA</td>
+<td align="right">-0.0478580</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">OMEGA</td>
+<td align="left">OMEGA(3,3)</td>
+<td align="left">OMEGA(3,3)</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0.2542050</td>
+<td align="right">0.00000</td>
+<td align="right">0.000000</td>
+<td align="right">0.7464250</td>
+<td align="right">0.0433948</td>
+<td align="right">0.0430343</td>
+<td align="right">0.504188</td>
+<td align="right">0</td>
+<td align="right">0.2542050</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">0.1</td>
+<td align="left">3</td>
+<td align="left">BSV.CL</td>
+<td align="left">NA</td>
+<td align="right">0.2542050</td>
+<td align="left">Between-subject variability - Clearance</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">xgxr133</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">IMP</td>
+<td align="left">SIGMA</td>
+<td align="left">SIGMA(1,1)</td>
+<td align="left">SIGMA(1,1)</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0.0812994</td>
+<td align="right">0.00000</td>
+<td align="right">1.107170</td>
+<td align="right">16.4170000</td>
+<td align="right">0.0054321</td>
+<td align="right">0.0095256</td>
+<td align="right">0.285130</td>
+<td align="right">0</td>
+<td align="right">0.0812994</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left">0.1</td>
+<td align="left">1</td>
+<td align="left">SigP</td>
+<td align="left">NA</td>
+<td align="right">0.0812994</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level3">
-<h3 id="identifying-the-parameter-names-from-code">Identifying the parameter names from code<a class="anchor" aria-label="anchor" href="#identifying-the-parameter-names-from-code"></a>
+<h3 id="identifying-the-parameter-names-from-pk-or-pred-code">Identifying the parameter names from <code>$PK</code> or
+<code>$PRED</code> code<a class="anchor" aria-label="anchor" href="#identifying-the-parameter-names-from-pk-or-pred-code"></a>
 </h3>
 <p>In the last example, all we used from the control stream was the
 <code>symbol</code>, i.e. an abbreviated parameter name. The rest was
@@ -2099,7 +2431,8 @@ merged in from a table maintained in a csv file.</p>
 <span><span class="va">labs.auto</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMrelate.html">NMrelate</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span>
 <span><span class="va">labs.auto</span><span class="op">[</span>,<span class="va">symbol</span><span class="op">:=</span><span class="va">label</span><span class="op">]</span></span>
 <span><span class="va">labs.auto</span><span class="op">[</span><span class="va">par.type</span><span class="op">==</span><span class="st">"OMEGA"</span>,<span class="va">symbol</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"BSV."</span>,<span class="va">symbol</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">labs.auto</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">labs.auto</span></span></code></pre></div>
+<div class="kable-table">
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="7%">
@@ -2325,44 +2658,120 @@ merged in from a table maintained in a csv file.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">labs.auto</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span><span class="op">)</span><span class="op">]</span>,<span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Column(s) added: label, unit</span></span>
-<span><span class="co">#&gt;       par.name         symbol</span></span>
-<span><span class="co">#&gt;         &lt;char&gt;         &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:   THETA(1)          LTVKA</span></span>
-<span><span class="co">#&gt;  2:   THETA(2)          LTVV2</span></span>
-<span><span class="co">#&gt;  3:   THETA(3)          LTVCL</span></span>
-<span><span class="co">#&gt;  4:   THETA(4)          LTVV3</span></span>
-<span><span class="co">#&gt;  5:   THETA(5)           LTVQ</span></span>
-<span><span class="co">#&gt;  6:   THETA(6)         AGEEFF</span></span>
-<span><span class="co">#&gt;  7: OMEGA(1,1)         BSV.KA</span></span>
-<span><span class="co">#&gt;  8: OMEGA(2,2)         BSV.V2</span></span>
-<span><span class="co">#&gt;  9: OMEGA(3,3)         BSV.CL</span></span>
-<span><span class="co">#&gt; 10: OMEGA(4,4)         BSV.V3</span></span>
-<span><span class="co">#&gt; 11: OMEGA(5,5)          BSV.Q</span></span>
-<span><span class="co">#&gt; 12: SIGMA(1,1)           SIGP</span></span>
-<span><span class="co">#&gt; 13: SIGMA(1,1) Y - SIGMA(1,1)</span></span>
-<span><span class="co">#&gt; 14: SIGMA(2,2)           SIGA</span></span>
-<span><span class="co">#&gt; 15: SIGMA(2,2) Y - SIGMA(2,2)</span></span>
-<span><span class="co">#&gt;                                                          label   unit</span></span>
-<span><span class="co">#&gt;                                                         &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:                                            Absorption rate    1/h</span></span>
-<span><span class="co">#&gt;  2:                                             Central volume      L</span></span>
-<span><span class="co">#&gt;  3:                                                  Clearance    L/h</span></span>
-<span><span class="co">#&gt;  4:                                          Peripheral volume      L</span></span>
-<span><span class="co">#&gt;  5:                               Intercompartmental clearance    L/h</span></span>
-<span><span class="co">#&gt;  6:                                    Age effect on clearance       </span></span>
-<span><span class="co">#&gt;  7:              Between-subject variability - Absorption rate       </span></span>
-<span><span class="co">#&gt;  8:               Between-subject variability - Central volume       </span></span>
-<span><span class="co">#&gt;  9:                    Between-subject variability - Clearance       </span></span>
-<span><span class="co">#&gt; 10:            Between-subject variability - Peripheral volume       </span></span>
-<span><span class="co">#&gt; 11: Between-subject variability - Intercompartmental clearance       </span></span>
-<span><span class="co">#&gt; 12:                                Proportional residual error       </span></span>
-<span><span class="co">#&gt; 13:                                                       &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 14:                                    Additive residual error  ng/mL</span></span>
-<span><span class="co">#&gt; 15:                                                       &lt;NA&gt;   &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; Column(s) added: label, unit</span></span></code></pre></div>
+<div class="kable-table">
+<table class="table">
+<colgroup>
+<col width="12%">
+<col width="16%">
+<col width="64%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">par.name</th>
+<th align="left">symbol</th>
+<th align="left">label</th>
+<th align="left">unit</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">THETA(1)</td>
+<td align="left">LTVKA</td>
+<td align="left">Absorption rate</td>
+<td align="left">1/h</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(2)</td>
+<td align="left">LTVV2</td>
+<td align="left">Central volume</td>
+<td align="left">L</td>
+</tr>
+<tr class="odd">
+<td align="left">THETA(3)</td>
+<td align="left">LTVCL</td>
+<td align="left">Clearance</td>
+<td align="left">L/h</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(4)</td>
+<td align="left">LTVV3</td>
+<td align="left">Peripheral volume</td>
+<td align="left">L</td>
+</tr>
+<tr class="odd">
+<td align="left">THETA(5)</td>
+<td align="left">LTVQ</td>
+<td align="left">Intercompartmental clearance</td>
+<td align="left">L/h</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(6)</td>
+<td align="left">AGEEFF</td>
+<td align="left">Age effect on clearance</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">OMEGA(1,1)</td>
+<td align="left">BSV.KA</td>
+<td align="left">Between-subject variability - Absorption rate</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">OMEGA(2,2)</td>
+<td align="left">BSV.V2</td>
+<td align="left">Between-subject variability - Central volume</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">OMEGA(3,3)</td>
+<td align="left">BSV.CL</td>
+<td align="left">Between-subject variability - Clearance</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">OMEGA(4,4)</td>
+<td align="left">BSV.V3</td>
+<td align="left">Between-subject variability - Peripheral volume</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">OMEGA(5,5)</td>
+<td align="left">BSV.Q</td>
+<td align="left">Between-subject variability - Intercompartmental
+clearance</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">SIGMA(1,1)</td>
+<td align="left">SIGP</td>
+<td align="left">Proportional residual error</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">SIGMA(1,1)</td>
+<td align="left">Y - SIGMA(1,1)</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">SIGMA(2,2)</td>
+<td align="left">SIGA</td>
+<td align="left">Additive residual error</td>
+<td align="left">ng/mL</td>
+</tr>
+<tr class="odd">
+<td align="left">SIGMA(2,2)</td>
+<td align="left">Y - SIGMA(2,2)</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
 <!-- off-diags missing. Merge info from ext? -->
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -2417,7 +2826,8 @@ merged in from a table maintained in a csv file.</p>
 <span><span class="co">## pars.aug</span></span>
 <span></span>
 <span></span>
-<span><span class="fu">kable</span><span class="op">(</span><span class="va">pars.aug</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">FIX</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="va">value.trans</span>,RSE<span class="op">=</span><span class="va">se</span><span class="op">/</span><span class="va">value</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pars.aug</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">FIX</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="va">value.trans</span>,RSE<span class="op">=</span><span class="va">se</span><span class="op">/</span><span class="va">value</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<div class="kable-table">
 <table class="table">
 <colgroup>
 <col width="11%">
@@ -2532,6 +2942,7 @@ merged in from a table maintained in a csv file.</p>
 </table>
 </div>
 </div>
+</div>
 <div class="section level2">
 <h2 id="more-models">More models<a class="anchor" aria-label="anchor" href="#more-models"></a>
 </h2>
@@ -2551,38 +2962,117 @@ of a few models.</p>
 <span>    <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/dcast.data.table.html" class="external-link">dcast</a></span><span class="op">(</span><span class="va">par.name</span><span class="op">+</span><span class="va">symbol</span><span class="op">+</span><span class="va">label</span><span class="op">+</span><span class="va">unit</span><span class="op">~</span><span class="va">model</span>,value.var<span class="op">=</span><span class="st">"value"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column(s) added: symbol</span></span>
-<span><span class="co">#&gt; Column(s) added: label, unit</span></span>
-<span><span class="co">#&gt; Key: &lt;par.name, symbol, label, unit&gt;</span></span>
-<span><span class="co">#&gt;       par.name symbol                                        label   unit</span></span>
-<span><span class="co">#&gt;         &lt;char&gt; &lt;char&gt;                                       &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: OMEGA(2,2) BSV.V2 Between-subject variability - Central volume       </span></span>
-<span><span class="co">#&gt;  2: OMEGA(3,2)   &lt;NA&gt;                                         &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  3: OMEGA(3,3) BSV.CL      Between-subject variability - Clearance       </span></span>
-<span><span class="co">#&gt;  4: SIGMA(1,1)   SIGP                  Proportional residual error       </span></span>
-<span><span class="co">#&gt;  5:   THETA(1)  LTVKA                              Absorption rate    1/h</span></span>
-<span><span class="co">#&gt;  6:   THETA(2)  LTVV2                               Central volume      L</span></span>
-<span><span class="co">#&gt;  7:   THETA(3)  LTVCL                                    Clearance    L/h</span></span>
-<span><span class="co">#&gt;  8:   THETA(4)  LTVV3                            Peripheral volume      L</span></span>
-<span><span class="co">#&gt;  9:   THETA(5)   LTVQ                 Intercompartmental clearance    L/h</span></span>
-<span><span class="co">#&gt; 10:   THETA(6) AGEEFF                      Age effect on clearance       </span></span>
-<span><span class="co">#&gt;       xgxr132    xgxr133</span></span>
-<span><span class="co">#&gt;         &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1: 0.1754540  0.1737760</span></span>
-<span><span class="co">#&gt;  2:        NA -0.0478580</span></span>
-<span><span class="co">#&gt;  3: 0.3092220  0.2542050</span></span>
-<span><span class="co">#&gt;  4: 0.0809318  0.0812994</span></span>
-<span><span class="co">#&gt;  5: 0.8134230  0.8028730</span></span>
-<span><span class="co">#&gt;  6: 4.3236000  4.3165400</span></span>
-<span><span class="co">#&gt;  7: 2.4710300  2.5524100</span></span>
-<span><span class="co">#&gt;  8: 5.4265500  5.1554800</span></span>
-<span><span class="co">#&gt;  9: 2.2274200  2.1515900</span></span>
-<span><span class="co">#&gt; 10: 0.4197470  0.4427680</span></span></code></pre></div>
+<span><span class="co">#&gt; Column(s) added: label, unit</span></span></code></pre></div>
+<div class="kable-table">
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="12%">
+<col width="7%">
+<col width="50%">
+<col width="5%">
+<col width="11%">
+<col width="12%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">par.name</th>
+<th align="left">symbol</th>
+<th align="left">label</th>
+<th align="left">unit</th>
+<th align="right">xgxr132</th>
+<th align="right">xgxr133</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">OMEGA(2,2)</td>
+<td align="left">BSV.V2</td>
+<td align="left">Between-subject variability - Central volume</td>
+<td align="left"></td>
+<td align="right">0.1754540</td>
+<td align="right">0.1737760</td>
+</tr>
+<tr class="even">
+<td align="left">OMEGA(3,2)</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">-0.0478580</td>
+</tr>
+<tr class="odd">
+<td align="left">OMEGA(3,3)</td>
+<td align="left">BSV.CL</td>
+<td align="left">Between-subject variability - Clearance</td>
+<td align="left"></td>
+<td align="right">0.3092220</td>
+<td align="right">0.2542050</td>
+</tr>
+<tr class="even">
+<td align="left">SIGMA(1,1)</td>
+<td align="left">SIGP</td>
+<td align="left">Proportional residual error</td>
+<td align="left"></td>
+<td align="right">0.0809318</td>
+<td align="right">0.0812994</td>
+</tr>
+<tr class="odd">
+<td align="left">THETA(1)</td>
+<td align="left">LTVKA</td>
+<td align="left">Absorption rate</td>
+<td align="left">1/h</td>
+<td align="right">0.8134230</td>
+<td align="right">0.8028730</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(2)</td>
+<td align="left">LTVV2</td>
+<td align="left">Central volume</td>
+<td align="left">L</td>
+<td align="right">4.3236000</td>
+<td align="right">4.3165400</td>
+</tr>
+<tr class="odd">
+<td align="left">THETA(3)</td>
+<td align="left">LTVCL</td>
+<td align="left">Clearance</td>
+<td align="left">L/h</td>
+<td align="right">2.4710300</td>
+<td align="right">2.5524100</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(4)</td>
+<td align="left">LTVV3</td>
+<td align="left">Peripheral volume</td>
+<td align="left">L</td>
+<td align="right">5.4265500</td>
+<td align="right">5.1554800</td>
+</tr>
+<tr class="odd">
+<td align="left">THETA(5)</td>
+<td align="left">LTVQ</td>
+<td align="left">Intercompartmental clearance</td>
+<td align="left">L/h</td>
+<td align="right">2.2274200</td>
+<td align="right">2.1515900</td>
+</tr>
+<tr class="even">
+<td align="left">THETA(6)</td>
+<td align="left">AGEEFF</td>
+<td align="left">Age effect on clearance</td>
+<td align="left"></td>
+<td align="right">0.4197470</td>
+<td align="right">0.4427680</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
