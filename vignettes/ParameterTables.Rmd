@@ -179,7 +179,7 @@ transformed parameters. We could also want to add confidence intervals
 based on the estimated standard error on the log scale. But we are
 getting close.
 
-### Add shrinkage
+## Add shrinkage
 Shrinkage estimates can be taken from the `.ext` file using `NMreadShk()`. Notice, depending on the Nonmem version multiple different shrinkage estimates are provided (and fetched by `NMreadShk`). Here, we just include the SD-based `\\eta`-shrinkages.
 
 ```{r}
@@ -189,7 +189,7 @@ partab3 <- mergeCheck(partab2,shk[,.(par.name,Pval=signif2(Pval,2),etabar,EtaShk
 partab3[FIX==0,.(par.name,symbol,label,unit,Estimate=NMcalc::signif2(value.trans,3),RSE=scales::percent(se/value,accuracy=.1),Pval,etabar,EtaShkSD)] 
 ```
 
-### Correlation estimates
+## Correlation estimates
 A simple function `addCor()` is available to calculate estimated correlations of random effects. `addCor()` simply applies `stats::cov2cor()` to get the correlations from the variance-covariance matrices `$SIGMA` and `$OMEGA`.
 
 ```{r}
@@ -198,7 +198,15 @@ Partab4 <- NMdata::addCor(partab2)
 Partab4
 ```
 
-### Editing information in the parameter table
+## Adding initial values and bounds
+Use the function `NMreadInits()` to break down the initial values, bounds and "FIX" information as shown in the control stream. This can easily be merged onto the parameter table as needed.
+
+```{r}
+NMreadInits(file.mod)
+```
+
+
+## Editing information in the parameter table
 The problem with the otherwise nicely looking table generated above is
 that we spotted a typo in one label. A "t" is missing in
 "Intercompartmental". How are we going to fix that? The model was
@@ -228,7 +236,7 @@ mergeCheck(partab2[FIX==0],tab.offline,by="symbol",fun.commoncols="drop.x",all.x
 ```
 
 
-### Identifying the parameter names from `$PK` or `$PRED` code
+## Identifying the parameter names from `$PK` or `$PRED` code
 In the last example, all we used from the control stream was the `symbol`, i.e. an abbreviated parameter name. The rest was merged in from a table maintained in a csv file.
 
 
@@ -302,7 +310,7 @@ pars.aug[,.(par.name,symbol,FIX,label,unit,Estimate=value.trans,RSE=se/value)]
 
 
 
-## More models
+## Handling multiple models at once
 Any of the code above can be run on multiple models at once. `NMdata` functions generally return tables including a `model` column for this purpose. Let's get a quick overview of a few models.
 
 ```{r}

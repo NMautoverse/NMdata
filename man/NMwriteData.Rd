@@ -112,11 +112,12 @@ args.NMgenText=list(drop=c("column")) instead.}
 \item{nmdir.data}{Deprecated, use
 args.NMgenText=list(dir.data="your/path") instead.}
 
-\item{col.flagn}{Name of a numeric column with zero value for rows
-to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed $DATA text
-to paste into the Nonmem control stream. To skip this feature,
-use col.flagn=NULL.}
+\item{col.flagn}{Deprecated, use
+args.NMgenText=list(col.flagn="column.name"). Name of a
+numeric column with zero value for rows to include in Nonmem
+run, non-zero for rows to skip. The argument is only used for
+generating the proposed $DATA text to paste into the Nonmem
+control stream. To skip this feature, use `col.flagn=FALSE`.}
 
 \item{nm.rename}{Deprecated, use
 args.NMgenText=list(rename=c(newname="existing")) instead.}

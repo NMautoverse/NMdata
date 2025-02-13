@@ -43,7 +43,7 @@ data - can be tedious, and mistakes can lead to hours of
 frustration. NMdata provides useful tools (including automated checks)
 for these trivial tasks.
 
-### NMdata is not a silo 
+### Flexibility first
 Any functionality in the NMdata can be used independently of the rest
 of the package, and NMdata is not intended to force you to change any
 habits or preferences. Instead, NMdata tries to fit in with how you
@@ -117,7 +117,7 @@ NMdataConf(as.fun="data.table")
 res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
 ```
 
-`NMscanData` is very general, and should work with all kinds of models,
+`NMscanData()` is very general, and should work with all kinds of models,
 and all kinds of other software and configurations. Take a look at
 [this
 vignette](https://nmautoverse.github.io/NMdata/articles/NMscanData.html)
