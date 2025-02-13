@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parameter Tables • NMdata</title>
+<title>Flexible Creation of Parameter Tables • NMdata</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Parameter Tables">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Flexible Creation of Parameter Tables">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -64,6 +64,9 @@
       <a href="../articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
     </li>
     <li>
+      <a href="../articles/ParameterTables.html">Flexible Creation of Parameter Tables</a>
+    </li>
+    <li>
       <a href="../articles/DataPrepare.html">Data Preparation Tools</a>
     </li>
     <li>
@@ -104,7 +107,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Parameter Tables</h1>
+      <h1 data-toc-skip>Flexible Creation of Parameter Tables</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/ParameterTables.Rmd" class="external-link"><code>vignettes/ParameterTables.Rmd</code></a></small>
@@ -673,8 +676,8 @@ understand how you can tweak the formats to match your needs.</p>
 <div class="section level2">
 <h2 id="merge-parameter-estimates-and-parameter-labels">Merge parameter estimates and parameter labels<a class="anchor" aria-label="anchor" href="#merge-parameter-estimates-and-parameter-labels"></a>
 </h2>
-<p>And we can format a parameter table with labels merging with the ext
-file:</p>
+<p>And we can format a parameter table with labels merging with the
+<code>.ext</code> file:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partab2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">pars.ext</span>,</span>
 <span>           <span class="va">partab</span>,</span>
@@ -926,11 +929,11 @@ file:</p>
 </tbody>
 </table>
 <p>The left join we did with <code>mergeCheck</code> includes all
-parameters from the ext file. In this case we want to skip all the
-off-diagonals in $OMEGA and $SIGMA because they are not estimated. Let’s
-just look at the onese that were estimated. In many cases some fixed
-parameters can be relevant to include in a parameter table, and then you
-need to modify this step.</p>
+parameters from the <code>.ext</code> file. In this case we want to skip
+all the off-diagonals in <code>$OMEGA</code> and <code>$SIGMA</code>
+because they are not estimated. Let’s just look at the ones that were
+estimated. In many cases some fixed parameters can be relevant to
+include in a parameter table, and then you need to modify this step.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">partab2</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="fu">NMcalc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/NMcalc/man/signif2.html" class="external-link">signif2</a></span><span class="op">(</span><span class="va">value.trans</span>,<span class="fl">3</span><span class="op">)</span>,RSE<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">se</span><span class="op">/</span><span class="va">value</span>,accuracy<span class="op">=</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">kable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1041,6 +1044,11 @@ are getting close.</p>
 <div class="section level3">
 <h3 id="add-shrinkage">Add shrinkage<a class="anchor" aria-label="anchor" href="#add-shrinkage"></a>
 </h3>
+<p>Shrinkage estimates can be taken from the <code>.ext</code> file
+using <code><a href="../reference/NMreadShk.html">NMreadShk()</a></code>. Notice, depending on the Nonmem version
+multiple different shrinkage estimates are provided (and fetched by
+<code>NMreadShk</code>). Here, we just include the SD-based
+<code>\\eta</code>-shrinkages.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMreadShk.html">NMreadShk</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span>
 <span></span>
@@ -1188,12 +1196,14 @@ are getting close.</p>
 <div class="section level3">
 <h3 id="correlation-estimates">Correlation estimates<a class="anchor" aria-label="anchor" href="#correlation-estimates"></a>
 </h3>
+<p>A simple function <code><a href="../reference/addCor.html">addCor()</a></code> is available to calculate
+estimated correlations of random effects. <code><a href="../reference/addCor.html">addCor()</a></code> simply
+applies <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">stats::cov2cor()</a></code> to get the correlations from the
+variance-covariance matrices <code>$SIGMA</code> and
+<code>$OMEGA</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">Partab4</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="../reference/addOmegaCorr.html">addOmegaCorr</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in NMdata::addOmegaCorr(partab2): 'NMdata::addOmegaCorr' is deprecated.</span></span>
-<span><span class="co">#&gt; Use 'addCor' instead.</span></span>
-<span><span class="co">#&gt; See help("Deprecated")</span></span>
+<span><span class="va">Partab4</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="../reference/addCor.html">addCor</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">)</span></span>
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">Partab4</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
