@@ -134,7 +134,9 @@ of Nonmem parameters.</p></li>
 <p>A manual or even semi-automated approach to establishing these
 relationships are manually involved to quality check.</p>
 <p><code>NMdata</code> offers two distinct approaches to connecting
-Nonmem parameters to physiologially interpretable ones.</p>
+Nonmem parameters to physiologially interpretable ones. Which one will
+be most useful depends on your work style and how you organize your
+control streams.</p>
 <ul>
 <li><p>Flexible, user-defined interpretation of delimited comments in
 the parameter sections ($THETA, $OMEGA, and $SIGMA)
@@ -152,7 +154,11 @@ powerful QC tool in any case.</p></li>
 <p>Notice, this vignette zooms in on how to read, label and format
 “parameter estimates”. It does not deal with reading input and output
 data (see the <a href="https://nmautoverse.github.io/NMdata/articles/NMscanData.html">NMscanData()</a>
-vignette). <code>NMdata</code> contains the following functions to read
+vignette). Also, it does not go into how to get a nice print of the
+table in a report or a slide deck. For that next step, I have personally
+found R packages <code>flextable</code> and <code>pmtables</code>
+useful. The scope is just to collect the information.</p>
+<p><code>NMdata</code> contains the following functions to read
 estimates from Nonmem:</p>
 <ul>
 <li>
