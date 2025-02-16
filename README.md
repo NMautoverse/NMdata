@@ -24,13 +24,6 @@ takes a lot of work to get there, and there are many pitfalls along the
 way. NMdata helps simplifying this work and steering around the pitfalls
 or at least making sure we didn’t fall into them.
 
-### Automate book keeping and focus on modeling
-
-Preparing data sets - and if you use NONMEM, reading the results data -
-can be tedious, and mistakes can lead to hours of frustration. NMdata
-provides useful tools (including automated checks) for these trivial
-tasks.
-
 ### Flexibility first
 
 Any functionality in the NMdata can be used independently of the rest of
@@ -39,6 +32,73 @@ habits or preferences. Instead, NMdata tries to fit in with how you (or
 your colleague who worked on the project before you) do things. It
 likely provides helpful additions no matter what other tools you already
 use.
+
+### Automate book keeping and focus on modeling
+
+Preparing data sets - and if you use NONMEM, reading the results data -
+can be tedious, and mistakes can lead to hours of frustration. NMdata
+provides useful tools (including automated checks) for these trivial
+tasks. Highlights in data set preparation and data checking:
+
+- `mergeCheck()` Require left-join merging to only add columns - and
+  nothing else. If rows get duplicated or disappear, throw an error.  
+- `addTAPD()` Automatically add time after previous dose, previous dose
+  amount, cumulative number of doses and other related columns. Works
+  with `ADDL/II` notation too.  
+- `flagsAssign()` and `flagsCount()` Automatically assign exclusion
+  flags to data and tabulate number of subjects and observations
+  excluded and/or retained due to each step.  
+- `NMorderColumns` Order columns in a Nonmem data set consistently and
+  intuitively.  
+- `NMwriteData()` Feature-rich data writer for Nonmem data sets. Can
+  return text to be used for \$INPUT and \$DATA sections.  
+- `NMcheckData()` Rigorous and extensive checking for structural errors
+  and potential issues in Nonmem data sets.  
+- `NMcheckColnames.R()` Check data set against `INPUT` section of
+  control streams.
+
+Check out [this
+vignette](https://nmautoverse.github.io/NMdata/articles/DataPrepare.html)
+on data preparation.
+
+### Read model results in a consistent table structure
+
+While `NMdata` does not organize all results into single objects that
+can be further processed, it offers efficient functions to read model
+results. These functions are all built to handle multiple models and
+return results in simple, consistent structures. Their results can
+easily be merged as needed. Notice, all of these functions basically
+just need a control stream path to run.
+
+- `NMscanData()` Read and combine `$TABLE` output and input data.
+  Feature-rich with support for the vast majority of models. Builds on
+  `NMscanInput()` to automatically read input data and `NMscanTables()`
+  to read all the output tables.  
+- `NMreadExt()` A feature-rich processor of ext files. Provides final
+  parameter estimates with uncertainties and everything else provided in
+  the ext file, iterations, objective function value and termination
+  status  
+- `NMreadParsText()` Very flexible processer of comments in control
+  stream parameter sections. As long as the comments provide consistent
+  parameter information in almost any format, `NMreadParsText()` can
+  turn it into a table.  
+- `NMreadInits()` Read and tabulate initial values, lower, upper limits,
+  FIX and block structures based on parameter sections of control
+  streams.  
+- `NMrelate()` Automatically connect parameters to variable names used
+  in control stream code (say, `CL=EXP(THETA(1)+ETA(1))` in control
+  stream and NMrelate will “relate” `THETA(1)` and `ETA(1)` to `CL`.
+  Powerful for QC and even simple parameter table generation.  
+- `NMreadPhi()` Reads individual posthoc estimates into a `data.frame`  
+- `NMreadCov()` Reads an estimated variance-covariance matrix and
+  formats as a matrix  
+- `NMreadShk()` to read shrinkage tables
+
+Vignettes:  
+[Flexible Creation of Parameter
+Tables](https://NMautoverse.github.io/NMdata/articles/ParameterTables.html)  
+[NMscanData: Find And Combine All Output And Input
+Data](https://NMautoverse.github.io/NMdata/articles/NMscanData.Rmd)
 
 ### More information
 
@@ -51,6 +111,11 @@ the
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
+
+Also, check out the most recent vignette on [Flexible Creation of
+Parameter
+Tables](https://NMautoverse.github.io/NMdata/articles/ParameterTables.html)
+using NMdata.
 
 ### How to install
 
@@ -69,12 +134,10 @@ than your default archive, if need be.
 ## Prepare, check, and export PK/PD data
 
 On the data-generation side, functionality is provided for documentation
-of the datasets while generating them. Check out [this
-vignette](https://nmautoverse.github.io/NMdata/articles/DataPrepare.html)
-on the topic. There are functions for automatic checks of (some) data
-merges, handling and counting of exclusions flags, final preparations
-for ensuring readability in NONMEM, and ensuring traceability of
-datasets back to data generation scripts.
+of the datasets while generating them. There are functions for automatic
+checks of (some) data merges, handling and counting of exclusions flags,
+final preparations for ensuring readability in NONMEM, and ensuring
+traceability of datasets back to data generation scripts.
 
 ## Check data as read by NONMEM
 
@@ -82,104 +145,6 @@ The `NMcheckData` function will do an extensive and fully automated set
 of checks of the data before you run NONMEM. And did NONMEM not behave?
 `NMcheckData` can debug the data *as seen by NONMEM*. That’s right - it
 has never been easier to find data bugs.
-
-## Automated and general reader of NONMEM results data
-
-Reading the resulting data from NONMEM can require a few manual steps.
-Especially because all modelers seem to do things a little differently.
-`NMscanData` can return all data output (`$TABLE`) from NONMEM combined,
-and if wanted with additional columns and rows in input data. It’s as
-simple as
-
-``` r
-res <- NMscanData("xgxr014.lst",recover.rows=TRUE)
-#> Model:  xgxr014 
-#> 
-#> Used tables, contents shown as used/total:
-#>               file      rows columns     IDs
-#>    xgxr014_res.txt   905/905   12/12 150/150
-#>  xgxr2.rds (input) 1502/1502   22/24 150/150
-#>           (result)      1502    34+2     150
-#> 
-#> Input and output data merged by: ROW 
-#> 
-#> Distribution of rows on event types in returned data:
-#>  EVID CMT input-only output result
-#>     0   1          2      0      2
-#>     0   2        595    755   1350
-#>     1   1          0    150    150
-#>   All All        597    905   1502
-```
-
-And we are ready to plot (a subset of) the result:
-
-``` r
-res.plot <- subset(res,ID%in%c(113,135)&EVID==0)
-library(ggplot2)
-ggplot(res.plot,aes(TIME))+
-    geom_point(aes(y=DV,colour=flag))+
-    geom_line(aes(y=PRED))+
-    facet_wrap(~trtact)+
-    labs(y="Concentration (unit)",colour="Observations",
-         subtitle="NOTICE:\nObservations are coloured by a character column fetched from input data.\nSamples below LLOQ are rows added from input data.\nPlots are correctly sorted because factor levels of dose are preserved from input data.")+
-    theme_bw()+theme(legend.position="bottom")
-#> Warning: Removed 2 rows containing missing values (`geom_line()`).
-```
-
-<img src="man/figures/README-NMscanData-example1-plot-1.png" width="100%" />
-
-Want a tibble instead? Easy:
-
-``` r
-res.tibble <- NMscanData("xgxr001.lst",as.fun=tibble::as_tibble,quiet=TRUE)
-```
-
-Or a data.table? This time, we’ll configure NMdata to return data.tables
-by default:
-
-``` r
-NMdataConf(as.fun="data.table")
-res.dt <- NMscanData("xgxr001.lst",quiet=TRUE)
-```
-
-`NMscanData()` is very general, and should work with all kinds of
-models, and all kinds of other software and configurations. Take a look
-at [this
-vignette](https://nmautoverse.github.io/NMdata/articles/NMscanData.html)
-for more info on the NONMEM data reader. Then you will learn how to
-access the meta data that will allow you to trace every step that was
-taken combining the data and the many checks that were done along the
-way too.
-
-## Meta analysis made really easy
-
-Since `NMscanData` is so general and will figure out where to find input
-and output data on its own, let’s use the `NMscanMultiple` wrapper to
-read multiple models and compare their predictions.
-
-``` r
-res <- NMscanMultiple(dir=system.file("examples/nonmem", package="NMdata"),
-                      file.pattern="xgxr.*\\.lst",as.fun="data.table",quiet=TRUE)
-#> $DATA section extracted
-#> Based on that, data files related to this file were expected:
-#> $DATA section extracted
-#> Based on that, data files related to this file were expected:
-gmean <- function(x)exp(mean(log(x)))
-res.mean <- res[,.(gmeanPRED=gmean(PRED)),by=.(model,NOMTIME)]
-obs.all <- unique(res[,.(ID,NOMTIME,TIME,DV)])
-ggplot(res.mean,aes(NOMTIME,gmeanPRED,colour=model))+geom_line()+
-    geom_point(aes(TIME,DV),data=obs.all[!is.na(DV)],inherit.aes=FALSE)+
-    scale_y_log10()+
-    labs(x="Time",y="Concentration",subtitle="Comparison of population predictions")+
-    theme_bw()+
-    theme(legend.position="bottom")
-#> Warning: Transformation introduced infinite values in continuous y-axis
-#> Transformation introduced infinite values in continuous y-axis
-#> Warning: Removed 1 row containing missing values (`geom_line()`).
-#> Warning: Removed 751 rows containing missing values (`geom_point()`).
-```
-
-<img src="man/figures/README-NMscanMultiple-plot-1.png" width="100%" />
 
 ## Get the most recent version
 
