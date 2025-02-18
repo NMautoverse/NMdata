@@ -1,5 +1,5 @@
 ##' reduce tables from NMscanTables to fewer objects
-##' @param tables Object from NMtables
+##' @param tables Object from NMscanTables
 ##' @param col.nmout The name of the column holding logical of whether
 ##'     row was found in output tables.
 ##' @import data.table
