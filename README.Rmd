@@ -89,7 +89,7 @@ Vignettes:
 The best place to browse information about the package is
 [here](https://nmautoverse.github.io/NMdata/). The quickest way in is
 the
-[Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html). 
+[Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html). It does not cover any features realted to generation of parameter tables, so you may also want to take a look at that vignette.
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
