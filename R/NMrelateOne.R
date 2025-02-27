@@ -51,7 +51,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     ## lines <- do.call(c,lines.list)
     lines <- unlist(lines.list)
        
-    dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines)])
+    dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines,ignore.case=TRUE)])
     ## remove spaces
     dt.code[,line2:=gsub(" ","",line.var)]
 
@@ -59,24 +59,28 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     
     dt.code <- dt.code[,.(var.name=unlist(
                               regmatches(line2,
-                                         gregexpr(paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),line2))
-                          )),
+                                         gregexpr(
+                                             paste0(str.regex.find,"\\(([0-9]+(,[0-9]+)*)\\)"),
+                                             line2,
+                                             ignore.case=TRUE)
+                                         ))),
                        by=.(line.var,line2)]
-    dt.code[,var.name:=sub("^[^[:alnum:]]","",var.name)]
-    dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",var.name)][,lineno:=.I]
+    dt.code[,var.name:=toupper(sub("^[^[:alnum:]]","",var.name))]
+    dt.code[,var.type:=sub(sprintf("(%s).*",str.regex),"\\1",var.name,ignore.case=TRUE)][
+       ,lineno:=.I]
 
 
     dt.code[var.type%in%cc(ETA,THETA,ERR,EPS),
-            i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",var.name)),
+            i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",x=var.name,ignore.case=TRUE)),
             by=lineno]
 
     dt.code[,j:=NA_integer_]
     dt.code[var.type%in%c("ETA","ERR","EPS"),j:=i]
 
     dt.code[var.type=="SIGMA",            
-            i:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\1",var.name))]
+            i:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\1",var.name,ignore.case=TRUE))]
     dt.code[var.type=="SIGMA",
-            j:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\2",var.name))]
+            j:=as.integer(sub(".*\\(([1-9][0-9]*),([1-9][0-9]*)\\)","\\2",var.name,ignore.case=TRUE))]
 
 
 

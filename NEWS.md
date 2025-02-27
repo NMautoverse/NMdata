@@ -1,3 +1,8 @@
+# Since NMdata 0.1.9
+* `NMrelate()` now supports models with non-strict capital case
+  reference to parameters. This means `theta(1)` or `Eta(1)` will also
+  be recognized.
+
 # NMdata 0.1.9
 
 ## New features

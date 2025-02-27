@@ -72,3 +72,27 @@ test_that("2 models",{
 
     ##    NMrelateOne(file.mod[2])
 })
+
+
+test_that("lowercase",{
+    file.mod <- "testData/nonmem/xgxr032.mod"
+    file.mod.lower <- "testOutput/NMrelate_lowercase.mod"
+
+    
+    PK <- NMreadSection(file.mod,section="PK")
+    PK <- gsub("THETA","theta",x=PK)
+    PK <- gsub("([^H])ETA","\\1eta",x=PK)
+    mod <- NMwriteSection(file.mod,section="PK",newlines=PK,
+                          newfile = file.mod.lower)
+
+
+    res1 <- NMrelate(file.mod,as.fun="data.table")
+    res1.lower <- NMrelate(file.mod.lower,as.fun="data.table")
+
+    res1[,model:=NULL]
+    res1.lower[,code:=toupper(code)][
+       ,model:=NULL]
+
+    expect_equal(res1,res1.lower)
+    
+})
