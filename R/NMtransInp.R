@@ -49,7 +49,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     line <- gsub(" +"," ",paste(lines,collapse=" "))
     line <- sub("^ ","",line)
     line <- sub(" $","",line)
-    ## not sure what DV =A would do but it may be valid, so reduce to DV=A
+    ## not sure what "DV =A", "DV= A" or "DV = A" would do but it may be valid, so reduce to DV=A
     line <- sub(" *= *","=",line)
 
     

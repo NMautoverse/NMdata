@@ -464,6 +464,7 @@ Like ;1;CL;;;mL/h
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
 *** NMrelate
+**** TODO [#A] Support lowercase eta, theta, etc
 **** DONE Include model column
 **** DONE would be better if NMrelateOne added par.type
 **** DONE Count how many times the combination of par.type,i,j is matched on the RHS

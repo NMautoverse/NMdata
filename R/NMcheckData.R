@@ -280,7 +280,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn.orig <- col.flagn
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
-
+    
     if(missing(col.time)) col.time <- NULL
     col.time <- NMdataDecideOption("col.time",col.time)
 
@@ -346,7 +346,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     
 ### file mode
     if(!is.null(file)){
-        if(!is.null(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
+        if(!is.null(col.flagn.orig) && !isFALSE(col.flagn.orig)){warning("col.flagn is not used when file is specified.")}
         ## col.id <- "ID"
         ## use.rds <- FALSE
         formats.read="csv"
@@ -359,7 +359,8 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                                as.fun=as.fun)
         return(invisible(res))
     }
-    
+    if(is.null(col.flagn.orig)&&!col.flagn%in%colnames(data)) col.flagn <- NULL
+    if(isFALSE(col.flagn)) col.flagn <- NULL
 
 ### Section end: Checks of arguments
 
@@ -588,9 +589,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
         if(col.flagn%in%colnames(data)){
 
 ### Done checking flagn. For rest of checks, only consider data where col.flagn==0
-            data[,(col.flagn):=NMasNumeric(get(col.flagn))]
-            if(is.numeric(data[,get(col.flagn)])){
-                data <- data[get(col.flagn)==0]
+            if(col.flagn %in% colnames(data)){
+                data[,(col.flagn):=NMasNumeric(get(col.flagn))]
+                if(is.numeric(data[,get(col.flagn)])){
+                    data <- data[get(col.flagn)==0]
+                }
             }
         }
     }
@@ -631,7 +634,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
     cols.num.all <- c(cols.num.all,
                       covs,names(covs.occ),as.character(unlist(covs.occ))
                       )
-    if(!is.null(col.flagn.orig)) cols.num.all <- c(cols.num.all,col.flagn)
+    if(!isFALSE(col.flagn.orig)) cols.num.all <- c(cols.num.all,col.flagn)
     
 
     cols.num.all <- c(list("TRUE"=cols.num.all),
@@ -765,7 +768,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                                fun=is.na,events=findings,
                                invert=TRUE
                               ,col.required=type.data=="est"
-                               ,dat=data[EVID%in%c(0)]
+                              ,dat=data[EVID%in%c(0)]
                                )
     }
 

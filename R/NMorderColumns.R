@@ -112,6 +112,8 @@ NMorderColumns <- function(data,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+    if(isFALSE(col.flagn)) col.flagn <- NULL
+
     if(missing(col.id)) col.id <- NULL
     col.id <- NMdataDecideOption("col.id",col.id)
     if(missing(col.nomtime)) col.nomtime <- NULL

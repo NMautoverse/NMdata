@@ -78,7 +78,6 @@ NMgenText <- function(data,
                       width,
                       quiet
                       ){
-    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
 
     DATE <- NULL
@@ -261,7 +260,7 @@ NMgenText <- function(data,
                      ,paste0("IGN=@")
                       )
 
-    if( !(is.logical(col.flagn)&&!col.flagn) && col.flagn%in%colnames.nm ){
+    if( !( is.logical(col.flagn)&&!col.flagn ) && col.flagn%in%colnames.nm ){
         text.nm.data <- c(text.nm.data,
                           paste0("IGNORE=(",col.flagn,".NE.0)")
                           )

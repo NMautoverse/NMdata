@@ -356,7 +356,8 @@ NMdataConfOptions <- function(name,allow.unknown=TRUE){
            ,is.allowed=function(x) length(x)==1 && ((is.logical(x) && x==FALSE) || is.character(x) )
            ,msg.not.allowed="col.flagn must be a character vector of length 1."
            ,process=function(x) {if(is.logical(x) && x==FALSE) {
-                                     return(NULL)
+                                     ## return(NULL)
+                                     return(FALSE)
                                  } else {
                                      return(x)
                                  }

@@ -316,10 +316,13 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
                       ))
     }
 
+    
+    
     ## Nonmem text
     NMtext <- NULL
     if(genText || (write.csv && csv.trunc.as.nm)){
-        NMtext <- try(do.call(NMgenText,
+        NMtext <- try(
+            do.call(NMgenText,
                               append(
                                   list(data=data.dt,file=file)
                                  ,args.NMgenText)

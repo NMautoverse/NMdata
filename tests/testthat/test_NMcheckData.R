@@ -302,8 +302,8 @@ test_that("no col.flagn",{
 
     pk[,FLAG:=NULL]
     res2 <- NMcheckData(pk, quiet=quiet)
-    expect_equal(res1,res2)
-})
+    expect_equal(res1,res2)}
+)
 
 dups_data <- data.frame(
     ID = c(1, 1, 1),
