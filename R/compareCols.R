@@ -183,7 +183,8 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
 
             res.dims <- dims(list.data=dots)
             message("Dimensions:")
-            message(print(as.fun(res.dims)))
+            ## message(print(as.fun(res.dims)))
+            message_dt(res.dims,as.fun=as.fun)
         }
 
         if(nrow(dt.cols)==0&&ndots==1){
@@ -193,12 +194,26 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
-                message(print(as.fun(dt.cols)))
+                ## message(print(as.fun(dt.cols)))
+
+                ## message(":::")
+                
+                ## message(print(as.fun(dt.cols)))
+                ## message(print(dt.cols))
+                ## message(print.table(dt.cols))
+                ## message(dt.cols)
+                ## message("[[[[[[")
+                ## message(paste(capture.output(print(as.fun(dt.cols))),collapse="\n"))
+                ## print(dt.cols)
+                message_dt(dt.cols,as.fun=as.fun)
                 message()
-                messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
+                if(nrow(dt.cols.full[nu==1&n==ndots])){
+                    messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
+                }
             } else {
                 message("\nOverview of all columns:")
-                message(print(as.fun(dt.cols)))
+                ## message(print(as.fun(dt.cols)))
+                message_dt(dt.cols,as.fun=as.fun)
             }
         }
         return(invisible(as.fun(dt.cols)))
