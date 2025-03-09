@@ -59,5 +59,7 @@ tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.
 ;; tests/testthat/testData/nonmem/xgxr021.*
 tests/testthat/testData/simulations/xgxr.*/.*.rds
 tests/testthat/testData/simulations/xgxr.*/.*.csv
+tests/testthat/testData/simulations/xgxr.*/.*.lst
 tests/testthat/testData/nonmem/.*_dir.*
+tests/testthat/testData/nonmem/NMsim
 .*_input.rds

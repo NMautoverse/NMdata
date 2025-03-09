@@ -94,9 +94,11 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
         
         ## add the synononyms
         if(!is.null(renamed.from)){
+            
             data <- cbind(data,
                           setnames(data[,c(renamed.to),with=FALSE],old=renamed.to,new=renamed.from)
                           )
+            
         }
         
         ## check for unique column names

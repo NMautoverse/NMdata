@@ -36,8 +36,8 @@ if(F){
 ### need NMsim 0.2.0
     ## library(NMsim)
     file.mod <- "testData/nonmem/xgxr032.mod"
-    library(devtools)
-    load_all("~/wdirs/NMsim")
+    ## library(devtools)
+    ## load_all("~/wdirs/NMsim")
 
     dt.sim <- NMcreateDoses(TIME=0,AMT=100) |>
         addEVID2(TIME=2,CMT=2,as.fun="data.table")
@@ -49,13 +49,15 @@ if(F){
                  name.sim="example_simpletab",
                  table.vars=c("PRED","IPRED"),
                  path.nonmem="/opt/NONMEM/nm75/run/nmfe75",
-                 seed.R=32)
+                 seed.R=32,
+                 sim.dir.from.scratch=T,
+                 clean=5)
     
     res
 
     ## file.tab <- "testData/simulations/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
     ##file.copy(file.tab,"testData/data/")
-    }
+}
 
 
 test_that("table without table title",{
@@ -65,6 +67,6 @@ test_that("table without table title",{
     ## readLines(file.tab)
     res <- NMreadTab(file.tab)
 
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(res,fileRef,version=2)
 
 })
