@@ -7,7 +7,7 @@
 reduceTables(tables, col.nmout)
 }
 \arguments{
-\item{tables}{Object from NMtables}
+\item{tables}{Object from NMscanTables}
 
 \item{col.nmout}{The name of the column holding logical of whether
 row was found in output tables.}

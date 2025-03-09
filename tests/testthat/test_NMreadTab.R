@@ -28,3 +28,39 @@ if(F){
     res <- NMscanTables("testData/nonmem/xgxr033.lst",col.tableno=TRUE)
     lapply(res,head)
 }
+
+
+if(F){
+
+### generating a plain csv without headers
+### need NMsim 0.2.0
+    ## library(NMsim)
+    file.mod <- "testData/nonmem/xgxr032.mod"
+    library(devtools)
+    load_all("~/wdirs/NMsim")
+
+    dt.sim <- NMcreateDoses(TIME=0,AMT=100) |>
+        addEVID2(TIME=2,CMT=2,as.fun="data.table")
+    dt.sim[,BBW:=80]
+
+    res <- NMsim(file.mod=file.mod,
+                 data=dt.sim,
+                 dir.sims="testOutput",
+                 name.sim="example_simpletab",
+                 table.vars=c("PRED","IPRED"),
+                 path.nonmem="/opt/NONMEM/nm75/run/nmfe75")
+    
+    res
+
+}
+
+
+test_that("table without table title",{
+    fileRef <- "testReference/NMreadTab_02.rds"
+    file.tab <- "testOutput/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
+    ## readLines(file.tab)
+    res <- NMreadTab(file.tab)
+
+    expect_equal_to_reference(res,fileRef)
+
+})

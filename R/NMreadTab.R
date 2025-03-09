@@ -119,9 +119,9 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     ## dt1 <- fread(file,fill=TRUE,...)
     
     cnames <- copy(colnames(dt1))
-    if(!quiet){
-        message("Adding table numbers to data")
-    }
+    ## if(!quiet){
+    ##     message("Adding table numbers to data")
+    ## }
     
     
     ## if(col.nmrep){
@@ -157,24 +157,35 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
     by=col.row.tmp]
     ## getting rid of trailing spaces
     dt1[,(col.table.name):=sub(" *$","",get(col.table.name))]
+
+    
+    
+    ### we could remove the table name column if no tables names found. But I'm not sure it's the right thing to do. It's not wrong to leave NA names. The user basically asks for it using the col.table.name arg.
+    if(dt1[,all(is.na(get(col.tableno)))]){
+        ## dt1[,(col.tableno):=NULL]
+        dt1[,(col.tableno):=1]
+    }
+
     
 ### count table replicates    
     ##    if(header){
-    
-    dt1[,(col.tableno):=nafill(get(col.tableno),type="locf")]
-    dt1[,(col.nmrep):=cumsum(!is.na(get(col.table.name))),by=col.tableno]
-    ## if no header was found nmrep starts at zero. That should be one.
-    dt1[,nmrep.min:=min(c(get(col.nmrep),1),na.rm=TRUE),by=col.tableno]
-    dt1[nmrep.min==0,(col.nmrep):=get(col.nmrep)+1]
-    dt1[,nmrep.min:=NULL]
-    ## carry non-missing to missing values
-    
-    dt1[,(col.table.name):=get(col.table.name)[!is.na(get(col.table.name))],by=c(col.tableno,col.nmrep)]
-    ##    }
-    
-    if(!quiet){
-        message("getting rid of non-data rows")
+    if(col.tableno %in%colnames(dt1) ){
+        dt1[,(col.tableno):=nafill(get(col.tableno),type="locf")]
+        dt1[,(col.nmrep):=cumsum(!is.na(get(col.table.name))),by=col.tableno]
+        ## if no header was found nmrep starts at zero. That should be one.
+        dt1[,nmrep.min:=min(c(get(col.nmrep),1),na.rm=TRUE),by=col.tableno]
+        dt1[nmrep.min==0,(col.nmrep):=get(col.nmrep)+1]
+        dt1[,nmrep.min:=NULL]
+        ## carry non-missing to missing values
+        dt1[,(col.table.name):=get(col.table.name)[!is.na(get(col.table.name))],by=c(col.tableno,col.nmrep)]
     }
+
+    ### we could remove the table name column if no tables names found. But I'm not sure it's the right thing to do. It's not wrong to leave NA names. The user basically asks for it using the col.table.name arg.
+    ## if(dt1[,all(is.na(get(col.table.name)))]){
+    ##     dt1[,(col.table.name):=NULL]
+    ## }
+    
+    
     dt1 <- dt1[grep("^ *[[:alpha:]]",as.character(get(cnames[1])),invert=TRUE,perl=TRUE)]
 
     cols.dup <- duplicated(colnames(dt1))
@@ -186,9 +197,9 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
 
     dt1[,(col.row.tmp):=NULL]
     dt1[,(col.table.name.text):=NULL]
-    if(rm.col.table.name) dt1[,(col.table.name):=NULL]
-    if(rm.col.nmrep) dt1[,(col.nmrep):=NULL]
-    if(rm.col.tableno) dt1[,(col.tableno):=NULL]
+    if(rm.col.table.name && col.table.name%in%colnames(dt1)) dt1[,(col.table.name):=NULL]
+    if(rm.col.nmrep && col.nmrep%in%colnames(dt1)) dt1[,(col.nmrep):=NULL]
+    if(rm.col.tableno && col.tableno%in%colnames(dt1)) dt1[,(col.tableno):=NULL]
     
     ## columns added and clened since cnames was created.
     cnames <- setdiff(colnames(dt1),c(col.table.name,col.nmrep))

@@ -868,7 +868,15 @@ test_that("Two firstonly, one full-length",{
     ## ref <- readRDS(fileRef)
     
     expect_equal_to_reference(res,fileRef,version=2)
-    
+    if(F){
+        ref <- readRDS(fileRef)
+        head(ref)
+        head(res)
+        dims(ref,res)
+NMinfo(ref)$tables
+NMinfo(res)$tables
+
+}
 })
 
 test_that("Two firstonly, one full-length with col.nmrep",{
