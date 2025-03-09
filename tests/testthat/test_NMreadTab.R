@@ -45,19 +45,23 @@ if(F){
 
     res <- NMsim(file.mod=file.mod,
                  data=dt.sim,
-                 dir.sims="testOutput",
+                 dir.sims="testData/simulations",
                  name.sim="example_simpletab",
                  table.vars=c("PRED","IPRED"),
-                 path.nonmem="/opt/NONMEM/nm75/run/nmfe75")
+                 path.nonmem="/opt/NONMEM/nm75/run/nmfe75",
+                 seed.R=32)
     
     res
 
-}
+    ## file.tab <- "testData/simulations/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
+    ##file.copy(file.tab,"testData/data/")
+    }
 
 
 test_that("table without table title",{
     fileRef <- "testReference/NMreadTab_02.rds"
-    file.tab <- "testOutput/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
+    file.tab <- "testData/simulations/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
+    ## file.tab <- "testData/data/xgxr032_example_simpletab.tab"
     ## readLines(file.tab)
     res <- NMreadTab(file.tab)
 
