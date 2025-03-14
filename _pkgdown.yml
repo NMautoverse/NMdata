@@ -67,7 +67,7 @@ reference:
   - NMstamp
   - NMwriteSection
   - NMwriteFilters
-  - NMwriteInites
+  - NMwriteInits
   - NMreplaceDataFile
 - title: Retrieve NONMEM data
   desc: Functions for retrieving NONMEM input and output data
