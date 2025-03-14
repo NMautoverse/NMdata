@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.9.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.9.921</span>
       </span>
     </div>
 
@@ -82,10 +82,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.9" id="since-nmdata-019">Since NMdata 0.1.9<small>2025-01-24</small><a class="anchor" aria-label="anchor" href="#since-nmdata-019"></a></h2>
-<ul><li>
-<code><a href="../reference/NMrelate.html">NMrelate()</a></code> now supports models with non-strict capital case reference to parameters. This means <code>theta(1)</code> or <code>Eta(1)</code> will also be recognized.</li>
+<h2 class="page-header" data-toc-text="0.2.0" id="nmdata-020">NMdata 0.2.0<a class="anchor" aria-label="anchor" href="#nmdata-020"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<ul><li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> now supports models with non-strict capital case reference to parameters. This means <code>theta(1)</code> or <code>Eta(1)</code> will also be recognized.</p></li>
+<li><p>inits functions</p></li>
+<li><p>filter functions</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-2-0">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> was not able to generate copied columns (i.e. <code>AFRLT=TIME</code> should return in both columns <code>AFRLT</code> and <code>TIME</code>) when <code>recover.cols=FALSE</code>. Fixed. Thanks to Brian Reilly for reporting.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.9" id="nmdata-019">NMdata 0.1.9<small>2025-01-24</small><a class="anchor" aria-label="anchor" href="#nmdata-019"></a></h2>
 <div class="section level3">
