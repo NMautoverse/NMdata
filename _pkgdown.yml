@@ -66,6 +66,8 @@ reference:
   - NMgenText
   - NMstamp
   - NMwriteSection
+  - NMwriteFilters
+  - NMwriteInites
   - NMreplaceDataFile
 - title: Retrieve NONMEM data
   desc: Functions for retrieving NONMEM input and output data
@@ -77,6 +79,7 @@ reference:
   - NMreadCov
   - NMreadCsv
   - NMreadExt
+  - NMreadFilters
   - NMreadInits
   - NMreadPhi
   - NMreadShk
@@ -112,6 +115,7 @@ reference:
   - NMextractText
   - NMdataOperations
   - tmpcol
+  - triagSize
 - title: Misc
   desc: Miscellaneous
   contents:
