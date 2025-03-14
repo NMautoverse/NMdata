@@ -1,7 +1,21 @@
-# Since NMdata 0.1.9
+# NMdata 0.2.0
+
+## New features 
+
 * `NMrelate()` now supports models with non-strict capital case
   reference to parameters. This means `theta(1)` or `Eta(1)` will also
   be recognized.
+
+* inits functions
+
+* filter functions
+
+## Bugfixes
+
+* `NMscanInput()` was not able to generate copied columns
+  (i.e. `AFRLT=TIME` should return in both columns `AFRLT` and `TIME`)
+  when `recover.cols=FALSE`. Fixed. Thanks to Brian Reilly for
+  reporting.
 
 # NMdata 0.1.9
 

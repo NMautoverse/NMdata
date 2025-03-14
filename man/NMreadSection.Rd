@@ -2,7 +2,6 @@
 % Please edit documentation in R/NMreadSection.R
 \name{NMreadSection}
 \alias{NMreadSection}
-\alias{NMgetSection}
 \title{Extract sections of Nonmem control streams}
 \usage{
 NMreadSection(
@@ -23,8 +22,6 @@ NMreadSection(
   asOne,
   ...
 )
-
-NMgetSection(...)
 }
 \arguments{
 \item{file}{A file path to read from. Normally a .mod or .lst. See
@@ -92,11 +89,6 @@ This is a very commonly used wrapper for the input part of the
 model file. Look NMextractText for more general functionality
 suitable for the results part too.
 }
-\section{Functions}{
-\itemize{
-\item \code{NMgetSection}: Deprecated function name. Use NMreadSection.
-}}
-
 \examples{
 NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),section="DATA")
 

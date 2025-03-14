@@ -77,6 +77,11 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     cnames.input.0 <- copy(colnames(data))
     cnames.input <- copy(cnames.input.0)
 
+    if(!recover.cols){
+        data <- data[,1:length(nms)]
+    }
+
+
     if(translate){
         if(length(nms)>length(cnames.input)){
             nms <- nms[1:length(cnames.input)]
@@ -119,13 +124,6 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
             
             data <- data[,unique(cnames.input),with=FALSE]
         }
-    }
-
-    ## if(!translate && !recover.cols){
-    ##     data <- data[,1:length(nms)]
-    ## }
-    if(!recover.cols){
-        data <- data[,1:length(nms)]
     }
 
 

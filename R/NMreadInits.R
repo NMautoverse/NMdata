@@ -1,10 +1,15 @@
 ##' Calculate number of elements for matrix specification
 ##' 
 ##' calculate number of elements in the diagonal and lower triangle of
-##' a matrix, based on the length of the diagonal
+##' a squared matrix, based on the length of the diagonal.
 ##'
-##' @keywords internal
-## triagSize(1:5)
+##' @param diagSize The length of the diagonal. Same as number of rows
+##'     or columns.
+##' 
+##' @return An integer
+##' @examples
+##' triagSize(1:5)
+##' @export 
 triagSize <- function(diagSize){
     ((diagSize^2)-diagSize)/2+diagSize
 }

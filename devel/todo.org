@@ -85,6 +85,9 @@ if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) sto
     Export to parent. Not sure check allows though...
 ** Function improvements
 *** addTAPD
+**** TODO [#A] Check if data contains doses
+addTAPD only makes sense if doses are present. For subjects without
+doses, all generated doses should be NA?
 **** TODO [#A] Add subset.data arg like in flags functions
 **** DONE Rename NDOSES to DOSCUMN
 It aligns with DOSCUMA and it is clearer from DOSCUMN that its

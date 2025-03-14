@@ -6,8 +6,17 @@
 \usage{
 triagSize(diagSize)
 }
+\arguments{
+\item{diagSize}{The length of the diagonal. Same as number of rows
+or columns.}
+}
+\value{
+An integer
+}
 \description{
 calculate number of elements in the diagonal and lower triangle of
-a matrix, based on the length of the diagonal
+a squared matrix, based on the length of the diagonal.
 }
-\keyword{internal}
+\examples{
+triagSize(1:5)
+}
