@@ -1,9 +1,9 @@
 ##' Merge, order, and check resulting rows and columns.
 ##'
 ##' Stop checking that the number of rows is unchanged after a merge -
-##' mergeCheck checks what you really want - i.e. x is extended with
+##' `mergeCheck` checks what you really want - i.e. x is extended with
 ##' columns from y while all rows in x are retained, and no new rows
-##' are created (plus some more checks). mergeCheck is not a merge implementation - it is a
+##' are created (plus some more checks). `mergeCheck` is not a merge implementation - it is a
 ##' useful merge wrapper. The advantage over using much more flexible
 ##' merge or join function lies in the fully automated checking that
 ##' the results are consistent with the simple merge described above.
@@ -22,7 +22,7 @@
 ##'     they are not used in `by`, this will by default create columns
 ##'     named like col.x and col.y in result (see ?merge). Often, this
 ##'     is a mistake, and the default is to throw a warning if this
-##'     happens. If using mergeCheck in programming, you may want to
+##'     happens. If using `mergeCheck` in programming, you may want to
 ##'     make sure this is not happening and use
 ##'     common.cols=stop. If you want nothing to happen, you can do
 ##'     common.cols=NULL. You can also use `common.cols="drop.x"`
@@ -32,13 +32,13 @@
 ##'     which means `by` will automatically be extended to include all
 ##'     common column names.
 ##' @param ncols.expect If you want to include a check of the number
-##'     of columns being added to the dimensions of x. So if
+##'     of columns being added to the dimensions of `x`. So if
 ##'     ncols.expect=1, the resulting data must have exactly one
-##'     column more than x - if not, an error will be returned.
+##'     column more than `x` - if not, an error will be returned.
 ##' @param subset.x Not implemented.
-##' @param track.msg If using mergeCheck inside other functions, it
+##' @param track.msg If using `mergeCheck` inside other functions, it
 ##'     can be useful to use track.msg=TRUE. This will add information
-##'     to messages/warnings/errors that they came from mergCheck.
+##'     to messages/warnings/errors that they came from `mergeCheck()`.
 ##' @param quiet If FALSE, the names of the added columns are
 ##'     reported. Default value controlled by NMdataConf.
 ##' @param fun.na.by If NA's are found in (matched) by columns in both
@@ -54,7 +54,7 @@
 ##' @param fun.commoncols Deprecated. Please use `common.cols`.
 ##' @param ... additional arguments passed to data.table::merge. If
 ##'     all is among them, an error will be returned.
-##' @details Besides merging and checking rows, mergeCheck makes sure
+##' @details Besides merging and checking rows, `mergeCheck` makes sure
 ##'     the order in x is retained in the resulting data (both rows
 ##'     and column order). Also, a warning is given if column names
 ##'     are overlapping, making merge create new column names like
@@ -69,13 +69,13 @@
 ##' @importFrom stats setNames
 ##' @return a data.frame resulting from merging x and y. Class as
 ##'     defined by as.fun.
-##' @details mergeCheck is for the kind of merges where we think of x
+##' @details `mergeCheck` is for the kind of merges where we think of x
 ##'     as the data to be enriched with columns from y - rows
 ##'     unchanged. This is even further limited than a left join where
 ##'     you can match rows multiple times. A common example of the use
-##'     of mergeCheck is for adding covariates to a pk/pd data set. We
+##'     of `mergeCheck` is for adding covariates to a pk/pd data set. We
 ##'     do not want that to remove or duplicate doses, observations,
-##'     or simulation records. In those cases, mergeCheck does all
+##'     or simulation records. In those cases, `mergeCheck` does all
 ##'     needed checks, and you can run full speed without checking
 ##'     dimensions (which is anyway not exactly the right thing to do
 ##'     in the general case) or worry that something might go wrong.
@@ -113,12 +113,12 @@
 ##'
 ##'  mc1 <- mergeCheck(x=df1,y=df2,by="y")
 ##' 
-##' ## Notice as opposed to most merge/join algorithms, mergeCheck by
+##' ## Notice as opposed to most merge/join algorithms, `mergeCheck` by
 ##' #default retains both row and column order from x
 ##' library(data.table)
 ##' merge(as.data.table(df1),as.data.table(df2))
 ##' ## Here we get a duplicate of a df1 row in the result. If we only
-##' ## check dimensions, we make a mistake. mergeCheck captures the
+##' ## check dimensions, we make a mistake. `mergeCheck` captures the
 ##' ## error - and tell us where to find the problem (ID 31 and 180):
 ##' \dontrun{
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))

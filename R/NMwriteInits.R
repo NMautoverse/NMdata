@@ -11,8 +11,8 @@
 ##'     `update=TRUE`.
 ##' @param ext Not implemented.
 ##' @param values A list of lists. Each list specifies a parameter
-##'     with named elements. Must be named by the parameter name. ll,
-##'     ul and fix can be supplied to modify the parameter. See
+##'     with named elements. Must be named by the parameter name. `lower`,
+##'     `upper` and `fix` can be supplied to modify the parameter. See
 ##'     examples. Notice, you can use `...` instead. `values` may be easier for programming but other than that, most users will find `...` more intuitive.
 ##' @param newfile If provided, the results are written to this file
 ##'     as a new input control stream.
@@ -72,9 +72,6 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     value <- NULL
     V1 <- NULL
 
-    if(packageVersion("NMdata")<"0.1.8.924"){
-        stop("NMwriteInits requires NMdata 0.1.9 or later.")
-    }
 
     
     if(missing(values)) values <- NULL
@@ -138,7 +135,9 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
 
 ### the rest of the code is dependent on all of init, lower, and upper being available.
     cols.miss <- setdiff(outer(c("value.elem","elemnum"),c("init","lower","upper","FIX"),FUN=paste,sep="_"),colnames(inits.w))
-    inits.w[,(cols.miss):=NA_character_]
+    if(length(cols.miss)){
+        inits.w[,(cols.miss):=NA_character_]
+    }
     ##    inits.w[,fix:=ifelse(FIX=="1","FIX","")]
     inits.w[is.na(value.elem_FIX),value.elem_FIX:=""]
 
@@ -154,17 +153,7 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
         inits.w <- mergeCheck(inits.w[,-("value.elem_init")],ext.new[,.(par.type,i,j,value.elem_init=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
     }
 
-    if(FALSE){
-        if(!is.null(ext)){
-            inits.w[,tmprow:=.I]
-            inits.w.new <- mergeCheck(inits.w[,-("value.elem_init")],
-                                      ext.new[,.(par.type,i,j,value.elem_init=as.character(value))],
-                                      by=c("par.type","i","j"),all.y=TRUE,fun.na.by=NULL,quiet=TRUE)
-            inits.w <- rbind(
-                inits.w[!tmprow%in%inits.w.new$tmprow],
-                inits.w.new)
-        }
-    }    
+    
 ### Implement changes as requested in values
     fun.update.vals <- function(dt,value,name){
         par.type <- NULL
@@ -186,21 +175,6 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
             j <- as.integer(sub(paste0(par.type,"\\(([0-9]+),([0-9]+)\\)"),"\\2",name))
         }
 
-
-        if(F){
-            if(!all(c("par.type","i")%in% names(value))){
-                stop("value must contain `par.type` and `i`")
-            }
-            if(!value$par.type %in% c("THETA","OMEGA","SIGMA")){
-                stop("`par.type` must be one of `THETA`,`OMEGA`, and `SIGMA`.")
-            }
-            if(value$par.type %in% c("OMEGA","SIGMA") && ! "j" %in% names(value)){
-                stop("For `par.type` one of `OMEGA` and `SIGMA`, `j` must be provided.")
-            }
-            if(!"j" %in% names(value)) {
-                value$j <- NA
-            }
-        }
         
         if("fix" %in% names(value)) {
             if(value$fix) {
@@ -302,7 +276,7 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     lines.all.3[,text:=newtext]
     
 
-    lines.new <- readLines(file.mod)
+    lines.new <- readLines(file.mod,warn=FALSE)
 
     fun.update.ctl <- function(lines.old,section,dt.lines){
         text <- NULL

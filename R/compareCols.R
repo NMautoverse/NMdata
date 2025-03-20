@@ -24,8 +24,8 @@
 ##'     list of columns is shown by default.
 ##' @param fun.class the function that will be run on each column to
 ##'     check for differences. base::class is default. Notice that the
-##'     alternative base::typeof is different in certain ways. For
-##'     instance, typeof will not report a difference on numeric vs
+##'     alternative `base::typeof` is different in certain ways. For
+##'     instance, `typeof` will not report a difference on numeric vs
 ##'     difftime. You could basically submit any function that takes a
 ##'     vector and returns a single value.
 ##' @param cols.wanted Columns of special interest. These will always

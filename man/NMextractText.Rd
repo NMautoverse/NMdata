@@ -80,7 +80,7 @@ probably want FALSE.}
 
 \item{match.exactly}{Default is to search for exact matches of
 `section`. If FALSE, only the first three characters are
-macthed. E.G., this allows "ESTIMATION" to match "ESTIMATION"
+matched. E.G., this allows "ESTIMATION" to match "ESTIMATION"
 or "EST".}
 
 \item{type}{Either mod, res or NULL. mod is for information that

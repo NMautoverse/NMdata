@@ -1,4 +1,4 @@
-##' Conveniently writeLines to file
+##' Conveniently write text lines to file
 ##' @param lines the character lines to write
 ##' @param file The file name path to write to
 ##' @return NULL

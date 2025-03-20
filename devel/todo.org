@@ -12,6 +12,8 @@
 *** TODO [#B] Support a drop argument
 It has been initiated in the code. I believe it can be finished after
 the translate part. The colnames table is the trickier part to update.
+
+What function does this belong to?
 *** DONE Support for return as tibble or whatever
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
@@ -88,6 +90,7 @@ if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) sto
 **** TODO [#A] Check if data contains doses
 addTAPD only makes sense if doses are present. For subjects without
 doses, all generated doses should be NA?
+
 **** TODO [#A] Add subset.data arg like in flags functions
 **** DONE Rename NDOSES to DOSCUMN
 It aligns with DOSCUMA and it is clearer from DOSCUMN that its
@@ -467,7 +470,7 @@ Like ;1;CL;;;mL/h
 **** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
 It would be easier to remember
 *** NMrelate
-**** TODO [#A] Support lowercase eta, theta, etc
+**** DONE Support lowercase eta, theta, etc
 **** DONE Include model column
 **** DONE would be better if NMrelateOne added par.type
 **** DONE Count how many times the combination of par.type,i,j is matched on the RHS

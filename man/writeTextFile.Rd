@@ -2,7 +2,7 @@
 % Please edit documentation in R/writeTextFile.R
 \name{writeTextFile}
 \alias{writeTextFile}
-\title{Conveniently writeLines to file}
+\title{Conveniently write text lines to file}
 \usage{
 writeTextFile(lines, file)
 }
@@ -12,6 +12,6 @@ writeTextFile(lines, file)
 \item{file}{The file name path to write to}
 }
 \description{
-Conveniently writeLines to file
+Conveniently write text lines to file
 }
 \keyword{internal}

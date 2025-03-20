@@ -2,13 +2,33 @@
 
 ## New features 
 
-* `NMrelate()` now supports models with non-strict capital case
-  reference to parameters. This means `theta(1)` or `Eta(1)` will also
-  be recognized.
+* Functions included to read (`NMreadInits()`) and write
+  (`NMwriteInits()`) initial values, boundaries and fix or "unfix"
+  parameters included. `NMreadInits()` may be useful for inclusion of
+  these values in parameter tables. `NMwriteInits` can update those
+  values or any subset of them through a concise interface, like
+  
+```
+NMwriteInits(file.mod,
+   "theta(2)"=list(init=1.4,lower=.1),
+   "THETA(3)"=list(FIX=1),
+   "omega(2,2)"=list(init=0.1,fix=0)
+)
+```
+where `file.mod` is a path to a control stream.
 
-* inits functions
+* Functions to read (`NMreadFilters()`) and write (`NMwriteFilters()`)
+  data filter (`ACCEPT`/`IGNORE`) statements in a control stream have
+  been included. `NMreadFilters()` run on a path to a control stream
+  returns a structured `data.frame` with the filter
+  statements. `NMwriteFilters()` can take such a `data.frame` or just
+  a string with filters and replace the data filters in a control
+  stream with those.
 
-* filter functions
+* Functions to read (`NMreadSizes()`) and write (`NMwriteSizes()`) the
+  `$SIZES` section of NONMEM control streams. `NMwriteSizes()` can
+  either write the section from scratch (`wipe=TRUE`) or merge the new
+  sizes values in with exisiting values.
 
 ## Bugfixes
 
@@ -16,6 +36,13 @@
   (i.e. `AFRLT=TIME` should return in both columns `AFRLT` and `TIME`)
   when `recover.cols=FALSE`. Fixed. Thanks to Brian Reilly for
   reporting.
+  
+  * `NMrelate()` now supports models with non-strict capital case
+  reference to parameters. This means `theta(1)` or `Eta(1)` will also
+  be recognized. Thanks to Chris Banker for reporting.
+  
+* When `data.frame`s were printed to the console, they could be
+  followed by a lines of weird code. This has been cleaned up.
 
 # NMdata 0.1.9
 
@@ -98,7 +125,7 @@
   accepts data with commas in values, even when writing to csv
   files. The way `NMwriteData()` writes csv files, commas in character
   columns are a problem. But the `trunc.csv.as.nm=TRUE` argument means
-  that columns not used by Nonmem (i.e. including most character
+  that columns not used by NONMEM (i.e. including most character
   columns) are not written to csv. Instead of rejecting these data
   sets right away, `NMwriteData()` will now only return an error
   ifcharacter variables with commas in values are attempted written to
@@ -111,7 +138,7 @@
 
 * Support for data file names including substrings "ACCEPT" and "IGN"
   is added. Before, such data set file names could lead to failure if
-  interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem
+  interpreting data subsetting filters (ACCEPT and IGN(ORE)) in NONMEM
   control streams.
 
 ## Other improvements
@@ -141,14 +168,14 @@
   examples in `?NMreadParTab`.
   
 * `NMrelate()` is a new automated approach to label parameters. It
-  interprets Nonmem code and provides labels used in the control
+  interprets NONMEM code and provides labels used in the control
   stream. If the line `TVCL=THETA(1)` is the only line in the code
   that references THETA(1), `NMrelate()` will return a label
   `TVCL`.
 
 * Improved support for character-coded `TIME` and `DATE`
   arguments. The default behavior is to allow (not require) `TIME` and
-  `DATE` columns to be non-numeric. This is to support the Nonmem
+  `DATE` columns to be non-numeric. This is to support the NONMEM
   character format of DATE and TIME. It affects sorting of columns
   (`NMorderColumn()`) and the auto-generated `$INPUT` section
   suggestions. Where applicable, the `allow.char.TIME` argument
@@ -191,7 +218,7 @@ of throwing an error.
   in. Thank you Brian Reilly for contributing to this.
   
 * `NMreadExt()` adds a `par.name` column which is provides consistent
-  parameter naming. Instead of Nonmem's `THETA1` which is found in the
+  parameter naming. Instead of NONMEM's `THETA1` which is found in the
   `parameter` column, the `par.name` column will contain `THETA(1)`
   consistent with the `OMEGA` and `SIGMA` naming like `OMEGA(1,1)`
 
@@ -319,9 +346,9 @@ tables.
 # NMdata 0.1.3
 * Better support for models with multiple estimation
   steps. Particularly reading output tables now better distinguishes
-  between Nonmem table numbers and repetitions (like
+  between NONMEM table numbers and repetitions (like
   SUBPROBLEMS). Also, functions that read parameter estimates clearly
-  separates Nonmem table numbers.
+  separates NONMEM table numbers.
 
 * Improved support for reading multiple models with NMreadExt and
 NMreadPhi. 
@@ -331,8 +358,8 @@ NMreadPhi.
 * NMreadExt is a new function that reads parameter estimates,
   uncertainties if available, estimation iterations and other
   information from .ext files. 
-* NMreadPhi is a new function that reads contents of Nonmem phi files.
-* NMreadCov is a "new" function that reads Nonmem .cov files
+* NMreadPhi is a new function that reads contents of NONMEM phi files.
+* NMreadCov is a "new" function that reads NONMEM .cov files
   (parameter uncertainty as estimated by a covariance step). The
   function is not really new. It was developed by Matt Fidler for
   nonmem2rx based on NMdata's NMreadTab. It has been only slightly
@@ -410,7 +437,7 @@ This release provides a few bugfixes, nothing major.
   found. This is handled by the `skip.absent` argument.
 
 ## Bugfixes
-* Filtering by the abbreviated IGN notation in Nonmem control
+* Filtering by the abbreviated IGN notation in NONMEM control
   statements would not always work when not using a row identifier for
   combining input and output data. This should now be fixed. However,
   it is still recommended to use a row identifier to merge input and
@@ -423,7 +450,7 @@ This release provides a few bugfixes, nothing major.
 ## Other improvements
 * NMcheckData has improved checks of some columns related to either
   observations (like MDV) or doses (like RATE). This will give less
-  findings that Nonmem would not fail on anyway.
+  findings that NONMEM would not fail on anyway.
 
 * addTAPD's col.ndoses argument has been renamed to col.doscumn and
   the default value is now "DOSCUMN". This makes it clear that it is a
@@ -470,20 +497,20 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 * `NMscanData()` now supports repeated output tables, like those created
   using the `SUBPROBLEM` option.
   
-* `NMwriteData()` has a new argument csv.trunc.as.nm. If `TRUE`, csv file
+* `NMwriteData()` has a new argument `csv.trunc.as.nm`. If `TRUE`, csv file
   will be truncated horizontally (columns will be dropped) to match
-  the `$INPUT` text generated for Nonmem (`genText` must be `TRUE` for this
+  the `$INPUT` text generated for NONMEM (`genText` must be `TRUE` for this
   option to be allowed). This can be a great advantage when dealing
   with large datasets that can create problems in
   parallellization. Combined with `write.rds=TRUE`, the full data set
   will still be written to an rds file, so this can be used when
   combining output and input data when reading model results. This is
   done by default by `NMscanData()`. This means writing a lean (narrow)
-  csv file for Nonmem while keeping columns of non-numeric class like
+  csv file for NONMEM while keeping columns of non-numeric class like
   character and factor for post-processing.
   
 * `NMwriteData()` has got an arguement 'genText' to control whether text
-  for Nonmem should be generated. Default is to do so. Also, support
+  for NONMEM should be generated. Default is to do so. Also, support
   is added for `script=NULL` which now means the same as not specifying
   script.
   
@@ -505,7 +532,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   error.
   
 * `NMgenText()` has a new argument, width, passed to strwrap to control
-  the width of the $INPUT text for Nonmem.
+  the width of the $INPUT text for NONMEM.
 
 ## Bugfixes
 * NMapplyFilters (and then NMscanInput and NMscanData) gave an error
@@ -533,7 +560,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 * `addTAPD()` - Add cumulative number of doses, time of last dose,
   previous dose amount, cumulative dose amount, and time since
   previous dose to data
-* `tmpcol()` provides column names not already used in data sets. tmpcol
+* `tmpcol()` provides column names not already used in data sets. `tmpcol()`
   has long been part of NMdata but has not been exported until now.
 
 ## New data
@@ -598,11 +625,11 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   stream has to be overruled. Like many other of this type of
   arguments in NMdata, it can be a function that systematically
   converts the path to the control stream to the input data
-  archive. Running Nonmem this way breaks the link between an input
+  archive. Running NONMEM this way breaks the link between an input
   dataset that may change over time and the model runs that become
   self-contained packages of input and output data.
 
-* Support for `NOHEADER` option in Nonmem `$TABLE` blocks. If `NMdata` is
+* Support for `NOHEADER` option in NONMEM `$TABLE` blocks. If `NMdata` is
   used to read the results, there is no need to use NOHEADER (which
   opens the door to mistakes if manually renaming the columns in
   results), but NMdata should now also be able to handle this. 
@@ -626,7 +653,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 * `compareCols` takes the list.data argument same way as dims()
   does. This is often easier to use in programming.
 
-* If `NMgenText` does not find any Nonmem-compatible columns to report,
+* If `NMgenText` does not find any NONMEM-compatible columns to report,
   it now throws a warning and returns NULL.
 
 ## Bugfixes
@@ -680,20 +707,20 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 
 # NMdata 0.0.10
 ## New functions
-* NMcheckData is a new function that checks data for Nonmem
+* NMcheckData is a new function that checks data for NONMEM
   compatibility in numerous ways. It returns a list of all findings
   making it easy to identify the location of each issue in the
   data. See the man page of NMcheckData for a complete list of the
   checks that are done. The function does not modify data in any way,
   and it is a very simple and easy step to avoid many problems in
-  Nonmem. NMcheckData can check a data object in R, and it can also
+  NONMEM. NMcheckData can check a data object in R, and it can also
   check how a control stream reads data and then do all the
   checks. The latter provides an extensive check of potential issues
   related to data and getting it into NONMEM. Great for both debugging
   and QC.
 
 * NMextractDataFile is a function that identifies the input datafile
-  used by a Nonmem model. It reports the string as in the Nonmem
+  used by a NONMEM model. It reports the string as in the NONMEM
   control stream, file path and whether the file exists. It also looks
   for the corresponding rds files. The function is not new in NMdata
   but was not exported until 0.0.10.
@@ -746,7 +773,7 @@ chaned to ensure consistent test results once data.table 1.14.7 is
 
 ## Bugfixes 
 * In NMwriteData the datafile is now correctly included in the $DATA
-  suggestion for Nonmem. No impact on data file output.
+  suggestion for NONMEM. No impact on data file output.
 
 * Bugfix in NMscanData related to searching for candidates for unique
   row identifiers.
@@ -782,7 +809,7 @@ that tests pass after the release of data.table v1.14.2.
 
 * Support for custom (and NULL) values of col.model and col.nmout
 
-* Support for Nonmem filters without operators (COL XX)
+* Support for NONMEM filters without operators (COL XX)
 
 # NMdata 0.0.7.2
 NMreadCsv, NMscanInput, and NMscanData take argument args.fread. The
@@ -799,7 +826,7 @@ or equals NULL or ".".
 NMinfo is a new function that provides meta data, processed by as.fun.
 
 If merge.by.row=TRUE, NMscanData now checks if col.row seems to be
-changed in the Nonmem code. If that is the case, an error is returned.
+changed in the NONMEM code. If that is the case, an error is returned.
 
 save argument added to flagsCount function to align with other
 functions.
@@ -866,18 +893,18 @@ default value for col.row can now be set using NMdataConf and will not
 affect the data combination method.
 
 Other arguments which default values can now be modified using
-NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input,
-recover.rows, col.model, modelname, file.mod, and check.time, quiet,
-use.rds.
+NMdataConf are: `merge.by.row`, `col.flagn`, `col.flagc`, `use.input`,
+`recover.rows`, `col.model`, `modelname`, `file.mod`, and
+`check.time`, `quiet`, `use.rds`.
 
-The tools to assign and count exclusion flags, flagsAssign and
-flagsCount, have been improved. They now support working on a subset
-of data (say samples only), and the order (increasing/decreasing) of
-the exclusion flags is optional. The printing of the count of
-exclusion flags has been improved.
+The tools to assign and count exclusion flags, `flagsAssign()` and
+`flagsCount()`, have been improved. They now support working on a
+subset of data (say samples only), and the order
+(increasing/decreasing) of the exclusion flags is optional. The
+printing of the count of exclusion flags has been improved.
 
 NMgetSection and NMwriteSection are new functions that can be used to
-extract sections from and write sections to Nonmem control
+extract sections from and write sections to NONMEM control
 streams. NMwriteData now returns a list of sections that can be passed
 directly to NMwriteSection, in order to update control streams to read
 the updated data file correctly.
@@ -889,7 +916,7 @@ error, and you want to figure out why.
 
 renameByContents is a function that can rename columns which contents
 match a given criterion. In combination with the provided NMisNumeric,
-this can be used to rename (say to lowercase) columns that Nonmem
+this can be used to rename (say to lowercase) columns that NONMEM
 cannot interpret (as numeric).
 
 mergeCheck now informs about common column names that are not used to
@@ -906,7 +933,7 @@ with no common columns.
 - Class of return from NMorderData.
 - NA values in NMisNumeric. This bug would spill over to NMOrderColumns.
 - Processing rds files including non-data.table objects.
-- Single-character data filters in Nonmem (say IGNORE=C)
+- Single-character data filters in NONMEM (say IGNORE=C)
 
 # NMdata 0.0.6.6
 Central configuration mechanism implemented. The configuration
@@ -966,7 +993,7 @@ considered in an analysis have been run on the same system, so it makes
 most sense to define this behavior once and for all for most users.
 
 NMwriteData improved with checks of column names and automated
-generation of $INPUT and $DATA Nonmem sections.
+generation of $INPUT and $DATA NONMEM sections.
 
 NMorderColumns simplified, and documentation improved.
 
