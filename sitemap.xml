@@ -38,6 +38,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadPhi.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadSection.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadShk.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadSizes.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadTab.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMreadTabSlow.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMrelate.html</loc></url>
@@ -52,6 +53,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteFilters.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteInits.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteSection.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteSizes.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addCor.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addOmegaCorr.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addTAPD.html</loc></url>

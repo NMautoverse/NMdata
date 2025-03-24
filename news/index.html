@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.9.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -82,17 +82,27 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0" id="nmdata-020">NMdata 0.2.0<a class="anchor" aria-label="anchor" href="#nmdata-020"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.0" id="nmdata-020">NMdata 0.2.0<small>2025-03-21</small><a class="anchor" aria-label="anchor" href="#nmdata-020"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
-<ul><li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> now supports models with non-strict capital case reference to parameters. This means <code>theta(1)</code> or <code>Eta(1)</code> will also be recognized.</p></li>
-<li><p>inits functions</p></li>
-<li><p>filter functions</p></li>
+<ul><li>Functions included to read (<code><a href="../reference/NMreadInits.html">NMreadInits()</a></code>) and write (<code><a href="../reference/NMwriteInits.html">NMwriteInits()</a></code>) initial values, boundaries and fix or “unfix” parameters included. <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> may be useful for inclusion of these values in parameter tables. <code>NMwriteInits</code> can update those values or any subset of them through a concise interface, like</li>
+</ul><pre><code><span><span class="fu"><a href="../reference/NMwriteInits.html">NMwriteInits</a></span><span class="op">(</span><span class="va">file.mod</span>,</span>
+<span>   <span class="st">"theta(2)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>init<span class="op">=</span><span class="fl">1.4</span>,lower<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>,</span>
+<span>   <span class="st">"THETA(3)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>FIX<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>   <span class="st">"omega(2,2)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>init<span class="op">=</span><span class="fl">0.1</span>,fix<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+<p>where <code>file.mod</code> is a path to a control stream.</p>
+<ul><li><p>Functions to read (<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code>) and write (<code><a href="../reference/NMwriteFilters.html">NMwriteFilters()</a></code>) data filter (<code>ACCEPT</code>/<code>IGNORE</code>) statements in a control stream have been included. <code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> run on a path to a control stream returns a structured <code>data.frame</code> with the filter statements. <code><a href="../reference/NMwriteFilters.html">NMwriteFilters()</a></code> can take such a <code>data.frame</code> or just a string with filters and replace the data filters in a control stream with those.</p></li>
+<li><p>Functions to read (<code><a href="../reference/NMreadSizes.html">NMreadSizes()</a></code>) and write (<code><a href="../reference/NMwriteSizes.html">NMwriteSizes()</a></code>) the <code>$SIZES</code> section of NONMEM control streams. <code><a href="../reference/NMwriteSizes.html">NMwriteSizes()</a></code> can either write the section from scratch (<code>wipe=TRUE</code>) or merge the new sizes values in with exisiting values.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-0">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-0"></a></h3>
 <ul><li>
-<code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> was not able to generate copied columns (i.e. <code>AFRLT=TIME</code> should return in both columns <code>AFRLT</code> and <code>TIME</code>) when <code>recover.cols=FALSE</code>. Fixed. Thanks to Brian Reilly for reporting.</li>
+<p><code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> was not able to generate copied columns (i.e. <code>AFRLT=TIME</code> should return in both columns <code>AFRLT</code> and <code>TIME</code>) when <code>recover.cols=FALSE</code>. Fixed. Thanks to Brian Reilly for reporting.</p>
+<ul><li>
+<code><a href="../reference/NMrelate.html">NMrelate()</a></code> now supports models with non-strict capital case reference to parameters. This means <code>theta(1)</code> or <code>Eta(1)</code> will also be recognized. Thanks to Chris Banker for reporting.</li>
+</ul></li>
+<li><p>When <code>data.frame</code>s were printed to the console, they could be followed by a lines of weird code. This has been cleaned up.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -128,12 +138,12 @@
 <h2 class="page-header" data-toc-text="0.1.8" id="nmdata-018">NMdata 0.1.8<small>2024-10-31</small><a class="anchor" aria-label="anchor" href="#nmdata-018"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-8">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-8"></a></h3>
-<ul><li><p>If truncating/dropping columns in the csv file, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files. The way <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> writes csv files, commas in character columns are a problem. But the <code>trunc.csv.as.nm=TRUE</code> argument means that columns not used by Nonmem (i.e. including most character columns) are not written to csv. Instead of rejecting these data sets right away, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> will now only return an error ifcharacter variables with commas in values are attempted written to csv file.</p></li>
+<ul><li><p>If truncating/dropping columns in the csv file, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> accepts data with commas in values, even when writing to csv files. The way <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> writes csv files, commas in character columns are a problem. But the <code>trunc.csv.as.nm=TRUE</code> argument means that columns not used by NONMEM (i.e. including most character columns) are not written to csv. Instead of rejecting these data sets right away, <code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> will now only return an error ifcharacter variables with commas in values are attempted written to csv file.</p></li>
 <li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> includes model name in meta data table. Useful for generation of overviews of output tables from multiple models.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-8">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-8"></a></h3>
-<ul><li>Support for data file names including substrings “ACCEPT” and “IGN” is added. Before, such data set file names could lead to failure if interpreting data subsetting filters (ACCEPT and IGN(ORE)) in Nonmem control streams.</li>
+<ul><li>Support for data file names including substrings “ACCEPT” and “IGN” is added. Before, such data set file names could lead to failure if interpreting data subsetting filters (ACCEPT and IGN(ORE)) in NONMEM control streams.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-1-8">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-1-8"></a></h3>
@@ -146,8 +156,8 @@
 <div class="section level3">
 <h3 id="new-features-0-1-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-7"></a></h3>
 <ul><li><p><code>NMreadPartab()</code> has been generalized to support comment formats very generally. <code>NMreadPartab()</code> reads the comments in <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections, splits them into variables, and organizes those variables in a parameter table. With this upgrade, pretty much any structure should be supported as long as delimitors are not alphabetic or numeric (so any special characters should work). Notice, delimitors can change between fields . Example: <code>"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"</code> would be matched by <code>NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")</code> which would then return a table including columns init, idx, symbol, label, and unit. The comments must be systematic within say <code>$THETA</code> but the format can be different for <code>$OMEGA</code> and <code>$SIGMA</code>. See examples in <code>?NMreadParTab</code>.</p></li>
-<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> is a new automated approach to label parameters. It interprets Nonmem code and provides labels used in the control stream. If the line <code>TVCL=THETA(1)</code> is the only line in the code that references THETA(1), <code><a href="../reference/NMrelate.html">NMrelate()</a></code> will return a label <code>TVCL</code>.</p></li>
-<li><p>Improved support for character-coded <code>TIME</code> and <code>DATE</code> arguments. The default behavior is to allow (not require) <code>TIME</code> and <code>DATE</code> columns to be non-numeric. This is to support the Nonmem character format of DATE and TIME. It affects sorting of columns (<code>NMorderColumn()</code>) and the auto-generated <code>$INPUT</code> section suggestions. Where applicable, the <code>allow.char.TIME</code> argument controls this behavior. Set to <code>allow.char.TIME=FALSE</code> to require <code>TIME</code> and <code>DATE</code> columns be numeric. Thanks to Sanaya Shroff for the request, enabling <code>NMsim</code> to simulate using data sets with one or more of these columns coded as character.</p></li>
+<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> is a new automated approach to label parameters. It interprets NONMEM code and provides labels used in the control stream. If the line <code>TVCL=THETA(1)</code> is the only line in the code that references THETA(1), <code><a href="../reference/NMrelate.html">NMrelate()</a></code> will return a label <code>TVCL</code>.</p></li>
+<li><p>Improved support for character-coded <code>TIME</code> and <code>DATE</code> arguments. The default behavior is to allow (not require) <code>TIME</code> and <code>DATE</code> columns to be non-numeric. This is to support the NONMEM character format of DATE and TIME. It affects sorting of columns (<code>NMorderColumn()</code>) and the auto-generated <code>$INPUT</code> section suggestions. Where applicable, the <code>allow.char.TIME</code> argument controls this behavior. Set to <code>allow.char.TIME=FALSE</code> to require <code>TIME</code> and <code>DATE</code> columns be numeric. Thanks to Sanaya Shroff for the request, enabling <code>NMsim</code> to simulate using data sets with one or more of these columns coded as character.</p></li>
 <li>
 <p><code>mergeCheck(x,y)</code> has new options for handling common columns in data sets. The <code>common.cols</code> argument replaces <code>fun.commoncols</code> with added functionality.</p>
 <ul><li><p><code>common.cols="merge.by"</code> to include them in by, even if they are not provided in the <code>by</code> argument.</p></li>
@@ -159,7 +169,7 @@
 </ul></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> separates objective function values into a separate list element. The <code>return</code> argument is used to control what data to retrieve. Use one of “pars” (default, parameter estimates), “iterations” (parameter estimates for each iteration), “obj” for objective funtion value, or “all” for a list with all of those.</p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds block information to <code>OMEGA</code> and <code>SIGMA</code> elements based on off-diagonal values. <code>iblock</code> identifies which block the element is in. <code>blocksize</code> is the size of the block the element is in. Thank you Brian Reilly for contributing to this.</p></li>
-<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds a <code>par.name</code> column which is provides consistent parameter naming. Instead of Nonmem’s <code>THETA1</code> which is found in the <code>parameter</code> column, the <code>par.name</code> column will contain <code>THETA(1)</code> consistent with the <code>OMEGA</code> and <code>SIGMA</code> naming like <code>OMEGA(1,1)</code></p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds a <code>par.name</code> column which is provides consistent parameter naming. Instead of NONMEM’s <code>THETA1</code> which is found in the <code>parameter</code> column, the <code>par.name</code> column will contain <code>THETA(1)</code> consistent with the <code>OMEGA</code> and <code>SIGMA</code> naming like <code>OMEGA(1,1)</code></p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> recognizes Laplacian estimation steps in addition to the already supported FO, FOCE(i), SAEM, and IMP.</p></li>
 <li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://NMautoverse.github.io/NMsim/reference/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://NMautoverse.github.io/NMsim/reference/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallellize by default.</p></li>
 </ul></div>
@@ -221,7 +231,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.3" id="nmdata-013">NMdata 0.1.3<small>2023-11-11</small><a class="anchor" aria-label="anchor" href="#nmdata-013"></a></h2>
-<ul><li><p>Better support for models with multiple estimation steps. Particularly reading output tables now better distinguishes between Nonmem table numbers and repetitions (like SUBPROBLEMS). Also, functions that read parameter estimates clearly separates Nonmem table numbers.</p></li>
+<ul><li><p>Better support for models with multiple estimation steps. Particularly reading output tables now better distinguishes between NONMEM table numbers and repetitions (like SUBPROBLEMS). Also, functions that read parameter estimates clearly separates NONMEM table numbers.</p></li>
 <li><p>Improved support for reading multiple models with NMreadExt and NMreadPhi.</p></li>
 </ul></div>
     <div class="section level2">
@@ -229,8 +239,8 @@
 <div class="section level3">
 <h3 id="new-features-0-1-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
 <ul><li>NMreadExt is a new function that reads parameter estimates, uncertainties if available, estimation iterations and other information from .ext files.</li>
-<li>NMreadPhi is a new function that reads contents of Nonmem phi files.</li>
-<li>NMreadCov is a “new” function that reads Nonmem .cov files (parameter uncertainty as estimated by a covariance step). The function is not really new. It was developed by Matt Fidler for nonmem2rx based on NMdata’s NMreadTab. It has been only slightly modified since. Thanks Matt!</li>
+<li>NMreadPhi is a new function that reads contents of NONMEM phi files.</li>
+<li>NMreadCov is a “new” function that reads NONMEM .cov files (parameter uncertainty as estimated by a covariance step). The function is not really new. It was developed by Matt Fidler for nonmem2rx based on NMdata’s NMreadTab. It has been only slightly modified since. Thanks Matt!</li>
 <li>NMscanInput supports all combinations of <code>translate</code> and <code>recover.cols</code>.</li>
 </ul></div>
 <div class="section level3">
@@ -291,12 +301,12 @@
 <h3 id="new-features-0-0-14">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-14"></a></h3>
 <ul><li><p><code><a href="../reference/fnExtension.html">fnExtension()</a></code> has been generalized. It now ignores leading spaces in new extension, and extensions with zero or one leading period are treated identically (so asking for <code>xml</code> or <code>.xml</code> is the same). Also, by providing “” as the new extension will now remove the extension, and if extension is not provided, fnExtension will retrieve the extension rather than replace it.</p></li>
 <li><p><code><a href="../reference/NMscanData.html">NMscanData()</a></code> now supports repeated output tables, like those created using the <code>SUBPROBLEM</code> option.</p></li>
-<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has a new argument csv.trunc.as.nm. If <code>TRUE</code>, csv file will be truncated horizontally (columns will be dropped) to match the <code>$INPUT</code> text generated for Nonmem (<code>genText</code> must be <code>TRUE</code> for this option to be allowed). This can be a great advantage when dealing with large datasets that can create problems in parallellization. Combined with <code>write.rds=TRUE</code>, the full data set will still be written to an rds file, so this can be used when combining output and input data when reading model results. This is done by default by <code><a href="../reference/NMscanData.html">NMscanData()</a></code>. This means writing a lean (narrow) csv file for Nonmem while keeping columns of non-numeric class like character and factor for post-processing.</p></li>
-<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has got an arguement ‘genText’ to control whether text for Nonmem should be generated. Default is to do so. Also, support is added for <code>script=NULL</code> which now means the same as not specifying script.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has a new argument <code>csv.trunc.as.nm</code>. If <code>TRUE</code>, csv file will be truncated horizontally (columns will be dropped) to match the <code>$INPUT</code> text generated for NONMEM (<code>genText</code> must be <code>TRUE</code> for this option to be allowed). This can be a great advantage when dealing with large datasets that can create problems in parallellization. Combined with <code>write.rds=TRUE</code>, the full data set will still be written to an rds file, so this can be used when combining output and input data when reading model results. This is done by default by <code><a href="../reference/NMscanData.html">NMscanData()</a></code>. This means writing a lean (narrow) csv file for NONMEM while keeping columns of non-numeric class like character and factor for post-processing.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has got an arguement ‘genText’ to control whether text for NONMEM should be generated. Default is to do so. Also, support is added for <code>script=NULL</code> which now means the same as not specifying script.</p></li>
 <li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> now includes <code>SDOS</code>, a scalar to be applied when computing last dose amount and cumulative dose amount from <code>AMT</code>. Sometimes, <code>AMT</code> is in one unit, and other variables related to doses is in another. Say that dose is in mg and concentrations are in ng/mL, then <code>AMT</code> should be in mcg. But you may want everything else related to doses to be in mg. Then use <code>SDOS=1000</code>.</p></li>
 <li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> includes convenient prefix.cols and suffix.cols arguments that will prepend or append strings to all created columns. This is useful if dosing more than one drug, and you want to run <code><a href="../reference/addTAPD.html">addTAPD()</a></code> for both (different suffixes?), or if you want to run for nominal and actual time (prefix A and N?).</p></li>
 <li><p><code><a href="../reference/flagsAssign.html">flagsAssign()</a></code> now reports that data is empty and return the data if nothing is left after applying subset. It used to return an error.</p></li>
-<li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> has a new argument, width, passed to strwrap to control the width of the $INPUT text for Nonmem.</p></li>
+<li><p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> has a new argument, width, passed to strwrap to control the width of the $INPUT text for NONMEM.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-0-14">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-14"></a></h3>
@@ -319,7 +329,7 @@
 <li>
 <code><a href="../reference/addTAPD.html">addTAPD()</a></code> - Add cumulative number of doses, time of last dose, previous dose amount, cumulative dose amount, and time since previous dose to data</li>
 <li>
-<code><a href="../reference/tmpcol.html">tmpcol()</a></code> provides column names not already used in data sets. tmpcol has long been part of NMdata but has not been exported until now.</li>
+<code><a href="../reference/tmpcol.html">tmpcol()</a></code> provides column names not already used in data sets. <code><a href="../reference/tmpcol.html">tmpcol()</a></code> has long been part of NMdata but has not been exported until now.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-data-0-0-13">New data<a class="anchor" aria-label="anchor" href="#new-data-0-0-13"></a></h3>
@@ -338,15 +348,15 @@
 <li><p>Checks of unique subject identifier (<code>usubjid</code>) included in NMcheckData. This is mostly to detect the potential issue that the subject IDs generated for analysis are not unique across actual subjects. If a <code>usubjid</code> (e.g. from clinical data sets) is included in data, NMcheckData can check this for basic properties and check the analysis subject ID and the <code>usubjid</code> against each other.</p></li>
 <li><p>New function: cl - creates factors, ordered by the appearance of the elements when created. cl(“b”,“a”) results in a factor with levels “b” and “a”. This can save quite some typing in data set preparation.</p></li>
 <li><p>New function: fnAppend - append a string to a file name before the file name extension. fnAppend(“data.csv”,“subset”) results in “data_subset.csv”.</p></li>
-<li><p>General support for a file.data argument when a specific input data file is to be used instead of finding this information in the control streams. This is very useful if you archive input data together with a nonmem run in a way that the path in the control stream has to be overruled. Like many other of this type of arguments in NMdata, it can be a function that systematically converts the path to the control stream to the input data archive. Running Nonmem this way breaks the link between an input dataset that may change over time and the model runs that become self-contained packages of input and output data.</p></li>
-<li><p>Support for <code>NOHEADER</code> option in Nonmem <code>$TABLE</code> blocks. If <code>NMdata</code> is used to read the results, there is no need to use NOHEADER (which opens the door to mistakes if manually renaming the columns in results), but NMdata should now also be able to handle this.</p></li>
+<li><p>General support for a file.data argument when a specific input data file is to be used instead of finding this information in the control streams. This is very useful if you archive input data together with a nonmem run in a way that the path in the control stream has to be overruled. Like many other of this type of arguments in NMdata, it can be a function that systematically converts the path to the control stream to the input data archive. Running NONMEM this way breaks the link between an input dataset that may change over time and the model runs that become self-contained packages of input and output data.</p></li>
+<li><p>Support for <code>NOHEADER</code> option in NONMEM <code>$TABLE</code> blocks. If <code>NMdata</code> is used to read the results, there is no need to use NOHEADER (which opens the door to mistakes if manually renaming the columns in results), but NMdata should now also be able to handle this.</p></li>
 <li><p>If found in data, <code>CMT</code> is added to the breakdown of rows when summarizing results from NMscanData. Before, it was broken down on EVID only. Also, a total line is included with total number of rows in each of input-only, output, and result.</p></li>
 <li><p>Support for non-event (say for <code>$PRED</code>) datasets in <code>NMcheckData</code>.</p></li>
 <li><p>Support for custom column names for <code>DV</code> (<code>col.dv</code>) and MDV (col.mdv), ID (col.ID), AMT (col.amt) in NMcheckData.</p></li>
 <li><p>Support for file.mod and dir.data arguments in NMcheckData when running on a control stream.</p></li>
 <li><p><code>NMgenText</code> now has an argument called until that specifies the last column(s) to include in $INPUT.</p></li>
 <li><p><code>compareCols</code> takes the list.data argument same way as dims() does. This is often easier to use in programming.</p></li>
-<li><p>If <code>NMgenText</code> does not find any Nonmem-compatible columns to report, it now throws a warning and returns NULL.</p></li>
+<li><p>If <code>NMgenText</code> does not find any NONMEM-compatible columns to report, it now throws a warning and returns NULL.</p></li>
 </ul><div class="section level3">
 <h3 id="bugfixes-0-0-12">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-12"></a></h3>
 <ul><li>NMextractDataFile was not cleaning all paths correctly. This mostly impacts <code>NMcheckData</code>’s ability to find data files when using the file argument in <code>NMcheckData</code>. Only affects certain models.</li>
@@ -381,8 +391,8 @@
 <h2 class="page-header" data-toc-text="0.0.10" id="nmdata-0010">NMdata 0.0.10<small>2022-01-06</small><a class="anchor" aria-label="anchor" href="#nmdata-0010"></a></h2>
 <div class="section level3">
 <h3 id="new-functions-0-0-10">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-0-10"></a></h3>
-<ul><li><p>NMcheckData is a new function that checks data for Nonmem compatibility in numerous ways. It returns a list of all findings making it easy to identify the location of each issue in the data. See the man page of NMcheckData for a complete list of the checks that are done. The function does not modify data in any way, and it is a very simple and easy step to avoid many problems in Nonmem. NMcheckData can check a data object in R, and it can also check how a control stream reads data and then do all the checks. The latter provides an extensive check of potential issues related to data and getting it into NONMEM. Great for both debugging and QC.</p></li>
-<li><p>NMextractDataFile is a function that identifies the input datafile used by a Nonmem model. It reports the string as in the Nonmem control stream, file path and whether the file exists. It also looks for the corresponding rds files. The function is not new in NMdata but was not exported until 0.0.10.</p></li>
+<ul><li><p>NMcheckData is a new function that checks data for NONMEM compatibility in numerous ways. It returns a list of all findings making it easy to identify the location of each issue in the data. See the man page of NMcheckData for a complete list of the checks that are done. The function does not modify data in any way, and it is a very simple and easy step to avoid many problems in NONMEM. NMcheckData can check a data object in R, and it can also check how a control stream reads data and then do all the checks. The latter provides an extensive check of potential issues related to data and getting it into NONMEM. Great for both debugging and QC.</p></li>
+<li><p>NMextractDataFile is a function that identifies the input datafile used by a NONMEM model. It reports the string as in the NONMEM control stream, file path and whether the file exists. It also looks for the corresponding rds files. The function is not new in NMdata but was not exported until 0.0.10.</p></li>
 <li><p>cc is a function that creates character vectors from arguments without quotes. This is just to be able to skip typing quotes when listing say column names. So do cc(a,b,c) to get the exact same as c(“a”,“b”,“c”). You cannot do this with strings that contain special characters. In that case do cc(a,“b+c”) to get the same as c(“a”,“b+c”).</p></li>
 </ul></div>
 <div class="section level3">
@@ -397,7 +407,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-0-10">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-0-10"></a></h3>
-<ul><li><p>In NMwriteData the datafile is now correctly included in the $DATA suggestion for Nonmem. No impact on data file output.</p></li>
+<ul><li><p>In NMwriteData the datafile is now correctly included in the $DATA suggestion for NONMEM. No impact on data file output.</p></li>
 <li><p>Bugfix in NMscanData related to searching for candidates for unique row identifiers.</p></li>
 <li><p>In compareCols multiple classes of single columns would give a warning and sometimes confusing overview of columns. Fixed.</p></li>
 <li><p>findCovs fixed in ordering output when by argument is of length &gt; 1</p></li>
@@ -417,7 +427,7 @@
 <li><p>Check for disjoint ID’s when ID-level output tables found</p></li>
 <li><p>Improved message from NMscanData</p></li>
 <li><p>Support for custom (and NULL) values of col.model and col.nmout</p></li>
-<li><p>Support for Nonmem filters without operators (COL XX)</p></li>
+<li><p>Support for NONMEM filters without operators (COL XX)</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.7.2" id="nmdata-0072">NMdata 0.0.7.2<a class="anchor" aria-label="anchor" href="#nmdata-0072"></a></h2>
@@ -425,7 +435,7 @@
 <p>NMwriteData updated with more concise message.</p>
 <p>NMreadSection now returns all sections if argument section is missing or equals NULL or “.”.</p>
 <p>NMinfo is a new function that provides meta data, processed by as.fun.</p>
-<p>If merge.by.row=TRUE, NMscanData now checks if col.row seems to be changed in the Nonmem code. If that is the case, an error is returned.</p>
+<p>If merge.by.row=TRUE, NMscanData now checks if col.row seems to be changed in the NONMEM code. If that is the case, an error is returned.</p>
 <p>save argument added to flagsCount function to align with other functions.</p>
 <p>NMwriteData now writes meta data to a txt file when writing csv file. NMreadCsv looks for this info and attaches it if found.</p>
 <p>NMwriteData takes the argument args.fwrite - a list of arguments passed to fwrite. This is aligned with args.fread used by NMreadCsv. Defaults can be configured using NMdataConf.</p>
@@ -456,11 +466,11 @@
 <h2 class="page-header" data-toc-text="0.0.7" id="nmdata-007">NMdata 0.0.7<a class="anchor" aria-label="anchor" href="#nmdata-007"></a></h2>
 <p>This is a major upgrade from 0.0.6.6 featuring many improvements and bug fixes. Everyone is strongly encouraged to upgrade.</p>
 <p>The choice between data combination methods in NMscanData is now done in one argument, called merge.by.row. Before the method was decided based on values of two arguments, cbind.by.filters and col.row. A default value for col.row can now be set using NMdataConf and will not affect the data combination method.</p>
-<p>Other arguments which default values can now be modified using NMdataConf are: merge.by.row, col.flagn, col.flagc, use.input, recover.rows, col.model, modelname, file.mod, and check.time, quiet, use.rds.</p>
-<p>The tools to assign and count exclusion flags, flagsAssign and flagsCount, have been improved. They now support working on a subset of data (say samples only), and the order (increasing/decreasing) of the exclusion flags is optional. The printing of the count of exclusion flags has been improved.</p>
-<p>NMgetSection and NMwriteSection are new functions that can be used to extract sections from and write sections to Nonmem control streams. NMwriteData now returns a list of sections that can be passed directly to NMwriteSection, in order to update control streams to read the updated data file correctly.</p>
+<p>Other arguments which default values can now be modified using NMdataConf are: <code>merge.by.row</code>, <code>col.flagn</code>, <code>col.flagc</code>, <code>use.input</code>, <code>recover.rows</code>, <code>col.model</code>, <code>modelname</code>, <code>file.mod</code>, and <code>check.time</code>, <code>quiet</code>, <code>use.rds</code>.</p>
+<p>The tools to assign and count exclusion flags, <code><a href="../reference/flagsAssign.html">flagsAssign()</a></code> and <code><a href="../reference/flagsCount.html">flagsCount()</a></code>, have been improved. They now support working on a subset of data (say samples only), and the order (increasing/decreasing) of the exclusion flags is optional. The printing of the count of exclusion flags has been improved.</p>
+<p>NMgetSection and NMwriteSection are new functions that can be used to extract sections from and write sections to NONMEM control streams. NMwriteData now returns a list of sections that can be passed directly to NMwriteSection, in order to update control streams to read the updated data file correctly.</p>
 <p>compareCols is a very useful new data creation tool. See the difference between presence and classes of columns in data sets. This is useful before rbind’ing or merging - or maybe when those throw an error, and you want to figure out why.</p>
-<p>renameByContents is a function that can rename columns which contents match a given criterion. In combination with the provided NMisNumeric, this can be used to rename (say to lowercase) columns that Nonmem cannot interpret (as numeric).</p>
+<p>renameByContents is a function that can rename columns which contents match a given criterion. In combination with the provided NMisNumeric, this can be used to rename (say to lowercase) columns that NONMEM cannot interpret (as numeric).</p>
 <p>mergeCheck now informs about common column names that are not used to merge by. These will create new column names, and it’s often not intended. An argument has been added (ncols.expected) to check the number of columns added to df1 against expectation.</p>
 <p>egdt is a new function for expanding grids of data.tables. This is quite technical, and it fills a whole when constructing data with data.tables. It mimics the behavior of merge.data.frame on objects with no common columns.</p>
 <div class="section level3">
@@ -468,7 +478,7 @@
 <ul><li>Class of return from NMorderData.</li>
 <li>NA values in NMisNumeric. This bug would spill over to NMOrderColumns.</li>
 <li>Processing rds files including non-data.table objects.</li>
-<li>Single-character data filters in Nonmem (say IGNORE=C)</li>
+<li>Single-character data filters in NONMEM (say IGNORE=C)</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -499,7 +509,7 @@
 <h2 class="page-header" data-toc-text="0.0.6" id="nmdata-006">NMdata 0.0.6<a class="anchor" aria-label="anchor" href="#nmdata-006"></a></h2>
 <p>General support for conversion of output to user-specified class. Setting the option “NMdata.as.fun” to a conversion function such as as.data.frame or tibble::as_tibble it is possible for the user to work with their preferred data class. An argument, as.fun, can be used for the individual functions too.</p>
 <p>The translation from the output control stream file path (.lst in PSN) and the input control stream (.mod in PSN) can now be configured through the option “NM.file.mod”. Typically, all the models to be considered in an analysis have been run on the same system, so it makes most sense to define this behavior once and for all for most users.</p>
-<p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA Nonmem sections.</p>
+<p>NMwriteData improved with checks of column names and automated generation of $INPUT and $DATA NONMEM sections.</p>
 <p>NMorderColumns simplified, and documentation improved.</p>
 <p>Documentation has been upgraded with a pkgdown site.</p>
 <p>New vignette on data set creation tools in NMdata.</p>
