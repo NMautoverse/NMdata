@@ -81,7 +81,7 @@ While `NMdata` does not organize all results into single objects that can be fur
 
 Vignettes:   
 [Flexible Creation of Parameter Tables](https://NMautoverse.github.io/NMdata/articles/ParameterTables.html)  
-[NMscanData: Find And Combine All Output And Input Data](https://NMautoverse.github.io/NMdata/articles/NMscanData.Rmd)  
+[NMscanData: Find And Combine All Output And Input Data](https://NMautoverse.github.io/NMdata/articles/NMscanData.html)  
 
 
 

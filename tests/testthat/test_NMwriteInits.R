@@ -7,10 +7,10 @@ context("NMwriteInits")
 
 
 if(F){
-    unloadNamespace("NMsim")
-    unloadNamespace("NMdata")
-    load_all("~/wdirs/NMdata")
-    load_all("~/wdirs/NMsim")
+    ## unloadNamespace("NMsim")
+    ## unloadNamespace("NMdata")
+    ## load_all("~/wdirs/NMdata")
+    ## load_all("~/wdirs/NMsim")
 }
 
 test_that("Basic",{

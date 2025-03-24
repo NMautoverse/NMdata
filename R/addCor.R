@@ -79,6 +79,7 @@ addCor <- function(pars,by=NULL,as.fun,col.value="value"){
 ##' Anything arguments are passed to `addCor()`. See `?addCor()`.
 ##' 
 ##' @param ... Passed to addCor
+##' @return The parameter table with a `corr` column added.
 ##' @export
 ## Deprecated with 0.1.9 Jan 2025
 

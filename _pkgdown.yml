@@ -68,6 +68,7 @@ reference:
   - NMwriteSection
   - NMwriteFilters
   - NMwriteInits
+  - NMwriteSizes
   - NMreplaceDataFile
 - title: Retrieve NONMEM data
   desc: Functions for retrieving NONMEM input and output data
@@ -81,6 +82,7 @@ reference:
   - NMreadExt
   - NMreadFilters
   - NMreadInits
+  - NMreadSizes
   - NMreadPhi
   - NMreadShk
   - NMreadTab

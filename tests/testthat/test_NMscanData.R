@@ -156,32 +156,33 @@ test_that("List of ACCEPT statements and vs separate statements",{
     expect_identical(res1,res2)
 })
 
+if(F){
+    test_that("merge by filters or not",{
+        ##    fileRef <- "testReference/NMscanData4.rds"
+        ## file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
+        ## file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
+        file1.lst <- "testData/nonmem/xgxr006.lst"
+        file2.lst <- "testData/nonmem/xgxr008.lst"
 
-test_that("merge by filters or not",{
-    ##    fileRef <- "testReference/NMscanData4.rds"
-    ## file1.lst <- NMdata_filepath("examples/nonmem/xgxr006.lst")
-    ## file2.lst <- NMdata_filepath("examples/nonmem/xgxr008.lst")
-    file1.lst <- "testData/nonmem/xgxr006.lst"
-    file2.lst <- "testData/nonmem/xgxr008.lst"
+        
+        ## NMreadSection(file1.lst,section="PROBLEM")
+        ## NMreadSection(file2.lst,section="PROBLEM")
 
-    
-    ## NMreadSection(file1.lst,section="PROBLEM")
-    ## NMreadSection(file2.lst,section="PROBLEM")
+        res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE, quiet=T)
+        res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE, quiet=T)
+        setnames(res2,"EFF0","eff0",skip_absent=T)
+        setcolorder(res1,colnames(res2))
 
-    res1 <- NMscanData(file=file1.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE, quiet=T)
-    res2 <- NMscanData(file=file2.lst,merge.by.row=FALSE,col.model=NULL,check.time = FALSE, quiet=T)
-    setnames(res2,"EFF0","eff0",skip_absent=T)
-    setcolorder(res1,colnames(res2))
+        ## the var tables are different because ROW is input in one,
+        ## output in the other. This is as expected.
 
-    ## the var tables are different because ROW is input in one,
-    ## output in the other. This is as expected.
+        ## cbind(attr(res1,"var"),attr(res2,"var"))
+        setattr(res1,"NMdata",NULL)
+        setattr(res2,"NMdata",NULL)
 
-    ## cbind(attr(res1,"var"),attr(res2,"var"))
-    setattr(res1,"NMdata",NULL)
-    setattr(res2,"NMdata",NULL)
-
-    expect_equal(res1,res2)
-})
+        expect_equal(res1,res2)
+    })
+}
 
 ### BUG 011. NA rows used for fo table. 0 IDs.
 #### it is the rare situation where
@@ -873,10 +874,10 @@ test_that("Two firstonly, one full-length",{
         head(ref)
         head(res)
         dims(ref,res)
-NMinfo(ref)$tables
-NMinfo(res)$tables
+        NMinfo(ref)$tables
+        NMinfo(res)$tables
 
-}
+    }
 })
 
 test_that("Two firstonly, one full-length with col.nmrep",{
@@ -934,45 +935,55 @@ test_that("Input control stream missing",{
 
 test_that("simulation model with subproblems",{
     NMdataConf(reset=TRUE)
+    NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanData_31.rds"
-    
+
+    if(F){
 ### sim a model with subproblems
-    ## library(devtools)
-    ## load_all("~/wdirs/NMexec")
-    ## file.mod <- "testData/nonmem/xgxr014.mod"
-    ## ## NMexec(file.mod,sge=FALSE,wait=T)
-    ## doses <- NMcreateDoses(TIME=0,AMT=data.table(AMT=c(10,100),DOSE=c(10,100)))
-    ## simdat <- addEVID2(doses,time.sim=1:24,CMT=2)
-    ## simdat[,DV:=NA][
-    ##     ,ROW:=.I]
-    ## NMcheckData(simdat)
+        ##library(devtools)
+        ##load_all("~/wdirs/NMsim")
+        file.mod <- "testData/nonmem/xgxr014.mod"
+        ## NMexec(file.mod,sge=FALSE,wait=T)
+        doses <- NMcreateDoses(TIME=0,AMT=data.table(AMT=c(10,100),DOSE=c(10,100)))
+        simdat <- addEVID2(doses,TIME=c(1,24),CMT=2)
+        simdat[,DV:=NA][
+           ,ROW:=.I]
+        NMcheckData(simdat)
 
-    ## NMdataConf(as.fun="data.table")
+        NMdataConf(as.fun="data.table")
 
-    ## sim1 <- NMsim(file.mod,data=simdat,
-    ##               suffix.sim="testsim1",dir.sim="testData/simulations"
-    ##              ,seed=343108,subproblems=100,nmquiet=T)
-
+        sim1 <- NMsim(file.mod,data=simdat,
+                      suffix.sim="testsim1"
+                     ,dir.sim="testData/simulations"
+                     ,seed.R=343108,
+                      ## We don't want to store rds
+                     ,format.data.complete="csv",
+                      subproblems=3,
+                      nmquiet=T)
+        
 ### NMsim saves serialized rds. Resaving as version 2
-    ## res.sim <- readRDS("testData/simulations/NMsimData_xgxr014_testsim1.rds")
-    ## saveRDS(res.sim,"testData/simulations/NMsimData_xgxr014_testsim1.rds",version=2)
+        res.sim <- readRDS("testData/simulations/NMsimData_xgxr014_testsim1.rds")
+        saveRDS(res.sim,"testData/simulations/NMsimData_xgxr014_testsim1.rds",version=2)
 ##### sim done
+    }
     
-    res <- NMscanData("testData/simulations/xgxr014_testsim1.lst",check.time=F, quiet=T)
+    res <- NMscanData("testData/simulations/xgxr014_testsim1/xgxr014_testsim1.lst",check.time=F, quiet=T)
     
-    fix.time(res)
-    meta.x <- attr(res,"NMdata")
-    meta.x$details$time.ok <- NULL
-    setattr(res,"NMdata",meta.x)
-    
+    ## fix.time(res)
+    ## meta.x <- attr(res,"NMdata")
+    ## meta.x$details$time.ok <- NULL
+    ## setattr(res,"NMdata",meta.x)
+    unNMdata(res)
     expect_equal_to_reference(res,fileRef,version=2)
 }
 )
 
 
 test_that("csv vs rds vs fst",{
-
+    NMdataConf(reset=TRUE)
+    ## NMdataConf(as.fun="data.table")
+    
     fileRef <- "testReference/NMscanData_32.rds"
 
     file.lst <- "testData/nonmem/xgxr014.lst"

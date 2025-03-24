@@ -3,15 +3,8 @@
 ##' @param lines Control stream lines if already read from file
 ##' @param filters.only Return the filters only or also return the remaining text in a separate object? If `FALSE`, a list with the two objects is returned.
 ##' @param as.fun Function to run on the tables with filters.
+##' @return A `data.frame` with filters
 ##' @export
-
-#### Keep internal - will be exported from NMdata
-
-### the aim is to extract and classify filters. classify as IGNORE/ACCEPT, single character or comparisson.
-
-## NMsim() needs a filters argument that can take such a data.frame. It should also accept just a string that represeents the filters if user wants to write something manually.
-
-### NMapplyFilters should translate and apply.
 
 NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     

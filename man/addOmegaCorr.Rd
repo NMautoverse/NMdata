@@ -9,6 +9,9 @@ addOmegaCorr(...)
 \arguments{
 \item{...}{Passed to addCor}
 }
+\value{
+The parameter table with a `corr` column added.
+}
 \description{
 Anything arguments are passed to `addCor()`. See `?addCor()`.
 }

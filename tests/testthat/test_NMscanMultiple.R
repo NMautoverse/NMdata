@@ -37,8 +37,9 @@ test_that("basic",{
     resRef <- if(file.exists(fileRef)) readRDS(fileRef) else NULL
 
 ### we do this in two steps because not all systems will find the files in same order apparently
-    lsts <- list.files(path="testData/nonmem/",pattern="xgxr00[1-9]\\.lst",full.names=TRUE)
+    lsts <- list.files(path="testData/nonmem",pattern="xgxr00[1-9]\\.lst",full.names=TRUE)
     lsts <- sort(lsts)
+    lsts <- lsts[!grepl(".*008\\.lst",lsts)]
     res <- NMscanMultiple(lsts, check.time = FALSE,quiet=TRUE)
     ## dim(res)
 

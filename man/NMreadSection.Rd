@@ -81,8 +81,6 @@ probably want FALSE.}
 }
 \value{
 character vector with extracted lines.
-
-character vector with extracted lines.
 }
 \description{
 This is a very commonly used wrapper for the input part of the

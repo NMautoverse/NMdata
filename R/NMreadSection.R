@@ -42,7 +42,6 @@
 ##' @param keepEmpty Deprecated. See keep.empty.
 ##' @param keepName Deprecated. See keep.name.
 ##' @param asOne Deprecated. See as.one.
-##' @return character vector with extracted lines.
 ##' @param ... Additional arguments passed to NMextractText
 ##' @return character vector with extracted lines.
 ##' @family Nonmem

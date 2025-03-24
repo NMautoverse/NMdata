@@ -84,7 +84,7 @@ if(F){
     
     ## library(devtools)
     ## load_all("~/wdirs/NMexec")
-    load_all("~/wdirs/NMsim")
+    ##load_all("~/wdirs/NMsim")
     NMdataConf(as.fun="data.table")
     
     doses.1 <- NMcreateDoses(TIME=c(0,3,12,24),CMT=1,AMT=400e3)

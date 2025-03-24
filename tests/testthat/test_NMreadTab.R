@@ -7,7 +7,7 @@ NMdataConf(reset=TRUE)
 test_that("Table with repetitions",{
     fileRef <- "testReference/NMreadTab_01.rds"
     
-    res <- NMreadTab("testData/simulations/xgxr014_subprobs/NMsim_xgxr014_subprobs.tab")
+    res <- NMreadTab("testData/simulations/xgxr014_testsim1/xgxr014_testsim1.tab")
 
     expect_equal_to_reference(res,fileRef,version=2)
 })
@@ -46,7 +46,7 @@ if(F){
     res <- NMsim(file.mod=file.mod,
                  data=dt.sim,
                  dir.sims="testData/simulations",
-                 name.sim="example_simpletab",
+                 name.sim="simpletab",
                  table.vars=c("PRED","IPRED"),
                  path.nonmem="/opt/NONMEM/nm75/run/nmfe75",
                  seed.R=32,
@@ -62,8 +62,8 @@ if(F){
 
 test_that("table without table title",{
     fileRef <- "testReference/NMreadTab_02.rds"
-    file.tab <- "testData/simulations/xgxr032_example_simpletab/xgxr032_example_simpletab.tab"
-    ## file.tab <- "testData/data/xgxr032_example_simpletab.tab"
+    file.tab <- "testData/simulations/xgxr032_simpletab/xgxr032_simpletab.tab"
+    ## file.tab <- "testData/data/xgxr032_simpletab.tab"
     ## readLines(file.tab)
     res <- NMreadTab(file.tab)
 

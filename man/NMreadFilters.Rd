@@ -15,6 +15,9 @@ NMreadFilters(file, lines, filters.only = TRUE, as.fun)
 
 \item{as.fun}{Function to run on the tables with filters.}
 }
+\value{
+A `data.frame` with filters
+}
 \description{
 Read data filters from a NONMEM model
 }
