@@ -1,0 +1,226 @@
+Fri Mar 21 17:20:51 EDT 2025
+$PROBLEM    031 SAEM
+
+$INPUT NMROW ID TIME EVID CMT AMT DV MDV BBW
+
+$DATA  ../NMsimData_xgxr032_simpletab.csv
+IGN=@
+
+$SUBROUTINE ADVAN4 TRANS4
+
+$PK
+LTVKA=THETA(1)
+LTVV2=THETA(2)
+LTVCL=THETA(3)
+LTVV3=THETA(4)
+LTVQ=THETA(5)
+
+MU_1=LTVKA
+KA=EXP(MU_1+ETA(1))
+MU_2=LTVV2
+V2=EXP(MU_2+ETA(2))
+MU_3=LTVCL
+CL=EXP(MU_3+ETA(3))
+MU_4=LTVV3
+V3=EXP(MU_4+ETA(4))
+MU_5 = LTVQ
+Q =EXP(MU_5+ETA(5))
+S2=V2
+
+$ERROR
+  IPRED=F
+  IRES=DV-IPRED
+
+  IF (IPRED.GT.1) THEN
+    W = SQRT(IPRED**2*SIGMA(1,1) + SIGMA(2,2))
+  ELSE
+    W=1
+  ENDIF
+
+  IWRES=IRES/W
+  Y=F+F*ERR(1)+ERR(2)
+
+;-----------------------INITIAL ESTIMATES---------------------------------
+$THETA 0.817093  ; LTVKA
+$THETA 4.32671   ; LTVV2
+$THETA 2.46238   ; LTVCL
+$THETA 5.39387   ; LTVV3
+$THETA 2.21507   ; LTVQ
+
+
+$OMEGA 0 FIX    
+$OMEGA 0.173132 
+$OMEGA 0.324497 
+$OMEGA 0 FIX    
+$OMEGA 0 FIX    
+
+
+$SIGMA 0.0809353 
+$SIGMA 0 FIX     
+
+;; $ESTIMATION METHOD=1 POSTHOC INTER MAXEVAL=9999 NSIG=2 SIGL=9
+;;            PRINT=10 NOABORT MSFO=xgxr032.msf
+
+
+
+
+
+$SIMULATION ONLYSIM (1086284251) 
+
+$TABLE NMROW PRED IPRED NOPRINT NOAPPEND ONEHEADERALL NOTITLE FILE=xgxr032_simpletab.tab
+
+
+NM-TRAN MESSAGES
+  
+ WARNINGS AND ERRORS (IF ANY) FOR PROBLEM    1
+             
+ (WARNING  2) NM-TRAN INFERS THAT THE DATA ARE POPULATION.
+             
+ (WARNING  79) SIGMA IS USED ON THE RIGHT. WITH A SUBSEQUENT RUN, IF AN
+ INITIAL ESTIMATE OF A DIAGONAL BLOCK OF SIGMA IS TO BE COMPUTED BY
+ NONMEM, THAT BLOCK WILL BE SET TO AN IDENTITY MATRIX DURING THAT
+ COMPUTATION. THIS COULD LEAD TO AN ARITHMETIC EXCEPTION.*
+
+ * THE MAXIMUM NUMBER OF WARNINGS OF ONE OR MORE TYPES WAS REACHED.
+ IT IS POSSIBLE THAT SOME WARNING MESSAGES WERE SUPPRESSED.
+
+License Registered to: Vertex Pharmaceuticals Inc
+Expiration Date:    14 JAN 2026
+Current Date:       21 MAR 2025
+Days until program expires : 298
+1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.5.0
+ ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
+ CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
+ AND ALISON BOECKMANN. IMPLEMENTATION, EFFICIENCY, AND STANDARDIZATION
+ PERFORMED BY NOUS INFOSYSTEMS.
+
+ PROBLEM NO.:         1
+ 031 SAEM
+0DATA CHECKOUT RUN:              NO
+ DATA SET LOCATED ON UNIT NO.:    2
+ THIS UNIT TO BE REWOUND:        NO
+ NO. OF DATA RECS IN DATA SET:        2
+ NO. OF DATA ITEMS IN DATA SET:   9
+ ID DATA ITEM IS DATA ITEM NO.:   2
+ DEP VARIABLE IS DATA ITEM NO.:   7
+ MDV DATA ITEM IS DATA ITEM NO.:  8
+0INDICES PASSED TO SUBROUTINE PRED:
+   4   3   6   0   0   0   5   0   0   0   0
+0LABELS FOR DATA ITEMS:
+ NMROW ID TIME EVID CMT AMT DV MDV BBW
+0(NONBLANK) LABELS FOR PRED-DEFINED ITEMS:
+ IPRED
+0FORMAT FOR DATA:
+ (9E6.0)
+
+ TOT. NO. OF OBS RECS:        0
+ TOT. NO. OF INDIVIDUALS:        1
+0LENGTH OF THETA:   5
+0DEFAULT THETA BOUNDARY TEST OMITTED:    NO
+0OMEGA HAS BLOCK FORM:
+  1
+  0  2
+  0  0  3
+  0  0  0  4
+  0  0  0  0  5
+0DEFAULT OMEGA BOUNDARY TEST OMITTED:    NO
+0SIGMA HAS BLOCK FORM:
+  1
+  0  2
+0DEFAULT SIGMA BOUNDARY TEST OMITTED:    NO
+0INITIAL ESTIMATE OF THETA:
+   0.8171E+00  0.4327E+01  0.2462E+01  0.5394E+01  0.2215E+01
+0INITIAL ESTIMATE OF OMEGA:
+ BLOCK SET NO.   BLOCK                                                                    FIXED
+        1                                                                                  YES
+                  0.0000E+00
+        2                                                                                   NO
+                  0.1731E+00
+        3                                                                                   NO
+                  0.3245E+00
+        4                                                                                  YES
+                  0.0000E+00
+        5                                                                                  YES
+                  0.0000E+00
+0INITIAL ESTIMATE OF SIGMA:
+ BLOCK SET NO.   BLOCK                                                                    FIXED
+        1                                                                                   NO
+                  0.8094E-01
+        2                                                                                  YES
+                  0.0000E+00
+0SIMULATION STEP OMITTED:    NO
+ OBJ FUNC EVALUATED:         NO
+ ORIGINAL DATA USED ON EACH NEW SIMULATION:         NO
+ SEEDS RESET ON EACH NEW SUPERSET ITERATION:        YES
+0SIMULATION RANDOM METHOD SELECTED (RANMETHOD): 4U
+SEED   1 RESET TO INITIAL: YES
+ SOURCE   1:
+   SEED1:    1086284251   SEED2:             0   PSEUDO-NORMAL
+0TABLES STEP OMITTED:    NO
+ NO. OF TABLES:           1
+ SEED NUMBER (SEED):    11456
+ RANMETHOD:             3U
+ MC SAMPLES (ESAMPLE):    300
+ WRES SQUARE ROOT TYPE (WRESCHOL): EIGENVALUE
+0-- TABLE   1 --
+0RECORDS ONLY:    ALL
+04 COLUMNS APPENDED:    NO
+ PRINTED:                NO
+ HEADER:                YES, COLUMN LABELS, NO TITLE
+ FILE TO BE FORWARDED:   NO
+ FORMAT:                S1PE11.4
+ IDFORMAT:
+ LFORMAT:
+ RFORMAT:
+ FIXED_EFFECT_ETAS:
+0USER-CHOSEN ITEMS:
+ NMROW PRED IPRED
+1DOUBLE PRECISION PREDPP VERSION 7.5.0
+
+ TWO COMPARTMENT MODEL WITH FIRST-ORDER ABSORPTION (ADVAN4)
+0MAXIMUM NO. OF BASIC PK PARAMETERS:   5
+0BASIC PK PARAMETERS (AFTER TRANSLATION):
+   BASIC PK PARAMETER NO.  1: ELIMINATION RATE (K)
+   BASIC PK PARAMETER NO.  2: CENTRAL-TO-PERIPH. RATE (K23)
+   BASIC PK PARAMETER NO.  3: PERIPH.-TO-CENTRAL RATE (K32)
+   BASIC PK PARAMETER NO.  5: ABSORPTION RATE (KA)
+ TRANSLATOR WILL CONVERT PARAMETERS
+ CL, V2, Q, V3 TO K, K23, K32 (TRANS4)
+0COMPARTMENT ATTRIBUTES
+ COMPT. NO.   FUNCTION   INITIAL    ON/OFF      DOSE      DEFAULT    DEFAULT
+                         STATUS     ALLOWED    ALLOWED    FOR DOSE   FOR OBS.
+    1         DEPOT        OFF        YES        YES        YES        NO
+    2         CENTRAL      ON         NO         YES        NO         YES
+    3         PERIPH.      ON         NO         YES        NO         NO
+    4         OUTPUT       OFF        YES        NO         NO         NO
+1
+ ADDITIONAL PK PARAMETERS - ASSIGNMENT OF ROWS IN GG
+ COMPT. NO.                             INDICES
+              SCALE      BIOAVAIL.   ZERO-ORDER  ZERO-ORDER  ABSORB
+                         FRACTION    RATE        DURATION    LAG
+    1            *           *           *           *           *
+    2            6           *           *           *           *
+    3            *           *           *           *           *
+    4            *           -           -           -           -
+             - PARAMETER IS NOT ALLOWED FOR THIS MODEL
+             * PARAMETER IS NOT SUPPLIED BY PK SUBROUTINE;
+               WILL DEFAULT TO ONE IF APPLICABLE
+0DATA ITEM INDICES USED BY PRED ARE:
+   EVENT ID DATA ITEM IS DATA ITEM NO.:      4
+   TIME DATA ITEM IS DATA ITEM NO.:          3
+   DOSE AMOUNT DATA ITEM IS DATA ITEM NO.:   6
+   COMPT. NO. DATA ITEM IS DATA ITEM NO.:    5
+
+0PK SUBROUTINE CALLED WITH EVERY EVENT RECORD.
+ PK SUBROUTINE NOT CALLED AT NONEVENT (ADDITIONAL OR LAGGED) DOSE TIMES.
+0ERROR SUBROUTINE CALLED WITH EVERY EVENT RECORD.
+1
+ SIMULATION STEP PERFORMED
+ SOURCE  1:
+    SEED1:     820559675   SEED2:   -1082627012
+ Elapsed simulation  time in seconds:     0.00
+ ESTIMATION STEP OMITTED:                 YES
+ Elapsed finaloutput time in seconds:     0.00
+ #CPUT: Total CPU Time in Seconds,        0.022
+Stop Time:
+Fri Mar 21 17:20:57 EDT 2025
