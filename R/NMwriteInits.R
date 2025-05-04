@@ -65,6 +65,7 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     text.before <- NULL
     type.elem <- NULL
     value.elem_lower <- NULL
+    value.elem_init_update <- NULL
     value.elem_init <- NULL
     value.elem_upper <- NULL
     value.elem <- NULL
@@ -150,7 +151,11 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
         
         ext.new <- NMreadExt(file.ext,as.fun="data.table")
 
-        inits.w <- mergeCheck(inits.w[,-("value.elem_init")],ext.new[,.(par.type,i,j,value.elem_init=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        ## inits.w <- mergeCheck(inits.w[,-("value.elem_init")],ext.new[,.(par.type,i,j,value.elem_init=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        inits.w <- mergeCheck(inits.w,ext.new[,.(par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        inits.w[value.elem_init!="SAME",value.elem_init:=value.elem_init_update]
+        inits.w[,value.elem_init_update:=NULL]
+
     }
 
     
