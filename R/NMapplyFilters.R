@@ -60,9 +60,10 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
 ### We leave meta data untouched. This part is due to a previous design of NMscanInput. 
     
     data.meta <- NMinfoDT(data)
-
+    
     text2 <- NMreadSection(lines=lines,section="DATA",keep.comments=FALSE)
     text3 <- sub(";.*$","",text2)
+    text3 <- gsub("\\t"," ",text3)
     
     ## replace the allowed IGN with IGNORE
     ## the single-chacter ones line @ or C. Here = is mandatory.
@@ -136,7 +137,7 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         expressions.sc <- c(expressions.sc,paste0("!grepl('^[",scs2,"]',`",name.c1,"`)"))
         scs <- scs[!grepl(regstring,scs)]
     }
-
+    
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
     
     ## translating expression-style ones

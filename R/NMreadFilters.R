@@ -38,6 +38,7 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
 
     text2 <- NMreadSection(lines=lines,section="DATA",keep.comments=FALSE)
     text3 <- sub(";.*$","",text2)
+    text3 <- gsub("\\t"," ",text3)
     
     ## replace the allowed IGN with IGNORE
     ## the single-chacter ones line @ or C. Here = is mandatory.

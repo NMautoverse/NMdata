@@ -319,6 +319,8 @@ NMreadParsText <- function(file,lines,format,
         dt.lines[,text.clean:=text]
 ### We want to keep comments - that's what we want to process
         dt.lines[,text.clean:=sub("^ *;.*","",text.clean)]
+        ### remove tabulators. Is this necessary?
+        dt.lines[,text.clean:=gsub("\\t","",text.clean)]
         dt.lines[,text.clean:=sub(paste0("\\$",section),"",text.clean,ignore.case=TRUE)]
         dt.lines[,text.clean:=gsub("BLOCK(.+)","",text.clean)]
         dt.lines[,text.clean:=sub("^ *$","",text.clean)]
@@ -334,8 +336,14 @@ NMreadParsText <- function(file,lines,format,
         dt.pars <- rbindlist(lapply(1:nrow(dt.lines.reduced),function(Nrow){
             fun.get.fields(dt.lines.reduced[Nrow,text.clean],res.fields)[,linenum:=dt.lines.reduced[Nrow,linenum]]
         }),
-            fill=TRUE)
-        colnames(dt.pars) <- c(res.fields$fields[1:(ncol(dt.pars)-1)],"linenum")
+        fill=TRUE)
+
+        
+        cnames.pars <- colnames(dt.pars)
+        n.newnames <- min(length(res.fields$fields), (ncol(dt.pars)-1))
+        cnames.pars[cnames.pars!="linenum"][1:n.newnames] <- res.fields$fields[1:n.newnames]
+        colnames(dt.pars) <- cnames.pars
+        ## colnames(dt.pars) <- c(res.fields$fields[1:(ncol(dt.pars)-1)],"linenum")
         
 
         dt.pars[,par.type:=toupper(section)]
@@ -393,8 +401,11 @@ NMreadParsText <- function(file,lines,format,
     if("THETA"%in%auto.idx){
         
         elems.theta <- NMreadInits(lines=lines,section="THETA",return="all",as.fun="data.table")$elements
-        thetas <- merge(thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE],
-                        elems.theta[type.elem=="init",.(par.type,linenum,i)],
+        thetas <- merge(
+            thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE]
+           ,
+            elems.theta[type.elem=="init"
+                                   ,.(par.type,linenum,i)],
                         by=c("par.type","linenum"),all.x=TRUE)
     }
     if("OMEGA"%in%auto.idx){
