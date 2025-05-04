@@ -136,28 +136,78 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     fun.file.ext <- NMdataDecideOption("file.ext")
     if(auto.ext){
         file <- fun.file.ext(file)
+
     }
 
+    slow <- FALSE
 
-    res.NMdat <- lapply(file,function(file){
-        this.model <- modelname(file)
-        NMreadTab(file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)[,(col.model):=this.model]
-    })
+### based on NMreadTab
+    if(!slow){
+
+        
+        res.NMdat <- lapply(1:length(file),function(nfile){
+            this.file <- file[[nfile]]
+            this.model <- modelname(this.file)
+            res <- try(NMreadTab(this.file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE))
+            res[,modelno:=nfile][
+               ,(col.model):=this.model]
+        })
+        if(any(sapply(res.NMdat,function(x) "try-error"%in%class(x)))){
+            slow <- TRUE
+        } else {
+            
+            if(tableno=="min"){
+                res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])
+            }
+            if(tableno=="max"){
+                res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==max(TABLENO)])
+            }
+            if(is.numeric(tableno)){
+                res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==tableno])
+            }
+
+        }}
+
+    
+    if(slow){
+        res.NMdat <- lapply(1:length(file),function(nfile){
+            this.file <- file[[nfile]]
+            this.model <- modelname(this.file)
+          
+            res <- NMreadTabSlow(this.file)#,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)
+            res <- lapply(res,function(tab){
+                tab[,modelno:=nfile][
+                   ,(col.model):=this.model]
+            })
+
+            if(tableno=="min"){
+                tableno <- 1
+            }
+            if(tableno=="max"){
+                tableno <- length(res)
+            }
+            if(tableno=="all"){
+                res <- rbindlist(res,fill=TRUE)
+            }
+            if(is.numeric(tableno)){
+                res <- res[[tableno]]
+            }
+
+            res
+        })
+    }
+
     
 
-    if(tableno=="min"){
-        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])
-    }
-    if(tableno=="max"){
-        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==max(TABLENO)])
-    }
-    if(is.numeric(tableno)){
-        res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==tableno])
-    }
-    
+
 
 
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
+    dt.n <- unique(res.NMdat[,c("modelno",col.model),wit=FALSE])[,.(Nmodel=uniqueN(get(col.model)),Nmodelno=uniqueN(modelno),.N)]
+    if( dt.n[,Nmodel]!=dt.n[,N] || dt.n[,Nmodelno]!=dt.n[,N] ){
+        res.NMdat[,(col.model):=paste(get(col.model),modelno,sep="_")]
+    }
+    res.NMdat[,modelno:=NULL]
     
     ## NONMEM USERS GUIDE
     ## INTRODUCTION TO NONMEM 7.5.0
@@ -181,66 +231,43 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     ## res.NMdat
-
+    
     ## pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
     pars <- res.NMdat[variable%in%dt.codes$variable]
     pars <- addTableStep(pars,keep.table.name=FALSE)
     obj <- NULL
     if(nrow(pars)){
-        
-        pars <- melt(pars,id.vars=c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),variable.name="parameter")
-        pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
+        id.vars <- intersect(c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),colnames(pars))
+        pars <- melt(pars,id.vars=id.vars,variable.name="parameter")
+        ## pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
+        pars <- dcast(pars[,!("ITERATION")],...~variable,value.var="value")
 
         pars <- addParType(pars)
-
+        
         setcolorder(pars,intersect(c(col.model,"TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
         
         ## obj <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, par.type,parameter,value)]
         obj <- pars[parameter%in%c("SAEMOBJ","OBJ")]
         cols.drop <- intersect(colnames(pars),cc(i,j,FIX,est,cond,eigCor ,partLik ,se ,seStdDevCor, stdDevCor ))
         obj[,(cols.drop):=NULL]
+
         pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
-        
-### this setorder call doesnt work - unsure why
-        ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
-        pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
-        ## est is just a copy of value for backward compatibility
-        pars[,est:=value]
 
-        ### add OMEGA block information based on off diagonal values
-        tab.i <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
-                       pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
-                # include i==j so that if an OMEGA is fixed to zero it is still assigned an iblock
-                                i==j|abs(value)>1e-9,.(iblock=min(i,j)),by=.(par.type,i)]
-        tab.i[,blocksize:=.N,by=.(par.type,iblock)]
-
-        pars <- mergeCheck(pars,tab.i,by=cc(par.type,i),all.x=T,quiet=TRUE)
-
-        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,value)]
-
-        ### 
-        pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
-        pars[!is.na(iblock),imin:=min(i),by=.(iblock)]
-        pars[j<imin,(c("iblock","blocksize")):=list(NA,NA)]
-        pars[,imin:=NULL]
-
-        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,imin,value)]
-        
-        pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]
-        pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i&is.na(blocksize),blocksize:=1]
-### done add OMEGA/SIGMA blocks
+        pars <- addBlocks(pars)
         
     }
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     iterations <- addTableStep(iterations,keep.table.name=FALSE)
-    iterations <- melt(iterations,id.vars=cc(model,TABLENO,NMREP,table.step,ITERATION),variable.name="parameter")
+    id.vars <- intersect(c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),colnames(iterations))    
+    iterations <- melt(iterations,id.vars=id.vars,variable.name="parameter")
     iterations <- addParType(iterations)
-
+    
     res <- list(pars=pars,iterations=iterations,obj=obj)
     res <- lapply(res,as.fun)
 
+    
     if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
     if(return=="obj") return(res$obj)

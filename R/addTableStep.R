@@ -7,6 +7,12 @@ addTableStep <- function(dt,keep.table.name=FALSE){
     table.name <- NULL
     table.step <- NULL
 
+    
+    if(!"table.name" %in% colnames(dt)){
+        message("table.name is not a column in data. Nothing done.")
+        return(dt[])
+    }
+
     dt[,table.step:="Unknown"]
     dt[grepl("First Order",table.name),table.step:="FO"]
     dt[grepl("First Order Conditional Estimation",table.name),table.step:="FOCE"]
