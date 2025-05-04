@@ -135,7 +135,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
         write.RData=FALSE
         write.rds=FALSE
     }
-    ## args <- getArgs()
+
     
     args <- getArgs(sys.call(),parent.frame())
     
@@ -176,7 +176,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
 
     if(missing(genText)) genText <- NULL
     if(is.null(genText)) genText <- "csv"%in%formats.write
-    
+
     name.data <- deparse(substitute(data))
     
     if(missing(quiet)) quiet <- NULL
@@ -339,7 +339,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        data.csv <- data
+        data.csv <- data.dt
         if(csv.trunc.as.nm){
             
             string.trunc <- sub(" *\\$INPUT *","",paste(NMtext$INPUT,collapse=" "))
