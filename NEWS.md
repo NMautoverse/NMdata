@@ -1,3 +1,14 @@
+# NMdata 0.2.1
+
+## Bugfixes
+`NMreadExt()` would in some situations with multiple estimation steps
+not be able to read the `.ext` file. This has been fixed.
+
+## Other improvements
+
+* Support for tabulator characters in Nonmem data filters and control
+  stream comments.
+
 # NMdata 0.2.0
 
 ## New features 

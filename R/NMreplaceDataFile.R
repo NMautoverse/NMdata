@@ -34,10 +34,6 @@ NMreplaceDataFile <- function(files,file.pattern,dir,path.data,newfile=file.mod,
 
     all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir,quiet=quiet)
     
-    ## newfile
-    ## if(!missing(newfile)&&!is.null(newfile) && length(all.files)>1) {
-    ##     stop("if multiple files are edited, newfile must be missing or NULL.")
-    ## }
 
     is.missing.newfile <- missing(newfile)
     
