@@ -6,57 +6,49 @@
 addBlocks <- function(pars,col.model="model"){
 
     . <- NULL
+    blocksize <- NULL
+    est <- NULL
+    i <- NULL
+    iblock <- NULL
+    imin <- NULL
+    j <- NULL
+    model <- NULL
     parameter <- NULL
     par.type <- NULL
-    i <- NULL
-    j <- NULL
-    est <- NULL
     value <- NULL
-    iblock <- NULL
-    blocksize <- NULL
-    imin <- NULL
 
     
-        ## pars <- melt(pars,id.vars=c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),variable.name="parameter")
-        ## pars <- dcast(pars,model+TABLENO+NMREP+table.step+parameter~variable,value.var="value")
+    pars <- addParType(pars)
 
-        pars <- addParType(pars)
-
-        setcolorder(pars,intersect(c(col.model,"TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
-        
-        ## obj <- pars[parameter%in%c("SAEMOBJ","OBJ"),  .(model, TABLENO, NMREP, table.step, par.type,parameter,value)]
-##        obj <- pars[parameter%in%c("SAEMOBJ","OBJ")]
- ##       cols.drop <- intersect(colnames(pars),cc(i,j,FIX,est,cond,eigCor ,partLik ,se ,seStdDevCor, stdDevCor ))
-##        obj[,(cols.drop):=NULL]
-        pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
-        
+    setcolorder(pars,intersect(c(col.model,"TABLENO","NMREP","table.step","par.type","parameter","par.name","i","j","FIX","value", "cond","eigCor",   "partLik",   "se", "seStdDevCor", "stdDevCor", "termStat"),colnames(pars)))
+    
+    pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
+    
 ### this setorder call doesnt work - unsure why
-        ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
-        pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
-        ## est is just a copy of value for backward compatibility
-        pars[,est:=value]
+    ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
+    pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+    ## est is just a copy of value for backward compatibility
+    pars[,est:=value]
 
-        ### add OMEGA block information based on off diagonal values
-        tab.i <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
-                       pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
-                # include i==j so that if an OMEGA is fixed to zero it is still assigned an iblock
-                                i==j|abs(value)>1e-9,.(iblock=min(i,j)),by=.(par.type,i)]
+### add OMEGA block information based on off diagonal values
+    tab.i <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
+                   pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
+                                        # include i==j so that if an OMEGA is fixed to zero it is still assigned an iblock
+        i==j|abs(value)>1e-9,.(iblock=min(i,j)),by=.(par.type,i)]
     tab.i[,blocksize:=.N,by=.(par.type,iblock)]
 
     pars <- mergeCheck(pars,tab.i,by=cc(par.type,i),all.x=T,quiet=TRUE)
 
-        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,value)]
 
-        ### 
-        pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
-        pars[!is.na(iblock),imin:=min(i),by=.(iblock)]
-        pars[j<imin,(c("iblock","blocksize")):=list(NA,NA)]
-        pars[,imin:=NULL]
+### 
+    pars[abs(i-j)>(blocksize-1),(c("iblock","blocksize")):=list(NA,NA)]
+    pars[!is.na(iblock),imin:=min(i),by=.(iblock)]
+    pars[j<imin,(c("iblock","blocksize")):=list(NA,NA)]
+    pars[,imin:=NULL]
 
-        ## pars[par.type%in%c("OMEGA","SIGMA"),.(i,j,iblock,blocksize,imin,value)]
-        
-        pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]
-        pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i&is.na(blocksize),blocksize:=1]
+    
+    pars[par.type%in%c("OMEGA","SIGMA")&i==j&is.na(iblock),iblock:=i]
+    pars[par.type%in%c("OMEGA","SIGMA")&i==j&iblock==i&is.na(blocksize),blocksize:=1]
 ### done add OMEGA/SIGMA blocks
 
     pars

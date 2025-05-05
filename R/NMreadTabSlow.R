@@ -4,6 +4,10 @@
 ##'
 ##' @param file A Nonmem table file. Can be output tables, or one of
 ##'     the several different results files from Nonmem.
+##' @param col.table.name Name of the column (to be created)
+##'     containing the "table name" which is derived from the Nonmem
+##'     description of the table sometimes pasted above the table
+##'     data.
 ##' @import data.table
 ##' @details `NMreadTabSlow` reads parameter tables from Nonmem very
 ##'     slowly, and most often `NMreadTab` is a better function to
@@ -41,9 +45,6 @@ NMreadTabSlow <- function(file,col.table.name=TRUE){
     dt.ts3[,(col.table.name):=sub("^ *TABLE NO\\. *([1-9][0-9]*) *: *(.*)$","\\2",lines[start.idx])]
     
 
-    dt.ts3
-    ## dt.ts3[,fread(text=lines[(start.idx+1):end.idx]),by=tableno]
-    
     list.res <- lapply(
         split(dt.ts3,by=c("TABLENO",col.table.name))
        ,function(x){
