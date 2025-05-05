@@ -89,7 +89,7 @@ contain</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadTabSlow</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMreadTabSlow</span><span class="op">(</span><span class="va">file</span>, col.table.name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -99,6 +99,13 @@ contain</p>
 <dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>A Nonmem table file. Can be output tables, or one of
 the several different results files from Nonmem.</p></dd>
+
+
+<dt id="arg-col-table-name">col.table.name<a class="anchor" aria-label="anchor" href="#arg-col-table-name"></a></dt>
+<dd><p>Name of the column (to be created)
+containing the "table name" which is derived from the Nonmem
+description of the table sometimes pasted above the table
+data.</p></dd>
 
 </dl></div>
     <div id="details">
