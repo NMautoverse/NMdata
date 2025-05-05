@@ -89,8 +89,11 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     imin <- NULL
     j <- NULL
     ITERATION <- NULL
+    N <- NULL
+    Nmodelno <- NULL
     NMREP <- NULL
     model <- NULL
+    modelno <- NULL
     par.type <- NULL
     parameter <- NULL
     TABLENO <- NULL

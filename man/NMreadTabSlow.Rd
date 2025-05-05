@@ -5,11 +5,16 @@
 \title{Read Nonmem table files without assumptions about what tables they
 contain}
 \usage{
-NMreadTabSlow(file)
+NMreadTabSlow(file, col.table.name = TRUE)
 }
 \arguments{
 \item{file}{A Nonmem table file. Can be output tables, or one of
 the several different results files from Nonmem.}
+
+\item{col.table.name}{Name of the column (to be created)
+containing the "table name" which is derived from the Nonmem
+description of the table sometimes pasted above the table
+data.}
 }
 \description{
 Read Nonmem table files without assumptions about what tables they
