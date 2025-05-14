@@ -2,7 +2,7 @@ context("NMdataConf")
 
 NMdataConf(reset=TRUE)
 
-    ## can't compare functions
+## can't compare functions
 dropFuns <- function(x){
     x$as.fun <- NULL
     x$file.mod <- NULL
@@ -166,3 +166,22 @@ test_that("use.rds - deprecated",{
     ## compareCols(readRDS(fileRef),defaults)
     
 })
+
+
+test_that("check reported summary of changes",{
+
+    fileRef <- "testReference/NMdataConf_04.rds"
+
+    NMdataConf(reset=TRUE)
+    afun <- identity
+    res=capture_message(
+        NMdataConf(modelname=afun,quiet=FALSE)
+    )
+    
+    expect_equal_to_reference(res,fileRef)
+
+    ## compareCols(readRDS(fileRef),defaults)
+    
+})
+
+
