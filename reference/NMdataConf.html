@@ -22,7 +22,7 @@ data.frames)."><meta property="og:image" content="https://nmautoverse.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.905</span>
       </span>
     </div>
 
@@ -62,13 +62,13 @@ data.frames)."><meta property="og:image" content="https://nmautoverse.github.io/
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
+  <a href="https://github.com/NMautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/nmautoverse/NMdata/" class="external-link">
+  <a href="https://github.com/NMautoverse/NMdata/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
 
   </a>
@@ -83,7 +83,7 @@ data.frames)."><meta property="og:image" content="https://nmautoverse.github.io/
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure default behavior of NMdata functions</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/R/NMdataConf.R" class="external-link"><code>R/NMdataConf.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/NMautoverse/NMdata/blob/master/R/NMdataConf.R" class="external-link"><code>R/NMdataConf.R</code></a></small>
     <div class="hidden name"><code>NMdataConf.Rd</code></div>
     </div>
 
@@ -97,7 +97,7 @@ data.frames).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span>, allow.unknown <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">NMdataConf</span><span class="op">(</span><span class="va">...</span>, allow.unknown <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -115,10 +115,26 @@ examples for how to use.</p></dd>
 
 <dt id="arg-allow-unknown">allow.unknown<a class="anchor" aria-label="anchor" href="#arg-allow-unknown"></a></dt>
 <dd><p>Allow to store configuration of variables
-    that are not pre-defined in NMdata. This should only be needed
-    in cases where say another package wants to use the NMdata
-    configuration system for variables unknown to NMdata.</p>
-<p>Parameters that can be controlled are:</p>
+that are not pre-defined in NMdata. This should only be needed
+in cases where say another package wants to use the NMdata
+configuration system for variables unknown to NMdata.</p></dd>
+
+
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
+<dd><p>If <code>FALSE</code>, an overview of the configuration
+changes is summarized in a printed table. This is useful for
+transparency when sourcing a file with configuration. Default
+is <code>TRUE</code>.</p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>If no arguments given, a list of active settings. If
+    arguments given and no issues found, TRUE invisibly.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Parameters that can be controlled are:</p>
 <ul><li><p>args.fread Arguments passed to fread when reading _input_
 data files (fread options for reading Nonmem output tables cannot
 be configured at this point). If you change this, you are starting
@@ -228,17 +244,7 @@ all relevant variables in the output tables. Default is TRUE.</p></li>
 <li><p>use.rds Deprecated, use <code>formats.read</code> and
 <code>formats.write</code> instead. Affects <code><a href="NMscanData.html">NMscanData()</a></code>,
 <code><a href="NMscanInput.html">NMscanInput()</a></code>, <code><a href="NMwriteData.html">NMwriteData()</a></code>.</p></li>
-</ul></dd>
-
-</dl></div>
-    <div id="value">
-    <h2>Value</h2>
-    <p>If no arguments given, a list of active settings. If
-    arguments given and no issues found, TRUE invisibly.</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>Recommendation: Use
+</ul><p>Recommendation: Use
 this function transparently in the code and not in a configuration file
 hidden from other users.</p>
     </div>
@@ -276,7 +282,7 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(as.data.frame(list()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     UseMethod("as.data.frame")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f0fe90a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5d6f30&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:base&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check.time</span>
@@ -314,32 +320,32 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".ext")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1007ae8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f3aa0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".cov")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1007420&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f7208&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.phi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".phi")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1006d58&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f6b40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.shk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     fnExtension(file, ext = ".shk")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1006690&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f6478&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
@@ -353,8 +359,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ctl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1005fc8&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f5db0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file.data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "extract"</span>
@@ -365,8 +371,8 @@ hidden from other users.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $modelname</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (file) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fnExtension(basename(file), "")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5610f1008f88&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5610f0fec5a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x56232d5f8d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56232d5d6600&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
