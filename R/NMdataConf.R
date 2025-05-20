@@ -179,7 +179,7 @@
 ##'     arguments given and no issues found, TRUE invisibly.
 ##' @export
 
-NMdataConf <- function(...,allow.unknown=FALSE){
+NMdataConf <- function(...,allow.unknown=FALSE,summarize=FALSE){
     
     dots <- list(...)
     if(length(dots)==0){
@@ -264,6 +264,11 @@ NMdataConf <- function(...,allow.unknown=FALSE){
     for(I in 1:N.args){
         .NMdata$options[[names.args[I]]] <- args[[I]]
     }
+
+    if(summarize){
+        message_dt(data.frame(unlist(dots)))
+    }
+    
     invisible(TRUE)
 }
 
