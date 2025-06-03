@@ -58,7 +58,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                           keepEmpty, keepName,
                           keepComments, asOne,
                           ...){
-
+    
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     as.one <- deprecatedArg("asOne","as.one",args=args)
@@ -117,16 +117,29 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
         ## }
         res.text <- res
         
-        names(res) <-
-            unlist(
-                lapply(res.text,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
-            )
+
+            new.names <- unlist(
+                ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+                ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+                lapply(res.text,function(x) {
+                    xthis <- strsplit(x[1]," ")[[1]][1]
+                    name.this <- regmatches(xthis,gregexpr("\\$[^ ]*$",xthis))
+                    if(name.this=="character(0)") name.this <- "HEADER"
+                    name.this <- sub("^ *\\$","",name.this)
+                    name.this
+                }
+                ))
+        ## test that if any, only the first is called "$HEADER"
+        
+
+        names(res) <- new.names
         
         res2 <- lapply(unique(names(res)),function(x)do.call(c,res[names(res)==x]))
         names(res2) <- unique(names(res))
-        res2 <- lapply(res2,function(x){names(x) <- NULL
-            x}
-            )
+        res2 <- lapply(res2,function(x){
+            names(x) <- NULL
+            x})
+        
         if(keepName.arg==FALSE){
             
             names.res2 <- names(res2)
