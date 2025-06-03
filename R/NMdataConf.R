@@ -187,7 +187,8 @@
 ##' @import data.table
 ##' @export
 
-NMdataConf <- function(...,allow.unknown=FALSE,quiet=TRUE){
+NMdataConf <- function(...,allow.unknown=FALSE,summarize=FALSE){
+
     
     dots <- list(...)
     if(length(dots)==0){
@@ -273,7 +274,8 @@ NMdataConf <- function(...,allow.unknown=FALSE,quiet=TRUE){
         .NMdata$options[[names.args[I]]] <- args[[I]]
     }
 
-    if(!quiet){
+
+    if(summarize){
         args.print <- args
         args.print <- lapply(args.print,function(x) {
             if(is.function(x)) x <- capture.output(print(x))

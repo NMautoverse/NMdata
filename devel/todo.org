@@ -259,8 +259,6 @@ I don't think I ever tried this. What will NMscanData do if input data
 has no headers, and there are no filters? I think NMapplyFilters may
 fail.
 *** NMcheckData
-**** TODO [#A] NMcheckData does not find NA in covs
-NMcheckData(dt.sim,col.usubjid="USUBJID",col.row="ROWCPT",covs="WTBL",cols.num="PDOSAMT")
 **** TODO [#A] Classify findings
 NOTE, WARN, ERR -> just in table, warning(), stop()?
 **** TODO [#A] Argument to disable warnings and stop?
