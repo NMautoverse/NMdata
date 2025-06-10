@@ -41,6 +41,12 @@ test_that("Using control stream file",{
     res1a <- fix.time(res1a,meta=F)
     expect_equal_to_reference(res1a,fileRef)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref$datafile
+        res1a$datafile
+    }
+    
     ## res.ref <- readRDS(fileRef)
     ## res <- lapply(names(res.ref),function(name){
     ##     expect_equal(res.ref[[name]],res1a[[name]])

@@ -18,7 +18,13 @@
 ##'     that are not pre-defined in NMdata. This should only be needed
 ##'     in cases where say another package wants to use the NMdata
 ##'     configuration system for variables unknown to NMdata.
+##' @param summarize If \code{TRUE}, an overview of the configuration
+##'     changes is summarized in a printed table. This is useful for
+##'     transparency when sourcing a file with configuration. Default
+##'     is \code{FALSE}.
 ##'
+##' @details
+##' 
 ##' Parameters that can be controlled are:
 ##'
 ##' \itemize{
@@ -162,7 +168,8 @@
 ##' \code{NMscanInput()}, \code{NMwriteData()}.
 ##'
 ##' }
-##' @details Recommendation: Use
+##'
+##' Recommendation: Use
 ##' this function transparently in the code and not in a configuration file
 ##' hidden from other users.
 ##' 
@@ -177,9 +184,11 @@
 ##' NMdataConf(reset=TRUE)
 ##' @return If no arguments given, a list of active settings. If
 ##'     arguments given and no issues found, TRUE invisibly.
+##' @import data.table
 ##' @export
 
-NMdataConf <- function(...,allow.unknown=FALSE){
+NMdataConf <- function(...,allow.unknown=FALSE,summarize=FALSE){
+
     
     dots <- list(...)
     if(length(dots)==0){
@@ -264,6 +273,24 @@ NMdataConf <- function(...,allow.unknown=FALSE){
     for(I in 1:N.args){
         .NMdata$options[[names.args[I]]] <- args[[I]]
     }
+
+
+    if(summarize){
+        args.print <- args
+        args.print <- lapply(args.print,function(x) {
+            if(is.function(x)) x <- capture.output(print(x))
+            x <- sub("<bytecode:[^>]*>","",x)
+            x <- sub("<environment:[^>]*>","",x)
+            x <- x[!grepl("^ *$",x)]
+            ## x <- capture.output(cat(paste(x,collapse="\n")))
+            x <- paste(x,collapse="\n ")
+            x
+        })
+        
+        pars.print <- data.table(arg=names.args,value=unlist(args.print))
+        message_dt(pars.print)
+    }
+    
     invisible(TRUE)
 }
 

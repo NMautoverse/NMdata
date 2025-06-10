@@ -4,7 +4,7 @@
 \alias{NMdataConf}
 \title{Configure default behavior of NMdata functions}
 \usage{
-NMdataConf(..., allow.unknown = FALSE)
+NMdataConf(..., allow.unknown = FALSE, summarize = FALSE)
 }
 \arguments{
 \item{...}{NMdata options to modify. These are named arguments,
@@ -15,10 +15,28 @@ an argument, the argument is reset to default.  is See
 examples for how to use.}
 
 \item{allow.unknown}{Allow to store configuration of variables
-    that are not pre-defined in NMdata. This should only be needed
-    in cases where say another package wants to use the NMdata
-    configuration system for variables unknown to NMdata.
+that are not pre-defined in NMdata. This should only be needed
+in cases where say another package wants to use the NMdata
+configuration system for variables unknown to NMdata.}
 
+\item{summarize}{If \code{TRUE}, an overview of the configuration
+changes is summarized in a printed table. This is useful for
+transparency when sourcing a file with configuration. Default
+is \code{FALSE}.}
+}
+\value{
+If no arguments given, a list of active settings. If
+    arguments given and no issues found, TRUE invisibly.
+}
+\description{
+Configure default behavior across the functions in NMdata rather
+than typing the arguments in all function calls. Configure for
+your file organization, data set column names, and other NMdata
+behavior. Also, you can control what data class NMdata functions
+return (say data.tables or tibbles if you prefer one of those over
+data.frames).
+}
+\details{
 Parameters that can be controlled are:
 
 \itemize{
@@ -161,21 +179,8 @@ all relevant variables in the output tables. Default is TRUE.
 \code{formats.write} instead. Affects \code{NMscanData()}, 
 \code{NMscanInput()}, \code{NMwriteData()}.
 
-}}
 }
-\value{
-If no arguments given, a list of active settings. If
-    arguments given and no issues found, TRUE invisibly.
-}
-\description{
-Configure default behavior across the functions in NMdata rather
-than typing the arguments in all function calls. Configure for
-your file organization, data set column names, and other NMdata
-behavior. Also, you can control what data class NMdata functions
-return (say data.tables or tibbles if you prefer one of those over
-data.frames).
-}
-\details{
+
 Recommendation: Use
 this function transparently in the code and not in a configuration file
 hidden from other users.

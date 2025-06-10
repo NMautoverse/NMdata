@@ -8,10 +8,6 @@
 ##'     lines also.
 ##' @param lines Text lines to process. This is an alternative to
 ##'     using the file argument.
-##' @param text Use this argument if the text to process is one long
-##'     character string, and indicate the line separator with the
-##'     linesep argument (handled by NMextractText). Use only one of
-##'     file, lines, and text.
 ##' @param section The name of section to extract without
 ##'     "$". Examples: "INPUT", "PK", "TABLE", etc. Not case
 ##'     sensitive.
@@ -38,6 +34,10 @@
 ##' @param clean.spaces If TRUE, leading and trailing are removed, and
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
+##' @param text Deprecated, use `lines`. Use this argument if the text
+##'     to process is one long character string, and indicate the line
+##'     separator with the linesep argument (handled by
+##'     NMextractText). Use only one of file, lines, and text.
 ##' @param keepComments Deprecated. See keep.comments.
 ##' @param keepEmpty Deprecated. See keep.empty.
 ##' @param keepName Deprecated. See keep.name.
@@ -58,7 +58,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
                           keepEmpty, keepName,
                           keepComments, asOne,
                           ...){
-
+    
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     as.one <- deprecatedArg("asOne","as.one",args=args)
@@ -67,6 +67,8 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
     keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
     keep.name <- deprecatedArg("keepName","keep.name",args=args)
     keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
+
+    lines <- getLines(file=file,lines=lines)
     
     if(missing(section)||is.null(section)){
         section="."
@@ -85,7 +87,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
         match.exactly <- !string.start%in%c("COV","EST","SIM")
     }
     
-    res <- NMextractText(file=file, lines=lines, text=text, section=section,
+    res <- NMextractText(lines=lines, text=text, section=section,
                          ## this wrapper is especially made for "$" sections
                          char.section="\\$",
                          return=return,
@@ -117,16 +119,30 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
         ## }
         res.text <- res
         
-        names(res) <-
-            unlist(
-                lapply(res.text,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
-            )
+
+        new.names <- unlist(
+            ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+            ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+            lapply(res.text,function(x) {
+                xthis <- strsplit(x[1]," ")[[1]][1]
+                name.this <- regmatches(xthis,gregexpr("\\$[^ ]*$",xthis))
+          #      if(name.this=="character(0)") name.this <- "HEADER"
+                name.this <- sub("^ *\\$","",name.this)
+                name.this
+            }
+            ))
+        ## test that if any, only the first is called "$HEADER"
+        
+        ##if(name.this=="character(0)") name.this <- "HEADER"        
+
+        names(res) <- new.names
         
         res2 <- lapply(unique(names(res)),function(x)do.call(c,res[names(res)==x]))
         names(res2) <- unique(names(res))
-        res2 <- lapply(res2,function(x){names(x) <- NULL
-            x}
-            )
+        res2 <- lapply(res2,function(x){
+            names(x) <- NULL
+            x})
+        
         if(keepName.arg==FALSE){
             
             names.res2 <- names(res2)

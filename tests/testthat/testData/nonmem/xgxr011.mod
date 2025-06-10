@@ -1,3 +1,4 @@
+;; this is a comment
 $PROBLEM    PK. NO ID IN FIRSTONLY TABLE
 
 ;@ Variables 17/20 @;

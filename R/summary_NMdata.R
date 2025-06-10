@@ -127,14 +127,7 @@ print.summary_NMdata <- function(x,...){
     if(!is.data.table(vars)){
         vars <- as.data.table(vars)
     }
-    
-    tabs.out <- copy(x$tables)
-    if(!is.data.table(tabs.out)){
-        tabs.out <- as.data.table(tabs.out)
-    }
 
-    
-    
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        inc=c("included","not")),
@@ -148,7 +141,11 @@ print.summary_NMdata <- function(x,...){
     ## calc number of used and available rows
     ## Since this is based on NMinfo(res,"columns"), we know the table is used
     
-    
+
+    tabs.out <- copy(x$tables)
+    if(!is.data.table(tabs.out)){
+        tabs.out <- as.data.table(tabs.out)
+    } 
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]

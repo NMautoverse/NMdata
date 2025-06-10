@@ -111,7 +111,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
 #### Section start: Pre-process arguments ####
-
+    
     
 ### the lst file only contains the name of the data file, not the path
 ### to it. So we need to find the .mod instead.

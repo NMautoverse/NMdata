@@ -6,7 +6,9 @@ test_that("basic",{
     
     file.lst <- "testData/nonmem/xgxr001.lst"
 
-    res <- capture_output(NMscanData(file=file.lst,  order.columns = F, merge.by.row=FALSE, check.time = FALSE))
+    res <- capture_output(
+        NMscanData(file=file.lst,  order.columns = F, merge.by.row=FALSE, check.time = FALSE)
+    )
     
     
     expect_equal_to_reference(res,fileRef,version=2)

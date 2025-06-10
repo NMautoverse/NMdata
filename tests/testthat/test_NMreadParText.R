@@ -167,7 +167,7 @@ $SIGMA 1
     lines <- strsplit(text,split="\n")[[1]]
 
     res <- NMreadParsText(lines=lines,format="%init;[%num];%symbol (%unit)",
-                          format.omega="%init            ; %symbol                ; %num ; %type   ; %label ; %unit",field.idx="num"
+                          format.omega="%init  ; %symbol     ; %num ; %type   ; %label ; %unit",field.idx="num"
                           ## ,use.idx=T
                           )
 
@@ -181,6 +181,25 @@ $SIGMA 1
     }
 
 })
+
+
+    text <- c("
+; matches format
+$THETA  (.1)             ;[1]; LTVKA (mL/h)
+$OMEGA  BLOCK(3)
+0.126303  ;    IIV.CL  ; 1   ;IIV     ;Between-subject variability on CL;-
+
+0.024  0.127  ;    IIV.V2  ; 2   ;IIV     ;Between-subject variability on V2;-
+  0.2 0.2   0.38  ; IIV.CL.V3.cov  ; 3 ;IIV     ;Covariance of BSV on CL and V3;-
+$OMEGA 0 FIX ; IIV.KA ; 4  ;IIV     ;Between-subject variability on KA;-
+$SIGMA 1
+")
+    lines <- strsplit(text,split="\n")[[1]]
+
+res <- NMreadParsText(lines=lines,format="%init;[%num];%symbol (%unit)",
+                          format.omega="%init  ; %symbol     ; %num ; %type   ; %label ; %unit",field.idx="num"
+                          ## ,use.idx=T
+                          )
 
 
 test_that("OMEGA SAME",{

@@ -14,5 +14,10 @@ test_that("basic",{
     res1$path.fst <- basename(res1$path.fst)
 
     expect_equal_to_reference(res1,fileRef,version=2)
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res1
+    }
 })
 

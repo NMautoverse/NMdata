@@ -641,7 +641,7 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
                       cols.num)
 
     
-
+    
 ##### I believe this is covered altogether as part of cols.num.all.
     ##     ## cols.num is a named list. Names are subsets.
     if(!is.null(cols.num.all

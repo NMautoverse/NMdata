@@ -1,7 +1,7 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.2.0.904
+Version: 0.2.0.907
 Authors@R:
   c(person(given="Philip", family="Delff",email = "philip@delff.dk",role = c("aut", "cre")),
     person("Brian", "Reilly", email = "reilly.brian.m@gmail.com",role = c("ctb")),
@@ -30,6 +30,6 @@ Suggests:
   htmltools,
   spelling
 Encoding: UTF-8
-BugReports: https://github.com/nmautoverse/NMdata/issues
+BugReports: https://github.com/NMautoverse/NMdata/issues
 Language: en-US
-URL: https://nmautoverse.github.io/NMdata/
+URL: https://NMautoverse.github.io/NMdata/

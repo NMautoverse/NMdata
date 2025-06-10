@@ -6,6 +6,8 @@ test_that("basic",{
     fileRef <- "testReference/NMcheckColnames_1.rds"
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
+
+    ## lines.data <- NMreadSection(file=file.lst,section="DATA",keep.name=FALSE,keep.comments=FALSE,keep.empty=FALSE)
     
     res1 <- NMcheckColnames(file=file.lst,quiet=TRUE)
     ## dim(res1)

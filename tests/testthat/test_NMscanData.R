@@ -1022,3 +1022,5 @@ test_that("inside lappy",{
     expect_equal(dims1[,uniqueN(ncols)],1)
 
 })
+
+

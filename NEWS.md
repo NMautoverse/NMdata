@@ -1,7 +1,13 @@
 # NMdata 0.2.1
 
+## New Features
+* `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
+  overview of the configuration changes is summarixfzed in a printed
+  table. This is useful for transparency when sourcing a file with
+  configuration. Default is \code{TRUE}.
+
 ## Bugfixes
-`NMreadExt()` would in some situations with multiple estimation steps
+* `NMreadExt()` would in some situations with multiple estimation steps
 not be able to read the `.ext` file. This has been fixed.
 
 ## Other improvements
