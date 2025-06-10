@@ -30,10 +30,10 @@ lines also.}
 \item{lines}{Text lines to process. This is an alternative to
 using the file argument.}
 
-\item{text}{Use this argument if the text to process is one long
-character string, and indicate the line separator with the
-linesep argument (handled by NMextractText). Use only one of
-file, lines, and text.}
+\item{text}{Deprecated, use `lines`. Use this argument if the text
+to process is one long character string, and indicate the line
+separator with the linesep argument (handled by
+NMextractText). Use only one of file, lines, and text.}
 
 \item{section}{The name of section to extract without
 "$". Examples: "INPUT", "PK", "TABLE", etc. Not case

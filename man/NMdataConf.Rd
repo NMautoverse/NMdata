@@ -4,7 +4,7 @@
 \alias{NMdataConf}
 \title{Configure default behavior of NMdata functions}
 \usage{
-NMdataConf(..., allow.unknown = FALSE, quiet = TRUE)
+NMdataConf(..., allow.unknown = FALSE, summarize = FALSE)
 }
 \arguments{
 \item{...}{NMdata options to modify. These are named arguments,
@@ -19,10 +19,10 @@ that are not pre-defined in NMdata. This should only be needed
 in cases where say another package wants to use the NMdata
 configuration system for variables unknown to NMdata.}
 
-\item{quiet}{If \code{FALSE}, an overview of the configuration
+\item{summarize}{If \code{TRUE}, an overview of the configuration
 changes is summarized in a printed table. This is useful for
 transparency when sourcing a file with configuration. Default
-is \code{TRUE}.}
+is \code{FALSE}.}
 }
 \value{
 If no arguments given, a list of active settings. If

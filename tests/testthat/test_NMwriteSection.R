@@ -14,6 +14,14 @@ test_that("basic",{
     res <- readLines(outfile)
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[1:5]
+        res[1:5]
+        length(ref)
+        length(res)
+    }
+    
 })
 
 
@@ -48,6 +56,15 @@ test_that("list.section",{
     res <- readLines(outfile)
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[1:5]
+        res[1:5]
+        length(ref)
+        length(res)
+    }
+
+
 })
 
 
@@ -69,6 +86,15 @@ test_that("Dependent on data.file",{
 
     res <- readLines(outfile)
     expect_equal_to_reference(res,fileRef,version=2)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[1:5]
+        res[1:5]
+        length(ref)
+        length(res)
+    }
+
 
 })
 
@@ -119,6 +145,15 @@ test_that("basic - write file",{
     res <- readLines(outfile)
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[1:5]
+        res[1:5]
+        length(ref)
+        length(res)
+    }
+
+    
 })
 
 
@@ -150,7 +185,7 @@ test_that("update INPUT based on NMgenText",{
 ##                          ,newfile=NULL
 ##                           )
 
-    
+
 ## })
 
 test_that("Insert new section before another",{
@@ -168,6 +203,15 @@ test_that("Insert new section before another",{
     res <- readLines(outfile)
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[1:5]
+        res[1:5]
+        length(ref)
+        length(res)
+    }
+
+    
 })
 
 
@@ -203,7 +247,7 @@ test_that("new section as a function",{
                           ,section="problem"
                           ,newlines=function(x)c(x,"an added line")
                           ,write=FALSE
-                   )
+                           )
     
     res <- list(in1=NMreadSection(infile,section="problem")
                ,out1=NMreadSection(lines=res1,section="problem")

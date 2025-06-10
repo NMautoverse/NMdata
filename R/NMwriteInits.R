@@ -47,27 +47,16 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
 
     . <- NULL
     elemnum <- NULL
-    elemnum_lower <- NULL
-    elemnum_init <- NULL
-    elemnum_upper <- NULL
     elems.found <- NULL
     i <- NULL
     iblock <- NULL
     j <- NULL
-    linenum <- NULL
+    model <- NULL
     modified <- NULL
-    newtext <- NULL
-    nchars.active <- NULL
     par.type <- NULL
-    string.elem <- NULL
-    text <- NULL
-    text.after <- NULL
-    text.before <- NULL
     type.elem <- NULL
-    value.elem_lower <- NULL
-    value.elem_init_update <- NULL
     value.elem_init <- NULL
-    value.elem_upper <- NULL
+    value.elem_init_update <- NULL
     value.elem <- NULL
     value.elem_FIX <- NULL
     value <- NULL
@@ -86,15 +75,13 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
   The allowed elements in each list is 'init', 'lower', 'upper', and 'fix'.")
     }
 
-    
     if(missing(newfile)) newfile <- NULL
-
     
 #### 
     if(missing(ext)) ext <- NULL
 
     if(!is.null(ext)){
-        warning("`ext` argument not implemented. Ignored.")
+        warning("`ext` argument experimental.")
     }
 
     
@@ -105,25 +92,12 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     inits.orig <- NMreadInits(file=file.mod,return="all",as.fun="data.table")
     pars.l <- inits.orig$elements
     
+    
     if(is.null(file.ext)) file.ext <- file.mod
-
-
+    lines.old <- readLines(file.mod,warn=FALSE)
     
 ############## write  parameter sections
-    ## need to write line by line. All elements in a line written one at a time
-    
-    paste.ll.init.ul <- function(lower,init,upper,FIX){
-        
-        res <- NULL
-        
-        if(any(is.na(init))) stop("An initial value must be provided")
-        if(any(!is.na(upper)&is.na(lower))) stop("if upper limit is provided, lower limit must also be provided.")
-        dt <- data.table(lower=lower,init=init,upper=upper)[,row:=.I]
-        dt[init=="SAME",res:=init]
-        dt[init!="SAME",res:=paste0("(",paste(setdiff(c(lower,init,upper),NA),collapse=","),")",FIX),by=row]
-        dt[init!="SAME"&is.na(lower)&is.na(upper),res:=paste0(init,FIX),by=row]
-        dt$res
-    }
+
     ## reduce lower, init and upper lines to just ll.init.upper lines
 ### for  this approach, dcast, then paste.ll...
     ## this is complicated. Better make paste function operate on long format.
@@ -139,169 +113,51 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     if(length(cols.miss)){
         inits.w[,(cols.miss):=NA_character_]
     }
-    ##    inits.w[,fix:=ifelse(FIX=="1","FIX","")]
     inits.w[is.na(value.elem_FIX),value.elem_FIX:=""]
 
     
     
-############ update paramters
-    inits.w[,modified:=0]
-### update from ext
+############ update paramters using .ext file
+    ## I don´t think modified is used anymore
+    ## inits.w[,modified:=0]
+### update from ext. This methods drops all current values. Hence, it cannot be used for updating selected values.
     if(update){
-        
         ext.new <- NMreadExt(file.ext,as.fun="data.table")
 
-        ## inits.w <- mergeCheck(inits.w[,-("value.elem_init")],ext.new[,.(par.type,i,j,value.elem_init=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
         inits.w <- mergeCheck(inits.w,ext.new[,.(par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
         inits.w[value.elem_init!="SAME",value.elem_init:=value.elem_init_update]
         inits.w[,value.elem_init_update:=NULL]
 
     }
 
-    
-### Implement changes as requested in values
-    fun.update.vals <- function(dt,value,name){
-        par.type <- NULL
-        text <- NULL
+
+    if(!is.null(ext)){
+        ## don´t use lower,upper,fix. Missing lower or upper will result in NA in table. Missing should mean don´t edit, not remove. But also, not sure we would use the ext interface to edit those. Fo now, those have to be edit trough the values interface
         
-        names(value) <- tolower(names(value))
-
-        name <- toupper(name)
-        name <- gsub(" +","",name)
-        par.type <- sub("^([A-Z]+)\\(.*","\\1",name)
-
-        if(par.type=="THETA"){
-            i <- as.integer(sub(paste0(par.type,"\\(([0-9]+)\\)"),"\\1",name))
-            j <- NA
-        }
-
-        if(par.type%in%c("OMEGA","SIGMA")){
-            i <- as.integer(sub(paste0(par.type,"\\(([0-9]+),([0-9]+)\\)"),"\\1",name))
-            j <- as.integer(sub(paste0(par.type,"\\(([0-9]+),([0-9]+)\\)"),"\\2",name))
-        }
-
+### todo check ext object
+        ## ext must include a model variable
+        ## max one of each par per model
         
-        if("fix" %in% names(value)) {
-            if(value$fix) {
-                value$fix <- " FIX"
-            } else {
-                value$fix <- ""
-            }
-        }
-
-
+        inits.w <- merge(inits.w,ext[,.(model,par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE)
         
-        
-        ## value.values <- value[setdiff(names(value),c("par.type","i","j"))]
-        value.values <- value
-        names.vals <- names(value.values)
-        names.vals[names.vals=="fix"] <- "FIX"
-        names.vals[names.vals%in%c("init","lower","upper","FIX")] <- paste0("value.elem_",names.vals[names.vals%in%c("init","lower","upper","FIX")])
-        names(value.values) <- names.vals
-        ## make sure FIX is "" or " FIX"
+        inits.w[value.elem_init!="SAME"&!is.na(value.elem_init_update),value.elem_init:=value.elem_init_update]
+        inits.w[,value.elem_init_update:=NULL]
 
-        value$par.type <- par.type
-        value$i <- i
-        value$j <- j
-        
-        if(value$par.type=="THETA"){
-            dt[par.type==value$par.type & i==value$i, (names(value.values)):=value.values]
-        } else {
-            dt[par.type==value$par.type & i==value$i & j==value$j, (names(value.values)):=value.values]
-        }
-        dt
     }
-
     
-    names.values <- names(values)
-    if(length(values)){
-        for(I in 1:length(values)){
-            inits.w <- fun.update.vals(inits.w,values[[I]],names.values[I])
-        }
+    if("model"%in%colnames(inits.w)){
+        lines.new <- lapply(split(inits.w,by="model"),function(dat){
+            lines.new <- NMwriteInitsOne(lines.old,dat,values=values,inits.orig=inits.orig,pars.l)
+            lines.new
+        })
+    } else {
+        lines.new <- NMwriteInitsOne(lines.old,inits.w,values=values,inits.orig=inits.orig,pars.l)
     }
-
-    
-    
-######### format paramters for ctl
-    inits.w[,type.elem:="ll.init.ul"]
-    inits.w[,row:=1:.N]
-
-    
-    
-    inits.w[,string.elem:=paste.ll.init.ul(value.elem_lower,value.elem_init,value.elem_upper,value.elem_FIX),by=row]
-    inits.w[,elemnum:=min(elemnum_lower,elemnum_init,elemnum_upper,na.rm=TRUE),by=row]
-
-    cnames.common <- intersect(colnames(pars.l),colnames(inits.w))
-    elems.all <- rbind(
-        pars.l[!type.elem%in%c("lower","init","upper","FIX")][,cnames.common,with=FALSE]
-       ,
-        inits.w[,cnames.common,with=FALSE]
-    )
-
-    elems.all <- elems.all[order(par.type,linenum,elemnum)]
-    elems.all[,row:=.I]
-    ## idx.update <- elems.all[par.type%in%c("OMEGA","SIGMA"), row[1], by = .(par.type,iblock)][,V1]
-    idx.update <- elems.all[, row[1], by = .(par.type,iblock)][,V1]
-    elems.all[idx.update, string.elem := paste(paste0("$",par.type),string.elem)]
-
-    ## lines.all should also include empty lines and before and after text
-
-    lines.all <- elems.all[,.(text=paste(string.elem,collapse=" ")),keyby=.(par.type,linenum)]
-
-    mod.lines <- inits.orig$lines
-    
-    
-    lines.all.2 <- elems.all[,.(newtext=paste(string.elem,collapse=" ")),keyby=.(par.type,linenum)]
-    lines.all.2[,elems.found:=TRUE]
-##### this is the new total lines obj
-    lines.all.3 <- mergeCheck(mod.lines,lines.all.2,by=c("par.type","linenum"),all.x=TRUE,quiet=TRUE)
-##### correct elems.found=NA to FALSE
-    lines.all.3[is.na(elems.found),elems.found:=FALSE]
-#### update newtext for lines without elements. This will only work if text was read with keep.name=FALSE
-    lines.all.3[elems.found==FALSE,newtext:=sub(pattern=paste0("^ *\\$ *",par.type),replacement="",x=text,ignore.case=TRUE),by=.(par.type,linenum)]
-
-    
-
-    lines.all.3[elems.found==TRUE&!is.na(text.before),newtext:=paste(
-                                                          sub(pattern=paste0("\\$ *",par.type),"",text.before,ignore.case=TRUE)
-                                                         ,newtext
-                                                      ),by=.(par.type,linenum)]
-
-    
-    ## number of characters to reserve for before+newtext
-    lines.all.3[elems.found==TRUE,nchars.active:=max(nchar(newtext))+1,by="par.type"]
-    lines.all.3[,row:=.I]
-    
-    lines.all.3[elems.found==TRUE,newtext:=paste0(newtext,paste(rep(" ",nchars.active-nchar(newtext)),collapse="")),by=row]
-    
-    lines.all.3[elems.found==TRUE&!is.na(text.after),newtext:=paste(
-                                                         newtext,
-                                                         paste0(";",text.after)
-                                                     ),by=.(par.type,linenum)]
-    lines.all.3[,text:=newtext]
-    
-
-    lines.new <- readLines(file.mod,warn=FALSE)
-
-    fun.update.ctl <- function(lines.old,section,dt.lines){
-        text <- NULL
-        newsection <- dt.lines[par.type==section,text]
-        if(length(newsection)==0) return(lines.old)
-        
-        NMwriteSectionOne(lines=lines.old,
-                          section=section,
-                          newlines=newsection,
-                          location="replace",
-                          quiet=TRUE,
-                          backup=FALSE)
-    }
-
-    lines.new <- fun.update.ctl(lines.new,section="THETA",dt.lines=lines.all.3)
-    lines.new <- fun.update.ctl(lines.new,section="OMEGA",dt.lines=lines.all.3)
-    lines.new <- fun.update.ctl(lines.new,section="SIGMA",dt.lines=lines.all.3)
-    
 
     if(!is.null(newfile)){
+        if(length(lines.new)>1){
+            stop("cannot write files when number of resulting lines>1.")
+        }
         writeTextFile(lines.new,newfile)
         return(invisible(lines.new))
     }

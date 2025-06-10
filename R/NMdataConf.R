@@ -18,10 +18,10 @@
 ##'     that are not pre-defined in NMdata. This should only be needed
 ##'     in cases where say another package wants to use the NMdata
 ##'     configuration system for variables unknown to NMdata.
-##' @param quiet If \code{FALSE}, an overview of the configuration
+##' @param summarize If \code{TRUE}, an overview of the configuration
 ##'     changes is summarized in a printed table. This is useful for
 ##'     transparency when sourcing a file with configuration. Default
-##'     is \code{TRUE}.
+##'     is \code{FALSE}.
 ##'
 ##' @details
 ##' 

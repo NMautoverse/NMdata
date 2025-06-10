@@ -174,12 +174,16 @@ test_that("check reported summary of changes",{
 
     NMdataConf(reset=TRUE)
     afun <- identity
-    res=capture_message(
-        NMdataConf(modelname=afun,quiet=FALSE)
+    res <- capture_message(
+        NMdataConf(modelname=afun,quiet=FALSE,summarize=TRUE)
     )
     
     expect_equal_to_reference(res,fileRef)
 
+    if(F){
+        res
+        readRDS(fileRef)
+        }
     ## compareCols(readRDS(fileRef),defaults)
     
 })

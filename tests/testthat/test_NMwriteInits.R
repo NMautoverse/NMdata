@@ -110,3 +110,36 @@ test_that("multiple named lists",{
         expect_equal_to_reference(res2,fileRef)
     }
 })
+
+
+
+test_that("An ext object",{
+    if(packageVersion("NMdata")>"0.2.0.901"){
+        fileRef <- "testReference/NMwriteInits_07.rds"
+        file.mod <- "testData/nonmem/xgxr033.mod"
+        readLines(file.mod)
+        ext <- NMreadExt(file.mod,as.fun="data.table")
+        ext <- rbind(ext,
+                     transform(ext,model="mod2",value=value*1.3,est=est*1.3)
+                     )
+        ## NMreadSection(file.mod,section="THETA")
+        res1 <- expect_warning(NMwriteInits(file.mod,ext=ext,update=FALSE))
+        
+        ## The number of empty spaces seems to be inconsistent across platforms
+        res1 <- lapply(res1,function(r){
+            r <- gsub(" +"," ",r)
+            r <- r[grepl("\\$THETA",r)|grepl("\\$OMEGA",r)|grepl("\\$SIGMA",r)]
+            r
+        })
+        
+        expect_equal_to_reference(res1,fileRef)
+
+        if(F){
+            ref <- readRDS(fileRef)            
+            ref
+            res1
+        }
+    }
+})
+
+
