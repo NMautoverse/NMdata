@@ -1,6 +1,6 @@
 ##' print a data.table
 ##'
-##' @param dt a data.table or something to be converted to a
+##' @param x a data.table or something to be converted to a
 ##'     data.table.
 ##' @param ... passed to print.data.table.
 ##' @details defaults arguments to print.data.table (in addition to
