@@ -222,8 +222,9 @@ test_that("No newfile supplied",{
     outfile <- "testOutput/NMwriteSection_07.mod"
     file.copy("testData/nonmem/xgxr011.mod",outfile)
     
-    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
+    newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV "
     section <- "input"
+    pre <- readLines(outfile)
     NMwriteSection(files=outfile
                   ,section=section
                   ,newlines=newlines
