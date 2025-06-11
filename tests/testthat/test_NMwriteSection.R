@@ -229,7 +229,7 @@ test_that("No newfile supplied",{
                   ,section=section
                   ,newlines=newlines
                    )
-    res <- readLines(outfile)
+    res <- NMreadSection(outfile,section="input")
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
