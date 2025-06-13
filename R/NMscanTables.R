@@ -173,7 +173,7 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     if(meta.only){
         setcolorder(meta,intersect(c(col.model,"source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format",
                                      "file.mtime","file"),colnames(meta)))
-        meta[,sep:=NULL]
+        ##meta[,sep:=NULL]
         return(as.fun(meta))
     }
 
@@ -273,7 +273,7 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     setcolorder(meta,intersect(c(col.model,"source","name","nrow","ncol","nid","level","scope","has.col.row","has.col.id","full.length","filetype","format",
                                  "file.mtime","file"),colnames(meta)))
 
-    meta[,sep:=NULL]
+    ## meta[,sep:=NULL]
     
     if(!quiet){
         msg <- paste0("Number of output tables read: ",meta[exists==TRUE,.N])

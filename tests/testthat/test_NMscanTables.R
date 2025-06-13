@@ -16,7 +16,7 @@ context("NMscanTables")
 
 test_that("Multiple output table formats",{
 
-    fileRef <- "testReference/NMscanTables1.rds"
+    fileRef <- "testReference/NMscanTables_01.rds"
     ## file.lst <- system.file("examples/nonmem/xgxr003.lst",package="NMdata")
     file.lst <- "testData/nonmem/xgxr003.lst"
 
@@ -51,7 +51,7 @@ test_that("Multiple output table formats",{
 
 
 test_that("Details table",{
-    fileRef <- "testReference/NMscanTables2.rds"
+    fileRef <- "testReference/NMscanTables_02.rds"
     file.lst <- system.file("examples/nonmem/xgxr003.lst", package="NMdata")
 
     res <- NMscanTables(file=file.lst,as.fun="data.table",col.tableno="NMREP")
@@ -84,7 +84,7 @@ test_that("$TABLE header options",{
 
 test_that("Two firstonly, one full-length",{
 
-    fileRef <- "testReference/NMscanTables4.rds"
+    fileRef <- "testReference/NMscanTables_04.rds"
     ## ref <- readRDS(fileRef)
     file.lst <- "testData/nonmem/xgxr025.lst"
 
