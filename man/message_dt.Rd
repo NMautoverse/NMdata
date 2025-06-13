@@ -7,10 +7,10 @@
 message_dt(x, ...)
 }
 \arguments{
-\item{...}{passed to print.data.table.}
-
-\item{dt}{a data.table or something to be converted to a
+\item{x}{a data.table or something to be converted to a
 data.table.}
+
+\item{...}{passed to print.data.table.}
 }
 \description{
 print a data.table
