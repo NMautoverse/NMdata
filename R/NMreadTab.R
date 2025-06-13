@@ -54,7 +54,7 @@
 
 
 NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip,quiet=TRUE,as.fun,...) {
-
+    
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     TABLE <- NULL

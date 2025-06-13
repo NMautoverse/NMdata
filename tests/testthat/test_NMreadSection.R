@@ -78,6 +78,7 @@ test_that("HEADER",{
     ## all <- NMreadSection(file="testData/nonmem/xgxr011.mod")
     ## all <- NMreadSection(file="testData/nonmem/xgxr011.mod",return="idx")
     ## all <- NMreadSection(file="testData/nonmem/xgxr011.mod")
+
     
     expect_equal_to_reference(res,fileRef,version=2)
     if(F){

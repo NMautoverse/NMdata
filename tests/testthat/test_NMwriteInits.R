@@ -117,7 +117,7 @@ test_that("An ext object",{
     if(packageVersion("NMdata")>"0.2.0.901"){
         fileRef <- "testReference/NMwriteInits_07.rds"
         file.mod <- "testData/nonmem/xgxr033.mod"
-        readLines(file.mod)
+        ## readLines(file.mod)
         ext <- NMreadExt(file.mod,as.fun="data.table")
         ext <- rbind(ext,
                      transform(ext,model="mod2",value=value*1.3,est=est*1.3)
