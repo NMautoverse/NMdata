@@ -70,3 +70,18 @@ test_that("table without table title",{
     expect_equal_to_reference(res,fileRef,version=2)
 
 })
+
+
+## load_all("~/wdirs/NMdata")
+if(F){ ## this is not working. It does not detect sep="\t" automatically
+test_that("tab formt",{
+    fileRef <- "testReference/NMreadTab_03.rds"
+    
+    res <- NMreadTab("testData/nonmem/xgxr035_tabres.txt")
+    res <- NMreadTab("testData/nonmem/xgxr035_tabres.txt",sep="\t")
+    head(res)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+})
+
+}

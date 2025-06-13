@@ -1,19 +1,32 @@
 # NMdata 0.2.1
 
 ## New Features
+
+* `NMwriteInits()` support the ext argument. ext can still not be multiple
+  parameter sets.
+
 * `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
   overview of the configuration changes is summarixfzed in a printed
   table. This is useful for transparency when sourcing a file with
   configuration. Default is \code{TRUE}.
+  
+* Improved printing of tables for messages with `message_dt()`
 
 ## Bugfixes
 * `NMreadExt()` would in some situations with multiple estimation steps
 not be able to read the `.ext` file. This has been fixed.
 
+* `NMscanTables()` - and hence `NMscanData()` would fail on some
+  output formats - especially it would not alway detect if tabulators
+  were used as separators. More checks have been included to detect
+  this.
+
 ## Other improvements
 
-* Support for tabulator characters in Nonmem data filters and control
-  stream comments.
+Generally, tabulator characters are now supported in control
+streams. Tabulator characters would create issues in processing of
+various sections of the control stream leading to issues in functions
+such as `NMscanInput()` and `NMreadParText()` and others.
 
 # NMdata 0.2.0
 
