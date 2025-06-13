@@ -203,21 +203,28 @@ print.summary_NMdata <- function(x,...){
     n5[is.na(n5)] <- 0
     
     ## model name
-    cat("Model: ",x$details$model,"\n")
+    ## cat("Model: ",x$details$model,"\n")
+    message("Model: ",x$details$model,"\n")
 
     ## overview of processed tables
-    cat("\nUsed tables, contents shown as used/total:\n")
-    print(vars.sum2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+    ## cat("\nUsed tables, contents shown as used/total:\n")
+    ## message("Used tables, N of rows, columns and distinct ID's shown as used/available")
+    message("")
+    message("By source table, N as used/available of rows, columns and distinct ID's")
+    ## print(vars.sum2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+    message_dt(vars.sum2)
 
     if(x$details$input.used){
         if(x$details$merge.by.row){
-            cat("\nInput and output data merged by:",x$details$col.row,"\n")
+            ## cat("\nInput and output data merged by:",x$details$col.row,"\n")
+            message("Input and output data merged by:",x$details$col.row,"\n")
         } else {
             message("Input and output data combined by translation of
 Nonmem data filters.")
         }
     } else {
-        cat("Input data not used.\n")
+        ## cat("Input data not used.\n")
+        message("Input data not used.\n")
     }
     
     ## cat("\nNumbers of rows and subjects\n")
@@ -245,8 +252,9 @@ Nonmem data filters.")
             setcolorder(evids2,
                         neworder=intersect(cc(EVID,CMT,"input-only","output","result"),colnames(evids2)))
 
-            cat("Distribution of rows on event types in returned data:\n")
-            print(evids2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+            message("Distribution of rows on event types in returned data:")
+            ## print(evids2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+            message_dt(evids2)
         })
     }        
 
