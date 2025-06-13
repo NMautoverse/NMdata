@@ -2,7 +2,7 @@
 
 ## New Features
 
-* `NMwriteInits()` support the ext argument. ext can still not be multiple
+* `NMwriteInits()` support the `ext` argument. ext can still not be multiple
   parameter sets.
 
 * `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
@@ -20,6 +20,11 @@ not be able to read the `.ext` file. This has been fixed.
   output formats - especially it would not alway detect if tabulators
   were used as separators. More checks have been included to detect
   this.
+  
+* Better identification of delimitors in output tables. Especially,
+  this helps identifying when tabulator characters er used as
+  delimtors. Until this fix, this would fail in some cases. It may
+  still not be bulletproof but it should now support most cases.
 
 ## Other improvements
 

@@ -146,7 +146,7 @@ test_that("Table with repetitions",{
 
 
 ## load_all("~/wdirs/NMdata")
-test_that("tab formt",{
+test_that("more tab formats",{
     fileRef <- "testReference/NMscanTables_08.rds"
     
     ## res <- NMreadTab("testData/nonmem/xgxr035_tabres.txt",sep="\t")
