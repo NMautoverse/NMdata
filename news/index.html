@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.910</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
 <h2 class="page-header" data-toc-text="0.2.1" id="nmdata-021">NMdata 0.2.1<a class="anchor" aria-label="anchor" href="#nmdata-021"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1"></a></h3>
-<ul><li><p><code><a href="../reference/NMwriteInits.html">NMwriteInits()</a></code> support the ext argument. ext can still not be multiple parameter sets.</p></li>
+<ul><li><p><code><a href="../reference/NMwriteInits.html">NMwriteInits()</a></code> support the <code>ext</code> argument. ext can still not be multiple parameter sets.</p></li>
 <li><p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> gains a <code>quiet</code> argument. If , an overview of the configuration changes is summarixfzed in a printed table. This is useful for transparency when sourcing a file with configuration. Default is .</p></li>
 <li><p>Improved printing of tables for messages with <code><a href="../reference/message_dt.html">message_dt()</a></code></p></li>
 </ul></div>
@@ -93,6 +93,7 @@
 <h3 id="bugfixes-0-2-1">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-1"></a></h3>
 <ul><li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> would in some situations with multiple estimation steps not be able to read the <code>.ext</code> file. This has been fixed.</p></li>
 <li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> - and hence <code><a href="../reference/NMscanData.html">NMscanData()</a></code> would fail on some output formats - especially it would not alway detect if tabulators were used as separators. More checks have been included to detect this.</p></li>
+<li><p>Better identification of delimitors in output tables. Especially, this helps identifying when tabulator characters er used as delimtors. Until this fix, this would fail in some cases. It may still not be bulletproof but it should now support most cases.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-2-1">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-1"></a></h3>
