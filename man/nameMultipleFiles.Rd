@@ -14,6 +14,6 @@ nameMultipleFiles(fn, list.obj)
 \item{list.obj}{List of objects to create file names for}
 }
 \description{
-Can currently only append a counter to file name stem.
+Can currently only append a counter.
 }
 \keyword{internal}
