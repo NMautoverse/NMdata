@@ -10,6 +10,6 @@ count_ij(res)
 \item{res}{elements as detected by `NMreadInits()`}
 }
 \description{
-Assign i and j indexes based on parameter section text
+Internal function used by NMreadInits()
 }
 \keyword{internal}

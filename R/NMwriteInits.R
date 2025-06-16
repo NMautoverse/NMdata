@@ -4,16 +4,20 @@
 ##' 
 ##' @param file.mod Path to control stream.
 ##' @param update If `TRUE` (default), the parameter values are
-##'     updated based on the `.ext` file.
+##'     updated based on the `.ext` file. The path to the `.ext` file
+##'     can be specified with `file.ext` but that is normally not
+##'     necessary.
 ##' @param file.ext Optionally provide the path to an `.ext` file. If
 ##'     not provided, the default is to replace the file name
 ##'     extention on `file.mod` with `.ext`. This is only used if
 ##'     `update=TRUE`.
 ##' @param ext Not implemented.
 ##' @param values A list of lists. Each list specifies a parameter
-##'     with named elements. Must be named by the parameter name. `lower`,
-##'     `upper` and `fix` can be supplied to modify the parameter. See
-##'     examples. Notice, you can use `...` instead. `values` may be easier for programming but other than that, most users will find `...` more intuitive.
+##'     with named elements. Must be named by the parameter
+##'     name. `lower`, `upper` and `fix` can be supplied to modify the
+##'     parameter. See examples. Notice, you can use `...`
+##'     instead. `values` may be easier for programming but other than
+##'     that, most users will find `...` more intuitive.
 ##' @param newfile If provided, the results are written to this file
 ##'     as a new input control stream.
 ##' @param ... Parameter specifications. See examples,
@@ -25,7 +29,6 @@
 ##' }
 ##' @return a control stream as lines in a character vector.
 ##' @examples
-##' ## Requires NMdata 0.1.9
 ##' \dontrun{
 ##' file.mod <- system.file("examples/nonmem/xgxr021.mod",package="NMsim") 
 ##' NMwriteInits(file.mod,
@@ -42,8 +45,9 @@
 ##' @import data.table
 ##' @export
 
+## @param inits.tab Not implemented.
 
-NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,...){
+NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,inits.tab,values,newfile,...){
 
     . <- NULL
     elemnum <- NULL
@@ -62,13 +66,13 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     value <- NULL
     V1 <- NULL
 
+    if(length(file.mod)>1) stop("`file.mod` points to more than one model. `NMwriteInits()` can only one model in `file.mod`.")
 
-    
     if(missing(values)) values <- NULL
     dots <- list(...)
     values <- append(values,dots)
-    
-    
+
+
     if(any(!tolower(unlist(sapply(values,names)))%in%c("init","lower","upper","fix"))){
         stop("`values` must be a list of named lists.
   Example: values=list('theta(1)'=list(init=2))
@@ -76,34 +80,194 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     }
 
     if(missing(newfile)) newfile <- NULL
-    
+
 #### 
     if(missing(ext)) ext <- NULL
-
     if(!is.null(ext)){
         warning("`ext` argument experimental.")
     }
 
-    
-    if(update || !is.null(ext)){
-        replace.inits <- TRUE
+    if(missing(inits.tab)) inits.tab <- NULL
+    if(!is.null(inits.tab)){
+        warning("`inits.tab` argument experimental.")
     }
-    
-    inits.orig <- NMreadInits(file=file.mod,return="all",as.fun="data.table")
-    pars.l <- inits.orig$elements
-    
-    
+
     if(is.null(file.ext)) file.ext <- file.mod
     lines.old <- readLines(file.mod,warn=FALSE)
-    
+
+    ## if(update || !is.null(ext)){
+    ##     replace.inits <- TRUE
+    ## }
+
+    inits.orig <- NMreadInits(file=file.mod,return="all",as.fun="data.table")
+    pars.l <- inits.orig$elements
+    pars.l[type.elem=="FIX",value.elem:=fifelse(value.elem=="1"," FIX","")]    
+
+
 ############## write  parameter sections
 
     ## reduce lower, init and upper lines to just ll.init.upper lines
 ### for  this approach, dcast, then paste.ll...
     ## this is complicated. Better make paste function operate on long format.
-    
+
 ######### Limitation: lower, init, and upper must be on same line
-    pars.l[type.elem=="FIX",value.elem:=fifelse(value.elem=="1"," FIX","")]
+    inits.w <- dcast(
+        pars.l[type.elem%in%c("lower","init","upper","FIX")]
+       ,par.type+linenum+parnum+i+j+iblock+blocksize~type.elem,value.var=c("elemnum","value.elem"),funs.aggregate=min)
+
+### the rest of the code is dependent on all of init, lower, and upper being available.
+    cols.miss <- setdiff(outer(c("value.elem","elemnum"),c("init","lower","upper","FIX"),FUN=paste,sep="_"),colnames(inits.w))
+    if(length(cols.miss)){
+        inits.w[,(cols.miss):=NA_character_]
+    }
+    inits.w[is.na(value.elem_FIX),value.elem_FIX:=""]
+
+
+
+############ update paramters using .ext file
+    ## I don´t think modified is used anymore
+    ## inits.w[,modified:=0]
+### update from ext. This methods drops all current values. Hence, it cannot be used for updating selected values.
+    if(update){
+        ext.new <- NMreadExt(file.ext,as.fun="data.table")
+
+        inits.w <- mergeCheck(inits.w,ext.new[,.(par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        inits.w[value.elem_init!="SAME",value.elem_init:=value.elem_init_update]
+        inits.w[,value.elem_init_update:=NULL]
+
+        pars.l <- mergeCheck(pars.l,
+                             ext.new[,.(par.type,i,j,type.elem="",
+                                        value.update=as.character(value))]
+                            ,by=c("par.type","i","j","type.elem"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        pars.l[!is.na(value.update)&value.update!="SAME",
+               value.elem:=value.update
+               ]
+    }
+
+    if(!is.null(ext)){
+        ## if one file.mod, multiple models are allowed in ext
+        if(pars.l[,uniqueN(model)]>1 && ext[,uniqueN(model)]>1  ){
+            stop("Multiple models provided in file.mod and ext. This is not supported because it is Unclear how to merge them.")
+        }
+
+        if(ext[,uniqueN(model)]>1){
+            pars.l <- egdt(pars.l[,!("model")],ext[,unique(model)])
+            pars.l <- mergeCheck(pars.l,
+                                 ext[,.(model,par.type,i,j,type.elem="",
+                                        value.ext=as.character(value))]
+                                ,by=c("model","par.type","i","j","type.elem"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        } 
+
+        if(ext[,uniqueN(model)]==1)
+            pars.l <- mergeCheck(pars.l,
+                                 ext[,.(par.type,i,j,type.elem="",
+                                        value.ext=as.character(value))]
+                                ,by=c("par.type","i","j","type.elem"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+
+        pars.l[!is.na(value.ext)&value.ext!="SAME",
+               value.elem:=value.ext
+               ]
+
+    }
+
+
+    if(!is.null(inits.tab)){
+
+        ## should be merged by if all file.mod are matched uniquely in inits.tab
+
+        ## If only one file.mod and mutiple models in inits.tab, 
+        
+        inits.tab <- copy(inits.tab)
+        setDT(inits.tab)
+        ## don´t use lower,upper,fix. Missing lower or upper will result in NA in table. Missing should mean don´t edit, not remove. But also, not sure we would use the inits.tab interface to edit those. For now, those have to be edit trough the values interface
+        
+### todo check inits.tab object
+        ## inits.tab must include a model variable
+        ## max one of each par per model
+        ## fix_col <- grep("^fix$", names(value.values), ignore.case = TRUE, value = TRUE)
+        ## if (length(fix_col) > 1) {
+        ##     stop("More than one variable name is \"fix\", independently of case. I Don\'t know what variable to use. You have to only provide one variable called \"fix\", ignoring case (i.e. \"FIX\", \"Fix\" also match).")
+        ## }
+        ## setnames(value.values, old = fix_col, new = "FIX")
+
+
+        ## Target column names (case-insensitive)
+        target_cols <- c("init", "lower", "upper", "FIX")
+
+        ## Get all column names in the data
+        colnames_data <- names(inits.tab)
+
+        ## Count matches per target
+        n_matches <- sapply(target_cols, function(target) {
+            sum(tolower(colnames_data) == tolower(target))
+        })
+
+        ## Check if any target is matched more than once
+        if (any(n_matches > 1)) {
+            stop("One or more target columns matched more than once, ignoring case:\n",
+                 paste(target_cols[n_matches > 1], collapse = ", "))
+        }
+
+        ## Proceed only with those that match exactly once
+        target_cols_to_rename <- target_cols[n_matches == 1]
+
+        ## Find matching positions
+        i_match <- match(tolower(target_cols_to_rename), tolower(colnames_data))
+
+        ## Rename matched columns
+        ## setnames(inits.tab,
+        ##          old = colnames_data[i_match],
+        ##          new = paste0("value.elem.update.", colnames_data[i_match]))
+
+
+        
+        toConvert <- intersect(names(inits.tab),target_cols)
+        inits.tab[, (toConvert) := lapply(.SD, as.character), .SDcols = toConvert]
+
+        inits.l <- melt(inits.tab,measure.vars=toConvert,variable.name="type.elem",value.name="value.initstab")
+if(!"model"%in%colnames(inits.l)) inits.l[,model:="inits1"]
+
+        
+        ## merge
+        if(inits.l[,uniqueN(model)]>1){
+            byCands <- c("parameter","par.type","i","j")
+            cols.by <- c("model","type.elem",intersect(colnames(inits.l),byCands))
+            
+            pars.l <- egdt(pars.l[,!("model")],inits.l[,unique(model)])
+            pars.l <- mergeCheck(pars.l,
+                                 inits.l[,c(cols.by,value.initstab)]
+                                ,by=cols.by,all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+        } 
+
+        if(inits.l[,uniqueN(model)]==1)
+            byCands <- c("parameter","par.type","i","j")
+            cols.by <- c("type.elem",intersect(colnames(inits.l),byCands))
+
+        
+        
+        pars.l <- mergeCheck(pars.l,
+                             inits.l[,c(cols.by,"value.initstab"),with=FALSE]
+                                ,by=cols.by,all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
+
+        ## update
+        pars.l[!is.na(value.initstab)&value.initstab!="SAME",
+               value.elem:=value.initstab
+               ]
+        
+
+
+        
+
+    }
+
+
+############## write  parameter sections
+
+    ## reduce lower, init and upper lines to just ll.init.upper lines
+### for  this approach, dcast, then paste.ll...
+    ## this is complicated. Better make paste function operate on long format.
+
+######### Limitation: lower, init, and upper must be on same line
     inits.w <- dcast(
         pars.l[type.elem%in%c("lower","init","upper","FIX")]
        ,par.type+linenum+parnum+i+j+iblock+blocksize~type.elem,value.var=c("elemnum","value.elem"),funs.aggregate=min)
@@ -116,34 +280,9 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
     inits.w[is.na(value.elem_FIX),value.elem_FIX:=""]
 
     
+### handle values. Move from NMwriteInitsOne.
     
-############ update paramters using .ext file
-    ## I don´t think modified is used anymore
-    ## inits.w[,modified:=0]
-### update from ext. This methods drops all current values. Hence, it cannot be used for updating selected values.
-    if(update){
-        ext.new <- NMreadExt(file.ext,as.fun="data.table")
 
-        inits.w <- mergeCheck(inits.w,ext.new[,.(par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE,fun.na.by=NULL,quiet=TRUE)
-        inits.w[value.elem_init!="SAME",value.elem_init:=value.elem_init_update]
-        inits.w[,value.elem_init_update:=NULL]
-
-    }
-
-
-    if(!is.null(ext)){
-        ## don´t use lower,upper,fix. Missing lower or upper will result in NA in table. Missing should mean don´t edit, not remove. But also, not sure we would use the ext interface to edit those. Fo now, those have to be edit trough the values interface
-        
-### todo check ext object
-        ## ext must include a model variable
-        ## max one of each par per model
-        
-        inits.w <- merge(inits.w,ext[,.(model,par.type,i,j,value.elem_init_update=as.character(value))],by=c("par.type","i","j"),all.x=TRUE)
-        
-        inits.w[value.elem_init!="SAME"&!is.na(value.elem_init_update),value.elem_init:=value.elem_init_update]
-        inits.w[,value.elem_init_update:=NULL]
-
-    }
     
     if("model"%in%colnames(inits.w)){
         lines.new <- lapply(split(inits.w,by="model"),function(dat){
@@ -161,7 +300,7 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,values,newfile,.
         writeTextFile(lines.new,newfile)
         return(invisible(lines.new))
     }
-    
+
     lines.new
-    
+
 }

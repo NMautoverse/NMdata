@@ -152,6 +152,8 @@ classify_matches <- function(matches,patterns) {
 }
 
 ##' Assign i and j indexes based on parameter section text
+##'
+##' Internal function used by NMreadInits()
 ##' @param res elements as detected by `NMreadInits()`
 ##' @import data.table
 ##' @keywords internal
@@ -395,6 +397,7 @@ patterns <-
     })
 
     res <- rbindlist(res.list)
+    res <- addParameter(res)
     
     pars <- initsToExt(res)
     if(return=="pars") return(as.fun(pars))

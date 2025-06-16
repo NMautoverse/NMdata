@@ -51,7 +51,6 @@ Limitations:
 }
 }
 \examples{
-## Requires NMdata 0.1.9
 \dontrun{
 file.mod <- system.file("examples/nonmem/xgxr021.mod",package="NMsim") 
 NMwriteInits(file.mod,

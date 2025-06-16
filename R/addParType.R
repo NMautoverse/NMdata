@@ -1,7 +1,7 @@
 ### add par.type, i, j to a data.table that has parameter already
 ## parameter is style THETA1, OMEGA(1,1), SIGMA(1,1)
 
-## should also add parname or par.name which is the concistent
+## should also add parname or par.name which is the consistent
 ## THETA(1), OMEGA(1,1), SIGMA(1,1) labeling.
 
 ##' @keywords internal
@@ -45,4 +45,17 @@ addParType <- function(pars,suffix,add.idx){
     
     
     pars[]
+}
+
+addParameter <- function(pars){
+
+    pars <- copy(pars)
+    pars[,par.type:=cleanSpaces(par.type)]
+    pars[,par.type:=toupper(par.type)]
+    
+    pars[par.type=="THETA",parameter:=sprintf("%s(%d)",par.type,i)]
+    pars[par.type%in%c("OMEGA","SIGMA"),parameter:=sprintf("%s(%d,%d)",par.type,i,j)]
+
+    pars
+
 }
