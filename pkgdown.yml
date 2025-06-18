@@ -2,12 +2,23 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
-  DataPrepare: DataPrepare.html
-  NMdata-cheat: NMdata-cheat.html
-  NMdata-FAQ: NMdata-FAQ.html
-  NMscanData: NMscanData.html
-  ParameterTables: ParameterTables.html
-last_built: 2025-06-13T13:01Z
+  NMsim-basics: NMsim-basics.html
+  NMsim-config: NMsim-config.html
+  NMsim-DataCreate: NMsim-DataCreate.html
+  NMsim-examples: NMsim-examples.html
+  NMsim-forest: NMsim-forest.html
+  NMsim-intro: NMsim-intro.html
+  NMsim-known: NMsim-known.html
+  NMsim-modify-model: NMsim-modify-model.html
+  NMsim-ParamUncertain: NMsim-ParamUncertain.html
+  NMsim-publications: NMsim-publications.html
+  NMsim-ResidVar: NMsim-ResidVar.html
+  NMsim-ReuseSimSubjects: NMsim-ReuseSimSubjects.html
+  NMsim-speed: NMsim-speed.html
+  NMsim-TypSubj: NMsim-TypSubj.html
+  NMsim-varyPars: NMsim-varyPars.html
+  NMsim-VPC: NMsim-VPC.html
+last_built: 2025-06-18T02:43Z
 urls:
-  reference: https://nmautoverse.github.io/NMdata/reference
-  article: https://nmautoverse.github.io/NMdata/articles
+  reference: https://nmautoverse.github.io/NMsim/reference
+  article: https://nmautoverse.github.io/NMsim/articles

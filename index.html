@@ -4,255 +4,204 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preparation, Checking and Post-Processing Data for PK/PD Modeling • NMdata</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Seamless Nonmem Simulation Platform • NMsim</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<script src="extra.js"></script><meta property="og:title" content="Preparation, Checking and Post-Processing Data for PK/PD Modeling">
-<meta property="og:description" content="Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Attention is paid to ensure consistency, traceability, and Nonmem compatibility of Data. Rigorously checks final Nonmem datasets. Implemented in data.table, but easily integrated with base and tidyverse.">
-<meta property="og:image" content="https://nmautoverse.github.io/NMdata/reference/figures/apple-touch-icon-180x180.png">
-<meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<script src="extra.js"></script><meta property="og:title" content="Seamless Nonmem Simulation Platform">
+<meta name="description" content="A complete and seamless Nonmem simulation interface within R. Turns Nonmem control streams into simulation control streams, executes them with specified simulation input data and returns the results. The simulation is performed by Nonmem, eliminating manual work and risks of re-implementation of models in other tools.">
+<meta property="og:description" content="A complete and seamless Nonmem simulation interface within R. Turns Nonmem control streams into simulation control streams, executes them with specified simulation input data and returns the results. The simulation is performed by Nonmem, eliminating manual work and risks of re-implementation of models in other tools.">
+<meta property="og:image" content="https://nmautoverse.github.io/NMsim/logo.png">
+<meta name="google-site-verification" content="1z2VLiQgr7hTGMX0G9VbQ3MzwU_Q9WWRLpdXynhsg30">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.910</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <a class="navbar-brand me-2" href="index.html">NMsim</a>
 
-  </a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Vignettes
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3.906</small>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheat Sheet</a>
-    </li>
-    <li>
-      <a href="articles/NMscanData.html">NMscanData: find and combine all output and input data</a>
-    </li>
-    <li>
-      <a href="articles/ParameterTables.html">Flexible Creation of Parameter Tables</a>
-    </li>
-    <li>
-      <a href="articles/DataPrepare.html">Data Preparation Tools</a>
-    </li>
-    <li>
-      <a href="articles/NMdata-FAQ.html">FAQ</a>
-    </li>
-  </ul>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="news/index.html">Changelog</a>
-</li>
-<li>
-  <a href="https://github.com/NMautoverse/NMdata/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
 
-  </a>
-</li>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item"><a class="nav-link" href="index.html" title="Simulation of Nonmem models from R"><span class="fa fas fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="articles/NMsim-examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">News</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/NMsim-publications.html">Publications</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/NMautoverse/NMsim/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/NMautoverse/NMdata/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/NMautoverse/NMsim/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="nmsim">NMsim
+<a class="anchor" aria-label="anchor" href="#nmsim"></a>
+</h1>
 </div>
-<!--/.navbar -->
-
-
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="nmdata">NMdata<a href="https://nmautoverse.github.io/NMdata/"><img src="reference/figures/logo.png" align="right" height="120"></a>
-<a class="anchor" aria-label="anchor" href="#nmdata"></a>
-</h1></div>
 <!-- badges: start -->
 
-<div class="section level2">
-<h2 id="a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling">A fast R package for efficient data preparation, consistency-checking and post-processing in PK/PD modeling<a class="anchor" aria-label="anchor" href="#a-fast-r-package-for-efficient-data-preparation-consistency-checking-and-post-processing-in-pkpd-modeling"></a>
-</h2>
-<p>Pharmacometrics and PK/PD modeling offers unique information for decision-making in several steps of drug development. However, it often takes a lot of work to get there, and there are many pitfalls along the way. NMdata helps simplifying this work and steering around the pitfalls or at least making sure we didn’t fall into them.</p>
-<div class="section level3">
-<h3 id="flexibility-first">Flexibility first<a class="anchor" aria-label="anchor" href="#flexibility-first"></a>
-</h3>
-<p>Any functionality in the NMdata can be used independently of the rest of the package, and NMdata is not intended to force you to change any habits or preferences. Instead, NMdata tries to fit in with how you (or your colleague who worked on the project before you) do things. It likely provides helpful additions no matter what other tools you already use.</p>
-</div>
-<div class="section level3">
-<h3 id="automate-book-keeping-and-focus-on-modeling">Automate book keeping and focus on modeling<a class="anchor" aria-label="anchor" href="#automate-book-keeping-and-focus-on-modeling"></a>
-</h3>
-<p>Preparing data sets - and if you use NONMEM, reading the results data - can be tedious, and mistakes can lead to hours of frustration. NMdata provides useful tools (including automated checks) for these trivial tasks. Highlights in data set preparation and data checking:</p>
-<ul>
-<li>
-<code><a href="reference/mergeCheck.html">mergeCheck()</a></code> Require left-join merging to only add columns - and nothing else. If rows get duplicated or disappear, throw an error.<br>
-</li>
-<li>
-<code><a href="reference/addTAPD.html">addTAPD()</a></code> Automatically add time after previous dose, previous dose amount, cumulative number of doses and other related columns. Works with <code>ADDL/II</code> notation too.<br>
-</li>
-<li>
-<code><a href="reference/flagsAssign.html">flagsAssign()</a></code> and <code><a href="reference/flagsCount.html">flagsCount()</a></code> Automatically assign exclusion flags to data and tabulate number of subjects and observations excluded and/or retained due to each step.<br>
-</li>
-<li>
-<code>NMorderColumns</code> Order columns in a Nonmem data set consistently and intuitively.<br>
-</li>
-<li>
-<code><a href="reference/NMwriteData.html">NMwriteData()</a></code> Feature-rich data writer for Nonmem data sets. Can return text to be used for $INPUT and $DATA sections.<br>
-</li>
-<li>
-<code><a href="reference/NMcheckData.html">NMcheckData()</a></code> Rigorous and extensive checking for structural errors and potential issues in Nonmem data sets.<br>
-</li>
-<li>
-<code>NMcheckColnames.R()</code> Check data set against <code>INPUT</code> section of control streams.</li>
-</ul>
-<p>Check out <a href="https://nmautoverse.github.io/NMdata/articles/DataPrepare.html">this vignette</a> on data preparation.</p>
-</div>
-<div class="section level3">
-<h3 id="read-model-results-in-a-consistent-table-structure">Read model results in a consistent table structure<a class="anchor" aria-label="anchor" href="#read-model-results-in-a-consistent-table-structure"></a>
-</h3>
-<p>While <code>NMdata</code> does not organize all results into single objects that can be further processed, it offers efficient functions to read model results. These functions are all built to handle multiple models and return results in simple, consistent structures. Their results can easily be merged as needed. Notice, all of these functions basically just need a control stream path to run.</p>
-<ul>
-<li>
-<code><a href="reference/NMscanData.html">NMscanData()</a></code> Read and combine <code>$TABLE</code> output and input data. Feature-rich with support for the vast majority of models. Builds on <code><a href="reference/NMscanInput.html">NMscanInput()</a></code> to automatically read input data and <code><a href="reference/NMscanTables.html">NMscanTables()</a></code> to read all the output tables.<br>
-</li>
-<li>
-<code><a href="reference/NMreadExt.html">NMreadExt()</a></code> A feature-rich processor of ext files. Provides final parameter estimates with uncertainties and everything else provided in the ext file, iterations, objective function value and termination status<br>
-</li>
-<li>
-<code><a href="reference/NMreadParsText.html">NMreadParsText()</a></code> Very flexible processer of comments in control stream parameter sections. As long as the comments provide consistent parameter information in almost any format, <code><a href="reference/NMreadParsText.html">NMreadParsText()</a></code> can turn it into a table.<br>
-</li>
-<li>
-<code><a href="reference/NMreadInits.html">NMreadInits()</a></code> Read and tabulate initial values, lower, upper limits, FIX and block structures based on parameter sections of control streams.<br>
-</li>
-<li>
-<code><a href="reference/NMrelate.html">NMrelate()</a></code> Automatically connect parameters to variable names used in control stream code (say, <code>CL=EXP(THETA(1)+ETA(1))</code> in control stream and NMrelate will “relate” <code>THETA(1)</code> and <code>ETA(1)</code> to <code>CL</code>. Powerful for QC and even simple parameter table generation.<br>
-</li>
-<li>
-<code><a href="reference/NMreadPhi.html">NMreadPhi()</a></code> Reads individual posthoc estimates into a <code>data.frame</code><br>
-</li>
-<li>
-<code><a href="reference/NMreadCov.html">NMreadCov()</a></code> Reads an estimated variance-covariance matrix and formats as a matrix<br>
-</li>
-<li>
-<code><a href="reference/NMreadShk.html">NMreadShk()</a></code> to read shrinkage tables</li>
-</ul>
-<p>Vignettes:<br><a href="https://NMautoverse.github.io/NMdata/articles/ParameterTables.html" class="external-link">Flexible Creation of Parameter Tables</a><br><a href="https://NMautoverse.github.io/NMdata/articles/NMscanData.html" class="external-link">NMscanData: Find And Combine All Output And Input Data</a></p>
-</div>
-<div class="section level3">
-<h3 id="more-information">More information<a class="anchor" aria-label="anchor" href="#more-information"></a>
-</h3>
-<p>The best place to browse information about the package is <a href="https://nmautoverse.github.io/NMdata/">here</a>. The quickest way in is the <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link">Cheatsheet</a>. It does not cover any features related to generation of parameter tables, so you may also want to take a look at that vignette.</p>
-<!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
-<!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
-<p><a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html" class="external-link"><img src="reference/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"></a></p>
-<p>Also, check out the most recent vignette on <a href="https://NMautoverse.github.io/NMdata/articles/ParameterTables.html" class="external-link">Flexible Creation of Parameter Tables</a> using NMdata.</p>
-</div>
-<div class="section level3">
-<h3 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
-</h3>
-<p><code>NMdata</code> is on <a href="https://cran.r-project.org/package=NMdata" class="external-link">CRAN</a> and <a href="https://mpn.metworx.com/docs/packages/NMdata" class="external-link">MPN</a>. To install from the package archive you are already using, do:</p>
+<p>Please make sure to read this at <a href="https://NMautoverse.github.io/NMsim/" class="external-link"><code>The NMsim website</code></a> where you can browse several vignettes with examples on specific topics.</p>
+<p><code>NMsim</code> is an R package that can simulate Nonmem models (using the <code>NMsim</code> function) based on just a simulation data set and a path to an estimation control stream. It will retrive and combine output tables with input data once Nonmem has finished and return the results to R.</p>
+<p>The interface is “seamless” or fully integrated in R. Run a simulation of the (estimated) model stored in “path/to/file.mod” using the simulation input data set stored in the variable <code>data.sim</code> this way:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://NMautoverse.github.io/NMdata/" class="external-link">NMdata</a></span><span class="op">)</span></span></code></pre></div>
-<p>See further below for instructions on how to install from other sources than your default archive, if need be.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="prepare-check-and-export-pkpd-data">Prepare, check, and export PK/PD data<a class="anchor" aria-label="anchor" href="#prepare-check-and-export-pkpd-data"></a>
-</h2>
-<p>On the data-generation side, functionality is provided for documentation of the datasets while generating them. There are functions for automatic checks of (some) data merges, handling and counting of exclusions flags, final preparations for ensuring readability in NONMEM, and ensuring traceability of datasets back to data generation scripts.</p>
-</div>
-<div class="section level2">
-<h2 id="check-data-as-read-by-nonmem">Check data as read by NONMEM<a class="anchor" aria-label="anchor" href="#check-data-as-read-by-nonmem"></a>
-</h2>
-<p>The <code>NMcheckData</code> function will do an extensive and fully automated set of checks of the data before you run NONMEM. And did NONMEM not behave? <code>NMcheckData</code> can debug the data <em>as seen by NONMEM</em>. That’s right - it has never been easier to find data bugs.</p>
-</div>
-<div class="section level2">
-<h2 id="get-the-most-recent-version">Get the most recent version<a class="anchor" aria-label="anchor" href="#get-the-most-recent-version"></a>
-</h2>
-<p>If your archive has not been updated since July 2021, you may not find <code>NMdata</code> if you try to install with <code>install.packages</code> (option 1). In that case you have two other options. You can explicitly select CRAN for the installation. Or if you should want a version that has not yet reached CRAN, installing from Github is easy too.</p>
+<code class="sourceCode R"><span><span class="va">simres</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMsim.html">NMsim</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="st">"/path/to/file.mod"</span>,</span>
+<span>                data<span class="op">=</span><span class="va">data.sim</span><span class="op">)</span></span></code></pre></div>
+<p>You will quickly learn to do this on your own models, but if you can’t wait to see this working, you can do the following:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Option 1: Install from your default repository</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">data.sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/derived/dat_sim1.csv"</span>,package<span class="op">=</span><span class="st">"NMsim"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">simres</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/NMsim.html">NMsim</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr021.mod"</span>,package<span class="op">=</span><span class="st">"NMsim"</span><span class="op">)</span>,</span>
+<span>                data<span class="op">=</span><span class="va">data.sim</span>,</span>
+<span>                dir.sims<span class="op">=</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<p>where <code>dir.sims</code> may be needed because the model in this case may be in a read-only location.</p>
+<p>Notice, that could be any working Nonmem model as long as the provided simulation data set is sufficient to run it. We are ready to plot:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="va">datl</span> <span class="op">&lt;-</span> <span class="fu">as.data.table</span><span class="op">(</span><span class="va">simres</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">melt</span><span class="op">(</span>measure.vars<span class="op">=</span><span class="fu">cc</span><span class="op">(</span><span class="va">PRED</span>,<span class="va">IPRED</span>,<span class="va">Y</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## Option 2: Install explicitly from CRAN</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMdata"</span>,repos<span class="op">=</span><span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Option 3: Install from github</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">datl</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span>,<span class="va">value</span>,colour<span class="op">=</span><span class="va">variable</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="va">x</span><span class="op">[</span><span class="va">variable</span><span class="op">!=</span><span class="st">"Y"</span><span class="op">]</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="va">x</span><span class="op">[</span><span class="va">variable</span><span class="op">==</span><span class="st">"Y"</span><span class="op">]</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Hours since first dose"</span>,y<span class="op">=</span><span class="st">"Concentration (ng/mL)"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-simple-sim-1.png" width="100%"></p>
+<p>This example was a simulation of a multiple dose regimen with a loading dose using a model estimated on single dose data. It is from the first vignette <a href="https://NMautoverse.github.io/NMsim/articles/NMsim-intro.html" class="external-link"><code>NMsim-intro.html</code></a>. Go there next to get started with <code>NMsim</code>.</p>
+<div class="section level2">
+<h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
+</h2>
+<p>While NONMEM offers great flexibility for estimation of PK and PK/PD models, many users find the simulation features in NONMEM insufficient and turn to alternative software for simulation. This leads to additional work of model reimplementation, with risk of the simulation model deviating from the estimated model, due to bugs in the reimplementation. For a wide range of model types, the limitation is not in NONMEM’s ability to perform such simulations, but rather in the lack of a simple user-interface to obtain the simulations. <a href="https://cran.r-project.org/package=NMsim" class="external-link"><code>NMsim</code></a> provides such an interface as an R package, allowing the modeler to simulate models as soon as an estimate is available.</p>
+<p>The goal for NMsim is to automate the NONMEM simulation workflow and provide a simple, flexible, and powerful R interface. This allows for automation of most simulation-based analyses.</p>
+<p><img src="reference/figures/intro-tab.png" height="140" alt="NMsim can simulate NONMEM models right away - but only ifh NONMEM is avaiable."></p>
+</div>
+<div class="section level2">
+<h2 id="supported-types-of-simulations">Supported types of simulations<a class="anchor" aria-label="anchor" href="#supported-types-of-simulations"></a>
+</h2>
+<p><code>NMsim</code> has a flexible way to define simulation methods. The following methods are currently provided:</p>
+<ul>
+<li>Simulation of new subjects (default or explicitly with <code>method.sim=NMsim_default</code>)</li>
+<li>Simulation of subjects already estimated in Nonmem model (<code>method.sim=NMsim_EBE</code>)</li>
+<li>Simulation with parameter uncertainty based on a Nonmem covariance step (<code>method.sim=NMsim_VarCov</code> and <code>method.sim=NMsim_NWPRI</code>)</li>
+<li>Simulation “as is” in case you already prepared a simulation control stream and just want to automate the use of it in combination with simulation data sets (<code>method.sim=NMsim_asis</code>)</li>
+</ul>
+<p>In addition, <code>NMsim</code> provides other features to further modify the simulation control stream</p>
+<ul>
+<li>Simulate of typical subjects with all ETAs equal 0 (<code>typical=TRUE</code>)</li>
+<li>Specify parameter values, other than final estimates (<code>inits</code> argument)</li>
+<li>Custom modification of control stream sections (<code>modify</code> argument)</li>
+</ul>
+<p>To learn how to run these simulations on your Nonmem models, get started with <a href="https://NMautoverse.github.io/NMsim/articles/NMsim-intro.html" class="external-link"><code>NMsim-intro.html</code></a>. It is really easy.</p>
+<p>In addition, <code>NMsim</code> can simulate multiple models at a time. E.g., if a bootstrap run of a model is available, NMsim can run the simulation with each of the bootstrap models and collect all the results in one dataset. This provides a robust and easy way to simulate a Nonmem model with uncertainty.</p>
+<p>You can also write your own methods, if you have some other Nonmem-based simulation (or other job) you want to automate using <code>NMsim</code>.</p>
+<p>Many features are available. Prominent ones are:</p>
+<ul>
+<li>Efficient simulation data set creation functions</li>
+<li>Provides a simple interface <code><a href="reference/NMreadSim.html">NMreadSim()</a></code> to read previously performed simulation results.</li>
+<li>Results on file can be reused if available using <code>reuse.results=TRUE</code>.</li>
+<li>Can use submit jobs to clusters. It can wait for the simulations to be done and automatically collect the results.</li>
+<li>Simulation replicates using Nonmem <code>SUBPROBLEMS</code> feature avaible through the <code>subproblems</code> argument</li>
+<li>Simulations of models on transformed observations can be automatically transformed back using the <code>transform</code> argument.</li>
+</ul>
+<p>If residual variability is not implemented in the simulated model, <code>NMsim</code> provides a way (<code><a href="reference/addResVar.html">addResVar()</a></code>) to add residual variability in R after the simulation has been run.</p>
+</div>
+<div class="section level2">
+<h2 id="how-nmsim-works">How NMsim works<a class="anchor" aria-label="anchor" href="#how-nmsim-works"></a>
+</h2>
+<p><code>NMsim</code> does not simulate, translate or otherwise interpret a NONMEM model. Instead, it automates the NONMEM simulation workflow (including execution of NONMEM) and wraps it all into one R function. Provided with a path to a NONMEM control stream and a data.frame to simulate, <code>NMsim</code> will do the following:</p>
+<ul>
+<li>Save the simulation input data in a csv file for NONMEM</li>
+<li>Create a simulation input control stream based on <code>file.mod</code> (<code>$INPUT</code> and <code>$DATA</code> matching the saved simulation data set; <code>$SIMULATE</code> instead of <code>$ESTIMATION</code> and <code>$COVARIANCE</code>)</li>
+<li>Update and fix initial values based on estimate (from <code>file.ext</code>)</li>
+<li>Run NONMEM on the generated simulation control stream</li>
+<li>Collect output data tables, combine them, and merge with the simulation input data</li>
+<li>Return the collected data in R</li>
+</ul>
+<p><code>NMsim</code> can call NONMEM directly or via <code>PSN</code>. If <code>NMsim</code> is run on a system where NONMEM cannot be executed, <code>NMsim</code> can still prepare the simulation control stream and datafile.</p>
+<p><code>NMsim</code> is in itself a relatively small R package. It makes extensive use of functionality to handle NONMEM data and control streams provided by the R package <a href="https://cran.r-project.org/package=NMdata" class="external-link"><code>NMdata</code></a>.</p>
+</div>
+<div class="section level2">
+<h2 id="supported-model-types">Supported model types<a class="anchor" aria-label="anchor" href="#supported-model-types"></a>
+</h2>
+<p>The methods currently provided by <code>NMsim</code> will work with (many or most) Pop PK models and most continuous-scale PD models. Methods are currently not provided for for time-to-event models. Also, depending on the coding of the models, other censored data models may not work out of the box, because the model may not have a single variable (in Nonmem) that simulates the wanted information for all data rows, as their interpretation may depend on other values.</p>
+<p>The input data set must contain whatever variables are needed by the Nonmem model. A common issue is if the Nonmem model uses a covariate that is not in the simulation input data set. <code>NMdata</code>’s <a href="https://NMautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMcheckData</a> is a good help identifying input data issues before running Nonmem - and when Nonmem acts unexpectedly.</p>
+</div>
+<div class="section level2">
+<h2 id="nmsim-and-speed">NMsim and speed<a class="anchor" aria-label="anchor" href="#nmsim-and-speed"></a>
+</h2>
+<p>Nonmem may not be the fastest simulator out there. But actually most often, the reason Nonmem is slow at providing a simulation result is that it takes a long time writing the <code>$TABLE</code> files (yes, that can account for 90% or more of the time Nonmem spends). <code>NMsim</code> provides a simple way to get around this. The argument <code>text.table</code> can be used to define only the columns needed in the simulation output (which may be as little as <code>PRED</code>, <code>IPRED</code>, and a couple more - remember the input data is merged back automatically). As a result, <code>NMsim</code> may still be slower than a re-implementation in a different framework. But it’s extremely easy to do.</p>
+</div>
+<div class="section level2">
+<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+</h2>
+<p>NMsim is dependent on running Nonmem. Often, that will mean Nonmem must be available on the same system as the one running R. However, if Nonmem is run on a separate system through <code>qsub</code> or in another way initiates Nonmem on another system, that will work too. Then however, only if R can read the file system where Nonmem writes the results, it can retrieve the results.</p>
+<p>NMsim does not need PSN but can use it. However, not all features are available with PSN, so for some features you will have to specify the path to the Nonmem executable (say <code>path.nonmem=/path/to/nmfe75</code> or any Nonmem executable you want to use). Specifically of the simulation types currently available, simulation of known subjects is not possible using PSN (but works if a Nonmem executable is provided).</p>
+<p>If PSN is used, <code>NMsim</code> uses PSN’s <code>execute</code> to run models. In addition, <code>NMsim</code> by default uses PSN’s <code>update_inits</code> to update initial values in control streams, if PSN is available. <code>NMsim</code> does also include its own simple function to do this if <code>PSN</code> is not available.</p>
+</div>
+<div class="section level2">
+<h2 id="is-nmsim-reliable">Is <code>NMsim</code> reliable?<a class="anchor" aria-label="anchor" href="#is-nmsim-reliable"></a>
+</h2>
+<p>Importantly, <code>NMsim</code> does not (at least not by default) modify, translate or simulate the model itself. It does modify control stream sections <code>$INPUT</code>, <code>$DATA</code>, <code>$ESTIMATION</code>, <code>$SIMULATION</code>, <code>$THETA</code>, <code>$OMEGA</code>, <code>$SIGMA</code>, <code>$TABLE</code> as needed. The fact that <code>NMsim</code> allows for skipping the re-implementation but just uses Nonmem to simulate the Nonmem model as is, eliminates the risk of discrepancies between the estimated model and the simulated model.</p>
+<p>The produced control stream is saved together with simulation data set open for manual inspection and can obviously be run with Nonmem independently of <code>NMsim</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="easily-create-simulation-datasets">Easily create simulation datasets<a class="anchor" aria-label="anchor" href="#easily-create-simulation-datasets"></a>
+</h2>
+<p><code>NMsim</code> includes functions (<code>NMcreateDoses</code> and <code>addEVID2</code>) to very easily create simulation data sets. While one certainly does not need to use these functions to use <code>NMsim</code>, they do add to the package providing a framework that enables a complete simulation workflow in only 5-15 simple lines of R code.</p>
+</div>
+<div class="section level2">
+<h2 id="run-nonmem-from-r">Run Nonmem from R<a class="anchor" aria-label="anchor" href="#run-nonmem-from-r"></a>
+</h2>
+<p>There are several other packages out there that can do this, and <code>NMsim</code> may not be your best choice if this feature is all you are looking for. However, running Nonmem using the <code><a href="reference/NMexec.html">NMexec()</a></code> function provided by <code>NMsim</code> has one important advantage in that it saves the input data together with the Nonmem control streams. This ensures that output data can be merged with input data as it went into the model, even if the input data file should be modified or lost.</p>
+<ul>
+<li>Saves input data with Nonmem model</li>
+<li>Provides a simple R command for submission of Nonmem jobs</li>
+<li>Optionally handles cluster configuration</li>
+<li>Saves the xml file by default</li>
+</ul>
+<p><code>NMexec</code> will submit model runs to a cluster by default. This can be switched off for running Nonmem locally. Please notice the jobs are submitted to a cluster in a very specific way using <code>PSN</code>. If your setup is different, this is for now not supported. Please use <code>NMexec(sge=FALSE)</code> in that case (which may not be desirable). Notice that simulations are not done on a cluster by default so you may still be able to use <code>NMsim</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
+</h2>
+<p><code>NMsim</code> is on CRAN, MPN and github:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## From CRAN/MPN repositories</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"NMsim"</span><span class="op">)</span></span>
+<span><span class="co">## From github</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"nmautoverse/NMdata"</span><span class="op">)</span></span></code></pre></div>
-<p>If you use the Github version, you may want to see the <a href="https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a> for how to install specific releases from Github (ensuring reproducibility).</p>
-</div>
-<div class="section level2">
-<h2 id="questions">Questions?<a class="anchor" aria-label="anchor" href="#questions"></a>
-</h2>
-<p>Check the <a href="https://nmautoverse.github.io/NMdata/articles/NMdata-FAQ.html">FAQ</a>, or ask on <a href="https://github.com/nmautoverse/NMdata/" class="external-link">github</a></p>
-</div>
-<div class="section level2">
-<h2 id="issues">Issues?<a class="anchor" aria-label="anchor" href="#issues"></a>
-</h2>
-<p>The best way to report a bug or to request features is on <a href="https://github.com/nmautoverse/NMdata/" class="external-link">github</a>.</p>
-</div>
-<div class="section level2">
-<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
-</h2>
-<p>Please note that the patchwork project is released with a <a href="https://nmautoverse.github.io/NMdata/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"NMautoverse/NMsim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
+  </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://cloud.r-project.org/package=NMdata" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/NMautoverse/NMdata/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/NMautoverse/NMdata/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://cloud.r-project.org/package=NMsim" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/NMautoverse/NMsim/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/NMautoverse/NMsim/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -275,7 +224,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing NMdata</a></li>
+<li><a href="authors.html#citation">Citing NMsim</a></li>
 </ul>
 </div>
 
@@ -291,33 +240,30 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/nmautoverse/NMdata/actions" class="external-link"><img src="https://github.com/nmautoverse/NMdata/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/nmautoverse/NMdata?branch=master" class="external-link"><img src="https://codecov.io/gh/NMautoverse/NMdata/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=NMdata" class="external-link"><img src="https://www.r-pkg.org/badges/version/NMdata" alt="CRAN status"></a></li>
-<li><a href="https://cran.r-project.org/package=NMdata" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/NMdata" alt="CRAN downloads"></a></li>
+<li><a href="https://CRAN.R-project.org/package=NMsim" class="external-link"><img src="https://www.r-pkg.org/badges/version/NMsim" alt="CRAN status"></a></li>
+<li><a href="https://cran.r-project.org/package=NMsim" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/NMsim" alt="CRAN downloads"></a></li>
+<li><a href="https://app.codecov.io/gh/NMautoverse/NMsim?branch=main" class="external-link"><img src="https://codecov.io/gh/NMautoverse/NMsim/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/NMautoverse/NMsim/actions" class="external-link"><img src="https://github.com/NMautoverse/NMsim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Philip Delff.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Philip Delff.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
 
 
-
-  <script data-goatcounter="https://nmdata.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://nmsim.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
