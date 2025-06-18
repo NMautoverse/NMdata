@@ -161,9 +161,10 @@ NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
     }
 
     
-    
-    names.values <- names(values)
+    if(missing(values)) values <- NULL
+
     if(length(values)){
+        names.values <- names(values)
         for(I in 1:length(values)){
             inits.w <- fun.update.vals(inits.w,values[[I]],names.values[I])
         }
@@ -174,7 +175,7 @@ NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
 ######### format paramters for ctl
     inits.w[,type.elem:="ll.init.ul"]
     inits.w[,row:=1:.N]
-
+    
     
     inits.w[,string.elem:=paste.ll.init.ul(value.elem_lower,value.elem_init,value.elem_upper,value.elem_FIX),by=row]
     inits.w[,elemnum:=min(elemnum_lower,elemnum_init,elemnum_upper,na.rm=TRUE),by=row]

@@ -155,8 +155,6 @@ NMreadParsText <- function(file,lines,format,
     OMEGA <- NULL
     SIGMA <- NULL
 
-    
-
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL
     
