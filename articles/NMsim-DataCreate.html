@@ -95,9 +95,9 @@ tools, you can most likely continue using those with
 </ul>
 <p>Checking the data set before running Nonmem can significantly
 simplify identification of data set issues. This vignette uses
-<code><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMdata::NMcheckData</a></code> for automated checks of several value
+<code><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMdata::NMcheckData</a></code> for automated checks of several value
 types and other properties of data sets. Like <code>NMsim</code>,
-<code><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMdata::NMcheckData</a></code> does not depend on how the data set was
+<code><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMdata::NMcheckData</a></code> does not depend on how the data set was
 created.</p>
 <div class="section level3">
 <h3 id="a-basic-simulation-data-set">A basic simulation data set<a class="anchor" aria-label="anchor" href="#a-basic-simulation-data-set"></a>
@@ -173,12 +173,12 @@ add that too.</p>
 <span><span class="va">dat.sim</span><span class="op">$</span><span class="va">ROW</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">dat.sim</span><span class="op">)</span></span></code></pre></div>
 <p><code>NMsim</code> does not include any plotting functionality, but
 here is a simple way to show dosing amounts and sample times.
-<code><a href="https://nmautoverse.github.io/NMdata/reference/NMexpandDoses.html" class="external-link">NMdata::NMexpandDoses()</a></code> is used to <em>expand</em> the
+<code><a href="https://nmautoverse.github.io/NMsim/reference/NMexpandDoses.html">NMdata::NMexpandDoses()</a></code> is used to <em>expand</em> the
 doses coded with <code>ADDL</code>/<code>II</code> in order to get a
 data row to plot for each dose. We also take the sum of the amounts by
 time point in case doses are simultaneous.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dtplot</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMexpandDoses.html" class="external-link">NMexpandDoses</a></span><span class="op">(</span><span class="va">dat.sim</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dtplot</span> <span class="op">&lt;-</span> <span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMexpandDoses.html">NMexpandDoses</a></span><span class="op">(</span><span class="va">dat.sim</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span></span>
 <span><span class="va">dtplot</span> <span class="op">&lt;-</span> <span class="va">dtplot</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>AMT<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">AMT</span><span class="op">)</span><span class="op">)</span>,by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">ID</span>,<span class="va">CMT</span>,<span class="va">TIME</span>,<span class="va">EVID</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dtplot</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">TIME</span>,<span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">CMT</span><span class="op">)</span>,colour<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">EVID</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -188,7 +188,7 @@ time point in case doses are simultaneous.</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="NMsim-DataCreate_files/figure-html/unnamed-chunk-4-1.png" alt="After using `NMexpandDoses()` the simulation data set is plottet." width="672"><p class="caption">
-After using <code><a href="https://nmautoverse.github.io/NMdata/reference/NMexpandDoses.html" class="external-link">NMexpandDoses()</a></code> the simulation data set is
+After using <code><a href="https://nmautoverse.github.io/NMsim/reference/NMexpandDoses.html">NMexpandDoses()</a></code> the simulation data set is
 plottet.
 </p>
 </div>
@@ -312,12 +312,12 @@ columns to the right</li>
 </table>
 </div>
 <p>Finally, We check the simulation data set for various potential
-issues in Nonmem data sets using <code><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMdata::NMcheckData</a></code> and
+issues in Nonmem data sets using <code><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMdata::NMcheckData</a></code> and
 summarize the number of doses and observations:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## until NMdata 0.1.7 NMcheckData requires a DV column</span></span>
 <span><span class="va">dat.sim</span><span class="op">[</span>,<span class="va">DV</span><span class="op">:=</span><span class="cn">NA_real_</span><span class="op">]</span></span>
-<span><span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMcheckData</a></span><span class="op">(</span><span class="va">dat.sim</span>,type.data<span class="op">=</span><span class="st">"sim"</span><span class="op">)</span></span>
+<span><span class="fu">NMdata</span><span class="fu">::</span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">dat.sim</span>,type.data<span class="op">=</span><span class="st">"sim"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No findings. Great!</span></span></code></pre></div>
 <p>Be aware that <code><a href="../reference/NMsim.html">NMsim()</a></code> does <em>not</em> reorder rows
 before simulation. The user is responsible for ordering the simulation
@@ -328,10 +328,10 @@ data.</p>
 </h3>
 <p>Just like for preparation of data set with observed data, time after
 previous dose may be the relevant time to analyze the simulation results
-against. We use <code><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">NMdata::addTAPD()</a></code> to add this
+against. We use <code><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">NMdata::addTAPD()</a></code> to add this
 automatically.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat.sim2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dat.sim2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat.sim2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <table class="table">
@@ -492,7 +492,7 @@ post-dose, we have to specify how to order <code>EVID</code>
 numbers.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## order.evid=c(1,2) means doses are ordered before EVID=2 records</span></span>
-<span><span class="va">dat.sim2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span>,order.evid<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dat.sim2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span>,order.evid<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## now the TIME=0 sample has TAPD=0</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat.sim2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
@@ -645,8 +645,8 @@ numbers.</p>
 </tbody>
 </table>
 </div>
-<p><code>addTAPD</code> uses <code><a href="https://nmautoverse.github.io/NMdata/reference/NMexpandDoses.html" class="external-link">NMdata::NMexpandDoses</a></code> to make
-sure all dosing times are considered. See <code><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">?NMdata::addTAPD</a></code>
+<p><code>addTAPD</code> uses <code><a href="https://nmautoverse.github.io/NMsim/reference/NMexpandDoses.html">NMdata::NMexpandDoses</a></code> to make
+sure all dosing times are considered. See <code><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">?NMdata::addTAPD</a></code>
 for what the other created columns mean and for many useful
 features.</p>
 </div>

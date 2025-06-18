@@ -89,8 +89,8 @@ is the simulation we need for a VPC. We will use an example model
 included with NMsim:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/nonmem/xgxr032.mod"</span>,package<span class="op">=</span><span class="st">"NMsim"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>dir.sims<span class="op">=</span><span class="st">"simtmp-VPC"</span>,</span>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>dir.sims<span class="op">=</span><span class="st">"simtmp-VPC"</span>,</span>
 <span>           dir.res<span class="op">=</span><span class="st">"simres-VPC"</span></span>
 <span>           <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -131,7 +131,7 @@ following simple code shows how to get from the results from
 <span><span class="co">#&gt; https://certara.github.io/R-Certara/</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/" class="external-link">NMdata</a></span><span class="op">)</span></span>
 <span><span class="co">## read the data as it was used in the Nonmem model</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMscanData.html" class="external-link">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">## only plot observation events from estimation data set</span></span>
 <span><span class="va">data.obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">res</span>,<span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co">## Only plot simulated observation events</span></span>

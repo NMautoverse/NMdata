@@ -215,10 +215,10 @@ final results (<code>dir.res</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/" class="external-link">NMdata</a></span><span class="op">)</span></span>
 <span><span class="co">## Point NMsim to your NONMEM exectuable - looks like this on linux/osx</span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span> <span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span> <span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span>
 <span><span class="co">## or on Windows, it could be</span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span> <span class="st">"c:/nm75g64/run/nmfe75.bat"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>dir.sims<span class="op">=</span><span class="st">"simtmp-intro"</span>, <span class="co">## location of sim tmp files</span></span>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span> <span class="st">"c:/nm75g64/run/nmfe75.bat"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>dir.sims<span class="op">=</span><span class="st">"simtmp-intro"</span>, <span class="co">## location of sim tmp files</span></span>
 <span>           dir.res<span class="op">=</span><span class="st">"simres-intro"</span><span class="op">)</span>  <span class="co">## location of sim results</span></span></code></pre></div>
 <p>For more information on this and how to test the configuration, see
 <a href="https://NMautoverse.github.io/NMsim/articles/NMsim-config.html" class="external-link"><code>NMsim-config.html</code></a>.</p>
@@ -1248,21 +1248,21 @@ Metabolite
 <h4 id="time-since-previous-dose">Time since previous dose<a class="anchor" aria-label="anchor" href="#time-since-previous-dose"></a>
 </h4>
 <p>While not used in these examples, it’s worth mentioning
-<code><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">NMdata::addTAPD()</a></code> for adding time since previous dose and
+<code><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">NMdata::addTAPD()</a></code> for adding time since previous dose and
 other variables related to previous dose - previous dosing time,
 previous dose amount, cumulative number of doses, cumulative number of
 doses, and culative dose amount. These are often useful to add to a
 simulation dataset:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat.sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/addTAPD.html" class="external-link">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">dat.sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/addTAPD.html">addTAPD</a></span><span class="op">(</span><span class="va">dat.sim</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="check-the-simulation-dataset">Check the simulation dataset<a class="anchor" aria-label="anchor" href="#check-the-simulation-dataset"></a>
 </h4>
 <p>A quick way to check for a lot of common issues in a NONMEM data set
-is running <code><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMcheckData()</a></code>:</p>
+is running <code><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMcheckData()</a></code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMcheckData.html" class="external-link">NMcheckData</a></span><span class="op">(</span><span class="va">dat.sim</span>,type.data<span class="op">=</span><span class="st">"sim"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMcheckData.html">NMcheckData</a></span><span class="op">(</span><span class="va">dat.sim</span>,type.data<span class="op">=</span><span class="st">"sim"</span><span class="op">)</span></span></code></pre></div>
 <p>It is also advised to plot the simulation data set. See <a href="NMsim-DataCreate.html">Creation of Simulation Data Sets</a> for
 more details.</p>
 </div>
@@ -1341,7 +1341,7 @@ variables like <code>ID</code> or <code>TIME</code> in
 <code>table.vars</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## this example uses the same sim data for all subjects</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMscanData.html" class="external-link">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="va">data.sim.ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">data.sim</span>,select<span class="op">=</span><span class="op">-</span><span class="va">ID</span><span class="op">)</span>,</span>
 <span>                      <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID<span class="op">=</span><span class="va">ids</span><span class="op">)</span><span class="op">)</span></span>
@@ -1388,7 +1388,7 @@ files.</p>
 column called <code>NMREP</code> will count the subproblem number in the
 output.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tablevars</span><span class="op">=</span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="va">PRED</span>,<span class="va">IPRED</span>,<span class="va">Y</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tablevars</span><span class="op">=</span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/cc.html">cc</a></span><span class="op">(</span><span class="va">PRED</span>,<span class="va">IPRED</span>,<span class="va">Y</span><span class="op">)</span></span>
 <span><span class="va">simres.subprob</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMsim.html">NMsim</a></span><span class="op">(</span>file.mod<span class="op">=</span><span class="va">file.mod</span>,</span>
 <span>                        data<span class="op">=</span><span class="va">data.sim</span>,</span>
 <span>                        name.sim<span class="op">=</span><span class="st">"Subproblems"</span>, <span class="co">## naming the simulation</span></span>
@@ -1426,10 +1426,10 @@ way:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2372</span><span class="op">)</span></span>
 <span><span class="va">Nsubjs</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span><span class="va">dt.ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>ID<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">Nsubjs</span><span class="op">)</span></span>
-<span><span class="va">dt.covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMscanData.html" class="external-link">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">T</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/findCovs.html" class="external-link">findCovs</a></span><span class="op">(</span>by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dt.covs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMscanData.html">NMscanData</a></span><span class="op">(</span><span class="va">file.mod</span>,quiet<span class="op">=</span><span class="cn">T</span>,as.fun<span class="op">=</span><span class="st">"data.table"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/findCovs.html">findCovs</a></span><span class="op">(</span>by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">dt.ids</span><span class="op">[</span>,<span class="va">IDEST</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">dt.covs</span><span class="op">[</span>,<span class="va">ID</span><span class="op">]</span>,size<span class="op">=</span><span class="va">.N</span>,replace<span class="op">=</span><span class="cn">T</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">dt.ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/mergeCheck.html" class="external-link">mergeCheck</a></span><span class="op">(</span><span class="va">dt.ids</span>,<span class="va">dt.covs</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>IDEST<span class="op">=</span><span class="va">ID</span>,<span class="va">WEIGHTB</span>,trt<span class="op">=</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>,by<span class="op">=</span><span class="st">"IDEST"</span><span class="op">)</span></span>
+<span><span class="va">dt.ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">dt.ids</span>,<span class="va">dt.covs</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span>IDEST<span class="op">=</span><span class="va">ID</span>,<span class="va">WEIGHTB</span>,trt<span class="op">=</span><span class="va">trtact</span><span class="op">)</span><span class="op">]</span>,by<span class="op">=</span><span class="st">"IDEST"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## This is data.table-style repeating `data.sim` without `ID` for each</span></span>
 <span><span class="co">## row in dt.ids. This is an outer join, or a cartesian product. I</span></span>
@@ -1461,7 +1461,7 @@ way:</p>
 <span></span>
 <span><span class="co">## Derive prediction intervals - notice name.sim distincts results from the two methods</span></span>
 <span><span class="va">simres.pi</span> <span class="op">&lt;-</span> <span class="va">simres.newpops</span><span class="op">[</span></span>
-<span>   ,<span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">IPRED</span>,probs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>,<span class="fl">.5</span>,<span class="fl">.95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/cc.html" class="external-link">cc</a></span><span class="op">(</span><span class="va">ll</span>,<span class="va">median</span>,<span class="va">ul</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>   ,<span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">IPRED</span>,probs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>,<span class="fl">.5</span>,<span class="fl">.95</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,<span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/cc.html">cc</a></span><span class="op">(</span><span class="va">ll</span>,<span class="va">median</span>,<span class="va">ul</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">name.sim</span>,<span class="va">trt</span>,<span class="va">TIME</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">label.pi</span> <span class="op">&lt;-</span> <span class="st">"90% Prediction interval"</span></span>

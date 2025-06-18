@@ -35,6 +35,7 @@
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMexecDirectory.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMgenPNM.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMreadFilters.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/NMreadInits.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMreadSim.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMreadSimModTab.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMreadSimModTabOne.html</loc></url>
@@ -61,12 +62,15 @@
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NMwriteInits.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/NWPRI_df.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/add.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/addBlocks.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/addClass.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/addEVID2.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/addResVar.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/callNonmemDirect.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/checkTimes.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/cleanStrings.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/completeCov.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/count_ij.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/dtapply.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/expandCovs.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/figures/NMsim_intro_PAGE2025.html</loc></url>
@@ -76,11 +80,15 @@
 <url><loc>https://nmautoverse.github.io/NMsim/reference/genPhiFile.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/index.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/inputArchiveDefault.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/itriag.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/jtriag.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/message_dt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/modifyModel.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/overwrite.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/padZeros.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/pasteFuns.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/prettyMatLines.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/print.summary_NMsimRes.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/prioritizePaths.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/readParsWide.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/sampleCovs.html</loc></url>
@@ -90,6 +98,8 @@
 <url><loc>https://nmautoverse.github.io/NMsim/reference/simpleCharArg.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/simplePath.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/summarizeCovs.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/summary.NMsimRes.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMsim/reference/triagSize.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMsim/reference/writeTextFile.html</loc></url>
 </urlset>
 

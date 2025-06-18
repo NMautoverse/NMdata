@@ -125,11 +125,11 @@ function. Say you want to run Nonmem with
 <code>/opt/NONMEM/nm75/run/nmfe</code>, insert this after loading
 <code>NMdata</code> in the beginning of your script</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="st">"/opt/NONMEM/nm75/run/nmfe75"</span><span class="op">)</span></span></code></pre></div>
 <p>On Windows, the executable has a <code>.bat</code> extension. The
 path could look be</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span><span class="st">"C:/nm75g64/run/nmfe75.bat"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem <span class="op">=</span><span class="st">"C:/nm75g64/run/nmfe75.bat"</span><span class="op">)</span></span></code></pre></div>
 <p>If you normally use PSN as your Nonmem interface, and you do not know
 where Nonmem is installed, you can check this using PSN. The following
 command should give you the Nonmem installation paths that PSN is
@@ -145,7 +145,7 @@ like this, taking the first one found:</p>
 <span>              <span class="st">"C:/nm75g64/run/nmfe75.bat"</span><span class="op">)</span></span>
 <span><span class="va">path.nonmem</span> <span class="op">&lt;-</span> <span class="va">paths.nm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">paths.nm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="va">path.nonmem</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>path.nonmem<span class="op">=</span><span class="va">path.nonmem</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="specify-the-psn-installation-path">Specify the PSN installation path<a class="anchor" aria-label="anchor" href="#specify-the-psn-installation-path"></a>
@@ -158,7 +158,7 @@ paths to those two executables when running them (something like
 where to find them. In this case, the easiest is loading NMdata and then
 running:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMdata/reference/NMdataConf.html" class="external-link">NMdataConf</a></span><span class="op">(</span>dir.psn<span class="op">=</span><span class="st">"/opt/PSN"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://nmautoverse.github.io/NMsim/reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>dir.psn<span class="op">=</span><span class="st">"/opt/PSN"</span><span class="op">)</span></span></code></pre></div>
 <p>Notice <code>dir.psn</code> refers to a directory while
 <code>path.nonmem</code> refers to a file.</p>
 </div>
