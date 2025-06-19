@@ -39,7 +39,7 @@ addParType <- function(pars,suffix,add.idx){
         ## cols <- cc(i,j)
         ## pars[,(cols):=lapply(.SD,as.integer),.SDcols=cols]
     }
-## par.name
+    ## par.name
     pars[,par.name:=get(col.parameter)]
     pars[get(col.par.type)=="THETA",par.name:=sprintf("THETA(%s)",i)]
     
@@ -47,7 +47,14 @@ addParType <- function(pars,suffix,add.idx){
     pars[]
 }
 
+
+##' @keywords internal
 addParameter <- function(pars){
+
+    par.type <- NULL
+    parameter <- NULL
+    i <- NULL
+    j <- NULL
 
     pars <- copy(pars)
     pars[,par.type:=cleanSpaces(par.type)]

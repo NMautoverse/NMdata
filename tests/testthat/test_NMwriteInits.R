@@ -41,7 +41,6 @@ test_that("Basic",{
 
 test_that("Update + value",{
 
-    
     fileRef <- "testReference/NMwriteInits_01b.rds"
     
     file.mod <- "testData/nonmem/xgxr033.mod"
