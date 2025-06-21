@@ -1,6 +1,6 @@
 ##' @keywords internal
 
-NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
+NMwriteInitsOne <- function(lines,inits.w,inits.orig,pars.l){
 
     . <- NULL
     elems.found <- NULL
@@ -11,140 +11,20 @@ NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
     iblock <- NULL
     linenum <- NULL
     nchars.active <- NULL
-    par.type <- NULL
     newtext <- NULL
+    par.type <- NULL
     string.elem <- NULL
-    type.elem <- NULL
     text <- NULL
     text.after <- NULL
     text.before <- NULL
+    type.elem <- NULL
     V1 <- NULL
+    value.elem_FIX <- NULL
     value.elem_init <- NULL
     value.elem_lower <- NULL
     value.elem_upper <- NULL
-    value.elem_FIX <- NULL
+
     
-### Implement changes to inits.w as requested in values
-    fun.update.vals <- function(dt,value,name){
-        par.type <- NULL
-        text <- NULL
-        
-        names(value) <- tolower(names(value))
-
-        name <- toupper(name)
-        name <- gsub(" +","",name)
-        par.type <- sub("^([A-Z]+)\\(.*","\\1",name)
-
-        if(par.type=="THETA"){
-            i <- as.integer(sub(paste0(par.type,"\\(([0-9]+)\\)"),"\\1",name))
-            j <- NA
-        }
-
-        if(par.type%in%c("OMEGA","SIGMA")){
-            i <- as.integer(sub(paste0(par.type,"\\(([0-9]+),([0-9]+)\\)"),"\\1",name))
-            j <- as.integer(sub(paste0(par.type,"\\(([0-9]+),([0-9]+)\\)"),"\\2",name))
-        }
-
-        
-        if("fix" %in% names(value)) {
-            if(value$fix) {
-                value$fix <- " FIX"
-            } else {
-                value$fix <- ""
-            }
-        }
-        
-        
-        ## value.values <- value[setdiff(names(value),c("par.type","i","j"))]
-        value.values <- value
-        ## names.vals <- names(value.values)
-        ## names.vals[names.vals=="fix"] <- "FIX"
-        ## names.vals[names.vals%in%c("init","lower","upper","FIX")] <- paste0("value.elem_",names.vals[names.vals%in%c("init","lower","upper","FIX")])
-        ## names(value.values) <- names.vals
-
-### any case-insensitive match to "fix" to "FIX". But no more than one match is allowed
-
-        ## Assume value.values is a named list
-        ## Example: value.values <- list(init=1, LOWER=2, extra=3)
-
-        ## Target names to look for (case-insensitive)
-        target_cols <- c("init", "lower", "upper", "FIX")
-
-        ## Get current names of the list
-        colnames_data <- names(value.values)
-
-        ## Count matches per target (case-insensitive)
-        n_matches <- sapply(target_cols, function(target) {
-            sum(tolower(colnames_data) == tolower(target))
-        })
-
-        ## Stop if any target matches more than once
-        if (any(n_matches > 1)) {
-            stop("One or more target columns matched more than once:\n",
-                 paste(target_cols[n_matches > 1], collapse = ", "))
-        }
-
-        ## Proceed with targets that are matched exactly once
-        target_cols_to_rename <- target_cols[n_matches == 1]
-
-        ## Get matched positions
-        i_match <- match(tolower(target_cols_to_rename), tolower(colnames_data))
-
-        ## Rename matched elements
-        names(value.values)[i_match] <- paste0("value.elem.", colnames_data[i_match])
-
-
-######### if value is data.table
-        ## fix_col <- grep("^fix$", names(value.values), ignore.case = TRUE, value = TRUE)
-        ## if (length(fix_col) > 1) {
-        ##     stop("More than one variable name is \"fix\", independently of case. I Don\'t know what variable to use. You have to only provide one variable called \"fix\", ignoring case (i.e. \"FIX\", \"Fix\" also match).")
-        ## }
-        ## setnames(value.values, old = fix_col, new = "FIX")
-
-
-        ## ## Target column names (case-insensitive)
-        ## target_cols <- c("init", "lower", "upper", "FIX")
-
-        ## ## Get all column names in the data
-        ## colnames_data <- names(value.values)
-
-        ## ## Count matches per target
-        ## n_matches <- sapply(target_cols, function(target) {
-        ##     sum(tolower(colnames_data) == tolower(target))
-        ## })
-
-        ## ## Check if any target is matched more than once
-        ## if (any(n_matches > 1)) {
-        ##     stop("One or more target columns matched more than once, ignoring case:\n",
-        ##          paste(target_cols[n_matches > 1], collapse = ", "))
-        ## }
-
-        ## ## Proceed only with those that match exactly once
-        ## target_cols_to_rename <- target_cols[n_matches == 1]
-
-        ## ## Find matching positions
-        ## i_match <- match(tolower(target_cols_to_rename), tolower(colnames_data))
-
-        ## ## Rename matched columns
-        ## setnames(value.values,
-        ##          old = colnames_data[i_match],
-        ##          new = paste0("value.elem.", colnames_data[i_match]))
-        
-        
-
-        value$par.type <- par.type
-        value$i <- i
-        value$j <- j
-        
-        if(value$par.type=="THETA"){
-            dt[par.type==value$par.type & i==value$i,
-            (names(value.values)):=value.values]
-        } else {
-            dt[par.type==value$par.type & i==value$i & j==value$j,
-            (names(value.values)):=value.values]
-        }
-        dt
-    }
 
     ## need to write line by line. All elements in a line written one at a time
     paste.ll.init.ul <- function(lower,init,upper,FIX){
@@ -159,22 +39,6 @@ NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
         dt[init!="SAME"&is.na(lower)&is.na(upper),res:=paste0(init,FIX),by=row]
         dt$res
     }
-
-    
-
-if(F){    
-    names.values <- names(values)
-
-    if(missing(values)) values <- NULL
-
-    if(length(values)){
-        names.values <- names(values)
-        for(I in 1:length(values)){
-            inits.w <- fun.update.vals(inits.w,values[[I]],names.values[I])
-        }
-    }
-}
-    
     
 ######### format paramters for ctl
     inits.w[,type.elem:="ll.init.ul"]

@@ -17,7 +17,7 @@
 not be able to read the `.ext` file. This has been fixed.
 
 * `NMscanTables()` - and hence `NMscanData()` would fail on some
-  output formats - especially it would not alway detect if tabulators
+  output formats - especially it would not always detect if tabulators
   were used as separators. More checks have been included to detect
   this.
   
