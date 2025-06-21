@@ -9,6 +9,7 @@ NMwriteInits(
   update = TRUE,
   file.ext = NULL,
   ext,
+  inits.tab,
   values,
   newfile,
   ...
@@ -18,19 +19,30 @@ NMwriteInits(
 \item{file.mod}{Path to control stream.}
 
 \item{update}{If `TRUE` (default), the parameter values are
-updated based on the `.ext` file.}
+updated based on the `.ext` file. The path to the `.ext` file
+can be specified with `file.ext` but that is normally not
+necessary.}
 
 \item{file.ext}{Optionally provide the path to an `.ext` file. If
 not provided, the default is to replace the file name
 extention on `file.mod` with `.ext`. This is only used if
 `update=TRUE`.}
 
-\item{ext}{Not implemented.}
+\item{ext}{An long-format parameter table as returned by
+`NMreadExt()`. Can contain multiple models if `file.mod` does
+not.}
+
+\item{inits.tab}{A wide-format parameter table, well suited for
+customizing initial values, limits, and for fixing
+parameters. For multiple custom parameter specifications, this
+may be the most suitable argument.}
 
 \item{values}{A list of lists. Each list specifies a parameter
-with named elements. Must be named by the parameter name. `lower`,
-`upper` and `fix` can be supplied to modify the parameter. See
-examples. Notice, you can use `...` instead. `values` may be easier for programming but other than that, most users will find `...` more intuitive.}
+with named elements. Must be named by the parameter
+name. `lower`, `upper` and `fix` can be supplied to modify the
+parameter. See examples. Notice, you can use `...`
+instead. `values` may be easier for programming but other than
+that, most users will find `...` more intuitive.}
 
 \item{newfile}{If provided, the results are written to this file
 as a new input control stream.}
@@ -46,13 +58,19 @@ Edit parameter values, fix/unfix them, or edit lower/upper bounds.
 \details{
 Limitations:
 \itemize{
+
+\item `NMwriteInits()` can only update specifications of existing
+parameters. It cannot insert new parameters.
+
 \item lower, init, and upper must be on same line
-\item If using something like CL=(.1,4,15), two of those cannot be on the same line
+
+\item If using something like CL=(.1,4,15), two of those cannot be
+on the same line
 }
 }
 \examples{
 \dontrun{
-file.mod <- system.file("examples/nonmem/xgxr021.mod",package="NMsim") 
+file.mod <- system.file("examples/nonmem/xgxr021.mod",package="NMdata") 
 NMwriteInits(file.mod,
 values=list( "theta(2)"=list(init=1.4),
              "THETA(3)"=list(FIX=1),

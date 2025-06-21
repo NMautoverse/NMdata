@@ -30,6 +30,12 @@ test_that("basic",{
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
+
+    if(FALSE){
+        ref.elems <- readRDS(fnAppend(fileRef,"elems"))
+        ref.elems
+        res1$elements
+    }
     
 })
 
@@ -49,6 +55,15 @@ test_that("with OMEGA block",{
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
+
+
+    if(FALSE){
+        ref.elems <- readRDS(fnAppend(fileRef,"elems"))
+        ref.elems
+        res1$elements
+        ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))
+    }
+
 
 })
 
@@ -75,6 +90,14 @@ $OMEGA  BLOCK(1) SAME")
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
+
+
+    if(FALSE){
+        ref.elems <- readRDS(fnAppend(fileRef,"elems"))
+        ref.elems
+        res1$elements
+        ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))
+    }
 
 
 })
