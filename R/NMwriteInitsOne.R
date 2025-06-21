@@ -161,14 +161,14 @@ NMwriteInitsOne <- function(lines,inits.w,values,inits.orig,pars.l){
     }
 
     
-    
+if(F){    
     names.values <- names(values)
     if(length(values)){
         for(I in 1:length(values)){
             inits.w <- fun.update.vals(inits.w,values[[I]],names.values[I])
         }
     }
-
+}
     
     
 ######### format paramters for ctl
