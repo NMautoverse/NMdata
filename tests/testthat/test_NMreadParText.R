@@ -183,7 +183,7 @@ $SIGMA 1
 })
 
 
-    text <- c("
+text <- c("
 ; matches format
 $THETA  (.1)             ;[1]; LTVKA (mL/h)
 $OMEGA  BLOCK(3)
@@ -194,12 +194,12 @@ $OMEGA  BLOCK(3)
 $OMEGA 0 FIX ; IIV.KA ; 4  ;IIV     ;Between-subject variability on KA;-
 $SIGMA 1
 ")
-    lines <- strsplit(text,split="\n")[[1]]
+lines <- strsplit(text,split="\n")[[1]]
 
 res <- NMreadParsText(lines=lines,format="%init;[%num];%symbol (%unit)",
-                          format.omega="%init  ; %symbol     ; %num ; %type   ; %label ; %unit",field.idx="num"
-                          ## ,use.idx=T
-                          )
+                      format.omega="%init  ; %symbol     ; %num ; %type   ; %label ; %unit",field.idx="num"
+                      ## ,use.idx=T
+                      )
 
 
 test_that("OMEGA SAME",{
@@ -218,8 +218,8 @@ $THETA
 $OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
  $OMEGA  BLOCK(1)
  0.547465  ; IOV.TH1  ; 2 ;IOV
-$OMEGA  BLOCK(1) SAME
-$OMEGA  BLOCK(1) SAME")
+$OMEGA  BLOCK(1) SAME; IOV.TH1 ; 3; IOV2
+$OMEGA  BLOCK SAME")
 
     lines <- strsplit(text,split="\n")[[1]]
 
@@ -254,3 +254,18 @@ test_that("muref SAEM - format.omega=NULL",{
     expect_equal(res1,res2)
     
 })
+
+### redundant, see "OMEGA SAME"
+## test_that("Occassion variability",{
+##     fileRef <- "testReference/NMreadParText_09.rds"
+##     file.mod <- "testData/nonmem/xgxr044.mod"
+##     NMdataConf(reset=T)
+##     NMdataConf(as.fun="data.table")
+
+##     res1 <- NMreadParsText(file.mod,format="%init;%symbol")
+##     expect_equal_to_reference(res1,fileRef)
+##     if(F){
+##         res1
+##         readRDS(fileRef)
+##     }
+## })

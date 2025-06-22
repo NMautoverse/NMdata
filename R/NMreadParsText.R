@@ -317,12 +317,17 @@ NMreadParsText <- function(file,lines,format,
         dt.lines[,text.clean:=text]
 ### We want to keep comments - that's what we want to process
         dt.lines[,text.clean:=sub("^ *;.*","",text.clean)]
-        ### remove tabulators. Is this necessary?
+### remove tabulators. Is this necessary?
         dt.lines[,text.clean:=gsub("\\t","",text.clean)]
         dt.lines[,text.clean:=sub(paste0("\\$",section),"",text.clean,ignore.case=TRUE)]
-        dt.lines[,text.clean:=gsub("BLOCK(.+)","",text.clean)]
+### old line, dropping any row that contains BLOCK and anything after 
+        ## dt.lines[,text.clean:=gsub("BLOCK(.+)","",text.clean)]
+### suggested by Brian Reilly. Will keep SAME after removing BLOCK(.+)
+        ## dt.lines[,text.clean:=gsub("BLOCK\\(.+\\)","",text.clean)]
+### slightly modified by Philip to support BLOCK and BLOCK(n)
+        dt.lines[,text.clean:=gsub("BLOCK(\\(.+\\))*","",text.clean)]
         dt.lines[,text.clean:=sub("^ *$","",text.clean)]
-## drop empty lines
+        ## drop empty lines
         ## drop empty lines. An empty line contains only " " and ;
         dt.lines[,text.clean:=gsub("^[\\s;]+$","",text.clean,perl=TRUE)]
         
@@ -403,8 +408,8 @@ NMreadParsText <- function(file,lines,format,
             thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE]
            ,
             elems.theta[type.elem=="init"
-                                   ,.(par.type,linenum,i)],
-                        by=c("par.type","linenum"),all.x=TRUE)
+                       ,.(par.type,linenum,i)],
+            by=c("par.type","linenum"),all.x=TRUE)
     }
     if("OMEGA"%in%auto.idx){
         
@@ -418,7 +423,7 @@ NMreadParsText <- function(file,lines,format,
         elems.sigma <- NMreadInits(lines=lines,section="SIGMA",return="all",as.fun="data.table")$elements
         sigmas <- merge(sigmas[,setdiff(colnames(sigmas),c("i","j")),with=FALSE],
                         elems.sigma[type.elem=="init",.(par.type,linenum,i,j)],
-by=c("par.type","linenum"),all.x=TRUE)
+                        by=c("par.type","linenum"),all.x=TRUE)
     }
 
 
@@ -473,7 +478,7 @@ by=c("par.type","linenum"),all.x=TRUE)
     cols.last <- intersect(c("par.type","i","j","col.idx","parameter",col.model),colnames(pt1))
     setcolorder(pt1,c(setdiff(colnames(pt1),cols.last),cols.last))
     
-    
+    setindex(pt1,NULL)    
     as.fun(pt1)
 }
 
