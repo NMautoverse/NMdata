@@ -2,7 +2,9 @@
 
 ## New Features
 
-* `NMwriteInits()` support the `ext` argument. ext can still not be multiple
+* `NMwriteInits()` supports `ext` and `inits.tab` arguments. These
+  interfaces to specifying parameter values greatly improves
+  flexibility for programming, and for specifying multiple new
   parameter sets.
 
 * `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
@@ -39,7 +41,8 @@ streams. Tabulator characters would create issues in processing of
 various sections of the control stream leading to issues in functions
 such as `NMscanInput()` and `NMreadParText()` and others.
 
-* Summary of `NMscanData()` results
+* Summary of `NMscanData()` results has improved text to more clearly
+  describe the summary numbers shown.
 
 # NMdata 0.2.0
 
