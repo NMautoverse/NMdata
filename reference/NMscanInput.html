@@ -23,7 +23,7 @@ text file used by Nonmem."><meta property="og:image" content="https://nmautovers
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.910</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.916</span>
       </span>
     </div>
 
@@ -114,6 +114,8 @@ text file used by Nonmem.</p>
 <span>  <span class="va">quiet</span>,</span>
 <span>  <span class="va">args.fread</span>,</span>
 <span>  invert <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">modelname</span>,</span>
+<span>  <span class="va">col.model</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
 <span>  <span class="va">applyFilters</span>,</span>
 <span>  <span class="va">use.rds</span></span>
@@ -221,6 +223,27 @@ can be configured using `NMdataConf()`.</p></dd>
 <dd><p>If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
 returned. Only used if `apply.filters` is `TRUE`.</p></dd>
+
+
+<dt id="arg-modelname">modelname<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
+<dd><p>Only affects meta data table. The model name to
+be stored if col.model is not NULL. If not supplied, the name
+will be taken from the control stream file name by omitting
+the directory/path and deleting the .lst extension
+(path/run001.lst becomes run001). This can be a character
+string or a function which is called on the value of file
+(file is another argument to NMscanData). The function must
+take one character argument and return another character
+string. As example, see NMdataConf()$modelname. The default
+can be configured using NMdataConf.</p></dd>
+
+
+<dt id="arg-col-model">col.model<a class="anchor" aria-label="anchor" href="#arg-col-model"></a></dt>
+<dd><p>Only affects meta data table. A column of this
+name containing the model name will be included in the
+returned data. The default is to store this in a column called
+"model". See argument "modelname" as well. Set to NULL if not
+wanted. Default can be configured using NMdataConf.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
