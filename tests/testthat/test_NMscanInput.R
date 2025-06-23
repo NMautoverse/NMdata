@@ -279,15 +279,17 @@ test_that("Combinations of translate and recover.cols",{
     expect_equal_to_reference(all.res,fileRef,version=2)
 })
 
-test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
-    NMdataConf(reset=TRUE)
-    fileRef <- "testReference/NMscanInput_14.rds"
-    file.mod <- "testData/nonmem/xgxr054.mod"
+if(F){ ## while waiting for 054
+    test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
+        NMdataConf(reset=TRUE)
+        fileRef <- "testReference/NMscanInput_14.rds"
+        file.mod <- "testData/nonmem/xgxr054.mod"
 
-    res1 <-
-        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
-                    translate=TRUE,recover.cols=FALSE)
+        res1 <-
+            NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                        translate=TRUE,recover.cols=FALSE)
 
-    ## res1
-    expect_equal_to_reference(res1,fileRef,version=2)
-})
+        ## res1
+        expect_equal_to_reference(res1,fileRef,version=2)
+    })
+}

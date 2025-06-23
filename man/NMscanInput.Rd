@@ -20,6 +20,8 @@ NMscanInput(
   quiet,
   args.fread,
   invert = FALSE,
+  modelname,
+  col.model,
   as.fun,
   applyFilters,
   use.rds
@@ -96,6 +98,23 @@ can be configured using `NMdataConf()`.}
 \item{invert}{If TRUE, the data rows that are dismissed by the
 Nonmem data filters (ACCEPT and IGNORE) and only this will be
 returned. Only used if `apply.filters` is `TRUE`.}
+
+\item{modelname}{Only affects meta data table. The model name to
+be stored if col.model is not NULL. If not supplied, the name
+will be taken from the control stream file name by omitting
+the directory/path and deleting the .lst extension
+(path/run001.lst becomes run001). This can be a character
+string or a function which is called on the value of file
+(file is another argument to NMscanData). The function must
+take one character argument and return another character
+string. As example, see NMdataConf()$modelname. The default
+can be configured using NMdataConf.}
+
+\item{col.model}{Only affects meta data table. A column of this
+name containing the model name will be included in the
+returned data. The default is to store this in a column called
+"model". See argument "modelname" as well. Set to NULL if not
+wanted. Default can be configured using NMdataConf.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to

@@ -339,7 +339,6 @@ NMwriteInits <- function(file.mod,update=TRUE,file.ext=NULL,ext,inits.tab,values
                                          inits.w=inits.w[model==this.mod],
                                          inits.orig=inits.orig,
                                          pars.l=pars.l[model==this.mod])
-
             lines.res
         })
         names(lines.new) <- all.models

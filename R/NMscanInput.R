@@ -63,14 +63,29 @@
 ##'     except for "input" and "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
 ##'     can be configured using `NMdataConf()`.
+##' @param invert If TRUE, the data rows that are dismissed by the
+##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
+##'     returned. Only used if `apply.filters` is `TRUE`.
+##' @param modelname Only affects meta data table. The model name to
+##'     be stored if col.model is not NULL. If not supplied, the name
+##'     will be taken from the control stream file name by omitting
+##'     the directory/path and deleting the .lst extension
+##'     (path/run001.lst becomes run001). This can be a character
+##'     string or a function which is called on the value of file
+##'     (file is another argument to NMscanData). The function must
+##'     take one character argument and return another character
+##'     string. As example, see NMdataConf()$modelname. The default
+##'     can be configured using NMdataConf.
+##' @param col.model Only affects meta data table. A column of this
+##'     name containing the model name will be included in the
+##'     returned data. The default is to store this in a column called
+##'     "model". See argument "modelname" as well. Set to NULL if not
+##'     wanted. Default can be configured using NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param invert If TRUE, the data rows that are dismissed by the
-##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
-##'     returned. Only used if `apply.filters` is `TRUE`.
 ##' @param applyFilters Deprecated - use apply.filters.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite
@@ -94,11 +109,11 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
                         file.data=NULL, apply.filters=FALSE,
                         translate=TRUE, recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet,
-                        args.fread, invert=FALSE, as.fun,
+                        args.fread, invert=FALSE, modelname,
+                        col.model, as.fun,
                         ## deprecated
                         applyFilters,
-                        use.rds, modelname,
-                        col.model) {
+                        use.rds) {
     
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -108,6 +123,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     nid <- NULL
     input <- NULL
     result <- NULL
+    ..file <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
