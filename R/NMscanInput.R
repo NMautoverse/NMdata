@@ -97,7 +97,8 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
                         args.fread, invert=FALSE, as.fun,
                         ## deprecated
                         applyFilters,
-                        use.rds) {
+                        use.rds, modelname,
+                        col.model) {
     
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -111,7 +112,6 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
 #### Section start: Pre-process arguments ####
-    
     
 ### the lst file only contains the name of the data file, not the path
 ### to it. So we need to find the .mod instead.
@@ -153,6 +153,14 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
         formats.read <- setdiff(formats.read,c("rds"))
     }
 
+    if(missing(col.model)||!is.null(col.model)) {
+        if(missing(col.model)) {
+            col.model <- NULL
+        } 
+        col.model <- NMdataDecideOption("col.model",col.model)
+    }
+    modelname <- NMdataDecideOption("modelname",modelname)
+    
 
 ###  Section end: Pre-process arguments
 
@@ -221,12 +229,18 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             file=path.data.input,
             file.mtime=file.mtime(path.data.input),
             file.logtime=input.create.time,
+            exists=TRUE,
             filetype=type.file,
             name=basename(path.data.input),
             nrow=nrow(data.input.0),
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
+        if(!is.null(col.model)) {
+            meta$tables[,c(col.model):=modelname(..file)]
+        }
+
+        
         
         meta <- append(meta,NMinfoDT(data.input))
 
@@ -239,7 +253,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
 
-        setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
+        setcolorder(meta$tables,intersect(c(col.model,"source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
 
         
         if(!is.null(col.id) && col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {

@@ -105,7 +105,6 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     args <- getArgs(sys.call(),parent.frame())
     deprecatedArg(oldarg="details",args=args)
 
-
     if(missing(col.model)||!is.null(col.model)) {
         if(missing(col.model)) {
             col.model <- NULL
@@ -229,7 +228,7 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
         }
         
         cnames.tab.I <- colnames(tables[[I]])
-
+        
         if(col.id%in%cnames.tab.I){
             meta[I,nid:=tables[[I]][,uniqueN(get(col.id))]]
         } else {

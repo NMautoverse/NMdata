@@ -328,7 +328,6 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
 
 #### Section start: read all output tables and add to meta data ####
     
-    ## tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno)
     tables <- NMscanTables(file,quiet=TRUE,as.fun="data.table",col.row=col.row,col.id=col.id,col.tableno=col.tableno,col.nmrep=TRUE,skip.absent=skip.absent,modelname=modelname,col.model=col.model)
     meta.output <- copy(NMinfoDT(tables)$tables)
     
@@ -382,9 +381,9 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     }
 
 ### Section end: read input data
-
+    
 #### Section start: col.nmout and col.model ####
-    cnames.input.result <- nminfo.input$colnames[,result]
+    cnames.input.result <- nminfo.input$input.colnames[,result]
     outnames  <- unlist(lapply(tables,colnames))
     allnames <- c(outnames,cnames.input.result)
     
@@ -875,7 +874,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     dt.vars[included==TRUE,COLNUM:=match(variable,colnames(tab.row))]
     setorder(dt.vars,-included,COLNUM)
     dt.vars[,included:=NULL]    
-
+    
     meta.output[,source:="output"]
     if(use.input){
         ## data.input$meta$tables[,source:="input"]
