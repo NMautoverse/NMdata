@@ -141,7 +141,7 @@ test_that("Including meta data",{
 test_that("CYCLE=DROP",{
 
     fileRef <- "testReference/NMscanInput_07.rds"
-    ### file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+### file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
     file.lst <- "testData/nonmem/xgxr002.lst"
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
@@ -192,7 +192,7 @@ test_that("ID only from pseudonym",{
 
     inp <- NMscanInput(file.mod)
     inp2 <- NMscanInput(file.mod,translate=F)
-        
+    
     inp <- fix.time(inp)    
     
     expect_equal_to_reference(inp,fileRef,version=2)
@@ -213,7 +213,7 @@ test_that("apply.filters=F and recover.rows=FALSE",{
 
     fileRef <- "testReference/NMscanInput_11.rds"
     ##file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
-file.lst <- "testData/nonmem/xgxr002.lst"
+    file.lst <- "testData/nonmem/xgxr002.lst"
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed
@@ -279,3 +279,15 @@ test_that("Combinations of translate and recover.cols",{
     expect_equal_to_reference(all.res,fileRef,version=2)
 })
 
+test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_14.rds"
+    file.mod <- "testData/nonmem/xgxr054.mod"
+
+    res1 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=TRUE,recover.cols=FALSE)
+
+    ## res1
+    expect_equal_to_reference(res1,fileRef,version=2)
+})

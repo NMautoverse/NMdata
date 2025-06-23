@@ -80,7 +80,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     if(!recover.cols){
         data <- data[,1:length(nms)]
     }
-
+    
 
     if(translate){
         if(length(nms)>length(cnames.input)){
