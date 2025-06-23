@@ -11,7 +11,7 @@ test_that("basic",{
         res.data
     )
 
-    ##sum.res
+    sum.res
     
     res <- capture.output(
         print(sum.res),type="message"
