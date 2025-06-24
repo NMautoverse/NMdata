@@ -336,7 +336,7 @@ patterns <-
     getMatches <- function(dt.lines){
         ## Function to classify matches and insert NA where applicable
         
-text.clean <- NULL
+        text.clean <- NULL
         matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
         
         matches.list <- lapply(seq_along(matches),function(I){

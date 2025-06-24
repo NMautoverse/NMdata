@@ -2,7 +2,8 @@
 ##'
 ##' Functions that take file and lines arguments can use this function
 ##' to derive lines no matter what was provided.
-##'
+##' @param file A file path to a a text file to read.
+##' @param lines Text lines if file was already read.
 ##' @param as.one If the `file` argument is used and if `as.one` is
 ##'     TRUE, the file(s) are read and put into a `data.table` with a
 ##'     model column and a `text` column. Default is FALSE. Be careful

@@ -90,11 +90,17 @@ NMextractText <- function(file, lines, text, section, char.section,
     ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
 
     if(!return%in%c("idx","text")) stop("text must be one of text or idx.")
+
+    if(!missing(text) && !is.null(text)){
+        stop("text argument is deprecated. Use lines.")
+    }
+
+    lines <- getLines(file=file,lines=lines)
     
-    if(sum(c(!missing(file)&&!is.null(file),
-             !missing(lines)&&!is.null(lines),
-             !missing(text)&&!is.null(text)
-             ))!=1) stop("Exactly one of file, lines, or text must be supplied")
+    ## if(sum(c(!missing(file)&&!is.null(file),
+    ##          !missing(lines)&&!is.null(lines),
+    ##          !missing(text)&&!is.null(text)
+    ##          ))!=1) stop("Exactly one of file, lines, or text must be supplied")
 
 
     ## works with both .mod and .lst
@@ -115,13 +121,13 @@ NMextractText <- function(file, lines, text, section, char.section,
     
 ### Section end: Pre-process arguments
 
-    if(!missing(file)&&!is.null(file)) {
-        if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
-        lines <- readLines(file,warn=FALSE)
-    }
-    if(!missing(text)&&!is.null(text)) {
-        lines <- strsplit(text,split=linesep)[[1]]
-    }
+    ## if(!missing(file)&&!is.null(file)) {
+    ##     if(!file.exists(file)) stop("When using the file argument, file has to point to an existing file.")
+    ##     lines <- readLines(file,warn=FALSE)
+    ## }
+    ## if(!missing(text)&&!is.null(text)) {
+    ##     lines <- strsplit(text,split=linesep)[[1]]
+    ## }
     
 
     ## This line can give problems because of possible special characters in company names or the registerred trademark character. We are not using it anyway.
@@ -137,10 +143,7 @@ NMextractText <- function(file, lines, text, section, char.section,
                     },
                     all={lines}
                     )
-    if(F){
-        ##:ess-bp-start::conditional@grepl("omega",section,ignore.case=T):##
-        browser(expr={grepl("omega",section,ignore.case=T)})##:ess-bp-end:##
-    }
+
     ## Find all the lines that start with the $section
     ## idx.starts <- grep(paste0("^ *",char.section,section," *"),lines)
     if(match.exactly){

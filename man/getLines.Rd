@@ -15,6 +15,10 @@ getLines(
 )
 }
 \arguments{
+\item{file}{A file path to a a text file to read.}
+
+\item{lines}{Text lines if file was already read.}
+
 \item{as.one}{If the `file` argument is used and if `as.one` is
 TRUE, the file(s) are read and put into a `data.table` with a
 model column and a `text` column. Default is FALSE. Be careful
