@@ -63,14 +63,29 @@
 ##'     except for "input" and "file", you need to supply all
 ##'     arguments to fread if you use this argument. Default values
 ##'     can be configured using `NMdataConf()`.
+##' @param invert If TRUE, the data rows that are dismissed by the
+##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
+##'     returned. Only used if `apply.filters` is `TRUE`.
+##' @param modelname Only affects meta data table. The model name to
+##'     be stored if col.model is not NULL. If not supplied, the name
+##'     will be taken from the control stream file name by omitting
+##'     the directory/path and deleting the .lst extension
+##'     (path/run001.lst becomes run001). This can be a character
+##'     string or a function which is called on the value of file
+##'     (file is another argument to NMscanData). The function must
+##'     take one character argument and return another character
+##'     string. As example, see NMdataConf()$modelname. The default
+##'     can be configured using NMdataConf.
+##' @param col.model Only affects meta data table. A column of this
+##'     name containing the model name will be included in the
+##'     returned data. The default is to store this in a column called
+##'     "model". See argument "modelname" as well. Set to NULL if not
+##'     wanted. Default can be configured using NMdataConf.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default can be configured using
 ##'     NMdataConf.
-##' @param invert If TRUE, the data rows that are dismissed by the
-##'     Nonmem data filters (ACCEPT and IGNORE) and only this will be
-##'     returned. Only used if `apply.filters` is `TRUE`.
 ##' @param applyFilters Deprecated - use apply.filters.
 ##' @param use.rds Deprecated - use \code{formats.read} instead. If
 ##'     provided (though not recommended), this will overwrite
@@ -94,7 +109,8 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
                         file.data=NULL, apply.filters=FALSE,
                         translate=TRUE, recover.cols=TRUE,
                         details=TRUE, col.id="ID", col.row, quiet,
-                        args.fread, invert=FALSE, as.fun,
+                        args.fread, invert=FALSE, modelname,
+                        col.model, as.fun,
                         ## deprecated
                         applyFilters,
                         use.rds) {
@@ -107,11 +123,11 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     nid <- NULL
     input <- NULL
     result <- NULL
+    ..file <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
 #### Section start: Pre-process arguments ####
-    
     
 ### the lst file only contains the name of the data file, not the path
 ### to it. So we need to find the .mod instead.
@@ -153,6 +169,14 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
         formats.read <- setdiff(formats.read,c("rds"))
     }
 
+    if(missing(col.model)||!is.null(col.model)) {
+        if(missing(col.model)) {
+            col.model <- NULL
+        } 
+        col.model <- NMdataDecideOption("col.model",col.model)
+    }
+    modelname <- NMdataDecideOption("modelname",modelname)
+    
 
 ###  Section end: Pre-process arguments
 
@@ -221,12 +245,18 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             file=path.data.input,
             file.mtime=file.mtime(path.data.input),
             file.logtime=input.create.time,
+            exists=TRUE,
             filetype=type.file,
             name=basename(path.data.input),
             nrow=nrow(data.input.0),
             ncol=ncol(data.input.0),
             nid=NA_real_
         )
+        if(!is.null(col.model)) {
+            meta$tables[,c(col.model):=modelname(..file)]
+        }
+
+        
         
         meta <- append(meta,NMinfoDT(data.input))
 
@@ -239,7 +269,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
 
-        setcolorder(meta$tables,intersect(c("source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
+        setcolorder(meta$tables,intersect(c(col.model,"source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
 
         
         if(!is.null(col.id) && col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {

@@ -68,7 +68,7 @@ test_that("Repeated doses without samples",{
     dat.all <- NMorderColumns(dat.all)
     dat.all[,ROW:=.I]
 
-    #setorder(dat.all,ID,TIME)
+                                        #setorder(dat.all,ID,TIME)
     
     res <- addTAPD(dat.all[EVID==1])
     ## addTAPD(
@@ -78,6 +78,21 @@ test_that("Repeated doses without samples",{
     expect_equal_to_reference(res,fileRef)
     
 })
+
+
+test_that("Subjects without doses",{
+    fileRef <- "testReference/addTAPD_05.rds"
+    ## resRef <- readRDS(fileRef)
+    
+    dat <- readRDS("testData/data/xgxr2.rds")
+    dat <- dat[ID<100|EVID!=1]
+    res <- addTAPD(data=dat,as.fun="data.table")
+    ## res[ID==180]
+
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
+
 
 if(F){
 ### this example shows most key features. Reduce number of rows and build examples and tests on it.

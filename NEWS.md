@@ -10,7 +10,13 @@
   table. This is useful for transparency when sourcing a file with
   configuration. Default is \code{TRUE}.
   
-* Improved printing of tables for messages with `message_dt()`
+* Improved printing of tables for messages with `message_dt()`. This
+  gives a cleaner and more consistent look of console outputs from
+  several functions in the package.
+
+* `NMreadParsText()` supports `OMEGA` blocks valued `SAME`. This is
+  needed for generation of parameter tables for models with
+  between-occasion variability.
 
 ## Bugfixes
 * `NMreadExt()` would in some situations with multiple estimation steps
@@ -28,10 +34,12 @@ not be able to read the `.ext` file. This has been fixed.
 
 ## Other improvements
 
-Generally, tabulator characters are now supported in control
+* Generally, tabulator characters are now supported in control
 streams. Tabulator characters would create issues in processing of
 various sections of the control stream leading to issues in functions
 such as `NMscanInput()` and `NMreadParText()` and others.
+
+* Summary of `NMscanData()` results
 
 # NMdata 0.2.0
 

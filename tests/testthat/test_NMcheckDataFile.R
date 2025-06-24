@@ -29,6 +29,14 @@ fix.time <- function(x,meta=T){
     x
 }
 
+## this is in case metab table tables has changed. Not relevant for
+## NMcheckData - tested in NMscanData.
+simplify.res <- function(x,meta=T){
+    res <- fix.time(x=x,meta=meta)
+    res[["tables"]] <- NULL
+    res
+}
+
 
 test_that("Using control stream file",{
     NMdataConf(reset=TRUE)
@@ -37,8 +45,9 @@ test_that("Using control stream file",{
     file.lst <- "testData/nonmem/xgxr001.lst"
     
     res1a <- NMcheckData(file=file.lst,quiet=TRUE)
-
-    res1a <- fix.time(res1a,meta=F)
+    
+    ## res1a <- fix.time(res1a,meta=F)
+    res1a <- simplify.res(res1a,meta=F)
     expect_equal_to_reference(res1a,fileRef)
 
     if(FALSE){
@@ -53,7 +62,7 @@ test_that("Using control stream file",{
     ## })
     
     res1b <- NMcheckData(file=file.lst,quiet=TRUE)
-    res1b <- fix.time(res1b,meta=F)
+    res1b <- simplify.res(res1b,meta=F)
 
     expect_equal(res1a,res1b)
 

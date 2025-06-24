@@ -202,6 +202,7 @@ addTAPD <- function(data,col.id,col.time,col.evid="EVID",col.amt="AMT",col.tpdos
                 data[,(col.doscuma):=NULL]
             }
             data[get(col.event)==TRUE&!is.na(get(col.amt)),(col.doscuma):=cumsum(get(col.amt))/SDOS,by=by]
+            
             data[,(col.doscuma):=nafill(c(0,get(col.doscuma)),type="locf")[-1],by=by]
         }
         ## clean up tpdos

@@ -65,7 +65,7 @@
 ##' @export
 
 NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.id="ID",col.row,details,skip.absent=FALSE,meta.only=FALSE,modelname,
-                       col.model){
+                         col.model){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -104,7 +104,6 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     deprecatedArg(oldarg="details",args=args)
-
 
     if(missing(col.model)||!is.null(col.model)) {
         if(missing(col.model)) {
@@ -151,7 +150,10 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
     meta[,sep:=fifelse(grepl(",",format),",",
                        fifelse(grepl("t",format),"\t",
                                fifelse(grepl("s",format)," ",
-                                       "auto")))]
+                                       fifelse(grepl(";",format),";",
+                                               "auto"
+                                               ))))
+         ]
     meta[,`:=`(nrow=NA_real_
               ,ncol=NA_real_
                )]
@@ -207,7 +209,7 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
             cnames.text <- sub(paste0("(",cnames.notcols,collapse="|",").*"),"",cnames.text)
 
             cnames.all <- strsplit(cnames.text," ")[[1]]
-                        
+            
             cnames.extra <- cc(DV,PRED,RES,WRES)
             cnames.extra <- setdiff(cnames.extra,cnames.all)
             ncol.I <- ncol(tables[[I]])
@@ -229,7 +231,7 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
         }
         
         cnames.tab.I <- colnames(tables[[I]])
-
+        
         if(col.id%in%cnames.tab.I){
             meta[I,nid:=tables[[I]][,uniqueN(get(col.id))]]
         } else {

@@ -157,6 +157,7 @@ print.summary_NMdata <- function(x,...){
     vars.sum2[source=="output",nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
     vars.sum2[source=="input",nrow.used:=pmin(nrow,x$N.row[,sum(N.rows)])]
     vars.sum2[,nid.used:=pmin(nid,x$N.id[,sum(N.ids)])]
+    vars.sum2[source=="output",file:=paste(file,"(output)")]
     vars.sum2[source=="input",file:=paste(file,"(input)")]
     
     
@@ -209,8 +210,7 @@ print.summary_NMdata <- function(x,...){
     ## overview of processed tables
     ## cat("\nUsed tables, contents shown as used/total:\n")
     ## message("Used tables, N of rows, columns and distinct ID's shown as used/available")
-    message("")
-    message("By source table, N as used/available of rows, columns and distinct ID's")
+    message("Number of rows, columns and distinct ID's\nN\'s by source table, shown as used/available:")
     ## print(vars.sum2,row.names=FALSE,print.keys=FALSE,class=FALSE)
     message_dt(vars.sum2)
 
@@ -252,7 +252,7 @@ Nonmem data filters.")
             setcolorder(evids2,
                         neworder=intersect(cc(EVID,CMT,"input-only","output","result"),colnames(evids2)))
 
-            message("Distribution of rows on event types in returned data:")
+            message("Distribution of rows on event types\nShown for output tables and result:")
             ## print(evids2,row.names=FALSE,print.keys=FALSE,class=FALSE)
             message_dt(evids2)
         })
