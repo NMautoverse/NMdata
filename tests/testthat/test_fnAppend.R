@@ -40,6 +40,10 @@ test_that("multiple strings to append",{
     )
 
     expect_equal_to_reference(res1,fileRef)
+
+    if(F){
+        readRDS(fileRef)
+    }
     
 })
 

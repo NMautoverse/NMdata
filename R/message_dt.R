@@ -6,9 +6,9 @@
 ##' @details defaults arguments to print.data.table (in addition to
 ##'     `x=dt` which cannot be overwritten) are `class=FALSE`,
 ##'     `print.keys=FALSE`, `row.names=FALSE`.
-
-
+##' @importFrom utils modifyList
 ##' @keywords internal
+
 message_dt <- function(x,...){
 
     if(!is.data.table(x)){

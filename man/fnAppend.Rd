@@ -4,7 +4,7 @@
 \alias{fnAppend}
 \title{paste something before file name extension.}
 \usage{
-fnAppend(fn, x, pad0 = 0, sep = "_", allow.noext = FALSE)
+fnAppend(fn, x, pad0 = 0, sep = "_", collapse = sep, allow.noext = FALSE)
 }
 \arguments{
 \item{fn}{The file name or file names to modify.}
@@ -18,6 +18,13 @@ more than 10 files, and your counter will be 01, 02,..,
 
 \item{sep}{The separator between the existing file name (until
 extension) and the addition.}
+
+\item{collapse}{If `x` is of length greater than 1, the default is
+to collapse the elements to a single string using `sep` as
+separator. See the `collapse` argument to `?paste`. If you
+want to treat them as separate strings, use `collapse=NULL`
+which will lead to generation of separate file names. However,
+currently `fn` or `x` must be of length 1.}
 
 \item{allow.noext}{Allow `fn` to be string(s) without extensions?
 Default is `FALSE` in which case an error will be thrown if

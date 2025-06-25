@@ -1,11 +1,9 @@
 # NMdata 0.2.1
 
 ## New Features
-
-* `NMwriteInits()` supports `ext` and `inits.tab` arguments. These
-  interfaces to specifying parameter values greatly improves
-  flexibility for programming, and for specifying multiple new
-  parameter sets.
+* `NMreadParsText()` supports `OMEGA` blocks valued `SAME`. This is
+  needed for generation of parameter tables for models with
+  between-occasion variability.
 
 * `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
   overview of the configuration changes is summarixfzed in a printed
@@ -15,10 +13,6 @@
 * Improved printing of tables for messages with `message_dt()`. This
   gives a cleaner and more consistent look of console outputs from
   several functions in the package.
-
-* `NMreadParsText()` supports `OMEGA` blocks valued `SAME`. This is
-  needed for generation of parameter tables for models with
-  between-occasion variability.
 
 ## Bugfixes
 * `NMreadExt()` would in some situations with multiple estimation steps
@@ -35,7 +29,6 @@ not be able to read the `.ext` file. This has been fixed.
   still not be bulletproof but it should now support most cases.
 
 ## Other improvements
-
 * Generally, tabulator characters are now supported in control
 streams. Tabulator characters would create issues in processing of
 various sections of the control stream leading to issues in functions
@@ -43,6 +36,12 @@ such as `NMscanInput()` and `NMreadParText()` and others.
 
 * Summary of `NMscanData()` results has improved text to more clearly
   describe the summary numbers shown.
+
+## Other Changes
+* `NMwriteInits`, `NMwriteFilters()`, and `NMwriteSizes()` are no
+  longer in NMdata. They are from now on distributed with NMsim
+  package because NMsim functions depend on it, and NMdata functions
+  do not.
 
 # NMdata 0.2.0
 

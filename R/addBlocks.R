@@ -26,14 +26,21 @@ addBlocks <- function(pars,col.model="model"){
     
 ### this setorder call doesnt work - unsure why
     ## setorder(pars,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)
-    pars <- pars[order(model,match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
+    pars <- pars[order(get(col.model),match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]
     ## est is just a copy of value for backward compatibility
     pars[,est:=value]
 
+    if("iblock"%in%colnames(pars)){
+        pars[,iblock:=NULL]
+    }
+    if("blocksize"%in%colnames(pars)){
+        pars[,blocksize:=NULL]
+    }
+    
 ### add OMEGA block information based on off diagonal values
     tab.i <- rbind(pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=i,j=j,value)],
                    pars[par.type%in%c("OMEGA","SIGMA"),.(par.type,i=j,j=i,value)])[
-                                        # include i==j so that if an OMEGA is fixed to zero it is still assigned an iblock
+        ## include i==j so that if an OMEGA is fixed to zero it is still assigned an iblock
         i==j|abs(value)>1e-9,.(iblock=min(i,j)),by=.(par.type,i)]
     tab.i[,blocksize:=.N,by=.(par.type,iblock)]
 
