@@ -19,7 +19,7 @@ it's a number, we can pad some zeros if wanted. The separator
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.917</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.921</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ it's a number, we can pad some zeros if wanted. The separator
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span><span class="va">fn</span>, <span class="va">x</span>, pad0 <span class="op">=</span> <span class="fl">0</span>, sep <span class="op">=</span> <span class="st">"_"</span>, allow.noext <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span><span class="va">fn</span>, <span class="va">x</span>, pad0 <span class="op">=</span> <span class="fl">0</span>, sep <span class="op">=</span> <span class="st">"_"</span>, collapse <span class="op">=</span> <span class="va">sep</span>, allow.noext <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -116,6 +116,15 @@ more than 10 files, and your counter will be 01, 02,..,
 <dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>
 <dd><p>The separator between the existing file name (until
 extension) and the addition.</p></dd>
+
+
+<dt id="arg-collapse">collapse<a class="anchor" aria-label="anchor" href="#arg-collapse"></a></dt>
+<dd><p>If `x` is of length greater than 1, the default is
+to collapse the elements to a single string using `sep` as
+separator. See the `collapse` argument to `?paste`. If you
+want to treat them as separate strings, use `collapse=NULL`
+which will lead to generation of separate file names. However,
+currently `fn` or `x` must be of length 1.</p></dd>
 
 
 <dt id="arg-allow-noext">allow.noext<a class="anchor" aria-label="anchor" href="#arg-allow-noext"></a></dt>

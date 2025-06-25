@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.917</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.921</span>
       </span>
     </div>
 
@@ -85,10 +85,9 @@
 <h2 class="page-header" data-toc-text="0.2.1" id="nmdata-021">NMdata 0.2.1<a class="anchor" aria-label="anchor" href="#nmdata-021"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1"></a></h3>
-<ul><li><p><code><a href="../reference/NMwriteInits.html">NMwriteInits()</a></code> supports <code>ext</code> and <code>inits.tab</code> arguments. These interfaces to specifying parameter values greatly improves flexibility for programming, and for specifying multiple new parameter sets.</p></li>
+<ul><li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> supports <code>OMEGA</code> blocks valued <code>SAME</code>. This is needed for generation of parameter tables for models with between-occasion variability.</p></li>
 <li><p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> gains a <code>quiet</code> argument. If , an overview of the configuration changes is summarixfzed in a printed table. This is useful for transparency when sourcing a file with configuration. Default is .</p></li>
 <li><p>Improved printing of tables for messages with <code><a href="../reference/message_dt.html">message_dt()</a></code>. This gives a cleaner and more consistent look of console outputs from several functions in the package.</p></li>
-<li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> supports <code>OMEGA</code> blocks valued <code>SAME</code>. This is needed for generation of parameter tables for models with between-occasion variability.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-1">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-1"></a></h3>
@@ -101,20 +100,25 @@
 <ul><li><p>Generally, tabulator characters are now supported in control streams. Tabulator characters would create issues in processing of various sections of the control stream leading to issues in functions such as <code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> and <code>NMreadParText()</code> and others.</p></li>
 <li><p>Summary of <code><a href="../reference/NMscanData.html">NMscanData()</a></code> results has improved text to more clearly describe the summary numbers shown.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="other-changes-0-2-1">Other Changes<a class="anchor" aria-label="anchor" href="#other-changes-0-2-1"></a></h3>
+<ul><li>
+<code>NMwriteInits</code>, <code>NMwriteFilters()</code>, and <code>NMwriteSizes()</code> are no longer in NMdata. They are from now on distributed with NMsim package because NMsim functions depend on it, and NMdata functions do not.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="nmdata-020">NMdata 0.2.0<small>2025-03-21</small><a class="anchor" aria-label="anchor" href="#nmdata-020"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
-<ul><li>Functions included to read (<code><a href="../reference/NMreadInits.html">NMreadInits()</a></code>) and write (<code><a href="../reference/NMwriteInits.html">NMwriteInits()</a></code>) initial values, boundaries and fix or “unfix” parameters included. <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> may be useful for inclusion of these values in parameter tables. <code>NMwriteInits</code> can update those values or any subset of them through a concise interface, like</li>
-</ul><pre><code><span><span class="fu"><a href="../reference/NMwriteInits.html">NMwriteInits</a></span><span class="op">(</span><span class="va">file.mod</span>,</span>
+<ul><li>Functions included to read (<code><a href="../reference/NMreadInits.html">NMreadInits()</a></code>) and write (<code>NMwriteInits()</code>) initial values, boundaries and fix or “unfix” parameters included. <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> may be useful for inclusion of these values in parameter tables. <code>NMwriteInits</code> can update those values or any subset of them through a concise interface, like</li>
+</ul><pre><code><span><span class="fu">NMwriteInits</span><span class="op">(</span><span class="va">file.mod</span>,</span>
 <span>   <span class="st">"theta(2)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>init<span class="op">=</span><span class="fl">1.4</span>,lower<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>,</span>
 <span>   <span class="st">"THETA(3)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>FIX<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>   <span class="st">"omega(2,2)"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>init<span class="op">=</span><span class="fl">0.1</span>,fix<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 <p>where <code>file.mod</code> is a path to a control stream.</p>
-<ul><li><p>Functions to read (<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code>) and write (<code><a href="../reference/NMwriteFilters.html">NMwriteFilters()</a></code>) data filter (<code>ACCEPT</code>/<code>IGNORE</code>) statements in a control stream have been included. <code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> run on a path to a control stream returns a structured <code>data.frame</code> with the filter statements. <code><a href="../reference/NMwriteFilters.html">NMwriteFilters()</a></code> can take such a <code>data.frame</code> or just a string with filters and replace the data filters in a control stream with those.</p></li>
-<li><p>Functions to read (<code><a href="../reference/NMreadSizes.html">NMreadSizes()</a></code>) and write (<code><a href="../reference/NMwriteSizes.html">NMwriteSizes()</a></code>) the <code>$SIZES</code> section of NONMEM control streams. <code><a href="../reference/NMwriteSizes.html">NMwriteSizes()</a></code> can either write the section from scratch (<code>wipe=TRUE</code>) or merge the new sizes values in with exisiting values.</p></li>
+<ul><li><p>Functions to read (<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code>) and write (<code>NMwriteFilters()</code>) data filter (<code>ACCEPT</code>/<code>IGNORE</code>) statements in a control stream have been included. <code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> run on a path to a control stream returns a structured <code>data.frame</code> with the filter statements. <code>NMwriteFilters()</code> can take such a <code>data.frame</code> or just a string with filters and replace the data filters in a control stream with those.</p></li>
+<li><p>Functions to read (<code><a href="../reference/NMreadSizes.html">NMreadSizes()</a></code>) and write (<code>NMwriteSizes()</code>) the <code>$SIZES</code> section of NONMEM control streams. <code>NMwriteSizes()</code> can either write the section from scratch (<code>wipe=TRUE</code>) or merge the new sizes values in with exisiting values.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-0">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-0"></a></h3>

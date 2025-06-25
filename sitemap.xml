@@ -50,10 +50,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMstamp.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMtransInp.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteData.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteFilters.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteInits.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteSection.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/NMwriteSizes.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addBlocks.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addCor.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addOmegaCorr.html</loc></url>
@@ -92,7 +89,6 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/mergeCheck.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/messageWrap.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/message_dt.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/nameMultipleFiles.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/print.summary_NMdata.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/reduceTables.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/renameByContents.html</loc></url>
@@ -104,6 +100,5 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/unNMdata.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/uniquePresent.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/writeNMinfo.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/writeTextFile.html</loc></url>
 </urlset>
 
