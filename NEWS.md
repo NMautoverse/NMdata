@@ -15,8 +15,8 @@
   several functions in the package.
 
 ## Bugfixes
-* `NMreadExt()` would in some situations with multiple estimation steps
-not be able to read the `.ext` file. This has been fixed.
+* `NMreadExt()` would in some situations with multiple estimation
+  steps not be able to read the `.ext` file. This has been fixed.
 
 * `NMscanTables()` - and hence `NMscanData()` would fail on some
   output formats - especially it would not always detect if tabulators

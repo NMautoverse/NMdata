@@ -84,7 +84,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
     match.exactly <- FALSE
     if(section!="."){
         string.start <- substring(sub("^\\$","",cleanSpaces(section)),1,3)
-        match.exactly <- !string.start%in%c("COV","EST","SIM")
+        match.exactly <- !string.start%in%c("COV","EST","SIM","SUB")
     }
     
     res <- NMextractText(lines=lines, text=text, section=section,

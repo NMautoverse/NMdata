@@ -143,12 +143,11 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
     }
 
-    slow <- FALSE
+    slow <- TRUE
 
 ### based on NMreadTab
     if(!slow){
-
-        
+             
         res.NMdat <- lapply(1:length(file),function(nfile){
             this.file <- file[[nfile]]
             this.model <- modelname(this.file)
@@ -170,7 +169,8 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
                 res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==tableno])
             }
 
-        }}
+        }
+    }
 
     
     if(slow){
