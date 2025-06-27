@@ -1278,7 +1278,8 @@ Other
 
 # `NMdata` functions under development 
 ```{r,load-pmxtricks,include=FALSE}
-load_all("c:/Users/delff/working_copies/pmxtricks/")
+## load_all("c:/Users/delff/working_copies/pmxtricks/")
+load_all("c:/Users/Philip Delff/wdirs/pmxtricks/")
 ```
 
 ## `NMcheckData`: Check data syntax for Nonmem compatibility \includegraphics[width=0.5in]{figures/worksign.png}
