@@ -6,14 +6,16 @@
 ##' to check the compatibility of the data.
 ##' 
 ##' @param ... objects which element names to compare
-##' @param keepNames If TRUE, the original dataset names are used in
+##' @param list.data As alternative to ..., you can supply the data
+##'     sets in a list here.
+##' @param keep.names If TRUE, the original dataset names are used in
 ##'     reported table. If not, generic x1, x2,... are used. The
 ##'     latter may be preferred for readability.
-##' @param testEqual Do you just want a TRUE/FALSE to whether the
+##' @param test.equal Do you just want a TRUE/FALSE to whether the
 ##'     names of the two objects are the same? Default is FALSE which
 ##'     means to return an overview for interactive use. You might
 ##'     want to use TRUE in programming. However, notice that this
-##'     check may be overly rigorous. Many classes are compitable
+##'     check may be overly rigorous. Many classes are compatible
 ##'     enough (say numeric and integer), and compareCols doesn't take
 ##'     this into account.
 ##' @param diff.only If TRUE, don't report columns where no difference
@@ -22,8 +24,8 @@
 ##'     list of columns is shown by default.
 ##' @param fun.class the function that will be run on each column to
 ##'     check for differences. base::class is default. Notice that the
-##'     alternative base::typeof is different in certain ways. For
-##'     instance, typeof will not report a difference on numeric vs
+##'     alternative `base::typeof` is different in certain ways. For
+##'     instance, `typeof` will not report a difference on numeric vs
 ##'     difftime. You could basically submit any function that takes a
 ##'     vector and returns a single value.
 ##' @param cols.wanted Columns of special interest. These will always
@@ -40,16 +42,30 @@
 ##'     default is to return a data.table, if not the default is to
 ##'     return a data.frame. Use whatever to get what fits in with
 ##'     your workflow. Default can be configured with NMdataConf.
-##' @details technically, this function compares classes of elements in
-##'     lists. However, in relation to NMdata, this will most of the
-##'     time be columns in data.frames.
-##' @return A data.frame with an overview of elementes and their
+##' @param keepNames Deprecated. Use keep.names instead.
+##' @param testEqual Deprecated. Use test.equal instead.
+##' @return A data.frame with an overview of elements and their
 ##'     classes of objects in ... Class as defined by as.fun.
+##' @details technically, this function compares classes of elements
+##'     in lists. However, in relation to NMdata, this will most of
+##'     the time be columns in data.frames.
+##' 
+##' Despite the name of the argument fun.class, it can be any function
+##' to be evaluated on each element in `...`. See examples for how to
+##' extract SAS labels on an object read with `read_sas` from the
+##' `haven` package.
+##' @examples
+##' ## get SAS labels from objects read with haven::read_sas
+##' \dontrun{
+##' compareCols(...,fun.class=function(x)attributes(x)$label)
+##' }
+##' 
+##'
 ##' @family DataWrangling
 ##' @export
 
 
-compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun){
+compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only=TRUE,cols.wanted,fun.class=base::class,quiet,as.fun,keepNames,testEqual){
     
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
@@ -64,19 +80,46 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    dots <- list(...)
+
+
+    
+    args <- getArgs(sys.call(),parent.frame())
+
+    
+    ## deprecated since 2023-06-10
+    ## keep.names <- deprecatedArg("keepNames","keep.names",args=args)
+    keep.names <- deprecatedArg("keepNames","keep.names",args=args)
+    ## deprecated since 2023-06-10
+    test.equal <- deprecatedArg("testEqual","test.equal",args=args)
+    
+    
+    if(missing(list.data)){
+        dots <- list(...)
+        if(keep.names){
+            names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
+        }
+    } else {
+        dots <- list.data
+        names.dots <- names(dots)
+        if(is.null(names.dots)) names.dots <- paste0("x",1:length(list.data))
+        if(""%in%names.dots){
+            names.dots[names.dots==""] <- paste0("x",which(names.dots==""))
+        }
+        names(dots) <- names.dots
+    }
+
+    
+
     ndots <- length(dots)
     if(ndots==0) stop("No data supplied.")
     if(ndots==1&&missing(diff.only)) diff.only <- FALSE
     if(missing(cols.wanted)) cols.wanted <- NULL
-    
-    if(keepNames){
-        names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
-    } else {
+
+
+    if(!keep.names){
         names.dots <- paste0("x",seq(ndots))
     }
     names(dots) <- names.dots
-
     
     
     df1.was.dt <- is.data.table(dots[[1]])
@@ -107,8 +150,9 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 
     ## merge back on
     dt.cols <- mergeCheck(dt.cols,nu.classes,by="column",quiet=TRUE)
-
-    if(testEqual) return(dt.cols[n<ndots|nu>1,.N]==0)
+    
+    
+    if(test.equal) return(dt.cols[n<ndots|nu>1,.N]==0)
 
     if(is.null(cols.wanted)){
         dt.cols[,(col.wanted):=0]
@@ -116,6 +160,9 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         dt.cols <- merge(dt.cols,dt.wanted,all=T)
         dt.cols[!is.na(get(col.wanted)),column:=paste0("*",column)]
     }
+
+    dt.cols.full <- copy(dt.cols)
+    
     ## criteria whether to show if nu=1 (all equal class)
     if(diff.only) dt.cols <- dt.cols[n<ndots|nu>1|get(col.wanted)>0]
 ### this one orders by number of occurance, unique classses, column name
@@ -132,8 +179,13 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
 ### what about a summary of dimensions of the supplied datasets? We do that in the separate "dims" function.
     
     if(!quiet) {
-        message("Dimensions:")
-        print(dims(list.data=dots))
+        if(all(sapply(dots,is.data.frame))){
+
+            res.dims <- dims(list.data=dots)
+            message("Dimensions:")
+            ## message(print(as.fun(res.dims)))
+            message_dt(res.dims)
+        }
 
         if(nrow(dt.cols)==0&&ndots==1){
             message("Only one data set supplied.\n")
@@ -142,10 +194,27 @@ compareCols <- function(...,keepNames=TRUE,testEqual=FALSE,diff.only=TRUE,cols.w
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
+                ## message(print(as.fun(dt.cols)))
+
+                ## message(":::")
+                
+                ## message(print(as.fun(dt.cols)))
+                ## message(print(dt.cols))
+                ## message(print.table(dt.cols))
+                ## message(dt.cols)
+                ## message("[[[[[[")
+                ## message(paste(capture.output(print(as.fun(dt.cols))),collapse="\n"))
+                ## print(dt.cols)
+                message_dt(dt.cols)
+                message()
+                if(nrow(dt.cols.full[nu==1&n==ndots])){
+                    messageWrap(paste0("\nColumns where no differences were found: ",paste(dt.cols.full[nu==1&n==ndots,column],collapse=", "),"."),fun.msg=message)
+                }
             } else {
                 message("\nOverview of all columns:")
+                ## message(print(as.fun(dt.cols)))
+                message_dt(dt.cols)
             }
-            print(dt.cols)
         }
         return(invisible(as.fun(dt.cols)))
     } else {

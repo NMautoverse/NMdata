@@ -1,13 +1,19 @@
-* NMdata todo
+#+PROPERTY: LOGGING nil
 #+TODO: TODO(t) WAIT(w) DONE(d)
-# :PROPERTIES:
-:LOGGING: nil
-  :END:
+* NMdata todo
 ** Design
+*** DONE Add version to welcome message
+*** DONE All arguments should be arg.foo rather than argFoo
 *** TODO [#B] deprecate "default" option in NMdataConf
-    has no benefit over NULL, so redundant and prevents the use of "default" as an actual param value.
+    has no benefit over NULL, so redundant and prevents the use of
+    "default" as an actual param value.
 *** DONE Allow for say input.txt/output.txt
 **** NMtransInput
+*** TODO [#B] Support a drop argument
+It has been initiated in the code. I believe it can be finished after
+the translate part. The colnames table is the trickier part to update.
+
+What function does this belong to?
 *** DONE Support for return as tibble or whatever
 Could we use an option, NMdata.return="dplyr::as.tibble" which could then be
 reached and applied from within NMdata? It would have to not create extra
@@ -29,17 +35,48 @@ With load_all():
 > dt1
    a newcol
 1: 1      1
-*** DONE [#B] messageWrap internal/external
+*** DONE messageWrap internal/external
     This is called track.msg
     
     The mentioning of where a message comes from is only useful if a
     function is called from other functions. Possible to distinguish
     somehow?
+** High level features
+*** DONE Support for DATE type columns
 ** New functions
-*** TODO function to add variables to $TABLE                    :newFunction:
+*** document columns
+**** TODO Check for existence of char column in values
+If a data.frame specifies the num/char relationship, the char column
+should not be present in data. That would at least be a warning.
+**** TODO A regex argument to search for character values
+**** TODO Additional standard Nonmem columns 
+RATE,II, ADDL
+**** TODO addTAPD columns
+**** TODO If specified variable does not exist, send a message
+*** xml processer
+library(XML)
+XML::xmlParse("models/run1005_hi005.xml") |> xmlToList()
+*** DONE Remove commas from character strings
+Added editCharCols
+
+The following code does not look at column names
+
+#+begin_src R
+## get rid of commas in character values
+cnames.char <- colnames(nmdat)[ !sapply(nmdat,function(x)NMisNumeric(x)||"POSIXct"%in%class(x)||is.factor(x))]
+## character columns are edited removing commas from strings in all elements (contents of columns, not names)
+nmdat[,(cnames.char):=lapply(.SD,function(x)gsub(",","",x)),.SDcols=cnames.char]
+## factors are checked for commas in strings but not edited (because then factor levels would be lost)
+cnames.fac <- colnames(nmdat)[ !sapply(nmdat,function(x)NMisNumeric(x)||"POSIXct"%in%class(x))&sapply(nmdat,function(x)is.factor(x))]
+if(any(nmdat[,sapply(.SD,function(x)any(grepl(",",x))),.SDcols=cnames.fac])) stop("commas found in factors. This will cause problems when reading data into NONMEM. Please fix.")
+#+end_src
+
+*** TODO [#B] function to add variables to $TABLE               :newFunction:
 **** Which $TABLE to add to?
-*** TODO [#B] NMfreezeModels                                    :newFunction:
+*** CANCELLED NMfreezeModels                                    :newFunction:
     Remember to add chmod and describe that only a flat dir structure is supported so far
+
+    Since NMexec archives input data, this is no longer necessary
 *** DONE function to replace file name extension - fnExtension
 *** DONE summary.NMdata
 *** DONE Summary of the columns - NMinfo
@@ -49,14 +86,61 @@ With load_all():
     Risk now is that arguments are set to NULL
     Export to parent. Not sure check allows though...
 ** Function improvements
-*** TODO [#A] cl
-*** TODO [#A] fnAppend
-Make internal in tracee
+*** addTAPD
+**** DONE Check if data contains doses
+addTAPD only makes sense if doses are present. For subjects without
+doses, most new columns are NA. This is except DOSCUMN and DOSCUMA
+which are 0.
+
+**** TODO [#A] Add subset.data arg like in flags functions
+**** DONE Rename NDOSES to DOSCUMN
+It aligns with DOSCUMA and it is clearer from DOSCUMN that its
+cumulative number of doses.
+**** TODO [#B] DOSTOTN could be total number of doses.
+Not to be added by default
+**** TODO [#B] DOSTOTA could be total dose amount.
+Not to be added by default
+**** DONE Bug in DOSCUMA
+If a sim rec is simultaneos to, occurring below in data, and
+order.event-ordered before first dose, DOSCUMA comes out wrong.
+
+No, this is correct. DOSCUMA initiates at 0. I was confused because
+other returned columns zre NA, but DOSCUMA and NDOSES are 0 when no
+doses have been given. Correct.
+**** DONE Not evaluated at dose times for other doses than captured by subset
+**** DONE add suffix and prefix arguments
+prefix="N" for nominal or suffix="R" and suffix="CMT==5" for rescue
+medication.
+**** DONE add SDOSE argument
+which scales AMT to DOSE variables. Sometimes AMT is say mcg but DOSE
+i mg. Then also one could want PDOS etc to be in mg.
+
+pdosamt, doscuma
+**** DONE Add test of SDOS
+**** TODO [#B] Quit if no doses found etc
+*** cl
+*** dims
+**** DONE Check if objects are data.frames
+*** fnAppend
+**** TODO [#B] If x is a list
+Apply elementwise to fn. Must be same length as fn then.
+*** fnExtention
+**** DONE Support strings without extensions
+ Example: fnExtension("run",".lst")
+**** DONE fnExtension("run.lst","") should return run
+**** DONE fnExtension("run.lst") should return lst
+**** DONE Make internal in tracee
+*** getArgs
+**** DONE Make sure functions that use it can work with lapply
+Solved by alway passing call and environment
 *** NMcheckColNames
 **** return input column names and Nonmem interpretation for user to spot errors
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
+**** TODO [#A] Test variables given in until arg exist
+Or only use those that do exist. Right now a strange error is returned
+**** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
 **** TODO [#B] checks: duplicate column names
 **** TODO [#B] test if a synonym was used. Give warning or msg if not
@@ -64,6 +148,11 @@ Make internal in tracee
 like copy, synonym etc. Doesn't make sense to use in more than one.
 *** findCovs
 *** compareCols
+**** DONE Only print results if data.table is non-empty
+**** DONE print results should be run through as.fun
+The user likely wants to see the print style they work with
+**** DONE Support for list.data                                     :v0_0_12:
+     Same way as dims
 **** DONE Bug - overview of columns is given twice
  compareCols(ex.001,ex.002,ex.005,diff.only=T) %>% print(topn=100)
 
@@ -78,13 +167,21 @@ helpful. Only list other columns than the scope.
      Seems not to prioritize columns that only exist in one of the
      data.tables.
 **** DONE Bug for diff.only=FALSE
+*** editCharCols
+**** DONE Add commas example
 *** egdt
 **** DONE BUG the tmp by col has to be removed before reporting dims
 **** DONE Report dims(df1,df2,result) unless quiet
-*** listMissings                                        :v0_0_11:newFunction:
+*** listMissings
 List missing elements
 For specific columns, look for missing elements (NA, "", length(x)==0
-in case of lists?). Tabulate and list. 
+in case of lists?). Tabulate and list.
+**** TODO Arg for row counter
+For now, a new row counter is generated. But if data is filtered after
+that means, one has to rerun listMissings for reference to be updated.
+**** DONE If nothing found, return an empty data.table ()
+**** DONE check for duplicates in columns requested to check
+**** DONE Check for duplicate column names in data
 **** TODO [#B] Align reporting with NMcheckData?
 **** TODO [#B] dcast summary when using by
 This is quite powerfull:
@@ -107,10 +204,14 @@ Error if not convertible and not NA or ""? "b" should be an error right?
 *** TODO [#B] NMcreateDoses Generate dosing schedule with loading, ADDL etc :newFunction:
     This is available as a suitcase function
 *** TODO [#B] Function for complex dosing regimens              :newFunction:
-*** TODO [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
+*** DONE [#B] Function to unfold ADDL/II doses to multiple rows :newFunction:
 *** mergeCheck
+**** TODO [#A] Change name to addCols
+Do not deprecate mergeCheck() - too much depends on it.
+**** TODO [#B] Implement a faster method?
+What if we just check for matches in by columns?
 **** TODO [#B] accept common columns not being merged by if suffixes are provided
-**** TODO [#B] If results are not accepted. Check for whether y is unique in by
+**** TODO [#A] If results are not accepted. Check for whether y is unique in by
 **** TODO [#B] Add at least number of NA's to message about what was added
 Probably add class too.
 Number of unique combinations of by? This seems too advanced
@@ -129,13 +230,75 @@ because by and by.x+by.y are handled differently the second time? Clen this.
      That will make the code clearer because we will know exactly how
      the merge is done.
 **** DONE Test the check for row duplications
+*** NMapplyFilters
+**** DONE IGN() support
+***** TODO [#A] Tests missing
+IGN(SUSP.NE.1) gave an error in NMscanData.
+IGN=(SUSP.NE.1) gave the same error.
+
+These seem to work in Nonmem. Find out what's allowed and test for it.
+
+> res1 <- NMscanData(lst)
+Cleaned duplicated column names: V3
+Error in parse(text = expressions.all) : <text>:1:3: unexpected ')'
+1: (!)
+      ^
+> traceback()
+7: parse(text = expressions.all)
+6: eval(.massagei(isub[[2L]]), parent.frame(), parent.frame())
+5: eval(.massagei(isub[[2L]]), parent.frame(), parent.frame())
+4: `[.data.table`(as.data.table(data), eval(parse(text = expressions.all)))
+3: as.data.table(data)[eval(parse(text = expressions.all))]
+2: NMapplyFilters(data.input.full, file = file, as.fun = "data.table", 
+       quiet = TRUE)
+1: NMscanData(lst)
+
+**** DONE Check if there are missings in columns used for filters
+If so, give a warning
+**** DONE Support for no filters
+I don't think I ever tried this. What will NMscanData do if input data
+has no headers, and there are no filters? I think NMapplyFilters may
+fail.
 *** NMcheckData
+**** TODO [#A] Classify findings
+NOTE, WARN, ERR -> just in table, warning(), stop()?
+**** TODO [#A] Argument to disable warnings and stop?
+**** DONE arg to disable looking for some columns
+like CMT, AMT etc. Maybe cols.disable where only some can be chosen?
+**** TODO [#A] subset argument
+Remember row numbers must be true to full data set
+**** TODO [#B] SS testes separately for doses and non-doses?
+SS is tested to be in c(0,1) for all rows. Maybe split in two checks,
+like done for RATE?
+**** DONE RATE=-1 is OK
+**** DONE CMT can be any non-zero integer
+But more than say 20 compartments seems unlikely
+**** CANCELLED Support for a table of accepted findings
+**** DONE support for col.id with file arg
+Looks like col.id is being overwritten for no reason
+**** TODO [#B] Improve handling of missing covs
+Right now, if covs="WT" is specified and WT is not a column, an error
+is thrown. That should be a finding instead.
+**** TODO [#B] Support for col.evid
+**** DONE Should not be a finding if col.flagn is not supplied and FLAG is not found
+**** DONE DV=0 in dosing records is OK
+For now NA expected
+**** DONE MDV can be 0, 1 or missing in non-obs events
+**** TODO Allow _ in column names?
+Currently, these are findings
+**** TODO Allow special characters in names of columns not readable by nonmem?
+**** DONE RATE must be missing or 0 for non-dose events
+**** DONE Add support for simulation dataset
+ID's are expected to have sim records rather than obs. And col.row not
+expected. It's not used by NMsim anyway.
+***** TODO What happens if they have obs too?
+**** CANCELLED Look for NA's coded as "."
 **** DONE Bug if no numeric cols found?
      Warning message:
 In `[.data.table`(data, , `:=`((cols.req.found), lapply(.SD, NMasNumeric)),  :
   length(LHS)==0; no columns to delete or assign RHS to.
 **** DONE Support for col.dv.
-**** TODO [#B] usubjid argument
+**** DONE [#B] col.usubjid argument
 ***** usubjid must be present and non-empty
 ***** ID must be unique against usubjid
 **** TODO [#B] Support for col.dv of length>1
@@ -191,10 +354,11 @@ Many variables are only expected to exist for say samples. Example:
 LLOQ can very well be missing for doses. And the check may depend on
 study, compound etc too. So we need to split or subset data for the
 check. Maybe check in a subset and expect NA in the rest?
-**** TODO [#B] Checks for presense of II and ADDL don't report dependence
+**** DONE Checks for presense of II and ADDL should report dependence
      If one is present, presence of the other is tested. If not found,
      it says "II Column not found". Would be helpful to know that it
      is because ADDL is found.
+**** DONE ADDL and II: II cannot be >0 if ADDL==0
 **** DONE Check for , in character column contents not working
 **** DONE Checks for availability
 I ran it on an immature dataset and got this error:
@@ -218,15 +382,35 @@ numeric should be using
 **** DONE Document splits of cols.num                               :v0_0_11:
 **** DONE Document col.cmt                                          :v0_0_11:
 *** NMcheckDataFile
+**** TODO [#A] Bug in combination with file.data                        :Bug:
+If NMdataConf(file.data) has been used to redirect to a rds
+file. Maybe solution is to let NMscanInput use readRDS if file
+extension is .rds?
 **** DONE Check all columns as cols.num                             :v0_0_11:
 **** DONE Return data, summary and more                             :v0_0_11:
 **** TODO [#B] Check whether NA's are coded with .'s
 *** NMextractDataFile
-**** WAIT [#A] Test with absolute path in $DATA
+**** WAIT [#B] Test with absolute path in $DATA
 **** DONE Add support for windows absolute paths
      I don't think this was ever an issue. The regular expression used
      should match both unix and windows absolute paths.
 *** NMwriteSection
+**** DONE newlines as a function
+If newlines is a function and location=="replace", read section, apply
+function to text, then overwrite.
+***** DONE Implement: newlines as a function
+***** TODO [#A] tests: newlines as a function
+**** DONE Support insertion of new section before or after another section
+location="replace" is default. "before" and "after" should be
+additional allowed values.
+***** DONE Handle lists
+Think about how to handle this for
+lists. Maybe just OK to insert before and after with a list? Or is it
+too rarely needed?
+***** TODO use switch instead of if else
+***** TODO Tests
+**** DONE Allow to remove a section if it doesn't exist
+**** DONE Put backup files in NMdata_backup
 **** DONE Check if any files matched before running lapply
 **** TODO [#B] When using list.files, give overview of matches by expression and by data.file
 **** DONE Bug in data.file argument
@@ -236,14 +420,93 @@ numeric should be using
 **** DONE Support for multiple sections
 Instead of the section argument, NMreplacepart must accept newlines as a named
 list.
+*** NMexpandDoses
+**** DONE col.time must be in data
+**** DONE col.id must be in data
+**** DONE Return data.table when working with data.table?
+Do the same as mergeCheck, flagsAssign etc
 *** NMextractText
 **** TODO [#B] reduce lines and text to one argument
 The information is sufficient when taking into account the linesep
 arguement. If length(lines) and linesep is given, a warning must be
 issued. Once done, NMgetSection must be updated as well.
+*** NMisNumeric
+**** DONE NA_character is not recognized as numeric
+*** NMreadCtlPars
+**** DONE Handle SAME in initsToExt
+**** DONE get rid of stringi
+**** DONE Make return of a ext style parameter table default
+**** DONE Rename to NMreadInits()
+**** DONE Rename ll to lower and ul to upper
+**** DONE classify_matches should maintain character values, not numeric
+*** NMreadExt
+**** DONE Support Laplacian
+Laplacian Conditional Estimation
+**** DONE Include model column same way as NMscanData
+**** DONE Support multiple files
+**** DONE Intro arg return
+Something like
+if return="estimates" only return pars
+if return="iterations" only return iterations
+*** NMreadTab
+**** TODO [#B] Include metadata
+***** TODO Include path to file
+***** TODO Include $TABLE statement
+***** TODO Potentially include info generated by NMscanTables that should belong to NMreadTab
+*** NMreadTabSlow
+**** TODO [#A] Only handle Table numbers if "TABLE..." strings found
+*** NMreadParsText
+**** DONE order columns - created ones to the right
+**** DONE change num to idx
+and include a field.idx so user can specify what to use. If idx is not
+taken from fields, it should not come out in the results.
+**** DONE Multi-char delimters do not work
+like ; 1; CL ; [mL/h]
+in which case "; [" is a delimiter
+**** DONE Empty fields make it break
+Like ;1;CL;;;mL/h
+***** DONE Include test so we at least know what happens
+*** NMreadSection
+**** DONE error returned when return="idx" and no section specified     :Bug: 
+**** TODO [#B] return="text"/"idx" should be return.idx=TRUE/FALSE instead
+It would be easier to remember
+*** NMrelate
+**** DONE Support lowercase eta, theta, etc
+**** DONE Include model column
+**** DONE would be better if NMrelateOne added par.type
+**** DONE Count how many times the combination of par.type,i,j is matched on the RHS
+**** DONE NMrelateOne must recognize ERR, EPS
+**** DONE test merging with NMreadExt output
+**** DONE NMrelate should support file.mod vector or lines as a list
+**** DONE as.fun
+*** NMreplaceDataFile
+**** DONE Fails on dir+file.pattern
+**** DONE Implement function
+**** DONE Tests
 *** NMscanInput
+**** DONE applyFilters -> apply.filters
+**** DONE Bug: Error when ID not in data but var=ID in $INPUT
+**** DONE Test with multiple filters on the same column
+like IGNORE(ID=2) IGNORE(ID=3)
+**** DONE Make work without filters
+Generated xgxr027.mod with a dataset without column names for the
+purpose. Needs to be run with Nonmem, then test.
+**** DONE Check for existence of data file to read
+I currently can't reproduce this. Tried with test "Missing control stream"
+
+Currently, the error is coming from NMextractText:
+> data <- NMscanInput(file.path(DirNonmem,"osmodel_estim1_tvmr.ctl"))
+Error in NMextractText(file = file, lines = lines, text = text, section = section,  : 
+  When using the file argument, file has to point to an existing file.
+In addition: Warning message:
+Input control stream (typically .mod) not found. Default is to look next to
+.lst file. See argument file.mod if you want to look elsewhere. If you don't
+have a .mod file, see the dir.data argument. Input data not used. 
+**** TODO [#B] Make work without column names in input data file
+**** TODO [#B] Time check of lst vs input belongs here rather than in NMscanData
+Not sure.
 **** TODO [#B] Add NMinfo data on whether column names were translated according to $INPUT
-**** DONE [#A] Add data.file argument to skip interpreting the control stream altogether.
+**** DONE Add data.file argument to skip interpreting the control stream altogether.
 **** DONE BUG tabs in column names?
     REC\t  ID\t     TIME    TAD\t DOSE\t AMT\t RATE CMT  DV\t MDV\t EVID
 
@@ -255,6 +518,8 @@ Included a gsub("\t"," ",lines)
      should support the same arg to remove the char from the input
      column name. However, only relevant if column names are not
      translated.
+
+     Check status on this. Not sure if it's resolved already.
 **** DONE Get number of subjects as before filtering
 Challenge is that the filters are applied before the column names are
 changed. So we need access to the old data and know what column to
@@ -295,18 +560,46 @@ A way to limit rows read into nonmem
 ***** diff
 ***** off
 *** NMscanTables
-**** TODO [#B] include meta data as NMinfo
-**** TODO Integrate the reduction into one table from NMscanData
+**** DONE Don't throw an error when no tables found
+Just return NULL. and a message if !silent. To find where, look for
+"No TABLE sections found in control stream. Please inspect the control stream"
+**** DONE Make work with commented variable lists
+xgxr028.mod created and it works
+**** DONE include meta data as NMinfo
+**** TODO [#B] Integrate the reduction into one table from NMscanData
 **** DONE Lastonly does the same as firstonly
 *** NMscanData
-**** TODO [#B] Split out data finder handling
+**** TODO [#A] prioritize input by default
+prefer.output option. TRUE is generally prefer output (current
+behviour), variable.names when being specefic.
+**** TODO [#A] EXCLUDE_BY option is not suported in $TABLE if using merge_by_row=FALSE
+**** DONE Rename TABLENO to NMREP
+**** DONE Deprecate tab.count
+**** DONE Make clear how TABLENO is being counted
+ #### TABLENO is now added to the number of columns taken from the
+ #### output table that has TABLENO. Is that what we want? Or +1? +1
+ #### is very complicated for user. Maybe better: if tab.count, it is
+ #### treated like any other column, but in NMinfo(,"tables") there is
+ #### a column, hasTABLENO
+**** TODO [#B] in NMinfo(,"tables"), include hasNMREP
+**** TODO [#A] Support for custom NMREP column
+One may use REP=IREP or something like that and avoid the table
+headers in output. That is not supported now. It wouldn't be hard to
+include.
+**** TODO [#B] Support for deriving NMREP in NOHEADER case
+The replication of the row counters show - at least for full length
+tables
+**** DONE Split out data finder handling
 There is a few different ways to get to the data file path. Some
 checks are being done on the compatibility of the arguments in
 NMscanData. This should be done in NMscanInput or NMextractDataFile so
 that other functions such as NMcheckData gets the same behaviour.
-**** TODO [#B] Simplify timestamp warnings
-     When .mod is newer than .lst and or tables, reduce to one warning
-     summarizing both findings.
+
+This is now handled by NMextractDataFile
+**** DONE Test on a simulation model with subproblems
+**** DONE Simplify timestamp warnings
+Ideally, When .mod is newer than .lst and or tables, reduce to one warning
+summarizing both findings. At least, just give brief one-liners.
 **** DONE nmout and model must not overwrite existing
      The can still overwrite, but a warning is thrown
 **** DONE Check that no new values of col.row are found in output
@@ -364,7 +657,38 @@ in var table
 See xgxr013.lst in test_NMscanData. A firstonly table cannot be included. This
 is not visible in summary because summary is based on tables in returned
 data. It should be based on tables in meta$tables.
+*** NMscanMultiple
+**** DONE set default file pattern to all lsts
+**** TODO [#A] Check if models are repeated
+It now throws a weird error
+**** TODO [#A] Check if input data can be reused across models
+In that case, do the merge in the end
 *** NMwriteData
+**** TODO If NMgenText is run, results should go into metaData
+**** DONE Support writing fst
+***** TODO formats.read instead of use.formats
+***** TODO deprecate use.rds everywhere
+***** TODO handle use.rds in NMdataConf
+***** DONE Stamp does not include both csv and rds
+Try write.rds=T in test_NMwriteData "with stamp on csv"
+**** DONE Support not writing all columns to csv
+It would be faster and sometimes only feasible to use the dataset with
+nonmem if columns are omitted from csv. But this is still very small
+data amounts to handle with data.table so one could still want to keep
+it all in rds.
+**** DONE Change from write.csv, write.rds etc to formats and save
+default would be formats=cc(csv,rds) if fnExtension(file)=="csv" and
+if not then fnExtension(file). This aligns with tracee and is more
+intuitive for using a save=writeOutput standard in scripts. Maybe
+processing could be integrated with method in writeFlextab.
+**** DONE Support for script=NULL
+     Not sure how deep back this support is missing
+**** DONE Include option for non-nonmem data
+We want to write any csv or rds with meta data. Maybe just a message
+instead of the current warning when flags etc arent found?
+
+The arg is called genText
+**** DONE deprecate RData
 **** DONE BUG NA's are not .
 does fwrite use args.fwrite at all?
 **** DONE Separate generation of INPUT text into new function
@@ -396,7 +720,18 @@ Not warning. Warning if standard variable?
 **** DONE Don't warn about missing SS, ADDL, II
 **** DONE Polish
 *** flagsAssign
-**** TODO [#A] We need to work in IDhasNoObs and IDhasNoDos 
+**** TODO [#A] flag.c should be factor
+And flagsCount should retain them
+Was this supposed to be flag.c?
+**** DONE flagsCount should not require a flag table
+**** DONE flagsCount should throw an error if not all flags are covered by provided flag table
+**** CANCELLED flagsAssign and flagsCount should not offer increasing option.
+Without that we can better do flagsCount without the flag table.
+
+**** DONE subsets of zero rows should return a message, not an error
+say subset="EVID==2" will return an error if no rows found. 
+***** DONE Test 
+**** TODO [#B] Need to work in IDhasNoObs and IDhasNoDos
 This likely means a restructure so all tables have to be given
 together and these subject-level flags are set across EVID after 
 **** DONE check for whether there are any contents in data - just warning and return nothing
@@ -412,6 +747,9 @@ It's fairly easy to implement. Paste in front of the expression.use column.
      Or is FLAG==0 reserved?
 use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 *** flagsCount
+**** DONE Replace 0 with NA for "all avail data"
+N.disc.cum and Nobs.disc.cum are zero but there is no counting to
+report here
 **** DONE bug in 0.0.9: Nobs.disc.cum ignores by
 **** DONE OK respect decreasing or increasing order.flags
 **** DONE add .cum of N and Nobs
@@ -422,6 +760,7 @@ use flagsAssign(data,subset.data="EVID==1",flagc.0="Dosing")
 **** TODO [#B] The function could paste an explained overview to the terminal
 **** DONE Add save argument to align with other functions
 *** NMdataConf
+**** DONE reset=TRUE must also wipe unknown settings
 **** TODO [#B] Add col.id. Generally, support for custom col.id may be missing.
 **** TODO [#B] Add na.strings
      Used in NMisNumeric and NMcheckData
@@ -441,12 +780,17 @@ This is two steps.
 This belong in write functions. stampObj does support extra
 arguments. NMdata calls this "writtenTo".
 *** summary.NMdata
+**** DONE Put message about how stuff was merged after table overview :v0_0_12:
+**** DONE EVID/CMT table: Switch order of output and input only and add "result" :v0_0_12:
+**** DONE EVID/CMT table: add a total line (use rollup?)            :v0_0_12:
 **** DONE Break down number of rows by CMT and EVID.
 **** Rethink and tidy up message
 ***** DONE Combine first two tables
 ***** DONE Add number of rows
 ***** DONE Add result row
 ****** Number of columns has 0-2 extra columns
+*** uniquePresent
+**** DONE Document and export
 ** Tests and documentation
 *** Cheat sheet
 **** Outline
@@ -464,8 +808,9 @@ arguments. NMdata calls this "writtenTo".
 *** Examples
 **** DONE renameByContents example
 *** Vignettes
+**** DONE Rebuild vignettes
 *** pkgdown
-**** TODO [#A] := prints in manual
+**** TODO [#B] := prints in manual
      https://philipdelff.github.io/NMdata/reference/renameByContents.html
 **** TODO Add bug list
 **** TODO Rename menu items

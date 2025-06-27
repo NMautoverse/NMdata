@@ -9,9 +9,15 @@ test_that("basic",{
     res1 <- NMextractDataFile(file.lst)
     ## these have to be non-absolute paths to work across different
     ## testing environments
-    res1$path <- basename(res1$path)
+    res1$path.csv <- basename(res1$path.csv)
     res1$path.rds <- basename(res1$path.rds)
+    res1$path.fst <- basename(res1$path.fst)
 
     expect_equal_to_reference(res1,fileRef,version=2)
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res1
+    }
 })
 

@@ -1,7 +1,7 @@
 ## library(devtools)
 ## setwd("tests/testthat")
 ## load_all()
-
+library(data.table)
 context("compareCols")
 
 test_that("basic",{
@@ -9,12 +9,14 @@ test_that("basic",{
     fileRef <- "testReference/compareCols_1.rds"
 
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-    pk.reduced <- copy(pk)
-    pk.reduced <- pk.reduced[1:(.N%/%2)]
+    ## pk.reduced <- copy(pk)
+    ## pk.reduced <- pk.reduced[1:(.N%/%2)]
+    pk.reduced <- pk[1:(.N%/%2)]
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced)
+
+    res1 <- compareCols(pk,pk.reduced,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
@@ -30,7 +32,7 @@ test_that("diff.only=FALSE",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE)
+    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
@@ -47,10 +49,12 @@ test_that("diff.only=FALSE, keepNames = F",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keepNames = F)
+    res1 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F,quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef)
 
+    res2 <- compareCols(pk,pk.reduced,diff.only=FALSE,keep.names = F,quiet=TRUE)
+    expect_equal(res1,res2)
 })
 
 
@@ -67,14 +71,15 @@ test_that("messy names",{
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
             data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
-        )
+        ,quiet=TRUE)
         ## now, clean because of keepNames=F
        ,
         compareCols(
             data.table(variable=c("CPDVG","CMDVG","efef"))
            ,
             data.table(variable=c("CPDVG","CMDVG"),compound=c("C-1","C-2"))
-           ,keepNames=FALSE)
+           ,keepNames=FALSE
+        ,quiet=TRUE)
     )
     
     expect_equal_to_reference(res1,fileRef)
@@ -92,7 +97,42 @@ test_that("cols.wanted",{
     pk.reduced[,CYCLE:=NULL]
     pk.reduced[,AMT:=as.character(AMT)]
 
-    res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS"))
+    res1 <- compareCols(pk,pk.reduced,cols.wanted=c("TIME","NAME","NOEXISTS")
+                        ,quiet=TRUE)
+
+    expect_equal_to_reference(res1,fileRef)
+
+})
+
+test_that("list.data",{
+
+##    fileRef <- "testReference/compareCols_1.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk.reduced <- copy(pk)
+    pk.reduced <- pk.reduced[1:(.N%/%2)]
+    pk.reduced[,CYCLE:=NULL]
+    pk.reduced[,AMT:=as.character(AMT)]
+
+    res1 <- compareCols(pk,pk.reduced,quiet=TRUE)
+    res2 <- compareCols(list.data=list(pk=pk,pk.reduced=pk.reduced),quiet=TRUE)
+
+    expect_equal(res1,res2)
+
+})
+
+test_that("basic - not quiet",{
+
+    fileRef <- "testReference/compareCols_06.rds"
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+
+    pk.reduced <- pk[1:(.N%/%2)]
+    pk.reduced[,CYCLE:=NULL]
+    pk.reduced[,AMT:=as.character(AMT)]
+
+
+    suppressMessages(res1 <- compareCols(pk,pk.reduced,quiet=FALSE))
 
     expect_equal_to_reference(res1,fileRef)
 

@@ -7,16 +7,21 @@
 NMwriteData(
   data,
   file,
-  write.csv = TRUE,
-  write.rds = write.csv,
-  write.RData = FALSE,
+  formats.write = c("csv", "rds"),
   script,
   args.stamp,
   args.fwrite,
   args.rds,
   args.RData,
+  args.write_fst,
   quiet,
   args.NMgenText,
+  csv.trunc.as.nm = FALSE,
+  genText,
+  save = TRUE,
+  write.csv,
+  write.rds,
+  write.RData,
   nm.drop,
   nmdir.data,
   col.flagn,
@@ -33,15 +38,12 @@ NMwriteData(
 and including last ".") is dropped. csv, rds and other
 standard file name extensions are added.}
 
-\item{write.csv}{Write to csv file?}
-
-\item{write.rds}{write an rds file?}
-
-\item{write.RData}{In case you want to save to .RData object. Not
-recommended. Use write.rds instead.}
+\item{formats.write}{character vector of formats.write. Default is
+c("csv","rds"). "fst" is possible too. Default can be modified
+with \code{NMdataConf()}.}
 
 \item{script}{If provided, the object will be stamped with this
-script name before saved to rds or Rdata. See ?NMstamp.}
+script name before saved to rds or RData. See ?NMstamp.}
 
 \item{args.stamp}{A list of arguments to be passed to NMstamp.}
 
@@ -52,7 +54,11 @@ configured using NMdataConf.}
 
 \item{args.rds}{A list of arguments to be passed to saveRDS.}
 
-\item{args.RData}{A list of arguments to be passed to save.}
+\item{args.RData}{A list of arguments to be passed to save. Please
+note that writing RData is deprecated.}
+
+\item{args.write_fst}{An optional list of arguments to be passed
+to write_fst.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
@@ -61,12 +67,44 @@ NMdataConf.}
 
 \item{args.NMgenText}{List of arguments to pass to NMgenText - the
 function that generates text suggestion for INPUT and DATA
-sections in the NONMEM control stream. You can use these
+sections in the Nonmem control stream. You can use these
 arguments to get a text suggestion you an use directly in
-NONMEM - and NwriteSection can even update multiple NONMEM
-control streams based on the result. This will update your
-control streams to match your new data file with just one
+Nonmem - and \code{NMwriteSection} can even update multiple
+Nonmem control streams based on the result. This will update
+your control streams to match your new data file with just one
 command.}
+
+\item{csv.trunc.as.nm}{If TRUE, csv file will be truncated
+horizontally (columns will be dropped) to match the $INPUT
+text generated for Nonmem (genText must be TRUE for this
+option to be allowed). This can be a great advantage when
+dealing with large datasets that can create problems in
+parallellization. Combined with write.rds=TRUE, the full data
+set will still be written to an rds file, so this can be used
+when combining output and input data when reading model
+results. This is done by default by NMscanData. This means
+writing a lean (narrow) csv file for Nonmem while keeping
+columns of non-numeric class like character and factor for
+post-processing.}
+
+\item{genText}{Run and report results of NMgenText? Default is
+`TRUE` if a csv file is written, otherwise `FALSE`. You may
+want to disable this if data set is not for Nonmem.}
+
+\item{save}{Save defined files? Default is TRUE. If a variable is
+used to control whether a script generates outputs (say
+\code{writeOutputs=TRUE/FALSE)}, if you use
+\code{save=writeOutputs} to comply with this.}
+
+\item{write.csv}{Write to csv file? Deprecated, use
+`formats.write` instead.}
+
+\item{write.rds}{write an rds file? Deprecated, use
+`formats.write` instead.}
+
+\item{write.RData}{Deprecated and not recommended - will be
+removed. RData is not a adequate format for a dataset (but is
+for environments). Please use write.rds instead.}
 
 \item{nm.drop}{Deprecated, use
 args.NMgenText=list(drop=c("column")) instead.}
@@ -74,11 +112,12 @@ args.NMgenText=list(drop=c("column")) instead.}
 \item{nmdir.data}{Deprecated, use
 args.NMgenText=list(dir.data="your/path") instead.}
 
-\item{col.flagn}{Name of a numeric column with zero value for rows
-to include in Nonmem run, non-zero for rows to skip. The
-argument is only used for generating the proposed $DATA text to
-paste into the Nonmem control stream. To skip this feature,
-use col.flagn=NULL.}
+\item{col.flagn}{Deprecated, use
+args.NMgenText=list(col.flagn="column.name"). Name of a
+numeric column with zero value for rows to include in Nonmem
+run, non-zero for rows to skip. The argument is only used for
+generating the proposed $DATA text to paste into the Nonmem
+control stream. To skip this feature, use `col.flagn=FALSE`.}
 
 \item{nm.rename}{Deprecated, use
 args.NMgenText=list(rename=c(newname="existing")) instead.}
@@ -98,7 +137,7 @@ Text for inclusion in Nonmem control stream, invisibly.
 \description{
 Instead of trying to remember the arguments to pass to write.csv,
 use this wrapper. It tells you what to write in $DATA and $INPUT
-in nonmem, and it (additionally) exports an rds or Rdata file as
+in Nonmem, and it (additionally) exports an rds file as
 well which is highly preferable for use in R. It never edits the
 data before writing the datafile. The filenames for csv, rds
 etc. are derived by replacing the extension to the filename given
@@ -117,11 +156,15 @@ is stopped. Only exception is TIME which is not tested for whether
 character or not.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMapplyFilters}()},
-\code{\link{NMextractText}()},
-\code{\link{NMgenText}()},
-\code{\link{NMreadSection}()},
-\code{\link{NMwriteSection}()}
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{addTAPD}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
-\concept{Nonmem}
+\concept{DataCreate}

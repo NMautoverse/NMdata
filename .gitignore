@@ -4,7 +4,7 @@
 ;; psn
 modelfit_dir*
 ;; nonmem
-nonmem
+nonmem$
 FCON
 FDATA
 FMSG
@@ -20,8 +20,7 @@ LINKC.LNK
 PRSIZES.f90
 compile.lnk
 gfortran.txt
-*\.ext
-*\.phi
+*\.cpu
 input.cpu
 input.ext
 input.grd
@@ -41,10 +40,11 @@ Meta
 NMdata\.Rproj
 README\.html
 devel/NMdata_Rpackage/figure
-devel/NMdata_Rpackage/derived
+devel/NMdata_Rpackage/derived/*
 devel/NMdata_Rpackage/NMdata_Rpackage\.pdf
 doc
 docs
+/tests/testthat/testOutput/*\.*
 vignettes/*\.pdf
 vignettes/NMdata-FAQ.html
 vignettes/DataPrepare.html
@@ -55,10 +55,13 @@ vignettes/*\.R
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*
-inst/examples/nonmem/*\.ext
 inst/examples/nonmem/*\.phi
 inst/examples/nonmem/xgxr001dir/backup_*
-/tests/testthat/testOutput/*
+tests_manual/testthat/testOutput
 /doc/
 /Meta/
-
+*\.pnm
+*\.dir[0-9]*
+*_input\.rds
+*\.xml
+NMdata_backup

@@ -17,4 +17,54 @@
 ^\.github$
 ^CODE_OF_CONDUCT\.md$
 ^README\.Rmd$
-
+modelfit_dir.*
+temp_dir
+xgxr001dir/nonmem
+^vignettes$
+compile.lnk
+FDATA
+FREPORT
+FSTREAM
+FSUBS2
+gfortran.txt
+input.shm
+input.xml
+LINKC.LNK
+nmprd4p.mod
+PRSIZES.f90
+FCON
+FMSG
+FSIZES
+FSUBS
+FSUBS.f90
+input.cpu
+input.grd
+input.shk
+INTER
+LINK.LNK
+README.html
+inst/examples/nonmem/.*.msf
+inst/examples/nonmem/.*.xml
+inst/examples/nonmem/xgxr002.*
+inst/examples/nonmem/.*_dir.*
+;;; used in vignettes/NMscanData.Rmd
+;; inst/examples/nonmem/xgxr014.*
+tests/testthat/testOutput/simulations/nonmem
+tests/testthat/testOutput/simulations/NMsimData_xgxr.+\.rds
+tests/testthat/testData/simulations/xgxr..._subprobs/NMsim_xgxr..._subprobs_dir.+
+;; tests/testthat/testData/nonmem/xgxr005.*
+;; tests/testthat/testData/nonmem/xgxr017.*
+;; tests/testthat/testData/nonmem/xgxr018.*
+;; tests/testthat/testData/nonmem/xgxr020.*
+;; tests/testthat/testData/nonmem/xgxr021.*
+tests/testthat/testData/simulations/xgxr.*/.*.rds
+;; tests/testthat/testData/simulations/xgxr.*/.*.csv
+;; tests/testthat/testData/simulations/xgxr.*/.*.lst
+tests/testthat/testData/nonmem/.*_dir.*
+tests/testthat/testData/nonmem/NMsim
+.*_input.rds
+NMdata_backup
+tests/testthat/testData/nonmem/min036_res.txt
+tests/testthat/testData/nonmem/.*008.*
+.*\.dir*
+.*MetaData\.rds

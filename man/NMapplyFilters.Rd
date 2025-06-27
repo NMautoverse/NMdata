@@ -43,7 +43,7 @@ Other Nonmem:
 \code{\link{NMextractText}()},
 \code{\link{NMgenText}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMwriteData}()},
+\code{\link{NMreplaceDataFile}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

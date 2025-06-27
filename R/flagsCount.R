@@ -40,6 +40,7 @@
 ##'     be written if file argument is supplied.
 ##' @param flagc.0 The character flag to assign to rows that are not
 ##'     matched by exclusion conditions (numerical flag 0).
+##' @param quiet Suppress non-critical messages? Default is `FALSE`.
 ##' @param as.fun The default is to return a data.table if input data
 ##'     is a data.table, and return a data.frame for all other input
 ##'     classes. Pass a function in as.fun to convert to something
@@ -67,6 +68,7 @@
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
+##' \dontrun{
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 ##' dt.flags <- data.frame(
 ##'        flagn=10,
@@ -78,6 +80,7 @@
 ##'         col.flagn="flagn",col.flagc="flagc")
 ##' unique(pk[,c("EVID","flagn","flagc","BLQ")])
 ##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' }
 ##' @export
 
 
@@ -86,7 +89,9 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                        by=NULL, flags.increasing=FALSE,
                        flagc.0="Analysis set",
                        name.all.data="All available data",
-                       grp.incomp="EVID",save=TRUE,as.fun=NULL){
+                       grp.incomp="EVID",save=TRUE,
+                       quiet=FALSE,
+                       as.fun=NULL){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -119,7 +124,6 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
     
     stopifnot(is.data.frame(data))
-    stopifnot(is.data.frame(tab.flags))
 
     data.was.data.table <- TRUE
     if(is.data.table(data)) {
@@ -129,6 +133,12 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
         ##  data.was.data.frame <- TRUE
         data.was.data.table <- FALSE
     }
+
+    if(missing(tab.flags) || is.null(tab.flags)){
+        tab.flags <- unique(data[,c(col.flagn,col.flagc),with=FALSE])
+    }
+    stopifnot(is.data.frame(tab.flags))
+
     tab.flags.was.data.table <- TRUE
     if(is.data.table(tab.flags)) {
         tab.flags <- copy(tab.flags)
@@ -168,6 +178,8 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     tab.flags[,flag:=get(col.flagc)]
     data[,FLAG:=get(col.flagn)]
 
+### test that all flags are covered by tab.flag
+    if(any(!unique(data$FLAG)%in%c(0,tab.flags$FLAG))) stop("Not all values of col.flagn found in data are described in tab.flags. Don't know how to count those.")
 
 ### if 0 and Inf are not in tab.flags, insert them
     if(!0%in%tab.flags[,FLAG]){
@@ -245,11 +257,12 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                     data[FLAG==0,.(FLAG=0,N.left=uniqueN(get(col.id)),Nobs.left=.N,N.discard=NA,Nobs.discard=NA),by=by],
                     fill=TRUE)
     
-    ##  tab.flags <- rbind(tab.flags,data.table(FLAG=-Inf,flag="All data"),fill=TRUE)
+
 ### this is how many N/obs are left after the flags/conditions are applied
+    
     allres[is.na(alldata),alldata:=FALSE]
     allres <- mergeCheck(allres,rbind(tab.flags.0,tab.flags)[,.(FLAG,flag)],by="FLAG",all.x=TRUE,quiet=TRUE)
-    allres[alldata==TRUE,flag:=name.all.data]
+    allres[alldata==TRUE,`:=`(flag=name.all.data)]
     allres[,notAll:=alldata!=1]
     allres[,isFinal:=FLAG==0]
 
@@ -265,6 +278,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres[,Nobs.discard.0:=Nobs.discard]
     allres[is.na(Nobs.discard),Nobs.discard.0:=0]
     allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0),by=by]
+    allres[alldata==TRUE,`:=`(N.disc.cum=NA,Nobs.disc.cum=NA)]
 
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
@@ -282,7 +296,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
 
     if(!is.null(file)&&save){
         fwrite(allres,file=file,quote=FALSE,row.names=F)
-        cat(paste0("Table written to ",file,"\n"))
+        if(!quiet) message(paste0("Table written to ",file,"\n"))
     }
 
     

@@ -89,7 +89,7 @@ summary.NMdata <- function(object,...){
 ##' print method for NMdata summaries
 ##' @param x The summary object to be printed. See ?summary.NMdata
 ##' @param ... Arguments passed to other print methods.
-##'
+##' @return NULL (invisibly)
 ##' @import data.table
 ##' @export
 print.summary_NMdata <- function(x,...){
@@ -98,6 +98,9 @@ print.summary_NMdata <- function(x,...){
     
     . <- NULL
     COLNUM <- NULL
+    CMT <- NULL
+    EVID <- NULL
+    NMOUT <- NULL
     included <- NULL
     inc <- NULL
     not <- NULL
@@ -107,7 +110,6 @@ print.summary_NMdata <- function(x,...){
     level <- NULL
     N <- NULL
     nid <- NULL
-    NMOUT <- NULL
     nrow.used <- NULL
     nmout <- NULL
     N.rows <- NULL
@@ -118,7 +120,6 @@ print.summary_NMdata <- function(x,...){
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-    
     if(!"summary_NMdata"%in%class(x)){
         stop("list does not seem to be of class NMdata")
     }
@@ -126,14 +127,7 @@ print.summary_NMdata <- function(x,...){
     if(!is.data.table(vars)){
         vars <- as.data.table(vars)
     }
-    
-    tabs.out <- copy(x$tables)
-    if(!is.data.table(tabs.out)){
-        tabs.out <- as.data.table(tabs.out)
-    }
 
-    
-    
     vars[,included:=!is.na(COLNUM)]
     vars <- mergeCheck(vars,data.table(included=c(TRUE,FALSE),
                                        inc=c("included","not")),
@@ -147,7 +141,11 @@ print.summary_NMdata <- function(x,...){
     ## calc number of used and available rows
     ## Since this is based on NMinfo(res,"columns"), we know the table is used
     
-    
+
+    tabs.out <- copy(x$tables)
+    if(!is.data.table(tabs.out)){
+        tabs.out <- as.data.table(tabs.out)
+    } 
     tabs.out[,tabn:=1:.N]
     ## assuming that all ID's present somewhere in output is present in all output tables
     ## tabs.out[source=="output",nid:=x$N.ids[NMOUT=="Output",N.ids]]
@@ -159,6 +157,7 @@ print.summary_NMdata <- function(x,...){
     vars.sum2[source=="output",nrow.used:=pmin(nrow,x$N.row[nmout==TRUE,N.rows])]
     vars.sum2[source=="input",nrow.used:=pmin(nrow,x$N.row[,sum(N.rows)])]
     vars.sum2[,nid.used:=pmin(nid,x$N.id[,sum(N.ids)])]
+    vars.sum2[source=="output",file:=paste(file,"(output)")]
     vars.sum2[source=="input",file:=paste(file,"(input)")]
     
     
@@ -183,12 +182,13 @@ print.summary_NMdata <- function(x,...){
     vars[source%in%c("input","output"),source2:="inout"]
     levels(vars$source2) <- c("inout","NMscanData")
     ncols <- paste(vars[!is.na(COLNUM),.N,by=.(source2)][,N],collapse="+")
-    row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=x$N.ids[,sum(N.ids)])
-    row.res[IDs==0,IDs:="NA"] 
+    row.res <- data.table(file="(result)",rows=x$N.rows[,sum(N.rows)],columns=ncols,IDs=as.character(x$N.ids[,sum(N.ids)]))
+
+    row.res[IDs=="0",IDs:="NA"] 
     vars.sum2 <- rbind(vars.sum2,row.res)
     
 #### other info to include. 
-    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("Output","Input only"))
+    dt.nmout <- data.table(nmout=c(TRUE,FALSE),NMOUT=c("output","input-only"))
 
     ## how many ids (broken down on output vs. input-only)
     
@@ -204,24 +204,31 @@ print.summary_NMdata <- function(x,...){
     n5[is.na(n5)] <- 0
     
     ## model name
-    cat("Model: ",x$details$model,"\n")
+    ## cat("Model: ",x$details$model,"\n")
+    message("Model: ",x$details$model,"\n")
+
+    ## overview of processed tables
+    ## cat("\nUsed tables, contents shown as used/total:\n")
+    ## message("Used tables, N of rows, columns and distinct ID's shown as used/available")
+    message("Number of rows, columns and distinct ID's\nN\'s by source table, shown as used/available:")
+    ## print(vars.sum2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+    message_dt(vars.sum2)
 
     if(x$details$input.used){
         if(x$details$merge.by.row){
-            cat("Input and output data merged by:",x$details$col.row,"\n")
+            ## cat("\nInput and output data merged by:",x$details$col.row,"\n")
+            message("Input and output data merged by:",x$details$col.row,"\n")
         } else {
             message("Input and output data combined by translation of
-Nonmem data filters (not recommended).")
+Nonmem data filters.")
         }
     } else {
-        cat("Input data not used.\n")
+        ## cat("Input data not used.\n")
+        message("Input data not used.\n")
     }
-
-    cat("\nUsed tables, contents shown as used/total:\n")
-    print(vars.sum2,row.names=FALSE)
-
+    
     ## cat("\nNumbers of rows and subjects\n")
-    ## print(n5,row.names=FALSE,...)
+    ## print(n5,row.names=FALSE,print.keys=FALSE,class=FALSE,...)
     cat("\n")
 
     if(any(!is.na(x$N.evids))){
@@ -229,16 +236,25 @@ Nonmem data filters (not recommended).")
 
         ## if rows recovered, how many (broken down on EVID)
         try({
+
             evids1 <- mergeCheck(x$N.evids,dt.nmout,by="nmout",all.x=TRUE,quiet=TRUE)
+            cols.bd <- intersect(cc(EVID,CMT),colnames(evids1))
+            evids1.rep <- rbind(evids1,evids1[,.(NMOUT="result",N=sum(N)),by=cols.bd],fill=T)
+            evids1.sum <- evids1.rep[,.(EVID="All",CMT="All",N=sum(N)),by="NMOUT"]
 
-            if("CMT" %in% colnames(evids1)) {
-                evids2 <- dcast(evids1,EVID+CMT~NMOUT,value.var="N",fill=0)
+            evids1.sum[,(cols.bd):="All"]
+            evids1.rep2 <- rbind(evids1.rep,evids1.sum,fill=T)
+            if("CMT" %in% colnames(evids1.rep2)) {
+                evids2 <- dcast(evids1.rep2,EVID+CMT~NMOUT,value.var="N",fill=0)
             } else {
-                evids2 <- dcast(evids1,EVID~NMOUT,value.var="N",fill=0)
+                evids2 <- dcast(evids1.rep2,EVID~NMOUT,value.var="N",fill=0)
             }
+            setcolorder(evids2,
+                        neworder=intersect(cc(EVID,CMT,"input-only","output","result"),colnames(evids2)))
 
-            cat("Distribution of rows on event types in returned data:\n")
-            print(evids2,row.names=FALSE)
+            message("Distribution of rows on event types\nShown for output tables and result:")
+            ## print(evids2,row.names=FALSE,print.keys=FALSE,class=FALSE)
+            message_dt(evids2)
         })
     }        
 

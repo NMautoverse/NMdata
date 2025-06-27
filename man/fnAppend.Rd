@@ -4,10 +4,10 @@
 \alias{fnAppend}
 \title{paste something before file name extension.}
 \usage{
-fnAppend(fn, x, pad0 = 0, sep = "_")
+fnAppend(fn, x, pad0 = 0, sep = "_", collapse = sep, allow.noext = FALSE)
 }
 \arguments{
-\item{fn}{The file name to modify}
+\item{fn}{The file name or file names to modify.}
 
 \item{x}{A character string or a numeric to add to the file name}
 
@@ -16,11 +16,32 @@ the appended number. This is useful if you are generating say
 more than 10 files, and your counter will be 01, 02,..,
 10,... and not 1, 2,...,10,...}
 
-\item{sep}{The separator between the exsting file name (until
+\item{sep}{The separator between the existing file name (until
 extension) and the addition.}
+
+\item{collapse}{If `x` is of length greater than 1, the default is
+to collapse the elements to a single string using `sep` as
+separator. See the `collapse` argument to `?paste`. If you
+want to treat them as separate strings, use `collapse=NULL`
+which will lead to generation of separate file names. However,
+currently `fn` or `x` must be of length 1.}
+
+\item{allow.noext}{Allow `fn` to be string(s) without extensions?
+Default is `FALSE` in which case an error will be thrown if
+`fn` contains strings without extensions. If `TRUE`, `x` will
+be appended to fn in these cases.}
+}
+\value{
+A character (vector)
 }
 \description{
 Append a file name like file.mod to file_1.mod or file_pk.mod. If
 it's a number, we can pad some zeros if wanted. The separator
 (default is underscore) can be modified.
+}
+\examples{
+fnAppend("plot.png",1)
+fnAppend("plot.png",1,pad0=2,sep="-")
+fnAppend("plot.png","one")
+fnAppend("plot","one",allow.noext=TRUE)
 }

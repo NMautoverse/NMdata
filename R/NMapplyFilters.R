@@ -23,7 +23,14 @@
 
 
 NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
-
+    
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
+    
+    . <- NULL
+    variable <- NULL
+    value <- NULL
+    
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
     
     if(missing(quiet)) quiet <- NULL
@@ -50,43 +57,48 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     file <- NULL
     text <- NULL
 
-### if data is a list of data and meta, we need to split it out and
-### remember to update meta. This is needed for NMscanData, not
-### NMscanInput. We leave meta data untouched. This part is due to a previous design of NMscanInput. 
-    ## details <- FALSE
-    ## data.meta <- list()
-    ## if(is.list(data) && !is.data.frame(data)){
-    ##     data.meta <- data$meta
-    ##     data <- data$data
-    ##     details <- TRUE
-    ## }
+### We leave meta data untouched. This part is due to a previous design of NMscanInput. 
     
     data.meta <- NMinfoDT(data)
-
-    text2 <- NMreadSection(lines=lines,section="DATA",keepComments=FALSE)
+    
+    text2 <- NMreadSection(lines=lines,section="DATA",keep.comments=FALSE)
     text3 <- sub(";.*$","",text2)
-
+    text3 <- gsub("\\t"," ",text3)
+    
     ## replace the allowed IGN with IGNORE
     ## the single-chacter ones line @ or C. Here = is mandatory.
-    conds.sc <- regmatches(text3, gregexpr(paste0("IGN(?:ORE)"," *= *[^ (+]"),text3))
-    conds.sc <- do.call(c,conds.sc)
-### why is this 
-    text3 <- gsub(paste0("IGNORE"," *= *[^ (+]"),"",text3)
+    ## conds.sc <- regmatches(text3, gregexpr(paste0("IGN(?:ORE)"," *= *[^ (+]"),text3))
+    
+    ## simplifying so IGNORE/IGN is always IGN
+    text3 <- gsub("IGNORE","IGN",text3)
 
+    
+    ## ^(.* )* : if anything before IGN, there must be a space in between
+    ## conds.sc <- regmatches(text3, gregexpr("^(.* )*(?:IGN) *=* *[^ (+=]",text3))
+    conds.sc <- regmatches(text3, gregexpr("(?<![[:alnum:]])IGN *=* *[^ (+=]",text3,perl=T))
+    conds.sc
+    conds.sc <- do.call(c,conds.sc)
+### getting rid of single char conditions
+    
+    ## text3 <- gsub(paste0("^(\\(.* \\)*)IGN"," *=* *[^ (+=]"),"\\1",text3)
+    ## gsub("^((.* )*)IGN *=* *[^ (+=](.*)","\\1\\2",text3)
+    ## gsub("((.* )*)IGN *=* *[^ (+=](.*)","\\1\\2",text3)
+    text3 <- gsub("(?<![[:alnum:]])IGN *=* *[^ (+=]","",perl=TRUE,text3)
+    
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
     any.ignores <- any(grepl("IGN",text3))
     ## if no filters found, just return data as is
-    if(!any.accepts&&!any.ignores&length(conds.sc)==0) return(data)
+    if(!any.accepts && !any.ignores && length(conds.sc)==0) return(data)
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
     
     if(any.ignores) {
-        type.condition <- "IGNORE"
+        type.condition <- "IGN"
     } else {
         type.condition <- "ACCEPT"
     }
     
-
+    
 ### expression-style ones
     ## this is not entirely correct.
 ### 1. A comma-separated list of expressions can be inside the ()s.
@@ -98,9 +110,10 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
 
     
     
+    
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
-    scs <- sub(paste0("IGNORE"," *=* *(.+)"),"\\1",conds.sc)
+    scs <- sub(paste0("IGN"," *=* *(.+)"),"\\1",conds.sc)
     scs.all <- scs
     expressions.sc <- c()
     if(length(scs)&&grepl("@",scs)) {
@@ -121,10 +134,10 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
         scs2 <- regmatches(scs,regexpr(regstring,scs))
         ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"\",",name.c1,")"))
         ## expressions.sc <- c(expressions.sc,paste0("!grepl('^",scs2,"','",name.c1,"')"))
-        expressions.sc <- c(expressions.sc,paste0("!grepl('[",scs2,"]',`",name.c1,"`)"))
+        expressions.sc <- c(expressions.sc,paste0("!grepl('^[",scs2,"]',`",name.c1,"`)"))
         scs <- scs[!grepl(regstring,scs)]
     }
-
+    
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
     
     ## translating expression-style ones
@@ -145,11 +158,28 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     ## (DOSE 10) means (DOSE==10) in NMTRAN. 
     expressions.list <- sub("([[:alpha:]]+) +([[:alnum:]]+)","\\1==\\2",expressions.list)
 
+    vars.cond <- sub("([[:alnum:]])[^[:alnum:]]+.*","\\1",expressions.list)
+    
+    if(length(vars.cond)){
+        missings <- listMissings(data,cols=unique(vars.cond),quiet=TRUE,as.fun="data.table")
+        if(!is.null(missings)&&nrow(missings)>0){
+            warning(paste("Missing values found in columns used for ACCEPT/IGNORE statements. This is not supported. If at all possible, please use a unique row identifier to merge by and/or make sure values are not missing in these colums.\n",
+                          paste(capture.output(
+                              print(
+                                  missings[,.N,by=.(variable,value)]
+                                    )
+                          ),collapse="\n")))
+            
+        }
+    }
     
     cond.combine <- "|"
     ## remember to negate everything if the type is ignore
-    if(type.condition=="IGNORE") {
-        expressions.list <- paste0("!",expressions.list)
+    
+    if(type.condition=="IGN") {
+        if(length(expressions.list)){
+            expressions.list <- paste0("!",expressions.list)
+        }
         cond.combine <- "&"
     }
     
@@ -158,11 +188,13 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     } else {
         conditions.all.sc <- "TRUE"
     }
+
     
     expressions.all <- NULL
     if(length(expressions.list)) {
         expressions.all <- paste0("(",paste(expressions.list,collapse=cond.combine),")")
     }
+
     
     if(invert) {
         
@@ -198,5 +230,5 @@ NMapplyFilters <- function(data,file,text,lines,invert=FALSE,as.fun,quiet) {
     
     writeNMinfo(data,meta=data.meta,append=TRUE)
     data
- 
+    
 }

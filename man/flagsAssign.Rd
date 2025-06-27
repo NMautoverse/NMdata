@@ -77,6 +77,7 @@ dt.flags must contain a column with numerical exclusion
     of the numerical exclusion flag.
 }
 \examples{
+\dontrun{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 dt.flags <- data.frame(
        flagn=10,
@@ -89,10 +90,13 @@ pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing",
 unique(pk[,c("EVID","flagn","flagc","BLQ")])
 flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
+}
 \seealso{
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsCount}()},

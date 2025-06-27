@@ -14,8 +14,9 @@ fix.time <- function(x){
     meta.x$details$mtime.input <- NULL
     meta.x$details$mtime.lst <- NULL
     meta.x$details$mtime.mod <- NULL
-    meta.x$datafile$path <- NULL
+    meta.x$datafile$path.csv <- NULL
     meta.x$datafile$path.rds <- NULL
+    meta.x$datafile$path.fst <- NULL
     meta.x$tables$file <- NULL
     meta.x$tables$file.mtime <- NULL
     setattr(x,"NMdata",meta.x)
@@ -27,7 +28,7 @@ NMdataConf(reset=TRUE)
 
 test_that("basic",{
 
-    fileRef <- "testReference/NMscanInput_1.rds"
+    fileRef <- "testReference/NMscanInput_01.rds"
     file.lst <- "testData/nonmem/xgxr004.lst"
 
     ## res1 <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
@@ -41,7 +42,7 @@ test_that("basic",{
 
 ### this one has NMdata meta data
 test_that("input has NMdata meta data",{
-    fileRef <- "testReference/NMscanInput_2.rds"
+    fileRef <- "testReference/NMscanInput_02.rds"
     ## load_all("c:/Users/delff/working_copies/NMdata")
 
     file.lst <- "testData/nonmem/xgxr011.lst"
@@ -53,7 +54,7 @@ test_that("input has NMdata meta data",{
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
-## readRDS(fileRef)$tables; nm1$tables    
+    ## readRDS(fileRef)$tables; nm1$tables    
     
 })
 
@@ -65,7 +66,7 @@ test_that("single = filter",{
     file.lst <- "testData/nonmem/xgxr009.lst"
     ## NMgetSection(file.lst,section="PROBLEM")
     ## NMgetSection(file.lst,section="DATA")
-    res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
+    res <- NMscanInput(file=file.lst,apply.filters = T,as.fun="data.table")
     expect_equal(res[,unique(DOSE)],10)
     
 })
@@ -87,7 +88,7 @@ test_that("Duplicate columns in input data",{
 
 test_that("single-char ignore",{
     NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanInput4.rds"
+    fileRef <- "testReference/NMscanInput_04.rds"
     file.lst <- "testData/nonmem/estim_debug.lst"
 
     ## inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
@@ -102,7 +103,7 @@ test_that("single-char ignore",{
 
 
 test_that(".mod with mix of space and , in $INPUT",{
-    fileRef <- "testReference/NMscanInput5.rds"
+    fileRef <- "testReference/NMscanInput_05.rds"
     file.lst <- "testData/nonmem/min036.mod"
 
     inpdat <- NMscanInput(file=file.lst)
@@ -121,7 +122,7 @@ test_that("Erroneously basing a filter on translated column names",{
 
 test_that("Including meta data",{
     NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanInput6.rds"
+    fileRef <- "testReference/NMscanInput_06.rds"
     file.lst <- "testData/nonmem/xgxr004.lst"
 
     res <-
@@ -139,15 +140,156 @@ test_that("Including meta data",{
 
 test_that("CYCLE=DROP",{
 
-    fileRef <- "testReference/NMscanInput_7.rds"
-    file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    fileRef <- "testReference/NMscanInput_07.rds"
+### file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    file.lst <- "testData/nonmem/xgxr002.lst"
 
     ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
 ### using as.data.table for as.fun is not recommended but still allowed
     res <-
-        NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
+        NMscanInput(file=file.lst,apply.filters = T,as.fun="data.table")
 
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
 })
+
+
+
+test_that("No filters",{
+
+    fileRef <- "testReference/NMscanInput_08.rds"
+
+    inp <- NMscanInput("testData/nonmem/xgxr027.lst")
+    inp <- fix.time(inp)
+
+    expect_equal_to_reference(inp,fileRef,version=2)
+})
+
+
+test_that("Multiple filters on same column",{
+    NMdataConf(as.fun="data.table")
+    fileRef <- "testReference/NMscanInput_09.rds"
+
+    inp.nofilt <- NMscanInput("testData/nonmem/xgxr029.mod",applyFilters=FALSE)[,data:="nofilt"]
+    inp.filt <- NMscanInput("testData/nonmem/xgxr029.mod",applyFilters=TRUE)[,data:="filt"]
+    inp <- rbind(inp.nofilt,inp.filt)
+    
+    tab.count <- dcast(
+        inp[,.N,by=.(ID,data)]
+       ,ID~data,value.var="N")
+
+    expect_equal_to_reference(tab.count,fileRef,version=2)
+})
+
+
+test_that("ID only from pseudonym",{
+    NMdataConf(as.fun="data.table")
+    fileRef <- "testReference/NMscanInput_10.rds"
+    file.mod <- "testData/nonmem/pred030.mod"
+    NMreadSection(file.mod,section="input")
+    NMextractDataFile(file.mod)$path.csv |> readLines(n=3)
+
+    inp <- NMscanInput(file.mod)
+    inp2 <- NMscanInput(file.mod,translate=F)
+    
+    inp <- fix.time(inp)    
+    
+    expect_equal_to_reference(inp,fileRef,version=2)
+    expect_equal(setdiff(colnames(inp),colnames(inp2)),"ID")
+
+    inp3 <- NMscanInput(file.mod,translate=T,recover.cols = FALSE)
+    expect_equal(colnames(inp),colnames(inp3))
+
+})
+
+
+test_that("Missing control stream",{
+
+    expect_error(NMscanInput("testData/nonmem/doesnotexist.mod"))
+})
+
+test_that("apply.filters=F and recover.rows=FALSE",{
+
+    fileRef <- "testReference/NMscanInput_11.rds"
+    ##file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
+    file.lst <- "testData/nonmem/xgxr002.lst"
+
+    ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+### using as.data.table for as.fun is not recommended but still allowed
+    res <-
+        NMscanInput(file=file.lst,apply.filters = F,as.fun="data.table",recover.cols=FALSE)
+
+    fix.time(res)
+    nm1 <- NMinfo(res)
+    expect_equal_to_reference(nm1,fileRef,version=2)
+})
+
+test_that("Space CYCLE =DROP",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_12.rds"
+    file.mod <- "testData/nonmem/xgxr030.mod"
+
+    ## res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="none")
+### using as.data.table for as.fun is not recommended but still allowed
+    res <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",recover.cols=FALSE)
+
+    fix.time(res)
+    nm1 <- NMinfo(res)
+    expect_equal_to_reference(nm1,fileRef,version=2)
+})
+
+
+test_that("Combinations of translate and recover.cols",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_13.rds"
+    file.mod <- "testData/nonmem/xgxr030.mod"
+
+### using as.data.table for as.fun is not recommended but still allowed
+    res1 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=FALSE,recover.cols=FALSE)
+    ## colnames(res1)
+    ## NMinfo(res1,"input.colnames")
+
+    res2 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=FALSE,recover.cols=TRUE)
+    ## colnames(res2)
+    ## NMinfo(res2,"input.colnames")
+
+    res3 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=TRUE,recover.cols=FALSE)
+    ## colnames(res3)
+    ## NMinfo(res3,"input.colnames")
+
+
+    res4 <-
+        NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                    translate=TRUE,recover.cols=TRUE)
+    ## colnames(res4)
+    ## NMinfo(res4,"input.colnames")
+
+
+    all.res <- list(res1,res2,res3,res4)
+    all.res <- lapply(all.res,fix.time)
+
+    expect_equal_to_reference(all.res,fileRef,version=2)
+})
+
+if(F){ ## while waiting for 054
+    test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
+        NMdataConf(reset=TRUE)
+        fileRef <- "testReference/NMscanInput_14.rds"
+        file.mod <- "testData/nonmem/xgxr054.mod"
+
+        res1 <-
+            NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
+                        translate=TRUE,recover.cols=FALSE)
+
+        ## res1
+        expect_equal_to_reference(res1,fileRef,version=2)
+    })
+}

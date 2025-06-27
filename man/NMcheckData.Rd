@@ -16,8 +16,13 @@ NMcheckData(
   col.dv = "DV",
   col.mdv = "MDV",
   col.cmt = "CMT",
+  col.amt = "AMT",
   col.flagn,
   col.row,
+  col.usubjid,
+  cols.dup,
+  type.data = "est",
+  cols.disable,
   na.strings,
   return.summary = FALSE,
   quiet = FALSE,
@@ -25,19 +30,21 @@ NMcheckData(
 )
 }
 \arguments{
-\item{data}{The data to check. data.frame, data.table, tibble,
-anything that can be converted to data.table.}
+\item{data}{The data to check. \code{data.frame},
+\code{data.table}, \code{tibble}, anything that can be
+converted to \code{data.table}.}
 
 \item{file}{Alternatively to checking a data object, you can use
 file to specify a control stream to check. This can either be
 a (working or non-working) input control stream or an output
-control stream. In this case, NMdataCheck checks column names
-in data against control stream (see NMcheckColnames), reads
-the data as NONMEM would do, and do the same checks on the
-data as NMdataCheck would do using the data
-argument. col.flagn is ignored in this case - instead,
-ACCEPT/IGNORE statements in control stream are applied. The
-file argument is useful for debugging a Nonmem model.}
+control stream. In this case, \code{NMdataCheck} checks column
+names in data against control stream (see
+\code{NMcheckColnames}), reads the data as Nonmem would do,
+and do the same checks on the data as NMdataCheck would do
+using the data argument. \code{col.flagn} is ignored in this
+case - instead, ACCEPT/IGNORE statements in control stream are
+applied. The file argument is useful for debugging a Nonmem
+model.}
 
 \item{covs}{columns that contain subject-level covariates. They
 are expected to be non-missing, numeric and not varying within
@@ -46,9 +53,9 @@ subjects.}
 \item{covs.occ}{A list specifying columns that contain
 subject:occasion-level covariates. They are expected to be
 non-missing, numeric and not varying within combinations of
-subject and occasion. covs.occ=list(PERIOD=c("FED")) means
-that FED is the covariate, while PERIOD indicates the
-occasion.}
+subject and occasion. \code{covs.occ=list(PERIOD=c("FED"))}
+means that \code{FED} is the covariate, while \code{PERIOD}
+indicates the occasion.}
 
 \item{cols.num}{Columns that are expected to be present, numeric
 and non-NA. If a character vector is given, the columns are
@@ -62,42 +69,83 @@ identifier. Default is "ID".}
 \item{col.time}{The name of the column holding actual time.}
 
 \item{col.dv}{The name of the column holding the dependent
-variable. For now, only one column can be specified, and MDV
-is assumed to match this column. Default is DV.}
+variable. For now, only one column can be specified, and
+\code{MDV} is assumed to match this column. Default is
+\code{DV}.}
 
 \item{col.mdv}{The name of the column holding the binary indicator
-of the dependent variable missing. Default is MDV.}
+of the dependent variable missing. Default is \code{MDV}.}
 
 \item{col.cmt}{The name(s) of the compartment column(s). These
 will be checked to be positive integers for all rows. They are
 also used in checks for row duplicates.}
 
+\item{col.amt}{The name of the dose amount column.}
+
 \item{col.flagn}{Optionally, the name of the column holding
-numeric exclusion flags. Default value is FLAG and can be
-configured using NMdataConf. Disable by using col.flagn=FALSE.}
+numeric exclusion flags. Default value is \code{FLAG} and can
+be configured using \code{NMdataConf}. Even though \code{FLAG}
+is the default value, no finding will be returned if the
+column is missing unless explicitly defined as
+\code{col.flagn="FLAG"}. This is because this way of using
+exclusion flags is only one of many ways you could choose to
+handle exclusions. Disable completely by using
+\code{col.flagn=FALSE}.}
 
 \item{col.row}{A column with a unique value for each row. Such a
-column is recommended to use if possible. Default ("ROW") can
-be modified using NMdataConf.}
+column is recommended to use if possible. Default
+(\code{"ROW"}) can be modified using \code{NMdataConf}.}
+
+\item{col.usubjid}{Optional unique subject identifier. It is
+recommended to keep a unique subject identifier (typically a
+character string including an abbreviated study name and the
+subject id) from the clinical datasets in the analysis set. If
+you supply the name of the column holding this identifier,
+NMcheckData will check that it is non-missing, that it is
+unique within values of col.id (i.e. that the analysis subject
+ID's are unique across actual subjects), and that col.id is
+unique within the unique subject ID (a violation of the latter
+is less likely).}
+
+\item{cols.dup}{Additional column names to consider in search of
+duplicate events. \code{col.id}, \code{col.cmt},
+\code{col.evid}, and \code{col.time} are always considered if
+found in data, and \code{cols.dup} is added to this list if
+provided.}
+
+\item{type.data}{\code{"est"} for estimation data (default), and
+\code{"sim"} for simulation data. Differences are that
+\code{col.row} is not expected for simulation data, and
+subjects will be checked to have \code{EVID==0} rows for
+estimation data and \code{EVID==2} rows for simulation data.}
+
+\item{cols.disable}{Columns to not check. This is particularly
+useful when checking data sets that do not include i.e. `CMT`,
+`EVID`, and others. To skip checking specific columns, provide
+their names like `cols.disable=c("CMT","EVID")`.}
 
 \item{na.strings}{Strings to be accepted when trying to convert
 characters to numerics. This will typically be a string that
-represents missing values. Default is "." even though most
-users will use actual NA (NA_character), i.e. not a
-string. See ?NMisNumeric.}
+represents missing values. Default is ".". Notice, actual
+\code{NA}, i.e. not a string, is allowed independently of
+\code{na.strings}. See \code{?NMisNumeric}.}
 
 \item{return.summary}{If TRUE (not default), the table summary
-that is printed if quiet=FALSE is returned as well. In that
-case, a list is returned, and the findings are in an element
-called findings.}
+that is printed if \code{quiet=FALSE} is returned as well. In
+that case, a list is returned, and the findings are in an
+element called findings.}
 
 \item{quiet}{Keep quiet? Default is not to.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass
-a function (say tibble::as_tibble) in as.fun to convert to
-something else. If data.tables are wanted, use
-as.fun="data.table". The default can be configured using
-NMdataConf.}
+\item{as.fun}{The default is to return data as a
+\code{data.frame}. Pass a function (say
+\code{tibble::as_tibble}) in as.fun to convert to something
+else. If \code{data.tables} are wanted, use
+\code{as.fun="data.table"}. The default can be configured
+using \code{NMdataConf}.}
+}
+\value{
+A table with findings
 }
 \description{
 Check data in various ways for compatibility with Nonmem. Some
@@ -114,7 +162,7 @@ The following checks are performed. The term "numeric"
     names must be unique and not contain special characters
 
 \item If an exclusion flag is used (for ACCEPT/IGNORE in Nonmem),
-    elements must be non-missing and integers. If an exclusion
+    elements must be non-missing and integers. Notice, if an exclusion
     flag is found, the rest of the checks are performed on rows
     where that flag equals 0 (zero) only.
 
@@ -122,34 +170,35 @@ The following checks are performed. The term "numeric"
 non-missing, increasing integers. 
 
 \item col.time (TIME),
-    EVID, ID, CMT, MDV: If present, elements must be non-missing
+    \code{EVID}, col.id (\code{ID}), col.cmt (\code{CMT}), and \code{col.mdv} (\code{MDV}): If present, elements must be non-missing
     and numeric.
 
 \item col.time (TIME) must be non-negative
 
-\item EVID must be in {0,1,2,3,4}
+\item \code{EVID} must be in \{0,1,2,3,4\}.
 
-\item CMT must be positive integers. However, can be missing or zero for EVID==3.
+\item CMT must be positive integers. However, can be missing or zero for \code{EVID==3}.
 
-\item MDV must be the binary (1/0) representation of is.na(DV)
+\item MDV must be the binary (1/0) representation of \code{is.na(DV)} for
+dosing records (\code{EVID==0}).
 
-\item AMT must be 0 or NA for EVID 0 and 2
+\item AMT must be 0 or \code{NA} for \code{EVID} 0 and 2
 
-\item AMT must be positive for EVID 1 and 4
+\item AMT must be positive for \code{EVID} 1 and 4
 
 \item DV must be numeric
 
-\item DV must be missing for EVID in {1,4}.
+\item DV must be missing for \code{EVID} in \{1,4\}.
 
 \item If found, RATE must be a numeric, equaling -2 or non-negative for dosing events.
 
 \item If found, SS must be a numeric, equaling 0 or 1 for dosing records.
 
-\item If found, ADDL must be a non-negative integer for dosing
+\item If found, \code{ADDL} must be a non-negative integer for dosing
 records. II must be present.
 
 \item If found, II must be a non-negative integer for dosing
-records. ADDL must be present.
+records. \code{ADDL} must be present.
 
 \item ID must be positive and values cannot be disjoint (all
     records for each ID must be following each other. This is
@@ -157,11 +206,14 @@ records. ADDL must be present.
     error. Use a second ID column if you deliberately want to
     soften this check)
 
-\item TIME cannot be decreasing within ID, unless EVID in {3,4}.
+\item TIME cannot be decreasing within ID, unless \code{EVID} in \{3,4\}.
 
-\item all ID's must have doses (EVID in {1,4})
+\item all ID's must have doses (\code{EVID} in \{1,4\})
 
-\item all ID's must have observations (EVID==0)
+\item all ID's must have observations (\code{EVID}==0)
+
+\item ID's should not have leading zeros since these will be lost
+when Nonmem read, then write the data.
 
 \item If a unique row identifier is used, this must be
     non-missing, increasing, integer
@@ -172,19 +224,37 @@ records. ADDL must be present.
 \item Columns specified in covs argument must be non-missing,
     numeric and not varying within subjects.
 
-\item Columns specified in covs.occ must be
+\item Columns specified in \code{covs.occ} must be
     non-missing, numeric and not varying within combinations of
     subject and occasion.
 
-\item Columns specified in cols.num must be present, numeric
-    and non-NA.
+\item Columns specified in \code{cols.num} must be present, numeric
+    and non-\code{NA}.
+
+\item If a unique subject identifier column (\code{col.usubjid}) is
+provided, `col.id` must be unique within values of \code{col.usubjid} and
+vice versa.
+
+\item Events should not be duplicated. For all rows, the
+combination of \code{col.id}, \code{col.cmt}, \code{col.evid}, \code{col.time} plus the
+optional columns specified in \code{cols.dup} must be unique. In other
+words, if a subject (\code{col.id}) that has say observations (\code{col.evid})
+at the same time (col.time), this is considered a duplicate. The
+exception is if there is a reset event (\code{col.evid} is 3 or 4) in
+between the two rows. cols.dup can be used to add columns to this
+analysis. This is useful for different assays run on the same
+compartment (say a DVID column) or maybe stacked datasets. If
+col.cmt is of length>1, this search is repeated for each cmt
+column.
 
 }
 }
 \examples{
+\dontrun{
 dat <- readRDS(system.file("examples/data/xgxr2.rds", package="NMdata"))
 NMcheckData(dat)
 dat[EVID==0,LLOQ:=3.5]
 ## expecting LLOQ only for samples
 NMcheckData(dat,cols.num=list(c("STUDY"),"EVID==0"=c("LLOQ")))
+}
 }

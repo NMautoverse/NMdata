@@ -2,7 +2,6 @@
 % Please edit documentation in R/NMreadSection.R
 \name{NMreadSection}
 \alias{NMreadSection}
-\alias{NMgetSection}
 \title{Extract sections of Nonmem control streams}
 \usage{
 NMreadSection(
@@ -11,16 +10,18 @@ NMreadSection(
   text = NULL,
   section,
   return = "text",
-  keepEmpty = FALSE,
-  keepName = TRUE,
-  keepComments = TRUE,
-  asOne = TRUE,
+  keep.empty = FALSE,
+  keep.name = TRUE,
+  keep.comments = TRUE,
+  as.one = TRUE,
+  clean.spaces = FALSE,
   simplify = TRUE,
-  cleanSpaces = FALSE,
+  keepEmpty,
+  keepName,
+  keepComments,
+  asOne,
   ...
 )
-
-NMgetSection(...)
 }
 \arguments{
 \item{file}{A file path to read from. Normally a .mod or .lst. See
@@ -29,10 +30,10 @@ lines also.}
 \item{lines}{Text lines to process. This is an alternative to
 using the file argument.}
 
-\item{text}{Use this argument if the text to process is one long
-character string, and indicate the line separator with the
-linesep argument (handled by NMextractText). Use only one of
-file, lines, and text.}
+\item{text}{Deprecated, use `lines`. Use this argument if the text
+to process is one long character string, and indicate the line
+separator with the linesep argument (handled by
+NMextractText). Use only one of file, lines, and text.}
 
 \item{section}{The name of section to extract without
 "$". Examples: "INPUT", "PK", "TABLE", etc. Not case
@@ -41,27 +42,40 @@ sensitive.}
 \item{return}{If "text", plain text lines are returned. If "idx",
 matching line numbers are returned. "text" is default.}
 
-\item{keepEmpty}{Keep empty lines in output? Default is FALSE.}
+\item{keep.empty}{Keep empty lines in output? Default is
+FALSE. Notice, comments are removed before empty lines are
+handled if `keep.comments=TRUE`.}
 
-\item{keepName}{Keep the section name in output (say, "$PROBLEM")
-Default is TRUE. It can only be FALSE, if return"idx".}
+\item{keep.name}{Keep the section name in output (say, "$PROBLEM")
+Default is FALSE. It can only be FALSE, if return="text".}
 
-\item{keepComments}{Keep comment lines?}
+\item{keep.comments}{Default is to keep comments. If FALSE, the
+will be removed. See keep.empty too. Notice, there is no way
+for NMreadSection to keep comments and also drop lines that
+only contain comments.}
 
-\item{asOne}{If multiple hits, concatenate into one. This will
+\item{as.one}{If multiple hits, concatenate into one. This will
 most often be relevant with name="TABLE". If FALSE, a list
 will be returned, each element representing a table. Default
 is TRUE. So if you want to process the tables separately, you
 probably want FALSE here.}
+
+\item{clean.spaces}{If TRUE, leading and trailing are removed, and
+multiplied succeeding white spaces are reduced to single white
+spaces.}
 
 \item{simplify}{If asOne=FALSE, do you want the result to be
 simplified if only one section is found? Default is TRUE which
 is desirable for interactive analysis. For programming, you
 probably want FALSE.}
 
-\item{cleanSpaces}{If TRUE, leading and trailing are removed, and
-multiplied succeeding white spaces are reduced to single white
-spaces.}
+\item{keepEmpty}{Deprecated. See keep.empty.}
+
+\item{keepName}{Deprecated. See keep.name.}
+
+\item{keepComments}{Deprecated. See keep.comments.}
+
+\item{asOne}{Deprecated. See as.one.}
 
 \item{...}{Additional arguments passed to NMextractText}
 }
@@ -73,11 +87,6 @@ This is a very commonly used wrapper for the input part of the
 model file. Look NMextractText for more general functionality
 suitable for the results part too.
 }
-\section{Functions}{
-\itemize{
-\item \code{NMgetSection}: Deprecated function name. Use NMreadSection.
-}}
-
 \examples{
 NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),section="DATA")
 
@@ -87,7 +96,7 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMgenText}()},
-\code{\link{NMwriteData}()},
+\code{\link{NMreplaceDataFile}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

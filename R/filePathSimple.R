@@ -3,15 +3,12 @@
 ##' @description Use this to tidy up paths. Combines pieces of a path like
 ##'     file.path(). The function is intended to return a canonical
 ##'     path format, i.e. paths that can be compared by simple string
-##'     comparisson. Redundant /'s removed. normalizePath is used to
+##'     comparison. Redundant /'s removed. normalizePath is used to
 ##'     possibly shorten path.
 ##' @param ... additional arguments passed to file.path().
 ##' @return A (character) file path
 ##' @family FileSystem
 ##' @keywords internal
-
-### This function is exported from pmxtricks. It is included in NMdata not to
-### depend on pmxtricks. However, please align.
 
 filePathSimple <- function(...){
     

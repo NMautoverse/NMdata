@@ -5,6 +5,8 @@
 ##' @param base The base name of the new element. A number will
 ##'     appended to this string that will ensure that the new element
 ##'     name is not already in use.
+##' @param i1 Where to start the search for a smallest available index
+##'     number to add to `base` if necessary.
 ##' @param max.it Maximum number of iterations on element name.
 ##' @param prefer.plain If base isn't in use already, use it without a
 ##'     digit appended?
@@ -12,10 +14,9 @@
 ##' @seealso make.names
 ##' @family DataCreate
 ##' @keywords internal
+##' @export
 
-### export from pmxtricks. It's not a Nonmem or pmx data specific thing.
-
-tmpcol <- function(data,names=NULL,base="atmpcol999",max.it=100,prefer.plain=TRUE){
+tmpcol <- function(data,names=NULL,base="tmpcol",i1=1,max.it=100,prefer.plain=TRUE){
     stopifnot(xor(missing(data),is.null(names)))
 
     if(!missing(data)) names <- names(data)
@@ -26,7 +27,7 @@ tmpcol <- function(data,names=NULL,base="atmpcol999",max.it=100,prefer.plain=TRU
     }
 
     if(is.null(colname)){
-        i <- 0
+        i <- i1
         while(paste0(base,i)%in%names) {
             i  <- i+1
             if(i>max.it) stop("Maximum number of iterations reached. Check if something is wrong, and maybe increase max.it.") 

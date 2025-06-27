@@ -9,7 +9,9 @@
 ##' nm.drop, the list is stopped. Only exception is TIME which is not
 ##' tested for whether character or not.
 ##'
-##' @param data The data that NONMEM will read.
+##' @param data The data that NONMEM will read. Either as a
+##'     `data.frame`, of if a path to an rds or a delimited text file,
+##'     the data will automatically be read first.
 ##' @param drop Only used for generation of proposed text for INPUT
 ##'     section. Columns to drop in Nonmem $INPUT. This has two
 ##'     implications. One is that the proposed $INPUT indicates =DROP
@@ -19,19 +21,19 @@
 ##' @param col.flagn Name of a numeric column with zero value for rows
 ##'     to include in Nonmem run, non-zero for rows to skip. The
 ##'     argument is only used for generating the proposed $DATA text
-##'     to paste into the Nonmem control stream. To skip this feature,
-##'     use col.flagn=NULL. Default is defined by NMdataConf.
+##'     to paste into the Nonmem control stream. Default is defined by
+##'     `NMdataConf()`. To skip this feature, use `col.flagn=FALSE`.
 ##' @param rename For the $INPUT text proposal only. If you want to
 ##'     rename columns in NONMEM $DATA, NMwriteData can adjust the
 ##'     suggested $DATA text. If you plan to use BBW instead of BWBASE
-##'     in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+##'     in Nonmem, consider rename=c(BBW="BWBASE"). The result will
 ##'     include BBW and not BWBASE.
 ##' @param copy For the $INPUT text proposal only. If you plan to use
 ##'     additional names for columns in Nonmem $INPUT, NMwriteData can
 ##'     adjust the suggested $INPUT text. Say you plan to use CONC as
-##'     DV in Nonmem, use rename=c(DV="CONC"),
-##'     i.e. rename=c(newname="existing"). INPUT suggestion will in
-##'     this case contain DV=CONC.
+##'     DV in Nonmem, use copy=c(DV="CONC"),
+##'     i.e. copy=c(newname="existing"). INPUT suggestion will in this
+##'     case contain DV=CONC.
 ##' @param file The file name NONMEM will read the data from (for the
 ##'     $DATA section). It can be a full path.
 ##' @param dir.data For the $DATA text proposal only. The path to the
@@ -51,17 +53,21 @@
 ##'     used (probably only interesting if character values are
 ##'     supplied).
 ##' @param allow.char.TIME For the $INPUT text proposal only. Assume
-##'     Nonmem can read TIME even if it can't be translated to
-##'     numeric. This is necessary if using the 00:00 format. Default
-##'     is TRUE.
+##'     Nonmem can read TIME and DATE even if it can't be translated
+##'     to numeric. This is necessary if using the 00:00
+##'     format. Default is TRUE.
+##' @param width If positive, will be passed to strwrap for the $INPUT
+##'     text. If missing or NULL, strwrap will be called with default
+##'     value. If negative or zero, strwrap will not be called.
 ##' @param quiet Hold messages back? Default is defined by NMdataConf.
-##' @return Text for inclusion in Nonmem control stream, invisibly.
+##' @return Text for inclusion in Nonmem control stream, invisibly. A
+##'     list with elements `DATA` and `INPUT`.
 ##' @family Nonmem
 ##' @export
 
 NMgenText <- function(data,
                       drop,
-                      col.flagn="FLAG",
+                      col.flagn,
                       rename,
                       copy,
                       file,
@@ -69,17 +75,20 @@ NMgenText <- function(data,
                       capitalize=FALSE,
                       until,
                       allow.char.TIME=TRUE,
-                      quiet){
-    
+                      width,
+                      quiet
+                      ){
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    occ.cum <- NULL
-    TIME <- NULL
+
+    DATE <- NULL
     name.nm <- NULL
     drop.nm <- NULL
+    include <- NULL
     name.pseudo <- NULL
     name.rename <- NULL
-    include <- NULL
     numeric.ok <- NULL
+    occ.cum <- NULL
+    TIME <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
@@ -88,13 +97,20 @@ NMgenText <- function(data,
     pseudo <- copy
     rm(copy)
 
-    
+    if(is.character(data)){
+        if(tolower(fnExtension(data))=="rds") {
+            data <- readRDS(data)
+        } else {
+            data <- NMreadCsv(data)
+        }
+    }
     if(!is.data.frame(data)) messageWrap("data must be a data.frame",fun.msg=stop)    
     data <- copy(as.data.table(data))
 
     
     if(missing(col.flagn)) col.flagn <- NULL
     col.flagn <- NMdataDecideOption("col.flagn",col.flagn)
+
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(dir.data)) dir.data <- NULL
@@ -109,7 +125,7 @@ NMgenText <- function(data,
     if(any(is.na(drop)|drop=="")){
         stop("drop cannot contain empty strings and NA's.")
     }
-
+    if(missing(width)) width <- NULL
     
 ### capitalize, allow.char.TIME have to be logical
     
@@ -135,6 +151,13 @@ NMgenText <- function(data,
         }
     }
 
+    if(allow.char.TIME){
+        if("DATE"%in%colnames(data) &&
+           as.num.ok[,DATE==FALSE]) {
+            as.num.ok[,DATE:=TRUE]
+        }
+    }
+
 
     dt.num.ok <- data.table(
         col=colnames(as.num.ok)
@@ -154,15 +177,22 @@ NMgenText <- function(data,
     
     ## apply "until"
     if(!missing(until) && !is.null(until)){
+        
         if(!is.numeric(until)&&!is.character(until)){
             messageWrap("until must be either numeric or character.")
         }
         if(is.character(until)){
             ## convert to numeric
+            
             until <- match(until,dt.num.ok[,name.nm])
         }
-        until <- max(until)
-        dt.num.ok <- dt.num.ok[1:until]
+        until <- until[!is.na(until)]
+        if(length(until)){
+            until <- max(until)
+            dt.num.ok <- dt.num.ok[1:until]
+        } else {
+            message("No recognized variables in \'until\'. Ignoring.")
+        }
     }
 
     ## apply DROP
@@ -213,15 +243,24 @@ NMgenText <- function(data,
 
     colnames.nm <- dt.num.ok[include==TRUE,name.nm]
 
-    text.nm.input <- strwrap(
-        paste0("$INPUT ",paste(colnames.nm,collapse=" "))
-    )
+    text.nm.input <- paste0("$INPUT ",paste(colnames.nm,collapse=" "))
+    ## wrap if width is missing or positive
+    if(is.null(width)){
+        text.nm.input <- strwrap(
+            text.nm.input
+        )
+    } else if(width>0){
+        text.nm.input <- strwrap(
+            text.nm.input
+           ,width=width
+        )
+    }
 
     text.nm.data <- c(paste0("$DATA ", file.nm)
                      ,paste0("IGN=@")
                       )
 
-    if(!is.null(col.flagn)&&col.flagn%in%colnames.nm){
+    if( !( is.logical(col.flagn)&&!col.flagn ) && col.flagn%in%colnames.nm ){
         text.nm.data <- c(text.nm.data,
                           paste0("IGNORE=(",col.flagn,".NE.0)")
                           )

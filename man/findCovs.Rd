@@ -18,7 +18,7 @@ be both say c("ID","DRUG") or c("ID","TRT").}
 \item{as.fun}{The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
-be configued using NMdataConf.}
+be configured using NMdataConf.}
 }
 \value{
 a data set with one observation per combination of values of
@@ -51,15 +51,19 @@ findVars(findCovs(dt1,"ID"))
 ## occasion level
 findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 ## Based on a "real data example"
+\dontrun{
 dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 findCovs(dat,by="ID")
 ### Without an ID column we get non-varying columns
 findCovs(dat)
 }
+}
 \seealso{
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{addTAPD}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},
 \code{\link{flagsCount}()},

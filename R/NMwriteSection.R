@@ -1,4 +1,4 @@
-##' Replace ($)sections of a nonmem control stream
+##' Replace ($)sections of a Nonmem control stream
 ##'
 ##' Just give the section name, the new lines and the file path, and the
 ##' "$section", and the input to Nonmem will be updated.
@@ -7,36 +7,41 @@
 ##'     edit. See file.pattern too.
 ##' @param file.pattern Alternatively to files, you can supply a
 ##'     regular expression which will be passed to list.files as the
-##'     pattern argument. If this is used, use dir argument as
+##'     pattern argument. If this is used, use `dir` argument as
 ##'     well. Also see data.file to only process models that use a
 ##'     specific data file.
-##' @param dir If file.pattern is used, dir is the directory to search
+##' @param dir If file.pattern is used, `dir` is the directory to search
 ##'     in.
-##' @param section The name of the section to update without
-##'     "$". Example: section="EST" to edit the sections starting by
-##'     $EST. Section specification is not case-sensitive. See
-##'     ?NMreadSection too.
+##' @param section The name of the section to update with or without
+##'     "$". Example: `section="EST"` or `section="$EST"` to edit the
+##'     sections starting by `$EST`. Section specification is not
+##'     case-sensitive. See `?NMreadSection` too.
 ##' @param newlines The new text (including "$SECTION"). Better be
 ##'     broken into lines in a character vector since this is simply
-##'     past to writeLines.
+##'     past to \code{writeLines()}.
 ##' @param list.sections Named list of new sections, each element
 ##'     containing a section. Names must be section names, contents of
 ##'     each element are the new section lines for each section.
-##' @param newfile path to new run. If missing, path is used. If NULL,
-##'     output is returned rather than written.
+##' @param location In combination with `section`, this determines
+##'     where the new section is inserted. Possible values are
+##'     "replace" (default), "before", "after", "first", "last".
+##' @param newfile path and filename to new run. If missing, the
+##'     original file (from \code{files} or \code{file.pattern}) is
+##'     overwritten (see the \code{backup} option below). If NULL,
+##'     output is returned as a character vector rather than written.
 ##' @param backup In case you are overwriting the old file, do you
 ##'     want to backup the file (to say, backup_run001.mod)?
 ##' @param blank.append Append a blank line to output?
 ##' @param data.file Use this to limit the scope of models to those
 ##'     that use a specific input data data file. The string has to
-##'     exactly match the one in $DATA or $INFILE in Nonmem.
+##'     exactly match the one in `$DATA` or `$INFILE` in Nonmem.
 ##' @param write Default is to write to file. If write=FALSE,
-##'     NMwriteSection returns the resulting input.txt without writing
-##'     it.  to disk?  Default is FALSE.
+##'     `NMwriteSection()` returns the resulting input.txt without writing
+##'     it to disk.  Default is `TRUE`.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
-##'     NMdataConf.
+##'     `NMdataConf()`.
 ##' @param simplify If TRUE (default) and only one file is edited, the
 ##'     resulting rows are returned directly. If more than one file is
 ##'     edited, the result will always be a list with one element per
@@ -60,52 +65,33 @@
 ##' @export
 
 
-NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections,newfile,
-                           backup=TRUE,blank.append=TRUE,data.file,write=TRUE,quiet,simplify=TRUE){
-
-
+NMwriteSection <- function(files,file.pattern,dir,section,newlines,
+                           list.sections,location="replace",newfile,
+                           backup=TRUE,blank.append=TRUE,data.file,
+                           write=TRUE,quiet,simplify=TRUE){
+    
+    
     
 #### Section start: handle arguments ####
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    
-    ## supply either file or file.pattern. dir only allowed if file.pattern
-    if( missing(files) && missing(file.pattern) ){
-        stop("You have to supply either file or file.pattern")
-    }
-    if(!missing(files)&& (!missing(file.pattern) || !missing(dir))){
-        stop("If supplying files, file.pattern and dir cannot be used")
-    }
-    if(!missing(file.pattern)&&missing(dir)){
-        stop("If using file.pattern, you have to supply dir too.")
-    }
-    
-    if(!missing(files)&&length(files)>0){
-        
-        if(any(!file.exists(files))){
-            if(!quiet){
-                message("Files not found. Skipping:\n",paste(files[!file.exists(files)],collapse="\n"))
-            }
-        }
-        all.files <- files[file.exists(files)]
-    }
-    
-    
-    if(!missing(file.pattern)){
-        all.files <- list.files(path=dir,pattern=file.pattern,full.names=TRUE,recursive=FALSE)
 
-    }
-    
+    if(missing(files)) files <- NULL
+    if(missing(dir)) dir <- NULL
+    if(missing(file.pattern)) file.pattern <- NULL
+
+    all.files <- getFilePaths(files=files,file.pattern=file.pattern,dir=dir,quiet=quiet)
+
     if(length(all.files)==0){
         message("No existing files matched. Nothing to do.")
         return(invisible(NULL))
     }
-
     
     if(!missing(data.file)){
         all.files <- all.files[sapply(all.files,function(file)NMextractDataFile(file,dir.data=NULL,file.mod=identity)$string==data.file)]
     }
     if(length(all.files)==0) stop("No files to process.")
+    
     
     ## supply either section and newlines or a list
     if(!( (!missing(section)&&!missing(newlines)) ||
@@ -114,101 +100,28 @@ NMwriteSection <- function(files,file.pattern,dir,section,newlines,list.sections
     ){
         stop("Either both section and newlines or list.sections must be supplied.")
     }
-    if(missing(list.sections)){
+
+    ## this is done in NMwriteSectionOne. Probably redundant here.
+    if(missing(list.sections)||is.null(list.sections)){
         ## this must be list, not as.list. as.list would translate multiple lines into multiple sections.
         list.sections=list(newlines)
         names(list.sections) <- section
+    } else {
+        if(location!="replace"){
+            messageWrap("Only location=replace is supported in combination with list.sections.",fun.msg=stop)
+        }
+    }
+
+    ## newfile
+    if(!missing(newfile)&&!is.null(newfile) && length(all.files)>1) {
+        stop("if multiple files are edited, newfile must be missing or NULL.")
     }
     
 ###  Section end: handle arguments
-
-
-    NMwriteSectionOne <- function(file0,section,newlines,list.sections,newfile,
-                                  backup=TRUE,blank.append=TRUE,write=TRUE){
-        
-        file0 <- filePathSimple(file0)
-        stopifnot(file.exists(file0))
-
-        if(missing(newfile)) newfile <- file0
-        if(!is.null(newfile)){
-            newfile <- filePathSimple(newfile)
-        }
-
-        ## see below why we need to read the lines for now
-        lines <- readLines(file0)
-
-        ## put this part in a function to be sequentially applied for all elements in list.
-        replaceOnePart <- function(lines,section,newlines){
-            
-            ## make sure section is capital and does not start with $.
-            section <- gsub(" ","",section)
-            section <- sub("^\\$","",section)
-            section <- toupper(section)
-
-            ## make sure newlines start with $SECTION
-            newlines <- sub("^ +","",newlines)
-### doesn't work. For now, user has to supply newlines including a valid $SECTION start.
-            ## if(grepl(paste0("^\\",section),newlines,ignore.case=TRUE)){
-            ##     newlines <-
-            ##         sub("^([^ ]+)(\\s.*)","\\1",newlines,perl=TRUE)
-            ## }
-            
-            if(blank.append) newlines <- c(newlines,"")
-            
-            idx.dlines <- NMreadSection(lines=lines,section=section,return="idx",keepEmpty=TRUE,
-                                        keepName=TRUE,keepComments=TRUE,asOne=TRUE,
-                                        cleanSpaces=FALSE)
-
-            stopifnot(length(idx.dlines)>0)
-            
-            if(length(idx.dlines)>1) {
-                ## if th
-                stopifnot(max(diff(idx.dlines))==1)
-            }
-            min.dl <- min(idx.dlines)
-            max.dl <- max(idx.dlines)
-
-### these two cases need to be handled slightly differently so not supported for now
-            stopifnot(min.dl>1)
-            stopifnot(max.dl<=length(lines))
-
-            if(min.dl>1){
-                newlines <- c(lines[1:(min.dl-1)],
-                              newlines)
-            }
-            if(max.dl<length(lines)){
-                newlines <- c(newlines,
-                              lines[(max.dl+1):length(lines)])
-            }
-
-            ##  function end
-            newlines
-        }
-        
-        newlines <- lines
-        for (I in 1:length(list.sections)) newlines <- replaceOnePart(lines=newlines,section=names(list.sections)[I],newlines=list.sections[[I]])
-        
-        if(is.null(newfile)) return(newlines)
-        
-        if(file0==newfile && backup ) file.copy (file0,
-                                                sub("(.+/)([^/].+$)","\\1backup_\\2",x=file0)
-                                                )
-
-        if(!write||is.null(file)){
-            return(newlines)
-        }
-        
-        if(!quiet) cat("writing",newfile,"\n")
-        con.newfile <- file(newfile,"wb")
-        writeLines(newlines,con=con.newfile)
-        close(con.newfile)
-        return(invisible(newlines))
-    }
-
     
-    res <- lapply(all.files,NMwriteSectionOne,section=section,newlines=newlines,
-           list.sections=list.sections,newfile=newfile,
-           backup=backup,blank.append=blank.append,write=write)
+    res <- lapply(all.files,NMwriteSectionOne,section=section,location=location,newlines=newlines,
+                  list.sections=list.sections,newfile=newfile,
+                  backup=backup,blank.append=blank.append,write=write,quiet=quiet)
 
     if(simplify&&length(res)==1) res <- res[[1]]
     

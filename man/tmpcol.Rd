@@ -7,7 +7,8 @@
 tmpcol(
   data,
   names = NULL,
-  base = "atmpcol999",
+  base = "tmpcol",
+  i1 = 1,
   max.it = 100,
   prefer.plain = TRUE
 )
@@ -21,6 +22,9 @@ matched. Only one of data and names can be supplied.}
 \item{base}{The base name of the new element. A number will
 appended to this string that will ensure that the new element
 name is not already in use.}
+
+\item{i1}{Where to start the search for a smallest available index
+number to add to `base` if necessary.}
 
 \item{max.it}{Maximum number of iterations on element name.}
 
@@ -39,6 +43,8 @@ make.names
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{addTAPD}()},
 \code{\link{findCovs}()},
 \code{\link{findVars}()},
 \code{\link{flagsAssign}()},

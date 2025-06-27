@@ -143,7 +143,7 @@ test_that("Writing data - data.frames",{
     pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dosing")
     
     ## all excluded due to below LLOQ
-    tab.count <- flagsCount(pk[pk$EVID==0,],dt.flags,flags.increasing=T,file=testOut)
+    tab.count <- flagsCount(pk[pk$EVID==0,],dt.flags,flags.increasing=T,file=testOut,quiet=TRUE)
 
     testRes <- fread(testOut,header=T)
     

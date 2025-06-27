@@ -8,7 +8,7 @@ control streams.}
 NMgenText(
   data,
   drop,
-  col.flagn = "FLAG",
+  col.flagn,
   rename,
   copy,
   file,
@@ -16,11 +16,14 @@ NMgenText(
   capitalize = FALSE,
   until,
   allow.char.TIME = TRUE,
+  width,
   quiet
 )
 }
 \arguments{
-\item{data}{The data that NONMEM will read.}
+\item{data}{The data that NONMEM will read. Either as a
+`data.frame`, of if a path to an rds or a delimited text file,
+the data will automatically be read first.}
 
 \item{drop}{Only used for generation of proposed text for INPUT
 section. Columns to drop in Nonmem $INPUT. This has two
@@ -32,21 +35,21 @@ in $INPUT and can be read by NONMEM.}
 \item{col.flagn}{Name of a numeric column with zero value for rows
 to include in Nonmem run, non-zero for rows to skip. The
 argument is only used for generating the proposed $DATA text
-to paste into the Nonmem control stream. To skip this feature,
-use col.flagn=NULL. Default is defined by NMdataConf.}
+to paste into the Nonmem control stream. Default is defined by
+`NMdataConf()`. To skip this feature, use `col.flagn=FALSE`.}
 
 \item{rename}{For the $INPUT text proposal only. If you want to
 rename columns in NONMEM $DATA, NMwriteData can adjust the
 suggested $DATA text. If you plan to use BBW instead of BWBASE
-in Nonmem, consider nm.rename=c(BBW="BWBASE"). The result will
+in Nonmem, consider rename=c(BBW="BWBASE"). The result will
 include BBW and not BWBASE.}
 
 \item{copy}{For the $INPUT text proposal only. If you plan to use
 additional names for columns in Nonmem $INPUT, NMwriteData can
 adjust the suggested $INPUT text. Say you plan to use CONC as
-DV in Nonmem, use rename=c(DV="CONC"),
-i.e. rename=c(newname="existing"). INPUT suggestion will in
-this case contain DV=CONC.}
+DV in Nonmem, use copy=c(DV="CONC"),
+i.e. copy=c(newname="existing"). INPUT suggestion will in this
+case contain DV=CONC.}
 
 \item{file}{The file name NONMEM will read the data from (for the
 $DATA section). It can be a full path.}
@@ -71,14 +74,19 @@ used (probably only interesting if character values are
 supplied).}
 
 \item{allow.char.TIME}{For the $INPUT text proposal only. Assume
-Nonmem can read TIME even if it can't be translated to
-numeric. This is necessary if using the 00:00 format. Default
-is TRUE.}
+Nonmem can read TIME and DATE even if it can't be translated
+to numeric. This is necessary if using the 00:00
+format. Default is TRUE.}
+
+\item{width}{If positive, will be passed to strwrap for the $INPUT
+text. If missing or NULL, strwrap will be called with default
+value. If negative or zero, strwrap will not be called.}
 
 \item{quiet}{Hold messages back? Default is defined by NMdataConf.}
 }
 \value{
-Text for inclusion in Nonmem control stream, invisibly.
+Text for inclusion in Nonmem control stream, invisibly. A
+    list with elements `DATA` and `INPUT`.
 }
 \description{
 The user is provided with text to use in Nonmem. NMwriteSection
@@ -94,7 +102,7 @@ Other Nonmem:
 \code{\link{NMapplyFilters}()},
 \code{\link{NMextractText}()},
 \code{\link{NMreadSection}()},
-\code{\link{NMwriteData}()},
+\code{\link{NMreplaceDataFile}()},
 \code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

@@ -48,6 +48,7 @@
 ##' @import data.table
 ##' @family DataCreate
 ##' @examples
+##' \dontrun{
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 ##' dt.flags <- data.frame(
 ##'        flagn=10,
@@ -59,6 +60,7 @@
 ##'         col.flagn="flagn",col.flagc="flagc")
 ##' unique(pk[,c("EVID","flagn","flagc","BLQ")])
 ##' flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
+##' }
 ##' @export
 
 
@@ -85,7 +87,8 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
 ####### check args ######
     if(missing(as.fun)) as.fun <- NULL
-    as.fun.arg <- as.fun
+    ## as.fun.arg <- as.fun
+    if(is.null(as.fun) && is.data.table(data)) as.fun <- "data.table"
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.flagn)) col.flagn <- NULL
     if(missing(col.flagc)) col.flagc <- NULL
@@ -93,6 +96,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     col.flagc <- NMdataDecideOption("col.flagc",col.flagc)
 
 ####### check args end ######
+
     
 ####### Check data ######
     if(!is.data.frame(data)){stop("data must be a data.frame")}
@@ -100,7 +104,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 
     if(nrow(data)==0) {
         warning("data is empty. Nothing to do.")
-        as.fun <- NMdataDecideOption("as.fun",as.fun)
+        ## as.fun <- NMdataDecideOption("as.fun",as.fun)
         data <- as.fun(data)
         return(data)
     }
@@ -154,7 +158,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         messageWrap(sprintf("Duplicate values not allowed in tab.flags columns %s, %s, and condition.",col.flagn,col.flagc),stop)
     }
 
-    
+    ####### END Check tab.flags ####
     
 ##### check subset
 ### TODO check for " *" which should work like " " but will give
@@ -172,14 +176,18 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         subsetAND <- paste(subset.data,"&")
     }
     
-####### END Check tab.flags ####
-    
-### check for incompatible groups (say doses and observations)
     if(subset.data=="") {
         data.sub <- data
     } else {
         data.sub <- data[eval(parse(text=subset.data))]
     }
+    if(nrow(data.sub)==0){
+        message("Data set empty (after applying subset if used).")
+        return(as.fun(data))
+    }
+
+    
+### check for incompatible groups (say doses and observations)
     check.incomp <- intersect(datacols,grp.incomp)
     if(length(check.incomp)>0) {
         covs.incomp <- findCovs(data.sub[,check.incomp,with=FALSE])
@@ -259,8 +267,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
 ### FLAG==0 cannot be customized. If not in table, put in table. Return the
 ### table as well. Maybe a reduced table containing only used FLAGS
     
-####### TODO: for now, FLAG=0 is not allowed in tab.flags
-    
     if(!0%in%tab.flags[,FLAG]) {
         tab.flags <- rbind(
             data.table(FLAG=0,
@@ -288,9 +294,6 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
     data.flags[,FLAG:=0]
     
-    ## tab.flags[,Nmatched:=NA_real_]
-    ## tab.flags[,Nobs:=NA_real_]
-    ## tab.flags[,NID:=NA_real_]
     nconds <- tab.flags[,.N]
     if(nconds>0){
         for(fn in 1:nconds){
@@ -321,32 +324,27 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
     
     
     dim0 <- dim(data.flags)
-    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG",ncols.expect=1,fun.commoncols=base::stop,quiet=TRUE)
+    data.flags <- mergeCheck(data.flags,unique(tab.flags[,c("FLAG","flag")]),all.x=TRUE,by="FLAG",ncols.expect=1,common.cols=base::stop,quiet=TRUE)
     ##    stopifnot(all(dim(data.flags)==(dim0+c(0,1))))
 
 ### rename FLAG and flag, and add back backed up columns if relevant
     setnames(data.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     ## setnames(tab.flags,c("FLAG","flag"),c(col.flagn,col.flagc))
     if(backed.up.old.flags){
-        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row,fun.commoncols=base::stop,quiet=TRUE)
+        data.flags <- mergeCheck(data.flags,flags.orig.data,by=col.row,common.cols=base::stop,quiet=TRUE)
     }
 
     ## add the data where flags have not been assigned
     data <- rbind(data.noflags,data.flags,fill=TRUE)
     
-### arrange back to original order
+    ## arrange back to original order
     setorderv(data,col.row)
     data[,(col.row):=NULL]
+
     ## order columns
-    
-    
     setcolorder(data,datacols)
 
-    
-    if(data.was.data.table && is.null(as.fun.arg)) as.fun <- "data.table"
-    as.fun <- NMdataDecideOption("as.fun",as.fun)
     data <- as.fun(data)
-    
     return(data)
 
 }

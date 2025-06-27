@@ -1,29 +1,35 @@
 Package: NMdata
 Type: Package
 Title: Preparation, Checking and Post-Processing Data for PK/PD Modeling
-Version: 0.0.11.908
-Authors@R: person("Philip", "Delff", email = "philip@delff.dk",
-                  role = c("aut", "cre"))
+Version: 0.2.0.921
+Authors@R:
+  c(person(given="Philip", family="Delff",email = "philip@delff.dk",role = c("aut", "cre")),
+    person("Brian", "Reilly", email = "reilly.brian.m@gmail.com",role = c("ctb")),
+    person(given="Eric", family="Anderson",email = "andersone@metrumrg.com",role = c("ctb")),
+    person(given="Matthew",family="Fidler", role = c("ctb"), email = "matt.fidler@novartis.com"))
 Maintainer: Philip Delff <philip@delff.dk>
-Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Helps with trivial but tedious tasks and tries to identify errors to save time on debugging. Implemented in 'data.table', but easily integrated with 'base' and 'tidyverse'.
+Description: Efficient tools for preparation, checking and post-processing of data in PK/PD (pharmacokinetics/pharmacodynamics) modeling, with focus on use of Nonmem. Attention is paid to ensure consistency, traceability, and Nonmem compatibility of Data. Rigorously checks final Nonmem datasets. Implemented in 'data.table', but easily integrated with 'base' and 'tidyverse'.
 License: MIT + file LICENSE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
 Roxygen: list(roclets=c("collate", "namespace", "rd", "vignette"))
-Depends: R (>= 3.0.0)
-Imports: data.table
-Suggests: 
-    testthat,
-    knitr,
-    formatR,
-    mime,
-    rmarkdown,
-    ggplot2,
-    tibble,
-    covr,
-    htmltools,
-    spelling
-VignetteBuilder: knitr
+Depends: R (>= 3.1.0)
+Imports:
+  data.table,
+  fst
+Suggests:
+  testthat,
+  knitr,
+  NMsim,
+  NMcalc,
+  formatR,
+  mime,
+  rmarkdown,
+  ggplot2,
+  tibble,
+  covr,
+  htmltools,
+  spelling
 Encoding: UTF-8
-URL: https://philipdelff.github.io/NMdata/
-BugReports: https://github.com/philipdelff/NMdata/issues
+BugReports: https://github.com/NMautoverse/NMdata/issues
 Language: en-US
+URL: https://NMautoverse.github.io/NMdata/

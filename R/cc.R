@@ -6,7 +6,10 @@
 ##' @param ... The unquoted names that will become character values in
 ##'     the returned vector.
 ##' @details Don't use cc with any special characters - only
-##'     alphanumerics and no spaces supported.
+##'     alphanumerics and no spaces supported. Also, remember that
+##'     numerics are converted using as.character. Eg, this means that
+##'     leading zeros are dropped.
+##' @return A character vector
 ##' @export
 ##' @seealso cl
 ##' 
@@ -17,6 +20,8 @@
 ##' cc( d)
 ##' cc(" d")
 ##' cc()
+##' ## Numerics are converted using as.character
+##' cc(001,1,13e3)
 
 cc <- function(...){
 

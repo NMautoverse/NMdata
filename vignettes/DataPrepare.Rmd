@@ -32,13 +32,13 @@ NMdataConf(check.time=FALSE)
 library(data.table)
 library(ggplot2)
 theme_set(theme_bw()+theme(legend.position="bottom"))
-
+library(knitr)
 ```
 Built `r Sys.Date()` using NMdata `r packageVersion("NMdata")`.
 
 This vignette is still under development. Please make sure to see
 latest version available
-[here](https://philipdelff.github.io/NMdata/).
+[here](https://nmautoverse.github.io/NMdata/).
 
 ## Objectives
 This vignettes aims at enabling you at 
@@ -55,7 +55,7 @@ This vignettes aims at enabling you at
 * Easily and consistently order data columns using `NMorderColumns`
 
 * Using `NMcheckData` to perform a extensive data check before
-  exporting for Nonmem
+  exporting for NONMEM
  
 * Writing the prepared data to file ensuring compatibility with NONMEM
   and for post-processing in R using `NMwriteData`
@@ -267,9 +267,49 @@ behavior of `merge.data.frame` is to merge by all common column names,
 but for coding transparency, this is intentionally not allowed by
 `mergeCheck`.
 
+## Time since previous dose, cumulative number of doses etc.
+In addition to stacking doses and concentration data and merging in
+covariates, we often need to derive time since previous dose, we may
+want to cumulatively count the number and amounts of drug
+administered, keep track of previous dose amount and most recent
+dosing time. These are all within at least the subject
+subject. `addTAPD.R` adds these really easily.
+
+
+```{r}
+cnames.1 <- colnames(pk)
+pk.tapd <- addTAPD(pk)
+cnames.tapd <- colnames(pk.tapd)
+## These are the columns added by addTAPD
+setdiff(cnames.tapd,cnames.1)
+```
+
+
+
+By default, the column names shown above are used. `addTAPD` takes
+arguments to customize the generated column names and of course to
+indicate what columns are store the used information, such as dose
+amounts, time etc. By default, `addTAPD` adds the five columns listed above. The following example derives time since previous dose based on nominal time, uses customized names for derived column names, and skips derivation of cumulated dose amount.
+
+
+```{r}
+pk.tapd2 <- addTAPD(pk,col.time="NOMTIME",col.tapd="NTAPD",col.tpdos="NTPDOS",col.ndoses="NOMNDOSES",col.doscuma=NULL)
+cnames.tapd2 <- colnames(pk.tapd2)
+## These are the columns added by addTAPD
+setdiff(cnames.tapd2,cnames.1)
+```
+
+`addTAPD` uses information in `TIME`, `ID`, `EVID` and `AMT` (names of
+columns holding this information can be speified using arguments). It
+respects repeated dosing defined in `ADDL` and `II`. Under the hood,
+`NMexpandDoses` is used to achieve this but the returned data will
+have the exact same rows as the input data (i.e. if doses are
+expanded, it is only for internal calculations on the existing rows).
+
+
 
 ## Exclusion flags
-There is no way around excluding some of the events in data due to various reasons. And we need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
+There is no way around excluding some of the events in data due to various reasons. We need to be able to answer to why we excluded each of the points, and to how many points were excluded due to which criteria. `NMdata` provides two functions to handle this - `flagsAssign` assigns exclusion flags to data records (rows), and `flagsCount` summarizes the number of discarded rows and the reasons. 
 
 This implementation makes it easy to keep the rows flagged for exclusion in the dataset and ignore them in NONMEM. Or if you prefer, you can remove the rows after generating an overview of the exclusion counts for your report. 
 
@@ -286,42 +326,58 @@ For use in NONMEM's `IGNORE` feature, the easiest is that inclusion/exclusion is
 determined by a single column in data - we call that column `FLAG`
 here, but any column name can be used. `FLAG` obviously draws on
 information from other columns such as `TIME`, `DV`, and many others,
-depending on your dataset and your way of working.
+depending on your dataset and your way of working. 
 
-The function that applies inclusion/excluasion rules is called
+The function that applies exclusion rules is called
 `flagsAssign`, and it takes a dataset and a data.frame with rules as
-arguments. In this simple example we only exclude data due to two different reasons - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. For post-dose samples, we exclude those below LLOQ.
+arguments. In this example we consider four different reasons to exclude samples - and only samples (keeping all doses in the analysis). We exclude all pre-dose samples. We also exclude samples with missing time, missing value, and we exclude those below LLOQ. The `data.frame` with these rules looks like this
 
 ```{r,include=F}
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds", package="NMdata"))
 pk[,`:=`(FLAG=NULL,flag=NULL)]
 ```
 ```{r}
-dt.flags <- fread(text="FLAG,flag,condition
-10,Below LLOQ,BLQ==1
-100,Negative time,TIME<0")
+dt.flags <- fread( text = "FLAG,  flag,               condition
+                           40,    Pre-dose sample,    !is.na(TIME) & TIME<0
+                           30,    Missing time,       is.na(TIME)
+                           20,    Missing value,      is.na(DV)
+                           10,    Below LLOQ,         BLQ==1")
 
+dt.flags
+``` 
+`fread` is used to create a data.table (like `read.csv` to create a
+data.frame) for readability, one line for each row in the data.table created. Notice how `FLAG` is numeric and interpretable by NONMEM, `flag` is descriptions interpretable by humans, and `condition` is expressions interpretable by R.
+
+```{r}
 pk <- flagsAssign(pk,tab.flags=dt.flags,subset.data="EVID==0")
-pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dose")
 ```
 
-`fread` is used to create a data.table (like `read.csv` to create a
-data.frame) for readability, one line for each row in the data.table created.
-`flagsAssign` applies the conditions sequentially and by decreasing 
+`flagsAssign` applies the conditions sequentially and by decreasing
 value of `FLAG`. `FLAG=0` means that the observation is included in
 the analysis. You can use any expression that can be evaluated within
-the data.frame. In this case, `BLQ` has to exist in `pk`.
+the data.frame. In this case, numeric `TIME`, `DV`, and `BLQ` culomns
+must exist in `pk`.
 
 Finally, flags are assigned to `EVID==1` rows. Here, no flag table is
-used. This means that all `EVID==1` rows will get `FLAG=0` and `flag="Dose"`. You can use a separate data.frame of flags for dosing records as needed.
+used. This means that all `EVID==1` rows will get `FLAG=0` and
+`flag="Dose"`. You can use a separate data.frame of flags for dosing
+records as needed.
 
-In NONMEM, you can include `IGNORE=(FLAG.NE.0)` in `$DATA` or `$INFILE`.
+```{r}
+pk <- flagsAssign(pk,subset.data="EVID==1",flagc.0="Dose")
+```
 
 Again, the omission will be attributed to the first condition
 matched. Default is to apply the conditions by the order of decreasing
 numerical flag value. Use `flags.increasing=TRUE` if you prefer the
 opposite. However, what cannot be modified is that 0 is the numerical
 value for rows that are not matched by any conditions.
+
+
+In NONMEM, we can now include `IGNORE=(FLAG.NE.0)` in `$DATA` or
+`$INFILE`. NMwriteData (see later in this vignette) will by default
+look for `FLAG` and suggest an IGNORE statement for `$DATA`.
+
 
 
 What rows to omit from a data set can vary from one analysis to
@@ -333,7 +389,8 @@ change the `IGNORE` statement given above to `IGNORE=(FLAG.LT.10)`, or
 you create a different exclusion flag for that one. If you prefer to
 create a new set of exclusion flags, just use new names for the
 numerical and the character flag columns so you don't overwrite the
-old ones. See help of `flagsAssign` and `flagsCount` for how. 
+old ones. See help of `flagsAssign` and `flagsCount` for how -
+arguments are called `col.flagn` and `col.flagc`.
 
 
 ### Summarize data exclusions
@@ -342,17 +399,25 @@ different conditions is then obtained using `flagsCount`. As we see
 from the `names` call below, both discarded, cumulative discarded, and
 observations left after application of the respective criterion are
 available. Choose the ones you prefer - here we show how many
-observations and subjects were matched by eached criterion and how
+observations and subjects were matched by each criterion and how
 many were left after application of each criterion.
 
 ```{r}
 tab.count <- flagsCount(data=pk[EVID==0],tab.flags=dt.flags)
 names(tab.count)
-tab.count[,.( flag, N.discard, Nobs.discard,N.left, Nobs.left)]
+tab.count[,.("Data cleaning step"=flag, N.discard, Nobs.discard,N.left, Nobs.left)] |> kable()
 ```
 
-`flagsCount` includes a `file` argument to save the the table right
-away.
+Notice that each row in the summary table does not describe how many
+observations _matched_ the criterion, but how many observations were
+_excluded_ due to the criterion. For instance, two samples are
+excluded due to values below LLOQ. All the predose samples may also be
+below LLOQ. By the order of the `FLAG` values however, we decided that
+we wanted to exclude this samples no matter of their values. Hence
+they are counted in that and only that bin.
+
+`flagsCount` includes a `file` argument to save the the table as a csv
+right away.
 
 
 ## Finalize data format and write to file
@@ -436,14 +501,14 @@ the proposed text for the NONMEM run, see `?NMwriteData` and especially `?NMgenT
 Let's include the origin script of the data as meta data. `write.csv=TRUE` is default but included here because we often want to use something like `write.csv=writeOutput` where `writeOutput` is a switching variable we set to `TRUE` or `FALSE` in the initialization section of the script.
 
 ```{r}
-text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="DataPrepare.Rmd",write.csv=TRUE,args.stamp=list(Description="PK data for the Data Preparation vignette."))
+text.nm <- NMwriteData(pk,file="derived/pkdata.csv",script="DataPrepare.Rmd",formats.write=c("csv","rds"),args.stamp=list(Description="PK data for the Data Preparation vignette."))
 ```
 
 We are being told that two files were saved, and then we get some text to use in the NONMEM control streams. `NMwriteData` detected the exclusion flag and suggests to include it in `$DATA`.
 
 Let's take a look at what was saved:
 ```{r}
-list.files("derived")
+list.files("derived",pattern="pkdata.*")
 ```
 There is a metadata file which `NMreadCsv` will automatically recognize if found. The metadata becomes accessible using `NMinfo`:
 ```{r}

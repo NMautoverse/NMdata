@@ -1,15 +1,31 @@
 context("NMdataConf")
 
+NMdataConf(reset=TRUE)
+
+## can't compare functions
+dropFuns <- function(x){
+    x$as.fun <- NULL
+    x$file.mod <- NULL
+    x$file.cov <- NULL
+    x$file.ext <- NULL
+    x$file.phi <- NULL
+    x$file.shk <- NULL
+    x$modelname <- NULL
+    x
+}
+
 test_that("defaults",{
 
-    fileRef <- "testReference/NMdataConf1.rds"
+    fileRef <- "testReference/NMdataConf_01.rds"
+    ## ref <- readRDS(fileRef)
 
     defaults <- NMdataConf()
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$modelname <- NULL
+    defaults <- dropFuns(defaults)
+
+    expect_equal_to_reference(defaults,fileRef,version=2)
+
+    ## compareCols(readRDS(fileRef),defaults)
     
-    expect_equal_to_reference(defaults,fileRef)
 })
 
 test_that("reset",{
@@ -19,12 +35,8 @@ test_that("reset",{
     NMdataConf(reset=TRUE)
     defaults2 <- NMdataConf()
 
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$modelname <- NULL
-    defaults2$as.fun <- NULL
-    defaults2$file.mod <- NULL
-    defaults2$modelname <- NULL
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
     
     
     expect_equal(defaults,defaults2)
@@ -68,13 +80,8 @@ test_that("change fun in globalenv does not affect NMdataConf()",{
     afun <- class
     defaults2 <- NMdataConf()
 
-    defaults$as.fun <- NULL
-    defaults$file.mod <- NULL
-    defaults$modelname <- NULL
-    defaults2$as.fun <- NULL
-    defaults2$file.mod <- NULL
-    defaults2$modelname <- NULL
-    
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
     
     expect_equal(defaults,defaults2)
 })
@@ -94,3 +101,91 @@ test_that("reset single option",{
     
     expect_equal(c1,c2)
 })
+
+test_that("change fun in globalenv does not affect NMdataConf()",{
+
+    NMdataConf(reset=TRUE)
+    
+    afun <- identity
+    NMdataConf(modelname=afun)
+    defaults <- NMdataConf()
+    afun <- class
+    defaults2 <- NMdataConf()
+
+    defaults <- dropFuns(defaults)
+    defaults2 <- dropFuns(defaults2)
+    
+    expect_equal(defaults,defaults2)
+})
+
+
+test_that("deprecated use.rds",{
+
+    fileRef <- "testReference/NMdataConf_02.rds"
+    
+    NMdataConf(reset=TRUE)
+    
+    ## NMdataConf(use.rds=TRUE)
+    NMdataConf(formats.read=c("csv"))
+    new <- NMdataConf()
+
+    new <- dropFuns(new)
+    
+    expect_equal_to_reference(new,fileRef,version=2)
+    ## compareCols(readRDS(fileRef),new)
+})
+
+test_that("reset removes unknown",{
+    NMdataConf(reset=T)
+
+    opts <- NMdataConf()
+    expect_false("unknown.option"%in%names(NMdataConf()))
+    
+    NMdataConf(unknown.option="test",allow.unknown = TRUE)
+    
+    expect_true(NMdataConf()$"unknown.option"=="test")
+    
+    NMdataConf(reset=TRUE)
+    expect_false("unknown.option"%in%names(NMdataConf()))
+
+})
+
+
+test_that("use.rds - deprecated",{
+
+    fileRef <- "testReference/NMdataConf_03.rds"
+    ## ref <- readRDS(fileRef)
+
+    NMdataConf(reset=TRUE)
+    NMdataConf(use.rds=F)
+    res <- NMdataConf()
+    res <- dropFuns(res)
+    
+    expect_equal_to_reference(res,fileRef,version=2)
+
+    ## compareCols(readRDS(fileRef),defaults)
+    
+})
+
+
+test_that("check reported summary of changes",{
+
+    fileRef <- "testReference/NMdataConf_04.rds"
+
+    NMdataConf(reset=TRUE)
+    afun <- identity
+    res <- capture_message(
+        NMdataConf(modelname=afun,quiet=FALSE,summarize=TRUE)
+    )
+    
+    expect_equal_to_reference(res,fileRef,version=2)
+
+    if(F){
+        res
+        readRDS(fileRef)
+        }
+    ## compareCols(readRDS(fileRef),defaults)
+    
+})
+
+

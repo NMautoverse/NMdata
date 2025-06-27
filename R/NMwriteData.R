@@ -2,7 +2,7 @@
 ##'
 ##' Instead of trying to remember the arguments to pass to write.csv,
 ##' use this wrapper. It tells you what to write in $DATA and $INPUT
-##' in nonmem, and it (additionally) exports an rds or Rdata file as
+##' in Nonmem, and it (additionally) exports an rds file as
 ##' well which is highly preferable for use in R. It never edits the
 ##' data before writing the datafile. The filenames for csv, rds
 ##' etc. are derived by replacing the extension to the filename given
@@ -12,36 +12,65 @@
 ##' @param file The file to write to. The extension (everything after
 ##'     and including last ".") is dropped. csv, rds and other
 ##'     standard file name extensions are added.
-##' @param write.csv Write to csv file?
-##' @param write.rds write an rds file?
-##' @param write.RData In case you want to save to .RData object. Not
-##'     recommended. Use write.rds instead.
+##' @param formats.write character vector of formats.write. Default is
+##'     c("csv","rds"). "fst" is possible too. Default can be modified
+##'     with \code{NMdataConf()}.
 ##' @param script If provided, the object will be stamped with this
-##'     script name before saved to rds or Rdata. See ?NMstamp.
+##'     script name before saved to rds or RData. See ?NMstamp.
 ##' @param args.stamp A list of arguments to be passed to NMstamp.
 ##' @param args.fwrite List of arguments passed to fwrite. Notice that
 ##'     except for "x" and "file", you need to supply all arguments to
 ##'     fwrite if you use this argument. Default values can be
 ##'     configured using NMdataConf.
 ##' @param args.rds A list of arguments to be passed to saveRDS.
-##' @param args.RData A list of arguments to be passed to save.
-##' @param col.flagn Name of a numeric column with zero value for rows
-##'     to include in Nonmem run, non-zero for rows to skip. The
-##'     argument is only used for generating the proposed $DATA text to
-##'     paste into the Nonmem control stream. To skip this feature,
-##'     use col.flagn=NULL.
+##' @param args.RData A list of arguments to be passed to save. Please
+##'     note that writing RData is deprecated.
+##' @param args.write_fst An optional list of arguments to be passed
+##'     to write_fst.
 ##' @param quiet The default is to give some information along the way
 ##'     on what data is found. But consider setting this to TRUE for
 ##'     non-interactive use. Default can be configured using
 ##'     NMdataConf.
+##' @param write.csv Write to csv file? Deprecated, use
+##'     `formats.write` instead.
+##' @param write.rds write an rds file? Deprecated, use
+##'     `formats.write` instead.
+##' @param write.RData Deprecated and not recommended - will be
+##'     removed. RData is not a adequate format for a dataset (but is
+##'     for environments). Please use write.rds instead.
+##' @param genText Run and report results of NMgenText? Default is
+##'     `TRUE` if a csv file is written, otherwise `FALSE`. You may
+##'     want to disable this if data set is not for Nonmem.
+##' @param save Save defined files? Default is TRUE. If a variable is
+##'     used to control whether a script generates outputs (say
+##'     \code{writeOutputs=TRUE/FALSE)}, if you use
+##'     \code{save=writeOutputs} to comply with this.
 ##' @param args.NMgenText List of arguments to pass to NMgenText - the
 ##'     function that generates text suggestion for INPUT and DATA
-##'     sections in the NONMEM control stream. You can use these
+##'     sections in the Nonmem control stream. You can use these
 ##'     arguments to get a text suggestion you an use directly in
-##'     NONMEM - and NwriteSection can even update multiple NONMEM
-##'     control streams based on the result. This will update your
-##'     control streams to match your new data file with just one
+##'     Nonmem - and \code{NMwriteSection} can even update multiple
+##'     Nonmem control streams based on the result. This will update
+##'     your control streams to match your new data file with just one
 ##'     command.
+##' @param csv.trunc.as.nm If TRUE, csv file will be truncated
+##'     horizontally (columns will be dropped) to match the $INPUT
+##'     text generated for Nonmem (genText must be TRUE for this
+##'     option to be allowed). This can be a great advantage when
+##'     dealing with large datasets that can create problems in
+##'     parallellization. Combined with write.rds=TRUE, the full data
+##'     set will still be written to an rds file, so this can be used
+##'     when combining output and input data when reading model
+##'     results. This is done by default by NMscanData. This means
+##'     writing a lean (narrow) csv file for Nonmem while keeping
+##'     columns of non-numeric class like character and factor for
+##'     post-processing.
+##' @param col.flagn Deprecated, use
+##'     args.NMgenText=list(col.flagn="column.name"). Name of a
+##'     numeric column with zero value for rows to include in Nonmem
+##'     run, non-zero for rows to skip. The argument is only used for
+##'     generating the proposed $DATA text to paste into the Nonmem
+##'     control stream. To skip this feature, use `col.flagn=FALSE`.
 ##' @param nmdir.data Deprecated, use
 ##'     args.NMgenText=list(dir.data="your/path") instead.
 ##' @param nm.copy Deprecated, use
@@ -65,48 +94,91 @@
 ##' be able to read as a numeric and column is not in nm.drop, the list
 ##' is stopped. Only exception is TIME which is not tested for whether
 ##' character or not. 
-##' 
-##' @family Nonmem
+##'
+##' @importFrom data.table fwrite
+##' @importFrom fst write_fst
+##' @family DataCreate
 ##' @export
 
 
-NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
-                        write.RData=FALSE,script,args.stamp,
-                        args.fwrite, args.rds,args.RData,
-                        quiet,args.NMgenText,
+NMwriteData <- function(data,file,formats.write=c("csv","rds"),
+                        script,args.stamp,
+                        args.fwrite, args.rds, args.RData, args.write_fst,
+                        quiet,args.NMgenText,csv.trunc.as.nm=FALSE,
+                        genText,
+                        save=TRUE,
+### deprecated write.xxx arguments
+                        write.csv,write.rds,
+                        write.RData,
 ### deprecated NMgenText arguments
                         nm.drop,
                         nmdir.data,col.flagn, nm.rename,nm.copy,
                         nm.capitalize,allow.char.TIME){
     
-#### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####    
-    TIME <- NULL 
-    comma.ok <- NULL
-    include <- NULL
-    numeric.ok <- NULL
-
-### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-
     
 #### Section start: Process arguments ####
 
     if(missing(args.fwrite)) args.fwrite <- NULL
     args.fwrite <- NMdataDecideOption("args.fwrite",args.fwrite)
+    if(missing(formats.write)) formats.write <- NULL
+    formats.write <- NMdataDecideOption("formats.write",formats.write)
 
+    
     stopifnot(is.data.frame(data)) 
     if(missing(file)||is.null(file)){
         file <- NULL
-    } else {
-#### check file name for compatibility with replacing extension
-        if(!grepl("\\..+$",file)) stop("Cannot replace extension on filename. Choose a file name that ends in an extension, like \"file.csv\" or \"file.rds\".")
     }
-    
-    if(is.null(file)) {
+
+    if(is.null(file) || !save) {
+        formats.write <- c()
         write.csv=FALSE
         write.RData=FALSE
         write.rds=FALSE
     }
 
+    
+    args <- getArgs(sys.call(),parent.frame())
+    
+    args.write.depr <- c("write.rds","write.csv","write.RData")
+    if(any(args.write.depr %in% names(args))) {
+        message("arguments in the format write.xxx are deprecated. Use the `formats.write` argument instead. Example: formats.write=c(\"csv\",\"rds\")")
+        if(missing(write.csv)) write.csv <- NULL
+        if(missing(write.rds)) write.rds <- NULL
+        if(missing(write.RData)) write.RData <- NULL
+
+        if(!is.null(write.csv)){
+            if(write.csv) {
+                formats.write <- c(formats.write,"csv")
+            } else {
+                formats.write <- setdiff(formats.write,"csv")
+            }
+        }
+        if(!is.null(write.rds)){
+            if(write.rds) {
+                formats.write <- c(formats.write,"rds")
+            } else {
+                formats.write <- setdiff(formats.write,"rds")
+            }
+        }
+        if(!is.null(write.RData)){
+            if(write.RData) {
+                formats.write <- c(formats.write,"RData")
+            } else {
+                formats.write <- setdiff(formats.write,"RData")
+            }
+        }
+    }
+    formats.write <- unique(tolower(gsub(" ","",formats.write)))
+    write.rds <- "rds" %in% formats.write
+    write.csv <- "csv" %in% formats.write
+    write.RData <- "rdata" %in% formats.write
+    write.fst <- "fst" %in% formats.write
+
+    if(missing(genText)) genText <- NULL
+    if(is.null(genText)) genText <- "csv"%in%formats.write
+
+    name.data <- deparse(substitute(data))
+    
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
@@ -124,16 +196,18 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         "allow.char.TIME")
 
     ## if args.NMgenText is used, the deprecated ags are not allowed
-    all.args <- as.list(match.call(expand.dots=FALSE))
+    ## all.args <- as.list(match.call(expand.dots=FALSE))
+    ## These were deprecated way before 2023-06-13
+    ## all.args <- getArgs()
     if(missing(args.NMgenText)) {
         args.NMgenText <- NULL
     } else {
-        if(any(args.text.depr%in%names(all.args))){
+        if(any(args.text.depr%in%names(args))){
             messageWrap(paste0("Please only use args.NMgenText and not the deprecated arguments ",paste(args.text.depr,collapse=", "),". Those are only accepted if you aren't using the args.NMgenText argument yet.")
                        ,fun.msg=stop)
         }
     }
-    used.args.depr <- all.args[names(all.args)%in%args.text.depr]
+    used.args.depr <- args[names(args)%in%args.text.depr]
     if(length(used.args.depr)>0){
         names.used.ad <- names(used.args.depr)
         names.used.ad[names.used.ad=="nm.drop"] <- "drop"
@@ -153,27 +227,40 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     if(any(c("data","file")%in%names(args.NMgenText))){
         messageWrap("data and file are not allowed in args.NMgenText. If you want to set those, use NMgenText directly instead.",fun.msg=stop)
     }
+
+    
     
 ### stamp arguments
     doStamp <- TRUE
-    if(missing(args.stamp)) {
+    if(missing(args.stamp)) args.stamp <- NULL
+    if(is.null(args.stamp)){
         args.stamp <- list()
     } else {
         if(!is.list(args.stamp)){
             stop("args.stamp must be a list of arguments.")
         }
     }
-    
-    if(missing(script)){
-        doStamp <- FALSE
-    } else {
+
+    if(missing(script)) script <- NULL
+    if(!is.null(script)){
         args.stamp$script <- script
     }
-
+    doStamp <- length(args.stamp)>0
+    
+    if(!doStamp&&!is.null(NMinfo(data))){
+        ## we are not stamping new info to data, but data may already have
+        ## some. We don't want to inherit when and where it was saved from
+        ## where it was previously read.
+        data <- copy(data)
+        nminfo <- NMinfoDT(data)
+        try(nminfo$dataCreate <- NULL)
+        writeNMinfo(data,meta=nminfo,append=FALSE)
+    }
+    
     
 ### rds arguments
     if(!missing(args.rds) && !write.rds ){
-        warning("args.rds supplied, but write.rds is FALSE. rds file will not be written.")
+        warning("args.rds supplied, but rds is not a requested format. rds file will not be written.")
     }
     if(missing(args.rds)) {
         args.rds <- list()
@@ -184,7 +271,7 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
     }
 ### RData arguments
     if(!missing(args.RData) && !write.RData ){
-        warning("args.RData supplied, but write.RData is FALSE. RData file will not be written.")
+        warning("args.RData supplied, but RData is not a requested format. RData file will not be written.")
     }
     if(missing(args.RData)) {
         args.RData <- list()
@@ -194,24 +281,29 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
     }
 
+### fst arguments
+    ## if("fst"%in%formats.write){
+    ## if (!requireNamespace("fst", quietly = TRUE)) {
+    ##     stop("fst package could not be loaded. Either install fst or drop fst from formats.write.")
+    ## }
+    ## }
+    if(missing(args.write_fst)) {
+        args.write_fst <- list()
+    } else {
+        if(!is.list(args.write_fst)){
+            stop("args.write_fst must be a list of arguments.")
+        }
+    }
 
-
+    
+### csv.trunc.as.nm
+    if(csv.trunc.as.nm && !genText){
+        messageWrap("when csv.trunc.as.nm==TRUE, genText must be TRUE too. Use quiet=TRUE to avoid text in console.",fun.msg=stop)
+    }
     
 ###  Section end: Process arguments
-
-    data.dt <- copy(as.data.table(data))
-
-    ## Check if character variables contain commas
-    ## This would cause trouble when writing csv
     
-    has.no.comma <- data.dt[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
-
-    comma.ok=as.logical(has.no.comma[1])
-
-    if(any(!comma.ok)){
-        messageWrap(paste("You must avoid commas in data values. They will curropt the csv file, so get rid of them before saving data. Comma found in column(s):",paste(colnames(data.dt)[comma.ok==FALSE],sep=", ")),
-                    fun.msg=stop)
-    }
+    data.dt <- copy(as.data.table(data))
 
     
     ## if any repetetions, give warning, and add numbers
@@ -224,40 +316,103 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
                       ))
     }
 
+    
+    
+    ## Nonmem text
+    NMtext <- NULL
+    if(genText || (write.csv && csv.trunc.as.nm)){
+        NMtext <- try(
+            do.call(NMgenText,
+                              append(
+                                  list(data=data.dt,file=file)
+                                 ,args.NMgenText)
+                              ))
+    }
+
+
+### create stamp if needed
+    if(doStamp){
+        do.call(NMstamp,append(list(data=data,writtenTo=fnExtension(file,formats.write)),args.stamp))
+
+    }
+    
     files.written=c()
     if(write.csv){
         file.csv <- fnExtension(file,".csv")
-        
-        do.call(fwrite,append(list(x=data,file=file.csv),args.fwrite))
-        ## fwrite      (data,na=".",quote=FALSE,row.names=FALSE,scipen=0,file=file.csv)
-        files.written <- c(files.written,file.csv)
-        if(doStamp){
+        data.csv <- data.dt
+        if(csv.trunc.as.nm){
             
-            ## data <- do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
-            do.call(NMstamp,append(list(data=data,writtenTo=file.csv),args.stamp))
-            data.meta.csv <- NMinfo(data,"dataCreate")
-            data.meta.csv <- data.table(parameter=names(data.meta.csv)
-                                       ,value=unlist(lapply(data.meta.csv,as.character)))
-            file.csv.meta <- paste0(fnExtension(file.csv,ext=""),"_meta.txt")
-            fwrite(data.meta.csv,file=file.csv.meta,quote=TRUE,row.names=FALSE,sep=",")
+            string.trunc <- sub(" *\\$INPUT *","",paste(NMtext$INPUT,collapse=" "))
+            n.cols.trunc <- length(strsplit(string.trunc,split=" ")[[1]])
+            data.csv <- data[,1:n.cols.trunc]
         }
+
+        ## Check if character variables contain commas
+        ## This would cause trouble when writing csv
+        has.no.comma <- data.csv[,lapply(.SD,function(x){is.numeric(x)||!any(grepl(",",as.character(x)))})]
+        comma.ok <- as.logical(has.no.comma[1])
+
+        if(any(!comma.ok)){
+
+            messageWrap(
+                "When writing csv, You must avoid commas in data values. They will corrupt the csv file. You can
+
+1) avoid csv using formats.write=\"rds\" or
+2) drop columns containing commas or
+3) remove or replace commas in data values before saving data. ?editCharCols can help with option 3.",
+paste("
+
+Comma found in column(s):",paste(colnames(data.csv)[comma.ok==FALSE],collapse=", ")),
+fun.msg=stop)
+        }
+### Check for commas done
+        
+        
+        do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
+
+        files.written <- c(files.written,file.csv)
     }
-    
+
     if(write.RData){
-        name.data <- deparse(substitute(data))
+        messageWrap("Writing to RData files is deprecated and this option will be removed from NMwriteData. Please use rds instead.")
+        
         file.RData <- fnExtension(file,".RData")
-        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
+        ## if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.RData),args.stamp))
+        
         assign(name.data,data)
-        save(list=name.data,file=file.RData)
-        do.call(save,append(list(list=name.data,file=file.RData),args.RData))
+### explicitly doing base::save because otherwise do.call will
+### find the save variable controling whether to save or not.
+        do.call(base::save,append(list(list=name.data,file=file.RData),args.RData))
         files.written <- c(files.written,file.RData)
     }
     if(write.rds){
         file.rds <- fnExtension(file,".rds")
-        if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
+        ## if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.rds),args.stamp))
         do.call(saveRDS,append(list(object=data,file=file.rds),args.rds))
         files.written <- c(files.written,file.rds)
     }
+    if("fst"%in%formats.write){
+
+        
+        file.fst <- fnExtension(file,".fst")
+        ##     if(doStamp) data <- do.call(NMstamp,append(list(data=data,writtenTo=file.fst),args.stamp))
+        do.call(write_fst,append(list(x=data,path=file.fst),args.write_fst))
+        files.written <- c(files.written,file.fst)
+    }
+    
+    ## write meta data for csv and fst
+    if(doStamp && any(c("fst","csv")%in%formats.write)){
+        
+        data.meta <- NMinfo(data,"dataCreate")
+        data.meta <- data.table(parameter=names(data.meta)
+                               ,value=unlist(lapply(data.meta,function(x){
+                                   paste(as.character(x,usetz=T),collapse=" ")
+                               }))
+                               )
+        file.meta <- fnAppend(fnExtension(file,".txt"),"meta")
+        fwrite(data.meta,file=file.meta,quote=TRUE,row.names=FALSE,sep=",")
+    }
+
     written <- length(files.written)>0
     if(!quiet){
         if(written){
@@ -272,15 +427,14 @@ NMwriteData <- function(data,file,write.csv=TRUE,write.rds=write.csv,
         }
         
     }
-    
-    ## NONMEM text
-    NMtext <- try(do.call(NMgenText,
-                      append(
-                          list(data=data.dt,file=file)
-                         ,args.NMgenText)
-                      ))
 
-    
-    invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA))
+    if(is.null(NMtext)) return(invisible(NULL))
+
+    if("try-error"%in%class(NMtext)){
+        stop("NMgenText failed.") 
+    } else {
+        return(invisible(list(INPUT=NMtext$INPUT,DATA=NMtext$DATA)))
+    }
+
 
 }

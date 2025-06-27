@@ -8,20 +8,21 @@
 ##'     lines also.
 ##' @param lines Text lines to process. This is an alternative to
 ##'     using the file argument.
-##' @param text Use this argument if the text to process is one long
-##'     character string, and indicate the line separator with the
-##'     linesep argument (handled by NMextractText). Use only one of
-##'     file, lines, and text.
 ##' @param section The name of section to extract without
 ##'     "$". Examples: "INPUT", "PK", "TABLE", etc. Not case
 ##'     sensitive.
 ##' @param return If "text", plain text lines are returned. If "idx",
 ##'     matching line numbers are returned. "text" is default.
-##' @param keepEmpty Keep empty lines in output? Default is FALSE.
-##' @param keepName Keep the section name in output (say, "$PROBLEM")
-##'     Default is TRUE. It can only be FALSE, if return"idx".
-##' @param keepComments Keep comment lines?
-##' @param asOne If multiple hits, concatenate into one. This will
+##' @param keep.comments Default is to keep comments. If FALSE, the
+##'     will be removed. See keep.empty too. Notice, there is no way
+##'     for NMreadSection to keep comments and also drop lines that
+##'     only contain comments.
+##' @param keep.empty Keep empty lines in output? Default is
+##'     FALSE. Notice, comments are removed before empty lines are
+##'     handled if `keep.comments=TRUE`.
+##' @param keep.name Keep the section name in output (say, "$PROBLEM")
+##'     Default is FALSE. It can only be FALSE, if return="text".
+##' @param as.one If multiple hits, concatenate into one. This will
 ##'     most often be relevant with name="TABLE". If FALSE, a list
 ##'     will be returned, each element representing a table. Default
 ##'     is TRUE. So if you want to process the tables separately, you
@@ -30,9 +31,17 @@
 ##'     simplified if only one section is found? Default is TRUE which
 ##'     is desirable for interactive analysis. For programming, you
 ##'     probably want FALSE.
-##' @param cleanSpaces If TRUE, leading and trailing are removed, and
+##' @param clean.spaces If TRUE, leading and trailing are removed, and
 ##'     multiplied succeeding white spaces are reduced to single white
 ##'     spaces.
+##' @param text Deprecated, use `lines`. Use this argument if the text
+##'     to process is one long character string, and indicate the line
+##'     separator with the linesep argument (handled by
+##'     NMextractText). Use only one of file, lines, and text.
+##' @param keepComments Deprecated. See keep.comments.
+##' @param keepEmpty Deprecated. See keep.empty.
+##' @param keepName Deprecated. See keep.name.
+##' @param asOne Deprecated. See as.one.
 ##' @param ... Additional arguments passed to NMextractText
 ##' @return character vector with extracted lines.
 ##' @family Nonmem
@@ -43,47 +52,97 @@
 
 
 NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="text",
-                          keepEmpty=FALSE, keepName=TRUE,
-                          keepComments=TRUE, asOne=TRUE,
-                          simplify=TRUE, cleanSpaces=FALSE, ...){
+                          keep.empty=FALSE,keep.name=TRUE, keep.comments=TRUE,as.one=TRUE,
+                          clean.spaces=FALSE, simplify=TRUE,
+                          ## deprecated arguments
+                          keepEmpty, keepName,
+                          keepComments, asOne,
+                          ...){
+    
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
+    as.one <- deprecatedArg("asOne","as.one",args=args)
+    ## clean.spaces <- deprecatedArg("cleanSpaces","clean.spaces",args=args)
+    ## if(!missing(cleanSpaces)) rm(cleanSpaces)
+    keep.empty <- deprecatedArg("keepEmpty","keep.empty",args=args)
+    keep.name <- deprecatedArg("keepName","keep.name",args=args)
+    keep.comments <- deprecatedArg("keepComments","keep.comments",args=args)
 
+    lines <- getLines(file=file,lines=lines)
+    
     if(missing(section)||is.null(section)){
         section="."
-        asOne=FALSE
+        as.one=FALSE
         simplify=FALSE
-        keepName.arg <- keepName
-        keepName=TRUE
+        keepName.arg <- keep.name
+        keep.name=TRUE
         
     } else {
         section <- toupper(section)
     }
     
-    res <- NMextractText(file=file, lines=lines, text=text, section=section,
+    match.exactly <- FALSE
+    if(section!="."){
+        string.start <- substring(sub("^\\$","",cleanSpaces(section)),1,3)
+        match.exactly <- !string.start%in%c("COV","EST","SIM","SUB")
+    }
+    
+    res <- NMextractText(lines=lines, text=text, section=section,
                          ## this wrapper is especially made for "$" sections
                          char.section="\\$",
                          return=return,
-                         keepEmpty=keepEmpty,
-                         keepName=keepName,
-                         keepComments=keepComments,
-                         asOne=asOne,
+                         keep.empty=keep.empty,
+                         keep.name=keep.name,
+                         keep.comments=keep.comments,
+                         as.one=as.one,
                          simplify=simplify,
-                         cleanSpaces=cleanSpaces,
+                         clean.spaces=clean.spaces,
                          ## we only consider the model definition, not results.
                          type="mod",
+                         ## match.exactly=FALSE,
+                         match.exactly=match.exactly,
+                         ## deprecated args
+                         ## keepEmpty=keepEmpty,
+                         ## keepName=keepName,
+                         ## keepComments=keepComments,
+                         ## asOne=asOne,
+                         ## cleanSpaces=cleanSpaces,
                          ...)
 
     
-    if(section=="."){
-        names(res) <-
-            unlist(
-                lapply(res,function(x) sub("\\$([^ ]+)","\\1",strsplit(x[1]," ")[[1]][1]))
-            )
+    if(section=="."&&return=="text"){
+        
+        ## if(return=="text") res.text <- res
+        ## if(return=="idx"){
+        ##     all.lines <- readLines()
+        ##     res.text <- lapply(res,function(x)all.lines[min(x):max(x)])
+        ## }
+        res.text <- res
+        
+
+        new.names <- unlist(
+            ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+            ## lapply(res.text,function(x) sub("^ *\\$([^ ]*).*$","\\1",strsplit(x[1]," ")[[1]][1]))
+            lapply(res.text,function(x) {
+                xthis <- strsplit(x[1]," ")[[1]][1]
+                name.this <- regmatches(xthis,gregexpr("\\$[^ ]*$",xthis))
+          #      if(name.this=="character(0)") name.this <- "HEADER"
+                name.this <- sub("^ *\\$","",name.this)
+                name.this
+            }
+            ))
+        ## test that if any, only the first is called "$HEADER"
+        
+        ##if(name.this=="character(0)") name.this <- "HEADER"        
+
+        names(res) <- new.names
         
         res2 <- lapply(unique(names(res)),function(x)do.call(c,res[names(res)==x]))
         names(res2) <- unique(names(res))
-        res2 <- lapply(res2,function(x){names(x) <- NULL
-            x}
-            )
+        res2 <- lapply(res2,function(x){
+            names(x) <- NULL
+            x})
+        
         if(keepName.arg==FALSE){
             
             names.res2 <- names(res2)
@@ -98,10 +157,10 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
     
 }
 
-#' @describeIn NMreadSection Deprecated function name. Use NMreadSection.
-NMgetSection <- function(...){
-    .Deprecated("NMreadSection")
-    NMreadSection(...)
-    
-}
+## ##' @describeIn NMreadSection Deprecated function name. Use NMreadSection.
+## Deprecated way before 2023-06-12
+## NMgetSection <- function(...){
+##     .Deprecated("NMreadSection")
+##     NMreadSection(...)
+## }
 

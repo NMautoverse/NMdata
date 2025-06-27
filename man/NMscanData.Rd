@@ -15,21 +15,25 @@ NMscanData(
   file.data,
   translate.input = TRUE,
   quiet,
-  use.rds,
+  formats.read,
   args.fread,
   as.fun,
   col.id = "ID",
   modelname,
   col.model,
   col.nmout,
-  tab.count = FALSE,
+  col.nmrep,
   order.columns = TRUE,
-  check.time
+  check.time,
+  tz.lst,
+  skip.absent = FALSE,
+  tab.count,
+  use.rds
 )
 }
 \arguments{
-\item{file}{A nonmem control stream or output file from nonmem
-(.mod or .lst)}
+\item{file}{Path to a Nonmem control stream or output file from
+Nonmem (.mod or .lst)}
 
 \item{col.row}{A column with a unique value for each row. Such a
 column is recommended to use if possible. See merge.by.row and
@@ -44,7 +48,7 @@ modified using NMdataConf. See merge.by.row too.}
 \item{merge.by.row}{If use.input=TRUE, this argument determines
 the method by which the input data is added to output
 data. The default method (merge.by.row=FALSE) is to interpret
-the Nonmem code to immitate the data filtering (IGNORE and
+the Nonmem code to imitate the data filtering (IGNORE and
 ACCEPT statements), but the recommended method is
 merge.by.row=TRUE which means that data will be merged by a
 unique row identifier. The row identifier must be present in
@@ -58,11 +62,11 @@ is taken into account. A column called nmout will be TRUE when
 the row was found in output tables, and FALSE when
 not. Default is FALSE and can be configured using NMdataConf.}
 
-\item{file.mod}{The input control stream. Default is to look for
-\"file\" with extension changed to .mod (PSN style). You can
-also supply the path to the file, or you can provide a
-function that translates the output file path to the input
-file path. The default behavior can be configured using
+\item{file.mod}{The input control stream file path. Default is to
+look for \"file\" with extension changed to .mod (PSN
+style). You can also supply the path to the file, or you can
+provide a function that translates the output file path to the
+input file path. The default behavior can be configured using
 NMdataConf. See dir.data too.}
 
 \item{dir.data}{The data directory can only be read from the
@@ -76,18 +80,18 @@ used, the control streams are not used at all.}
 
 \item{translate.input}{Default is TRUE, meaning that input data
 column names are translated according to $INPUT section in
-nonmem listing file.}
+Nonmem listing file.}
 
 \item{quiet}{The default is to give some information along the way
 on what data is found. But consider setting this to TRUE for
 non-interactive use. Default can be configured using
 NMdataConf.}
 
-\item{use.rds}{If an rds file is found with the exact same name
-(except for .rds instead of say .csv) as the input data file
-mentioned in the Nonmem control stream, should this be used
-instead? The default is yes, and NMwriteData will create this
-by default too. Default can be configured using NMdataConf.}
+\item{formats.read}{Prioritized input data file formats to look
+for and use if found. Default is c("rds","csv") which means
+\code{rds} will be used if found, and \code{csv} if
+not. \code{fst} is possible too. Default can be modified using
+\code{NMdataConf()}.}
 
 \item{args.fread}{List of arguments passed to when reading _input_
 data. Notice that except for "input" and "file", you need to
@@ -123,13 +127,16 @@ using NMdataConf.}
 representing whether row was in output table or not. Default
 can be modified using NMdataConf.}
 
-\item{tab.count}{Nonmem includes a counter of tables in the
-written data files. These are often not useful. Especially for
-NMscanData output it can be meaningless because multiple
-tables can be combined so this information is not unique
-across those source tables. However, if tab.count is TRUE (not
-default), this will be carried forward and added as a column
-called TABLENO. The argument is passed to NMscanTables.}
+\item{col.nmrep}{If tables are repeated, include a counter? It
+does not relate to the order of the $TABLE statements but to
+cases where a $TABLE statement is run repeatedly. E.g., in
+combination with the SUBPROBLEMS feature in Nonmem, it is
+useful to keep track of the table (repetition) number. If
+col.nmrep is TRUE, this will be carried forward and added as a
+column called NMREP. This is default behavior when more than
+one $TABLE repetition is found in data. Set it to a different
+string to request the column with a different name. The
+argument is passed to NMscanTables.}
 
 \item{order.columns}{If TRUE (default), NMorderColumns is used to
 reorder the columns before returning the data. NMorderColumns
@@ -145,7 +152,26 @@ important assumptions for the way information is merged by
 NMscanData. However, if data has been transferred from another
 system where Nonmem was run, these checks may not make sense,
 and you may not want to see these warnings. The default can be
-configured using NMdataConf.}
+configured using NMdataConf. For the output control stream,
+the time stamp recorded by Nonmem is used if possible, and if
+the input data is created with NMwriteData, the recorded
+creation time is used if possible. If not, and for all other
+files, the file modification times are used.}
+
+\item{tz.lst}{If supplied, the timezone to be used when reading
+the time stamp in the output control stream. Please supply
+something listed in OlsonNames(). Can be configured using
+NMdataConf() too.}
+
+\item{skip.absent}{Skip missing output table files with a warning?
+Default is FALSE in which case an error is thrown.}
+
+\item{tab.count}{Deprecated. Use \code{col.tableno}.}
+
+\item{use.rds}{Deprecated - use \code{formats.read} instead. If
+provided (though not recommended), this will overwrite
+\code{formats.read}, and only formats \code{rds} and
+\code{csv} can be used.}
 }
 \value{
 A data set of class 'NMdata'.
@@ -155,9 +181,10 @@ This is a very general solution to automatically identifying, reading, and  merg
 steps are
 \itemize{
  \item{Read and combine output tables,}
- \item{If wanted, read input data and restore variables that were not output from the nonmem model}
+ \item{If wanted, read input data and restore variables that were not output from the Nonmem model}
  \item{If wanted, also restore rows from input data that were disregarded in
-Nonmem (e.g. observations or subjects that are not part of the analysis)}
+Nonmem (e.g. observations or subjects that are not part of the analysis)
+}
 }
 }
 \details{
@@ -165,8 +192,8 @@ This function makes it very easy to collect the data from
     a Nonmem run.
 
 A useful feature of this function is that it can automatically
-combine "input" data (the data read by nonmem in $INPUT or
-$INFILE) with "output" data (tables written by nonmem in
+combine "input" data (the data read by Nonmem in $INPUT or
+$INFILE) with "output" data (tables written by Nonmem in
 $TABLE). There are two implemented methods for doing so. One (the
 default but not recommended) relies on interpretation of filter
 (IGNORE and ACCEPT) statements in $INPUT. This will work in most
@@ -180,14 +207,16 @@ Limitations. A number of Nonmem features are not supported. Most
 of this can be overcome by using merge.by.row=TRUE. Incomplete
 list of known limitations:
 
-\itemize{
- \item{character TIME}{If Nonmem is used to translate DAY and a charater TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.}
+\describe{
+ \item{character TIME}{If Nonmem is used to translate DAY and a character TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.}
  \item{RECORDS}{The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.}
  \item{NULL}{The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).}
 }
 }
 \examples{
+\dontrun{
 res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
+}
 }
 \seealso{
 Other DataRead: 

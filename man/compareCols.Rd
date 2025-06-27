@@ -6,27 +6,33 @@
 \usage{
 compareCols(
   ...,
-  keepNames = TRUE,
-  testEqual = FALSE,
+  list.data,
+  keep.names = TRUE,
+  test.equal = FALSE,
   diff.only = TRUE,
   cols.wanted,
   fun.class = base::class,
   quiet,
-  as.fun
+  as.fun,
+  keepNames,
+  testEqual
 )
 }
 \arguments{
 \item{...}{objects which element names to compare}
 
-\item{keepNames}{If TRUE, the original dataset names are used in
+\item{list.data}{As alternative to ..., you can supply the data
+sets in a list here.}
+
+\item{keep.names}{If TRUE, the original dataset names are used in
 reported table. If not, generic x1, x2,... are used. The
 latter may be preferred for readability.}
 
-\item{testEqual}{Do you just want a TRUE/FALSE to whether the
+\item{test.equal}{Do you just want a TRUE/FALSE to whether the
 names of the two objects are the same? Default is FALSE which
 means to return an overview for interactive use. You might
 want to use TRUE in programming. However, notice that this
-check may be overly rigorous. Many classes are compitable
+check may be overly rigorous. Many classes are compatible
 enough (say numeric and integer), and compareCols doesn't take
 this into account.}
 
@@ -43,8 +49,8 @@ combining a number of data sets.}
 
 \item{fun.class}{the function that will be run on each column to
 check for differences. base::class is default. Notice that the
-alternative base::typeof is different in certain ways. For
-instance, typeof will not report a difference on numeric vs
+alternative `base::typeof` is different in certain ways. For
+instance, `typeof` will not report a difference on numeric vs
 difftime. You could basically submit any function that takes a
 vector and returns a single value.}
 
@@ -58,9 +64,13 @@ returning. If first input data set is a data.table, the
 default is to return a data.table, if not the default is to
 return a data.frame. Use whatever to get what fits in with
 your workflow. Default can be configured with NMdataConf.}
+
+\item{keepNames}{Deprecated. Use keep.names instead.}
+
+\item{testEqual}{Deprecated. Use test.equal instead.}
 }
 \value{
-A data.frame with an overview of elementes and their
+A data.frame with an overview of elements and their
     classes of objects in ... Class as defined by as.fun.
 }
 \description{
@@ -70,9 +80,22 @@ or class across multiple datasets. Before running rbind, you may want
 to check the compatibility of the data.
 }
 \details{
-technically, this function compares classes of elements in
-    lists. However, in relation to NMdata, this will most of the
-    time be columns in data.frames.
+technically, this function compares classes of elements
+    in lists. However, in relation to NMdata, this will most of
+    the time be columns in data.frames.
+
+Despite the name of the argument fun.class, it can be any function
+to be evaluated on each element in `...`. See examples for how to
+extract SAS labels on an object read with `read_sas` from the
+`haven` package.
+}
+\examples{
+## get SAS labels from objects read with haven::read_sas
+\dontrun{
+compareCols(...,fun.class=function(x)attributes(x)$label)
+}
+
+
 }
 \seealso{
 Other DataWrangling: 

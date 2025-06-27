@@ -15,7 +15,7 @@
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
-##'     be configued using NMdataConf.
+##'     be configured using NMdataConf.
 ##' @return a data set with one observation per combination of values of
 ##'     variables listed in by.
 ##' @family DataCreate
@@ -39,10 +39,12 @@
 ##' ## occasion level
 ##' findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 ##' ## Based on a "real data example"
+##' \dontrun{
 ##' dat <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"))
 ##' findCovs(dat,by="ID")
 ##' ### Without an ID column we get non-varying columns
 ##' findCovs(dat)
+##' }
 ##' @export
 
 
@@ -51,11 +53,9 @@ findCovs <- function(data,by=NULL,cols.id,as.fun=NULL){
 
     
     ## check arguments
-    if(!missing(cols.id) && !is.null(by)) stop("\"cols.id\" is a deprecated name for the \"by\" argument. Just use \"by\"")
-    if(!missing(cols.id)) {
-        warning("\"cols.id\" argument deprecated. Use \"by\" instead.")
-        by <- cols.id
-    }
+    ## args <- getArgs()
+    args <- getArgs(sys.call(),parent.frame())
+    by <- deprecatedArg("cols.id","by",args=args)
 
     if(!is.data.frame(data)){
         stop("data must be a data.frame (or data.table)")
