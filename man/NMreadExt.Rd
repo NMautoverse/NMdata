@@ -12,7 +12,8 @@ NMreadExt(
   col.model,
   auto.ext,
   tableno = "max",
-  file.ext
+  file.ext,
+  slow
 )
 }
 \arguments{

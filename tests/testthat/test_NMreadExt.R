@@ -112,3 +112,21 @@ test_that("muref SAEM - tableno options",{
 
 
 })
+
+test_that("slow",{
+
+    fileRef <- "testReference/NMreadExt_07.rds"
+    file.ext <- "testData/nonmem/xgxr003.ext"
+    
+res.fast <- NMreadExt(file=file.ext,as.fun="data.table")
+    res.slow <- NMreadExt(file=file.ext,as.fun="data.table",slow=T)
+    ## expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+        res[1:4]
+        ref[1:4]
+    }
+    
+})

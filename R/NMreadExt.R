@@ -74,7 +74,7 @@
 ##' @import data.table
 ##' @export
 
-NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="max",file.ext){
+NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="max",file.ext,slow){
     
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -143,21 +143,32 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
     }
 
-    slow <- TRUE
+    if(missing(slow)){
+        slow <- NULL
+    }
+
 
 ### based on NMreadTab
-    if(!slow){
-             
+    if(is.null(slow) || !slow){
+        
         res.NMdat <- lapply(1:length(file),function(nfile){
             this.file <- file[[nfile]]
             this.model <- modelname(this.file)
-            res <- try(NMreadTab(this.file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE))
-            res[,modelno:=nfile][
-               ,(col.model):=this.model]
+            ## res <- try(NMreadTab(this.file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE))
+            res <- tryCatchAll(NMreadTab(this.file,as.fun="data.table",quiet=TRUE,col.table.name=TRUE))
+            if(!"tryCatchAll"%in%class(res)){
+                res[,modelno:=nfile][
+                   ,(col.model):=this.model]
+            }
+            res
         })
-        if(any(sapply(res.NMdat,function(x) "try-error"%in%class(x)))){
+        if(any(sapply(res.NMdat,function(x) "tryCatchAll"%in%class(x)))){
+            if(!is.null(slow) && !slow){
+                warning("slow=FALSE but this method is failing. Switching to slow=TRUE.")
+            }
             slow <- TRUE
         } else {
+            
             
             if(tableno=="min"){
                 res.NMdat <- lapply(res.NMdat,function(x)x[TABLENO==min(TABLENO)])
@@ -173,11 +184,11 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     }
 
     
-    if(slow){
+    if(!is.null(slow) && slow){
         res.NMdat <- lapply(1:length(file),function(nfile){
             this.file <- file[[nfile]]
             this.model <- modelname(this.file)
-          
+            
             res <- NMreadTabSlow(this.file)#,as.fun="data.table",quiet=TRUE,col.table.name=TRUE)
             res <- lapply(res,function(tab){
                 tab[,modelno:=nfile][
@@ -280,3 +291,4 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     ## as.fun already applied
     res
 }
+
