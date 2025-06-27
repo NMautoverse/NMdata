@@ -40,10 +40,10 @@ something else. If `data.table`s are wanted, use
 
 \item{col.model}{See `?NMscanData`}
 
-\item{auto.ext}{If `TRUE` (default) the extension will automatically
-be modified using `NMdataConf()$file.ext`. This means `file`
-can be the path to an input or output control stream, and
-`NMreadExt` will still read the `.ext` file.}
+\item{auto.ext}{If `TRUE` (default) the extension will
+automatically be modified using `NMdataConf()$file.ext`. This
+means `file` can be the path to an input or output control
+stream, and `NMreadExt` will still read the `.ext` file.}
 
 \item{tableno}{In case the ext file contains multiple tables, this
     argument controls which one to choose. The options are
@@ -59,10 +59,16 @@ number. This typically means the results from the last
 the `tableno` column.
 
 \item an integer greater than 0, in which case the table with this
-table number will be picked.
-}}
+table number will be picked.  }}
 
 \item{file.ext}{Deprecated. Please use \code{file} instead.}
+
+\item{slow}{Use a slow but more robust method to read tables? If
+missing or `NULL`, the fast method will be tried first, and if
+any issues are seen, the method will switch to `slow=TRUE`. If
+`FALSE`,it will also swich in case of issues, but a warning is
+issued. In other words, it should be safe to not use this
+argument.}
 }
 \value{
 If \code{return="all"}, a list with a final parameter
@@ -77,7 +83,10 @@ If \code{return="all"}, a list with a final parameter
 Read information from Nonmem ext files
 }
 \details{
-The parameter table returned if \code{return="pars"} or \code{return="all"} will contain columns based on the Nonmem 7.5 manual. It defines codes for different parameter-level values. They are:
+The parameter table returned if \code{return="pars"} or
+    \code{return="all"} will contain columns based on the Nonmem
+    7.5 manual. It defines codes for different parameter-level
+    values. They are:
 
 -1e+09: se
 -1000000002: eigCor
