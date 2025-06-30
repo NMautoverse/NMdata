@@ -269,3 +269,48 @@ test_that("muref SAEM - format.omega=NULL",{
 ##         readRDS(fileRef)
 ##     }
 ## })
+
+
+test_that("OMEGA SAME with linebreks",{
+
+### BLOCK SAME are being skipped
+    
+    fileRef <- "testReference/NMreadParText_09.rds"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+
+    text <- c("
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+$OMEGA
+0.15		; IIV.KA	; lognormal 	; 7	; IIV		; Between-subject variability on KA 	; -
+$OMEGA BLOCK(1)
+0.15		; IOV1.KA	; lognormal 	; 8	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1) SAME ; IOV2.KA	; lognormal 	; 9	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1) SAME ; IOV3.KA	; lognormal 	; 10	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1)
+0.2		; IIV.D1	; lognormal 	; 11	; IIV		; Between-subject variability on D1 	; -
+$OMEGA BLOCK(1)
+0.3		; IOV1.D1	; lognormal 	; 12	; IOV		; Between-occasion variability on D1 	; -
+$OMEGA BLOCK(1) SAME ; IOV2.D1	; lognormal 	; 13	; IOV		; Between-occasion variability on D1 	; -
+$OMEGA BLOCK(1) SAME ; IOV3.D1	; lognormal 	; 14	; IOV		; Between-occasion variability on D1 	; -
+")
+
+
+    lines <- strsplit(text,split="\n")[[1]]
+
+    res <- NMreadParsText(lines=lines,
+                          format="%init;%symbol ;%trans; %idx; %panel; %label;%unit"
+                          )
+
+    expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        res
+        readRDS(fileRef)
+    }
+
+
+})

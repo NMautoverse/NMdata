@@ -271,7 +271,6 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
     ## We want to keep everything, even empty lines so we can keep track of line numbers
     ## lines <- NMreadSection(lines=lines,section=section,keep.empty=TRUE,keep.comments=TRUE)
     ## if(length(lines)==0) return(NULL)
-
     
     if(missing(lines)) lines <- NULL
     if(missing(file)) file <- NULL
