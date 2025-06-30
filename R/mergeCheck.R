@@ -149,8 +149,8 @@ mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,t
     ## name.x <- deparse(substitute(x))
     ## name.y <- deparse(substitute(y))
 
-    if(!xor(missing(x),missing(df1))){stop("You must supply x. Don't use the deprecated df1.")}
-    if(!xor(missing(y),missing(df2))){stop("You must supply y. Don't use the deprecated df2.")}
+    if(!xor(missing(x),missing(df1))){stop("You must supply x.")}
+    if(!xor(missing(y),missing(df2))){stop("You must supply y.")}
 
     if(!missing(fun.commoncols)) {
         message("\"fun.commoncols\" argument deprecated. Use \"common.cols\" instead.")
