@@ -288,7 +288,8 @@ $OMEGA
 0.15		; IIV.KA	; lognormal 	; 7	; IIV		; Between-subject variability on KA 	; -
 $OMEGA BLOCK(1)
 0.15		; IOV1.KA	; lognormal 	; 8	; IOV		; Between-occasion variability on KA 	; -
-$OMEGA BLOCK(1) SAME ; IOV2.KA	; lognormal 	; 9	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1)
+SAME ; IOV2.KA	; lognormal 	; 9	; IOV		; Between-occasion variability on KA 	; -
 $OMEGA BLOCK(1) SAME ; IOV3.KA	; lognormal 	; 10	; IOV		; Between-occasion variability on KA 	; -
 $OMEGA BLOCK(1)
 0.2		; IIV.D1	; lognormal 	; 11	; IIV		; Between-subject variability on D1 	; -
@@ -308,8 +309,10 @@ $OMEGA BLOCK(1) SAME ; IOV3.D1	; lognormal 	; 14	; IOV		; Between-occasion varia
     expect_equal_to_reference(res,fileRef)
 
     if(F){
+        ref <- readRDS(fileRef)
+        ref
         res
-        readRDS(fileRef)
+        
     }
 
 
