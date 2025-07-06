@@ -29,7 +29,7 @@
 ##' res3 <- NMdata:::tryCatchAll(testfun(-1)) 
 ##' res3
 ##' inherits(res3,"tryCatchAll")
-
+##' @keywords internal
 
 tryCatchAll <- function(expr, message = FALSE, warning = TRUE, error = TRUE) {
   warn_obj <- NULL
