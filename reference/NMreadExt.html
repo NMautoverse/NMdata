@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.924</span>
       </span>
     </div>
 
@@ -95,7 +95,8 @@
 <span>  <span class="va">col.model</span>,</span>
 <span>  <span class="va">auto.ext</span>,</span>
 <span>  tableno <span class="op">=</span> <span class="st">"max"</span>,</span>
-<span>  <span class="va">file.ext</span></span>
+<span>  <span class="va">file.ext</span>,</span>
+<span>  <span class="va">slow</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -137,10 +138,10 @@ something else. If `data.table`s are wanted, use
 
 
 <dt id="arg-auto-ext">auto.ext<a class="anchor" aria-label="anchor" href="#arg-auto-ext"></a></dt>
-<dd><p>If `TRUE` (default) the extension will automatically
-be modified using `NMdataConf()$file.ext`. This means `file`
-can be the path to an input or output control stream, and
-`NMreadExt` will still read the `.ext` file.</p></dd>
+<dd><p>If `TRUE` (default) the extension will
+automatically be modified using `NMdataConf()$file.ext`. This
+means `file` can be the path to an input or output control
+stream, and `NMreadExt` will still read the `.ext` file.</p></dd>
 
 
 <dt id="arg-tableno">tableno<a class="anchor" aria-label="anchor" href="#arg-tableno"></a></dt>
@@ -159,6 +160,15 @@ table number will be picked.</p></li>
 <dt id="arg-file-ext">file.ext<a class="anchor" aria-label="anchor" href="#arg-file-ext"></a></dt>
 <dd><p>Deprecated. Please use <code>file</code> instead.</p></dd>
 
+
+<dt id="arg-slow">slow<a class="anchor" aria-label="anchor" href="#arg-slow"></a></dt>
+<dd><p>Use a slow but more robust method to read tables? If
+missing or `NULL`, the fast method will be tried first, and if
+any issues are seen, the method will switch to `slow=TRUE`. If
+`FALSE`,it will also swich in case of issues, but a warning is
+issued. In other words, it should be safe to not use this
+argument.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -172,7 +182,10 @@ table number will be picked.</p></li>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The parameter table returned if <code>return="pars"</code> or <code>return="all"</code> will contain columns based on the Nonmem 7.5 manual. It defines codes for different parameter-level values. They are:</p>
+    <p>The parameter table returned if <code>return="pars"</code> or
+    <code>return="all"</code> will contain columns based on the Nonmem
+    7.5 manual. It defines codes for different parameter-level
+    values. They are:</p>
 <p>-1e+09: se
 -1000000002: eigCor
 -1000000003: cond

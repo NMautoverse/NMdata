@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.924</span>
       </span>
     </div>
 
@@ -357,10 +357,11 @@ worth mentioning how to even just read the parameter estimates with
 the columns available:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pars.ext</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "model"       "TABLENO"     "table.step"  "par.type"    "parameter"  </span></span>
-<span><span class="co">#&gt;  [6] "par.name"    "i"           "j"           "FIX"         "value"      </span></span>
-<span><span class="co">#&gt; [11] "cond"        "eigCor"      "partLik"     "se"          "seStdDevCor"</span></span>
-<span><span class="co">#&gt; [16] "stdDevCor"   "termStat"    "est"         "iblock"      "blocksize"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "model"       "TABLENO"     "NMREP"       "table.step"  "par.type"   </span></span>
+<span><span class="co">#&gt;  [6] "parameter"   "par.name"    "i"           "j"           "FIX"        </span></span>
+<span><span class="co">#&gt; [11] "value"       "cond"        "eigCor"      "partLik"     "se"         </span></span>
+<span><span class="co">#&gt; [16] "seStdDevCor" "stdDevCor"   "termStat"    "est"         "iblock"     </span></span>
+<span><span class="co">#&gt; [21] "blocksize"</span></span></code></pre></div>
 <p>where <code>est</code> is a deprecated copy of the <code>value</code>
 column.</p>
 <p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> can return other information than the
@@ -1496,8 +1497,9 @@ after finalizing the control stream.</p>
 <span><span class="fu"><a href="../reference/mergeCheck.html">mergeCheck</a></span><span class="op">(</span><span class="va">partab2</span><span class="op">[</span><span class="va">FIX</span><span class="op">==</span><span class="fl">0</span><span class="op">]</span>,<span class="va">tab.offline</span>,by<span class="op">=</span><span class="st">"symbol"</span>,common.cols<span class="op">=</span><span class="st">"drop.x"</span>,all.x<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Column(s) added: label, unit</span></span></code></pre></div>
 <div class="kable-table">
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
+<col width="2%">
 <col width="2%">
 <col width="2%">
 <col width="3%">
@@ -1530,7 +1532,8 @@ after finalizing the control stream.</p>
 </colgroup>
 <thead><tr class="header">
 <th align="left">model</th>
-<th align="left">TABLENO</th>
+<th align="right">TABLENO</th>
+<th align="right">NMREP</th>
 <th align="left">table.step</th>
 <th align="left">par.type</th>
 <th align="left">parameter</th>
@@ -1562,7 +1565,8 @@ after finalizing the control stream.</p>
 <tbody>
 <tr class="odd">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA1</td>
@@ -1593,7 +1597,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="even">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA2</td>
@@ -1624,7 +1629,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="odd">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA3</td>
@@ -1655,7 +1661,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="even">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA4</td>
@@ -1686,7 +1693,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="odd">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA5</td>
@@ -1717,7 +1725,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="even">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA6</td>
@@ -1748,7 +1757,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="odd">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">OMEGA</td>
 <td align="left">OMEGA(2,2)</td>
@@ -1779,7 +1789,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="even">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">OMEGA</td>
 <td align="left">OMEGA(3,2)</td>
@@ -1810,7 +1821,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="odd">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">OMEGA</td>
 <td align="left">OMEGA(3,3)</td>
@@ -1841,7 +1853,8 @@ after finalizing the control stream.</p>
 </tr>
 <tr class="even">
 <td align="left">xgxr133</td>
-<td align="left">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
 <td align="left">IMP</td>
 <td align="left">SIGMA</td>
 <td align="left">SIGMA(1,1)</td>

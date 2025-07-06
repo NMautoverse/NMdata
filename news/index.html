@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.924</span>
       </span>
     </div>
 
@@ -93,6 +93,7 @@
 <h3 id="bugfixes-0-2-1">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-1"></a></h3>
 <ul><li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> would in some situations with multiple estimation steps not be able to read the <code>.ext</code> file. This has been fixed.</p></li>
 <li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> - and hence <code><a href="../reference/NMscanData.html">NMscanData()</a></code> would fail on some output formats - especially it would not always detect if tabulators were used as separators. More checks have been included to detect this.</p></li>
+<li><p><code><a href="../reference/NMreadCov.html">NMreadCov()</a></code> adds proper support for <code>.cov</code> files with multiple tables. The function has been re-written for added flexibility. Thanks to Brian Reilly for reporting this important gap.</p></li>
 <li><p>Better identification of delimitors in output tables. Especially, this helps identifying when tabulator characters er used as delimtors. Until this fix, this would fail in some cases. It may still not be bulletproof but it should now support most cases.</p></li>
 </ul></div>
 <div class="section level3">
