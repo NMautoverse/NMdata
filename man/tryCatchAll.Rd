@@ -44,3 +44,4 @@ res3 <- NMdata:::tryCatchAll(testfun(-1))
 res3
 inherits(res3,"tryCatchAll")
 }
+\keyword{internal}
