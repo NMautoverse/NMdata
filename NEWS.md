@@ -23,6 +23,11 @@
   were used as separators. More checks have been included to detect
   this.
   
+* `NMreadCov()` adds proper support for `.cov` files with multiple
+  tables. The function has been re-written for added
+  flexibility. Thanks to Brian Reilly for reporting this important
+  gap.
+  
 * Better identification of delimitors in output tables. Especially,
   this helps identifying when tabulator characters er used as
   delimtors. Until this fix, this would fail in some cases. It may
@@ -30,9 +35,9 @@
 
 ## Other improvements
 * Generally, tabulator characters are now supported in control
-streams. Tabulator characters would create issues in processing of
-various sections of the control stream leading to issues in functions
-such as `NMscanInput()` and `NMreadParText()` and others.
+  streams. Tabulator characters would create issues in processing of
+  various sections of the control stream leading to issues in
+  functions such as `NMscanInput()` and `NMreadParText()` and others.
 
 * Summary of `NMscanData()` results has improved text to more clearly
   describe the summary numbers shown.

@@ -2,30 +2,34 @@
 % Please edit documentation in R/NMreadCov.R
 \name{NMreadCov}
 \alias{NMreadCov}
-\title{Read in data file}
+\title{Read covariance matrix from `.cov` file}
 \usage{
-NMreadCov(file, auto.ext, ...)
+NMreadCov(file, auto.ext, tableno = "max", simplify = TRUE)
 }
 \arguments{
-\item{file}{The .cov covariance Nonmem matrix file to read}
+\item{file}{The ".cov" covariance Nonmem matrix file to read}
 
-\item{auto.ext}{If `TRUE` (default) the extension will automatically
-be modified using `NMdataConf()$file.cov`. This means `file`
-can be the path to an input or output control stream, and
-`NMreadCov()` will still read the `.cov` file.}
+\item{auto.ext}{If `TRUE` (default) the extension will
+automatically be modified using `NMdataConf()$file.cov`. This
+means `file` can be the path to an input or output control
+stream, and `NMreadCov()` will still read the `.cov` file.}
 
-\item{...}{Passed to fread}
+\item{tableno}{The table number to read. The ".cov" file can
+contain multiple tables and will often do so if using SAEM/IMP
+methods. Default is "max" which means the last table is
+used. Alternative values are "min" and "all" or numeric
+values. If "all" or multiple numeric values are used, a list
+is returned. However, see `simplify` too.}
+
+\item{simplify}{If `TRUE` (default) and only one table is returned
+(say using tableno="max") only that matrix is returned as a
+matrix object. If `FALSE` or multiple tables are returned, the
+result is a list.}
 }
 \value{
-A matrix with covariance step from NONMEM
+A matrix with covariance step from NONMEM or a list of
+    such matrices (see `simplify`)
 }
 \description{
-Read in data file
-}
-\details{
-This function is taken from nonmem2rx::nmcov which was
-    based on NMdata::NMreadTab.
-}
-\author{
-Philip Delff and Matthew L. Fidler
+Read covariance matrix from `.cov` file
 }

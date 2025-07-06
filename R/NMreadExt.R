@@ -127,14 +127,15 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
     if(is.null(tableno)) tableno <- "max"
 
+    if( (is.character(tableno)&& !tableno%in%c("min","max","all") ) ||
+        (is.numeric(tableno) && (tableno<=0 || tableno%%1!=0) )){
+        stop("tableno must be either one of the character strings \"min\", \"max\", \"all\" or an integer greater than zero.")
+    }
+
     if(missing(slow)){
         slow <- NULL
     }
 
-    if( (is.character(tableno)&& !tableno%in%c("min","max","all") ) ||
-        (is.numeric(tableno) && (tableno<=0 || tableno%%1!=0) )){
-        stop("tableno must be either one of the character strings min, max, all or an integer greater than zero.")
-    }
     
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
@@ -152,7 +153,6 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     fun.file.ext <- NMdataDecideOption("file.ext")
     if(auto.ext){
         file <- fun.file.ext(file)
-
     }
 
 
