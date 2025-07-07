@@ -1,4 +1,4 @@
-Fri Mar 21 17:11:54 EDT 2025
+Mon Jul  7 09:56:01 EDT 2025
 $PROBLEM    Like 001,with xgxr2,advan2
 $INPUT      NMROW ID TIME EVID CMT AMT DV MDV DOSE ROW
 $DATA      NMsimData_xgxr014_testsim1.csv IGNORE=@
@@ -55,8 +55,8 @@ NM-TRAN MESSAGES
 
 License Registered to: Vertex Pharmaceuticals Inc
 Expiration Date:    14 JAN 2026
-Current Date:       21 MAR 2025
-Days until program expires : 298
+Current Date:        7 JUL 2025
+Days until program expires : 192
 1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.5.0
  ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
  CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
@@ -80,7 +80,7 @@ Days until program expires : 298
 0(NONBLANK) LABELS FOR PRED-DEFINED ITEMS:
  TVKA TVV TVCL KA V CL IPRED
 0FORMAT FOR DATA:
- (10E6.0)
+ (10E4.0)
 
  TOT. NO. OF OBS RECS:        0
  TOT. NO. OF INDIVIDUALS:        2
@@ -195,6 +195,6 @@ SEED   1 RESET TO INITIAL: YES
  Elapsed simulation  time in seconds:     0.00
  ESTIMATION STEP OMITTED:                 YES
  Elapsed finaloutput time in seconds:     0.00
- #CPUT: Total CPU Time in Seconds,        0.031
+ #CPUT: Total CPU Time in Seconds,        0.029
 Stop Time:
-Fri Mar 21 17:12:00 EDT 2025
+Mon Jul  7 09:56:06 EDT 2025

@@ -10,6 +10,11 @@ test_that("Table with repetitions",{
     res <- NMreadTab("testData/simulations/xgxr014_testsim1/xgxr014_testsim1.tab")
 
     expect_equal_to_reference(res,fileRef,version=2)
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+    }
 })
 
 

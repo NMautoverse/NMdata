@@ -941,20 +941,22 @@ test_that("simulation model with subproblems",{
 
     if(F){
 ### sim a model with subproblems
-        ##library(devtools)
-        ##load_all("~/wdirs/NMsim")
+
+        library(devtools)
+        load_all("~/wdirs/NMsim")
+
         file.mod <- "testData/nonmem/xgxr014.mod"
         ## NMexec(file.mod,sge=FALSE,wait=T)
         doses <- NMcreateDoses(TIME=0,AMT=data.table(AMT=c(10,100),DOSE=c(10,100)))
-        simdat <- addEVID2(doses,TIME=c(1,24),CMT=2)
+        simdat <- NMaddSamples(doses,TIME=c(1,24),CMT=2,as.fun="data.table")
         simdat[,DV:=NA][
            ,ROW:=.I]
-        NMcheckData(simdat)
+        NMcheckData(simdat,type.data="sim")
 
         NMdataConf(as.fun="data.table")
 
         sim1 <- NMsim(file.mod,data=simdat,
-                      suffix.sim="testsim1"
+                      name.sim="testsim1"
                      ,dir.sim="testData/simulations"
                      ,seed.R=343108,
                       ## We don't want to store rds
@@ -976,6 +978,11 @@ test_that("simulation model with subproblems",{
     ## setattr(res,"NMdata",meta.x)
     unNMdata(res)
     expect_equal_to_reference(res,fileRef,version=2)
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+    }
 }
 )
 

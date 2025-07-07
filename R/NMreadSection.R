@@ -70,13 +70,13 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
 
     lines <- getLines(file=file,lines=lines)
     
+    keepName.arg <- keep.name
     if(missing(section)||is.null(section)){
         section="."
         as.one=FALSE
         simplify=FALSE
         keepName.arg <- keep.name
         keep.name=TRUE
-        
     } else {
         section <- toupper(section)
     }

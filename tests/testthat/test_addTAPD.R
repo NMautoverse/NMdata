@@ -65,7 +65,7 @@ test_that("Repeated doses without samples",{
         doses.2 <- NMcreateDoses(TIME=0,addl=list(ADDL=4,II=6),CMT=2,AMT=20)
         doses.all <- rbind(doses.1,doses.2,fill=TRUE)
         doses.all <- egdt(doses.all[,!("ID")],data.table(ID=1:2),quiet=TRUE)
-        saveRDS(doses.all,file="testData/data/doses_set1.rds")
+        saveRDS(doses.all,file="testData/data/doses_set1.rds",version=2)
     } else {
         doses.all <- readRDS(file="testData/data/doses_set1.rds")
     }
