@@ -29,6 +29,6 @@ Suggests:
   htmltools,
   spelling
 Encoding: UTF-8
-BugReports: https://github.com/NMautoverse/NMdata/issues
+BugReports: https://github.com/nmautoverse/NMdata/issues
 Language: en-US
-URL: https://NMautoverse.github.io/NMdata/
+URL: https://nmautoverse.github.io/NMdata/
