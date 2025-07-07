@@ -942,8 +942,8 @@ test_that("simulation model with subproblems",{
     if(F){
 ### sim a model with subproblems
 
-        library(devtools)
-        load_all("~/wdirs/NMsim")
+        ## library(devtools)
+        ## load_all("~/wdirs/NMsim")
 
         file.mod <- "testData/nonmem/xgxr014.mod"
         ## NMexec(file.mod,sge=FALSE,wait=T)
