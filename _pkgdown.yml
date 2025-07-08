@@ -5,6 +5,8 @@ template:
       src: man/figures/apple-touch-icon-180x180.png
       alt: Efficient data preparation, consistency-checking and post-processing in
         PK/PD modeling
+  params:
+    google-site-verification: google0cb34972586f6cac.html
   includes:
     after_body: |
       <script data-goatcounter="https://nmdata.goatcounter.com/count"
