@@ -6,7 +6,7 @@ template:
       alt: Efficient data preparation, consistency-checking and post-processing in
         PK/PD modeling
   params:
-    google-site-verification: google0cb34972586f6cac.html
+    google-site-verification: hZR4IzhbsK7wCSZdLqjqj-LKWSHa73Dk7SvaGCdAYeM
   includes:
     after_body: |
       <script data-goatcounter="https://nmdata.goatcounter.com/count"
