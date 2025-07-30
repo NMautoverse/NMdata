@@ -1,6 +1,15 @@
 # NMdata 0.2.1
 
 ## New Features
+
+* `NMreadInits()` support initial value syntax with missing values
+  like `$THETA (,1,) ; TVCL`. There is still a limitation that the
+  lower limit, the initial value and the upper limit for a single
+  parameter must be on the same line.
+
+# NMdata 0.2.1
+
+## New Features
 * `NMreadParsText()` supports `OMEGA` blocks valued `SAME`. This is
   needed for generation of parameter tables for models with
   between-occasion variability.

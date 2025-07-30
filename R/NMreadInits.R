@@ -55,13 +55,8 @@ classify_matches <- function(matches,patterns) {
         ## if (grepl("^BLOCK\\(\\d+\\)$",match)) {
         if (grepl(use.pattern("block"),match)) {
             ## Extract the number from BLOCK(N)
-            
-            ## number <- as.numeric(str_match(match, "BLOCK\\((\\d+)\\)")[1, 2])
             if(grepl("\\( *(\\d+) *\\)",match)){
-                number <- ## as.numeric(
-                    ## stri_match_all_regex(match, "BLOCK\\s*\\( *(\\d+) *\\)")[[1]][1, 2]
-                    regmatches(match, regexec("BLOCK\\s*\\( *(\\d+) *\\)",match))[[1]][2]
-                ##)
+                number <- regmatches(match, regexec("BLOCK\\s*\\( *(\\d+) *\\)",match))[[1]][2]
             } else {
                 number <- "1"
             }
@@ -281,17 +276,17 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
     if(!all(section%in%c("THETA","OMEGA","SIGMA"))) stop("section cannot be other than THETA, OMEGA and SIGMA.")
 
 
-#### these are the patterns used to identfy the different types of elements in parameter sections. It would be better to dfine them inside NMreadInits() and pass them to classify_matches.
-patterns <- 
-    c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
-      "ll.init.ul"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init,ul)
-      "ll.init"="\\(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
-      "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
-      "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
-      "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
-      "same"="SAME"
-      )
-
+#### these are the patterns used to identfy the different types of elements in parameter sections. passed to classify_matches.
+    patterns <- 
+        c("block"="BLOCK\\s*(?:\\s*\\(\\d+\\s*\\))?",  # BLOCK(N)
+          ## "ll.init.ul"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init,ul)
+          "ll.init.ul"="\\( *(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*)*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*,( *\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*)*\\)", # (ll,init,ul)
+          "ll.init"="\\( *(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*)*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
+          "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
+          "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
+          "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
+          "same"="SAME"
+          )
     
     dt.lines <- rbindlist(
         lapply(section,function(sec){
@@ -301,25 +296,15 @@ patterns <-
                ,linenum:=.I][
                ,par.type:=sec]
             dt.l
-                        })
-,fill=TRUE
+        })
+       ,fill=TRUE
     )
     
     
     pattern <- paste(patterns,collapse="|")
 
-    
-    
-### dt.lines <- data.table(linenum=1:length(lines),text=lines)
-
     ## Preprocess to remove comments (everything after ";")
-    ## dt.lines[,text.after:=sub("^[^;]*;","",text)]
-    ## dt.lines[grepl(";", text),text.after:= gsub(";.*", "", text)]
     dt.lines[grepl(";", text),text.after:=sub("^[^;]*;","",text)]
-    ## dt.lines[is.na(text.after),text.after:=""]
-    
-    ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",patterns()[1],")\\b.*"),"\\1",text)]
-    ## dt.lines[,text.before:=sub(paste0("(.*?)\\b(",pattern,")\\b.*"),"\\1",text)]
     dt.lines[grepl(pattern,text,perl=TRUE),text.before:=sub(paste0("(.*?)(?:",pattern,").*"),"\\1",text,perl=TRUE)]
     ## dt.lines[is.na(text.before),text.before:=""]
 
@@ -334,7 +319,6 @@ patterns <-
 
     getMatches <- function(dt.lines){
         ## Function to classify matches and insert NA where applicable
-        
         text.clean <- NULL
         matches <- regmatches(dt.lines[,text.clean],gregexpr(pattern,dt.lines[,text.clean],perl=TRUE))
         
@@ -345,7 +329,7 @@ patterns <-
         })
         dt.match <- rbindlist(matches.list)
 
-        ## elemnum counts the fidings. It is an arbitrary counter because it groups (ll,init,ul) together but not FIX. It really can't be used for anything beyond this function so should not be exported.
+        ## elemnum counts the findings. It is an arbitrary counter because it groups (ll,init,ul) together but not FIX. It really can't be used for anything beyond this function so should not be exported.
         dt.match[,elemnum:=.I]
         dt.match
     }
@@ -370,7 +354,12 @@ patterns <-
                 this.parnum <- this.parnum + 1
             }
             res[r,parnum:=this.parnum]
-            prev.type <- this.type
+            if(this.type!="FIX") {
+                ## if this type is FIX the type relevant for
+                ## classification hasn't changed from block, lower,
+                ## etc.
+                prev.type <- this.type
+            }
         }
         
 

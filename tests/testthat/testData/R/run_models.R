@@ -1,6 +1,6 @@
 library(devtools)
 
- load_all("~/wdirs/NMsim",export_all = FALSE)
+load_all("~/wdirs/NMsim",export_all = FALSE)
 library(NMsim)
 
 path.nonmem <- NMsim:::prioritizePaths(c(
@@ -18,3 +18,6 @@ NMexec("../nonmem/xgxr035.mod",method.execute = "NMsim",path.nonmem="/opt/NONMEM
 NMexec("../nonmem/xgxr044.mod",sge=F)
 
 NMexec("../nonmem/xgxr053.mod",sge=F)
+
+## PREDPP model
+NMexec("../nonmem/pred030.mod",sge=FALSE)

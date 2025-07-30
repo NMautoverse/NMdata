@@ -162,7 +162,7 @@ reached CRAN, installing from Github is easy too.
 install.packages("NMdata")
 
 ## Option 2: Install explicitly from CRAN
-install.packages("NMdata",repos="https://cloud.r-project.org")
+install.packages("NMdata",repos="https://cran.r-project.org")
 
 ## Option 3: Install from github
 library(remotes)

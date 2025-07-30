@@ -664,6 +664,8 @@ It now throws a weird error
 **** TODO [#A] Check if input data can be reused across models
 In that case, do the merge in the end
 *** NMwriteData
+**** TODO [#A] path in reported text is to rds
+Must be csv
 **** TODO If NMgenText is run, results should go into metaData
 **** DONE Support writing fst
 ***** TODO formats.read instead of use.formats

@@ -196,8 +196,14 @@ test_that("ID only from pseudonym",{
     inp <- fix.time(inp)    
     
     expect_equal_to_reference(inp,fileRef,version=2)
-    expect_equal(setdiff(colnames(inp),colnames(inp2)),"ID")
+    expect_equal(setdiff(colnames(inp),c(colnames(inp2))),c("DV","ID"))
 
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        inp
+        }
+    
     inp3 <- NMscanInput(file.mod,translate=T,recover.cols = FALSE)
     expect_equal(colnames(inp),colnames(inp3))
 

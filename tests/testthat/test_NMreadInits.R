@@ -101,3 +101,35 @@ $OMEGA  BLOCK(1) SAME")
 
 
 })
+
+
+test_that("OMEGA BLOCK FIX 1",{
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+    fileRef <- "testReference/NMreadInits_04.rds"
+    
+    text1 <- c("
+$THETA
+(0,0.1) ; THE1      - 30) 1st theta
+$OMEGA  BLOCK(2) 1 FIX  .3 ; first omega
+ 0.547465  ; IOV.TH1  ; 2 ;IOV
+")
+
+    text2 <- c("
+$THETA
+(0,0.1) ; THE1      - 30) 1st theta
+$OMEGA  BLOCK(2) FIX
+1 .3 ; first omega
+ 0.547465  ; IOV.TH1  ; 2 ;IOV
+")
+
+    ## options(warn=0)
+    res1 <- NMreadInits(lines=text1,return="all",as.fun="data.table")
+    res2 <- NMreadInits(lines=text2,return="all",as.fun="data.table")
+
+    res1$lines
+    res2$lines
+
+})
+

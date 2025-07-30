@@ -20,3 +20,5 @@ NMwriteData(dat,args.NMgenText = list(copy=c(ID="SUBJ"))
            ,script=script.3
            ,args.rds=list(version=2))
 
+
+
