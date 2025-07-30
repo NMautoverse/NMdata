@@ -119,8 +119,12 @@ NMscanTables <- function(file,as.fun,quiet,col.nmrep=TRUE,col.tableno=FALSE,col.
         r1 <- regexpr(paste0(NAME," *= *[^ ]*"),x,ignore.case=TRUE)
         rm1 <- regmatches(x,r1)
         info <- sub(paste0(NAME," *= *"),"",rm1,ignore.case=TRUE)
-        if(length(info)==0&&!missing(default)) {
-            info <- default
+        if(length(info)==0) {
+            if(missing(default)){
+                stop(sprintf("Trying to extract %s from table definition. Something not supported.",NAME))
+                } else {
+                    info <- default
+                }
         }
         info
     }

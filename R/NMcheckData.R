@@ -707,8 +707,16 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### MDV should perfectly reflect is.na(DV)
     if(col.mdv%in%colnames(data)){
         if(col.dv%in%colnames(data)){
-            data[,MDVDV:=!is.na(get(col.mdv))&get(col.mdv)==as.numeric(is.na(get(col.dv)))]
-            findings <- listEvents("MDVDV","MDV does not match DV",colname=col.mdv,fun=function(x)x==TRUE,dat=data[get(col.evid)==0],events=findings)
+            data[,MDVDV:=
+                      !is.na(get(col.mdv)) &
+                      get(col.mdv) == as.numeric(is.na(get(col.dv)))
+                 ]
+            findings <- listEvents(col="MDVDV",
+                                   name="MDV does not match DV",
+                                   colname=col.mdv,
+                                   fun=function(x)x==TRUE,
+                                   dat=data[get(col.evid)==0],
+                                   events=findings)
         } else {
             findings <- listEvents("MDVDV","MDV found, DV not"
                                   ,colname=col.mdv
