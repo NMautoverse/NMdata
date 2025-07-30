@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.902</span>
       </span>
     </div>
 
@@ -85,6 +85,14 @@
 <h2 class="page-header" data-toc-text="0.2.1" id="nmdata-021">NMdata 0.2.1<small>2025-07-07</small><a class="anchor" aria-label="anchor" href="#nmdata-021"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1"></a></h3>
+<ul><li>
+<code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> support initial value syntax with missing values like <code>$THETA (,1,) ; TVCL</code>. There is still a limitation that the lower limit, the initial value and the upper limit for a single parameter must be on the same line.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.1" id="nmdata-021-1">NMdata 0.2.1<small>2025-07-07</small><a class="anchor" aria-label="anchor" href="#nmdata-021-1"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-2-1-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1-1"></a></h3>
 <ul><li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> supports <code>OMEGA</code> blocks valued <code>SAME</code>. This is needed for generation of parameter tables for models with between-occasion variability.</p></li>
 <li><p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> gains a <code>quiet</code> argument. If , an overview of the configuration changes is summarixfzed in a printed table. This is useful for transparency when sourcing a file with configuration. Default is .</p></li>
 <li><p>Improved printing of tables for messages with <code><a href="../reference/message_dt.html">message_dt()</a></code>. This gives a cleaner and more consistent look of console outputs from several functions in the package.</p></li>
