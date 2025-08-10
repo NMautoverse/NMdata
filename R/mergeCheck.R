@@ -293,8 +293,12 @@ if(is.character(fun.commoncols)) fun.commoncols <- stop
     } else {
         reorder <- FALSE
     }
+
     
-    df3 <- tryCatch(merge(x,y,by.x=by.x,by.y=by.y,sort=FALSE,...),error=identity)
+    
+    df3 <- tryCatch(
+        merge(x,y,by.x=by.x,by.y=by.y,sort=FALSE,...)
+       ,error=identity)
     if("error"%in%class(df3)){        
         stop(paste0("Merge failed. This error was returned by merge.data.table:\n",df3$message))
     }
@@ -323,8 +327,10 @@ if(is.character(fun.commoncols)) fun.commoncols <- stop
                 paste0(capture.output(dims.rep), collapse = "\n"),"\n"
                 )
         
-        dtcheck <- merge(x[,.N,by=by],
-                         df3[,.N,by=by]
+        dtcheck <- merge(
+            x[,.N,by=by.x]
+           ,
+            df3[,.N,by=by.x]
                         ,by=by.x,all=TRUE,suffixes=c(".x",".result")
                          )
         dtcheck[is.na(N.x),N.x:=0]
