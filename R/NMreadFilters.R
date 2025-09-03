@@ -22,10 +22,7 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     
     if(missing(lines)) lines <- NULL
     if(missing(file)) file <- NULL
-### this is assuming there is only one file, or that lines contains only one control stream.
-
-    
-    
+### this is assuming there is only one file, or that lines contains only one control stream.    
     lines <- getLines(file=file,lines=lines)
 
     ## If these are not NULL, it can make trouble in NMreadSection.
@@ -51,7 +48,6 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     ## ^(.* )* : if anything before IGN, there must be a space in between
     ## conds.sc <- regmatches(text3, gregexpr("^(.* )*(?:IGN) *=* *[^ (+=]",text3))
     conds.sc <- regmatches(text3, gregexpr("(?<![[:alnum:]])IGN *=* *[^ (+=]",text3,perl=T))
-    conds.sc
     conds.sc <- do.call(c,conds.sc)
     
 ### getting rid of single char conditions

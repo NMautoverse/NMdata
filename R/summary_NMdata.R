@@ -217,7 +217,7 @@ print.summary_NMdata <- function(x,...){
     if(x$details$input.used){
         if(x$details$merge.by.row){
             ## cat("\nInput and output data merged by:",x$details$col.row,"\n")
-            message("Input and output data merged by:",x$details$col.row,"\n")
+            message("Input and output data merged by: ",x$details$col.row,"\n")
         } else {
             message("Input and output data combined by translation of
 Nonmem data filters.")
