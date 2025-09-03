@@ -1,0 +1,50 @@
+##' apply function of subsets of dt, return named list
+##'
+##' Based on columns in data, run function on subsets of data and
+##' return the results in a list, carrying names of the subsets. Say a
+##' column is `model` and you want to create a plot, run a regression
+##' or anything on the data for each model. In that case
+##' lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
+##' l in lapplydt is beause a list is returned (like lapply), the dt
+##' is because the input is a data.table.
+##'
+##' 
+##' @param data Data set to process.
+##' @param by Column to split data by.
+##' @param fun function to pass to `lapply()`.
+##' @param drop.null If some subsets return NULL, drop the empty
+##'     elements in the returned list?
+##' @details the name of the current dataset can be reached with the
+##'     `.nm` variable. like fun=function(x) {
+##'     message("this is subset",.nm) nrow(x) }
+##' @import data.table
+##' @keywords internal
+
+
+lapplydt <- function(data,by,fun,drop.null=FALSE){
+
+    if(!is.data.table(data)) data <- as.data.table
+    
+    dt.split <- split(data,by=by,drop=TRUE)
+    nms.by <- names(dt.split)
+    
+    res.l <- lapply(nms.by,function(.nm){
+        dt.m <- dt.split[[.nm]]
+        
+        ## Create a new function environment that contains `.nm`
+        fun2 <- fun
+        env <- new.env(parent = environment(fun2))
+        env$.nm <- .nm
+        environment(fun2) <- env
+
+        fun2(dt.m)
+
+    })
+
+    names(res.l) <- nms.by
+    if(drop.null){
+        res.l <- res.l[!sapply(res.l,is.null)]
+    }
+    
+    res.l
+}
