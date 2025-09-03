@@ -277,9 +277,12 @@ NMgenText <- function(data,
                 paste(text.nm,collapse="\n"))
     }
 
-    list(INPUT=text.nm.input
-        ,DATA=text.nm.data
-         )
-
-
+    res <- list(INPUT=text.nm.input
+               ,DATA=text.nm.data
+                )
+    if(!quiet){
+        return(invisible(res))
+    } else {
+        return(res)
+    }
 }
