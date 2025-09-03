@@ -4,7 +4,7 @@
 \alias{colLabels}
 \title{Extract column labels as defined in SAS}
 \usage{
-colLabels(...)
+colLabels(x, sort = "alpha")
 }
 \arguments{
 \item{...}{See `?compareCols`}
