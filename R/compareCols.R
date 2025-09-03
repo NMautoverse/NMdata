@@ -194,17 +194,6 @@ compareCols <- function(...,list.data,keep.names=TRUE,test.equal=FALSE,diff.only
         } else {
             if(diff.only){
                 message("\nColumns that differ:")
-                ## message(print(as.fun(dt.cols)))
-
-                ## message(":::")
-                
-                ## message(print(as.fun(dt.cols)))
-                ## message(print(dt.cols))
-                ## message(print.table(dt.cols))
-                ## message(dt.cols)
-                ## message("[[[[[[")
-                ## message(paste(capture.output(print(as.fun(dt.cols))),collapse="\n"))
-                ## print(dt.cols)
                 message_dt(dt.cols)
                 message()
                 if(nrow(dt.cols.full[nu==1&n==ndots])){
