@@ -126,7 +126,7 @@ NMreadSection <- function(file=NULL, lines=NULL, text=NULL, section, return="tex
             lapply(res.text,function(x) {
                 xthis <- strsplit(x[1]," ")[[1]][1]
                 name.this <- regmatches(xthis,gregexpr("\\$[^ ]*$",xthis))
-          #      if(name.this=="character(0)") name.this <- "HEADER"
+                ##      if(name.this=="character(0)") name.this <- "HEADER"
                 name.this <- sub("^ *\\$","",name.this)
                 name.this
             }

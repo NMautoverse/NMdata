@@ -1,11 +1,13 @@
-# NMdata 0.2.1
+# NMdata 0.2.2
 
 ## New Features
 
-* `NMreadInits()` support initial value syntax with missing values
+* `NMreadInits()` supports initial value syntax with missing values
   like `$THETA (,1,) ; TVCL`. There is still a limitation that the
   lower limit, the initial value and the upper limit for a single
   parameter must be on the same line.
+
+* `NMreadInits()` can read prior parameters like `$THETAP`, `$THETAPV`, etc.
 
 # NMdata 0.2.1
 
@@ -15,7 +17,7 @@
   between-occasion variability.
 
 * `NMdataConf()` gains a `quiet` argument. If \code{FALSE}, an
-  overview of the configuration changes is summarixfzed in a printed
+  overview of the configuration changes is summarized in a printed
   table. This is useful for transparency when sourcing a file with
   configuration. Default is \code{TRUE}.
   
