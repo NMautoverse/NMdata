@@ -65,5 +65,16 @@ test_that("skip directory double dots",{
              fnAppend("egef","hmm",allow.noext = TRUE))
 
     expect_equal_to_reference(res,fileRef)
-             
+    
+})
+
+
+test_that("prepend basic",{
+
+    ## fileRef <- "testReference/fnAppend_1.rds"
+
+    ## numeric    
+    res1 <- fnAppend("few.csv",1,position="prepend")
+
+    expect_equal(res1,"1_few.csv")    
 })

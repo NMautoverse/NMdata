@@ -4,7 +4,9 @@
 ##' it's a number, we can pad some zeros if wanted. The separator
 ##' (default is underscore) can be modified.
 ##' @param fn The file name or file names to modify.
-##' @param x A character string or a numeric to add to the file name
+##' @param x A character string or a numeric to add to the file
+##'     name. If a vector, the vector is collapsed to a single string,
+##'     using `sep` as separator in the collapsed string.
 ##' @param pad0 In case x is numeric, a number of zeros to pad before
 ##'     the appended number. This is useful if you are generating say
 ##'     more than 10 files, and your counter will be 01, 02,..,
@@ -28,40 +30,65 @@
 ##' fnAppend("plot.png",1,pad0=2,sep="-")
 ##' fnAppend("plot.png","one")
 ##' fnAppend("plot","one",allow.noext=TRUE)
+##' ## multiple x gives one collapsed string
+##' fnAppend("plot.png",1:2)
+##' fnAppend("plot.png",1:2,pad0=2)
 ##' @export
 
 
-fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,allow.noext=FALSE){
+fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.noext=FALSE){
+
+    if(is.null(x)) return(fn)
     
     if((!is.numeric(x)&&!is.character(x))) stop("x must be numeric or character vector.")
+    position <- match.arg(position,choices=c("append","prepend")) 
     
-   
     if(is.numeric(x)){
-        string <- sprintf(fmt=paste("%0",pad0,"d",sep=""),x)
+        ## formating padding zeros. pad0 determines the format of x in sprintf. 
+        fmt <- paste0("%0",pad0,"d")
+        x.string <- sprintf(fmt=fmt,x)
     } else {
-        string <- x
+        x.string <- x
     }
-    string <- paste(string,collapse=collapse)
+    x.string <- paste(x.string,collapse=collapse)
 
-    if(length(fn)>1 && length(string)>1){
-        stop("Both fn and x are of length>1. This is currently not supported.")
+    if(length(fn)>1 && length(x.string)>1){
+        stop("Both fn and x are of length>1. This is currently not supported. Is `collapse NULL`?")
     }
     
-    if(all(nchar(string))==0) return(fn)
-    
+    if(all(nchar(x.string))==0) return(fn)
+
+    ## fnAppend supports strings in fn that do not have file name
+    ## extensions (not in a str/ing.ext format). An extension can be
+    ## required to ensure paths are meaningful.
     has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
     if( !all(has.ext) && !allow.noext){
         stop("Elements in fn have no extension and allow.noext=FALSE")
     }
-        
-    allext <- rep("",length(fn))
-    allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
-    allext[has.ext] <- paste0(".",allext[has.ext])
 
-    fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
     
-   
-    
-    paste0(fnroot,sep,string,allext)
+    if(position=="append"){
         
+        allext <- rep("",length(fn))
+        allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+        allext[has.ext] <- paste0(".",allext[has.ext])
+
+        fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
+        
+        return(paste0(fnroot,sep,x.string,allext))
+    }
+
+    if(position=="prepend"){
+        dir <- dirname(fn)
+        dir[dir!="."] <- paste0(dir[dir!="."],"/")
+        dir[dir=="."] <- ""
+        
+        return(
+            paste0(
+                dir
+               ,paste(x.string,basename(fn),sep=sep)
+            )
+            )
+    }
+    
 }

@@ -4,12 +4,22 @@
 \alias{fnAppend}
 \title{paste something before file name extension.}
 \usage{
-fnAppend(fn, x, pad0 = 0, sep = "_", collapse = sep, allow.noext = FALSE)
+fnAppend(
+  fn,
+  x,
+  pad0 = 0,
+  sep = "_",
+  collapse = sep,
+  position = "append",
+  allow.noext = FALSE
+)
 }
 \arguments{
 \item{fn}{The file name or file names to modify.}
 
-\item{x}{A character string or a numeric to add to the file name}
+\item{x}{A character string or a numeric to add to the file
+name. If a vector, the vector is collapsed to a single string,
+using `sep` as separator in the collapsed string.}
 
 \item{pad0}{In case x is numeric, a number of zeros to pad before
 the appended number. This is useful if you are generating say
@@ -44,4 +54,7 @@ fnAppend("plot.png",1)
 fnAppend("plot.png",1,pad0=2,sep="-")
 fnAppend("plot.png","one")
 fnAppend("plot","one",allow.noext=TRUE)
+## multiple x gives one collapsed string
+fnAppend("plot.png",1:2)
+fnAppend("plot.png",1:2,pad0=2)
 }
