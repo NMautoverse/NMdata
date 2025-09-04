@@ -75,10 +75,6 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
     if(add.idx){
         if(overwrite || !"i"%in%colnames(pars)){
             pars[get(col.par.type)=="THETA",i:=as.integer(sub("THETA([0-9][0-9]*)","\\1",get(col.parameter)))]
-            ## pars[get(col.par.type)=="OMEGA",i:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\1",get(col.parameter)))]
-            ## pars[get(col.par.type)=="SIGMA",i:=as.integer(sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\1",get(col.parameter)))]
-            ## pars[get(col.par.type)=="OMEGA",j:=as.integer(sub("OMEGA\\(([0-9]+)\\,([0-9]+)\\)","\\2",get(col.parameter)))]
-            ## pars[get(col.par.type)=="SIGMA",j:=as.integer(sub("SIGMA\\(([0-9]+)\\,([0-9]+)\\)","\\2",get(col.parameter)))]
 
             pars[,row:=.I]
             pars[get(col.par.type)%in%allpars.mat,
