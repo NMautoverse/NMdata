@@ -390,8 +390,10 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         res
     })
 
+    
     res <- rbindlist(res.list)
     res <- addParameter(res)
+    setcolorder(res,c("parameter","par.name","par.type","i","j"))
     
     pars <- initsToExt(res)
     if(return=="pars") return(as.fun(pars))
@@ -407,10 +409,13 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 
 ##' Convert inits elements to a parameter data.frame
 ##' @param elements The elements object produced by `NMreadInits()`.
-##' @details the elements object is more detailed as it contains
-##'     information about where information is found in control stream
-##'     lines. The `ext` object is a parameter `data.frame`, same
-##'     format as returned by `NMdata::NMreadExt()`.
+##' @details initsToExt is misleading. It is not a reference to the
+##'     initstab, but actually the elements object returned by
+##'     NMreadInits. The elements object is more detailed as it
+##'     contains information about where information is found in
+##'     control stream lines. The `ext` object is a parameter
+##'     `data.frame`, same format as returned by
+##'     `NMdata::NMreadExt()`.
 ##' @import data.table
 ##' @keywords internal
 initsToExt <- function(elements){
@@ -434,7 +439,7 @@ initsToExt <- function(elements){
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
-    pars <- dcast(elements[type.elem%in%cc(init,lower,upper,FIX)],par.type+i+j+iblock+blocksize~type.elem,value.var="value.elem")
+    pars <- dcast(elements[type.elem%in%cc(init,lower,upper,FIX)],parameter+par.name+par.type+i+j+iblock+blocksize~type.elem,value.var="value.elem")
 
 ###  init=SAME may not work for blocksizes>1
     if("init"%in%colnames(pars)){
@@ -453,7 +458,7 @@ initsToExt <- function(elements){
     if(!"lower"%in% colnames(pars)) pars[,lower:=NA_real_]
     if(!"upper"%in% colnames(pars)) pars[,upper:=NA_real_]
     
-    pars <- pars[,.(par.type,parameter,par.name,i,j,iblock,blocksize,init,lower,upper,FIX)]
+    pars <- pars[,.(parameter,par.name,par.type,i,j,iblock,blocksize,init,lower,upper,FIX)]
 
     pars <- pars[
         order(match(par.type,

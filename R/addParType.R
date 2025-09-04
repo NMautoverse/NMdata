@@ -88,6 +88,7 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
                      x=get(col.parameter))),
                  by=row
                  ]
+            pars[,row:=NULL]
         }
 
         
@@ -102,6 +103,7 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
                          replacement="\\2",
                          x=get(col.parameter)
                      )),by=row]
+                pars[,row:=NULL]
             }
         }
         
@@ -125,8 +127,7 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
 ##' @keywords internal
 ##' 
 addParameter <- function(pars,overwrite=FALSE){
-    cleanSpaces <- NMdata:::cleanSpaces
-    
+        
     par.name <- NULL
     par.type <- NULL
     parameter <- NULL
@@ -158,11 +159,9 @@ addParameter <- function(pars,overwrite=FALSE){
         ## col.par.type
         pars[,par.name:=NA_character_]
     }
-
-    pars[is.na(par.name),par.name:=get(col.parameter)]
+    
     pars[is.na(par.name)&get(col.par.type)=="THETA",par.name:=sprintf("THETA(%s)",i)]
+    pars[is.na(par.name),par.name:=get(col.parameter)]
 
-
-    pars
-
+    pars[]
 }
