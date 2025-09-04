@@ -3,14 +3,23 @@ context("addCor")
 
 test_that("basic",{
 
-    fileRef <- "testReference/addOmegaCorr_01.rds"
+    fileRef <- "testReference/addCor_01.rds"
     file.mod <- "testData/nonmem/xgxr022.mod"
 
     ext <- NMreadExt(file.mod)
 
     res1 <- addCor(ext)
 
-    res1
+    ## res1
     expect_equal_to_reference(res1,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res1)
+        ref
+        res1
+
+    }
+
         
 })

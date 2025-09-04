@@ -36,6 +36,8 @@ want to treat them as separate strings, use `collapse=NULL`
 which will lead to generation of separate file names. However,
 currently `fn` or `x` must be of length 1.}
 
+\item{position}{"append" (default) or "prepend".}
+
 \item{allow.noext}{Allow `fn` to be string(s) without extensions?
 Default is `FALSE` in which case an error will be thrown if
 `fn` contains strings without extensions. If `TRUE`, `x` will

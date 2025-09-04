@@ -155,7 +155,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         file <- fun.file.ext(file)
     }
 
-
+    
     
 ### based on NMreadTab
     if(is.null(slow) || !slow){

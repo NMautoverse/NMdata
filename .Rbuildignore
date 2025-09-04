@@ -5,6 +5,7 @@
 ^\.Rproj\.user$
 ^\.github
 ^\.gitignore
+.RData$
 \\.Rhistory
 \\.\\.Rcheck
 \\.git

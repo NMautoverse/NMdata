@@ -31,6 +31,9 @@ test_that("basic - all",{
     if(F){
         ref <- readRDS(fileRef)
         compareCols(ref,res)
+        compareCols(ref[[1]],res[[1]])
+        compareCols(ref[[2]],res[[2]])
+        compareCols(ref[[3]],res[[3]])
         compareCols(ref$pars,res$pars)
     }
 
@@ -47,6 +50,9 @@ test_that("basic - all from multiple models",{
     if(F){
         ref <- readRDS(fileRef)
         compareCols(ref,res)
+        compareCols(ref[[1]],res[[1]])
+        compareCols(ref[[2]],res[[2]])
+        compareCols(ref[[3]],res[[3]])
         compareCols(ref$pars,res$pars)
     }
 
@@ -64,6 +70,9 @@ test_that("muref - all",{
     if(F){
         ref <- readRDS(fileRef)
         compareCols(ref,res)
+        compareCols(ref[[1]],res[[1]])
+        compareCols(ref[[2]],res[[2]])
+        compareCols(ref[[3]],res[[3]])
         compareCols(ref$pars,res$pars)
     }
 
@@ -81,6 +90,9 @@ test_that("muref SAEM - all",{
     if(F){
         ref <- readRDS(fileRef)
         compareCols(ref,res)
+        compareCols(ref[[1]],res[[1]])
+        compareCols(ref[[2]],res[[2]])
+        compareCols(ref[[3]],res[[3]])
         compareCols(ref$pars,res$pars)
     }
 
@@ -118,9 +130,15 @@ test_that("slow",{
     fileRef <- "testReference/NMreadExt_07.rds"
     file.ext <- "testData/nonmem/xgxr003.ext"
     
-res.fast <- NMreadExt(file=file.ext,as.fun="data.table")
+    res.fast <- NMreadExt(file=file.ext,as.fun="data.table")
     res.slow <- NMreadExt(file=file.ext,as.fun="data.table",slow=T)
-    ## expect_equal_to_reference(res,fileRef)
+
+    ## NMREP is missing in slow
+    ## expect_equal(res.fast,
+    ##              res.slow)
+    ## compareCols(res.fast,res.slow)
+
+    expect_equal_to_reference(res.slow,fileRef)
 
     if(F){
         ref <- readRDS(fileRef)

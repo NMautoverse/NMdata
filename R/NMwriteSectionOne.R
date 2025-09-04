@@ -44,7 +44,7 @@ NMwriteSectionOne <- function(file0,lines,section,location=c("replace","before",
     ## put this part in a function to be sequentially applied for all elements in list.
     replaceOnePart <- function(lines,section,newlines,quiet=FALSE){
         
-        if(!quiet && write) message(paste("Writing",newfile))
+        if(!quiet && write && !is.null(newfile) ) message(paste("Writing",newfile))
         
         ## make sure section is capital and does not start with $.
         section <- gsub(" ","",section)

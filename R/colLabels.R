@@ -1,5 +1,6 @@
 ##' Extract column labels as defined in SAS
-##' @param ... See `?compareCols`
+##' @param x object with elements containing label attributes.
+##' @param sort If sort="alpha", results are sorted alphabetically.
 ##' @return A data.frame with variable and their labels
 ##' @seealso compareCols NMinfo
 ##' @import data.table

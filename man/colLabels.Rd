@@ -7,7 +7,9 @@
 colLabels(x, sort = "alpha")
 }
 \arguments{
-\item{...}{See `?compareCols`}
+\item{x}{object with elements containing label attributes.}
+
+\item{sort}{If sort="alpha", results are sorted alphabetically.}
 }
 \value{
 A data.frame with variable and their labels

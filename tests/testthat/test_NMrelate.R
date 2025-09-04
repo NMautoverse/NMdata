@@ -46,12 +46,21 @@ test_that("merge with NMreadExt results",{
         labs.all=mergeCheck(res.rel,res.ext[!is.na(par.type)],by=cc(model,par.type,i,j),fun.na.by=NULL,all.x=T,common.cols="drop.y")
     )
 
-    expect_equal_to_reference(res,fileRef)
+    expect_equal_to_reference(
+        res
+       ,
+        fileRef
+    )
 
     if(F){
         ref <- readRDS(fileRef)
         compareCols(ref$ext.nofix,   res$ext.nofix)
 
+        expect_equal(
+            res$ext.all$parameter
+           ,
+            ref$ext.all$parameter
+        )
     }
     
 })

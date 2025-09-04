@@ -17,7 +17,7 @@ test_that("basic",{
     NMdataConf(as.fun="data.table")
 
     lines <- readLines(file.mod)
-    res1 <- NMreadInits(lines=lines,return="all")
+    res1  <- NMreadInits(lines=lines,return="all")
 
     ## res1$lines[grepl("^ +$",text.before),text.before:=""]
     res1$lines[,text.before:=""]
@@ -32,9 +32,15 @@ test_that("basic",{
 
 
     if(FALSE){
+
         ref.elems <- readRDS(fnAppend(fileRef,"elems"))
+        compareCols(ref.elems,res1$elements)
         ref.elems
         res1$elements
+
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        ref.pars
+        res1$pars
     }
     
 })
@@ -59,9 +65,14 @@ test_that("with OMEGA block",{
 
     if(FALSE){
         ref.elems <- readRDS(fnAppend(fileRef,"elems"))
+        compareCols(ref.elems,res1$elements)
         ref.elems
         res1$elements
         ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))
+
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        ref.pars
+        res1$pars
     }
 
 
@@ -96,7 +107,13 @@ $OMEGA  BLOCK(1) SAME")
         ref.elems <- readRDS(fnAppend(fileRef,"elems"))
         ref.elems
         res1$elements
+        compareCols(ref.elems,res1$elements)
         ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))
+
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        compareCols(ref.pars,res1$pars)
+        ref.pars
+        res1$pars
     }
 
 
@@ -128,8 +145,11 @@ $OMEGA  BLOCK(2) FIX
     res1 <- NMreadInits(lines=text1,return="all",as.fun="data.table")
     res2 <- NMreadInits(lines=text2,return="all",as.fun="data.table")
 
-    res1$lines
-    res2$lines
+    ## res1$lines
+    ## res2$lines
 
+    expect_equal(res1$pars,
+                 res2$pars)
+    
 })
 
