@@ -51,7 +51,8 @@ vignettes/DataPrepare.html
 vignettes/NMscanData.html
 vignettes/*\.md
 vignettes/*\.R
-/vignettes/derived/*.rds
+vignettes/derived/*.rds
+vignettes/derived/*.csv
 inst/examples/nonmem/modelfit_dir*
 inst/examples/nonmem/trashed_*
 inst/examples/nonmem/backup_*
