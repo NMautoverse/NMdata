@@ -66,6 +66,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/deprecatedArg.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/dims.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/dt2mat.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/dtapply.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/editCharCols.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/egdt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/filePathSimple.html</loc></url>
@@ -83,6 +84,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/is.NMdata.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/itriag.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/jtriag.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/lapplydt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/listMissings.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/lstExtractTime.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/mat2dt.html</loc></url>

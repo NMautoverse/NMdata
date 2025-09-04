@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.904</span>
       </span>
     </div>
 
@@ -207,37 +207,37 @@ worth mentioning how to even just read the parameter estimates with
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="right">0</td>
 <td align="right">0.8028730</td>
 <td align="right">0.0642182</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="right">0</td>
 <td align="right">4.3165400</td>
 <td align="right">0.0586268</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="right">0</td>
 <td align="right">2.5524100</td>
 <td align="right">0.0916355</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="right">0</td>
 <td align="right">5.1554800</td>
 <td align="right">0.2547830</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="right">0</td>
 <td align="right">2.1515900</td>
 <td align="right">0.0647584</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="right">0</td>
 <td align="right">0.4427680</td>
 <td align="right">0.1405420</td>
@@ -360,8 +360,8 @@ the columns available:</p>
 <span><span class="co">#&gt;  [1] "model"       "TABLENO"     "NMREP"       "table.step"  "par.type"   </span></span>
 <span><span class="co">#&gt;  [6] "parameter"   "par.name"    "i"           "j"           "FIX"        </span></span>
 <span><span class="co">#&gt; [11] "value"       "cond"        "eigCor"      "partLik"     "se"         </span></span>
-<span><span class="co">#&gt; [16] "seStdDevCor" "stdDevCor"   "termStat"    "row"         "est"        </span></span>
-<span><span class="co">#&gt; [21] "iblock"      "blocksize"</span></span></code></pre></div>
+<span><span class="co">#&gt; [16] "seStdDevCor" "stdDevCor"   "termStat"    "est"         "iblock"     </span></span>
+<span><span class="co">#&gt; [21] "blocksize"</span></span></code></pre></div>
 <p>where <code>est</code> is a deprecated copy of the <code>value</code>
 column.</p>
 <p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> can return other information than the
@@ -728,7 +728,7 @@ understand how you can tweak the formats to match your needs.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="left">LTVKA</td>
 <td align="right">0</td>
 <td align="left">Absorption rate</td>
@@ -737,7 +737,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">8.0%</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="left">LTVV2</td>
 <td align="right">0</td>
 <td align="left">Central volume</td>
@@ -746,7 +746,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">1.4%</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="left">LTVCL</td>
 <td align="right">0</td>
 <td align="left">Clearance</td>
@@ -755,7 +755,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">3.6%</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="left">LTVV3</td>
 <td align="right">0</td>
 <td align="left">Peripheral volume</td>
@@ -764,7 +764,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">4.9%</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="left">LTVQ</td>
 <td align="right">0</td>
 <td align="left">Intercomparmental clearance</td>
@@ -773,7 +773,7 @@ understand how you can tweak the formats to match your needs.</p>
 <td align="left">3.0%</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="left">AGEEFF</td>
 <td align="right">0</td>
 <td align="left">Age effect on clearance</td>
@@ -999,7 +999,7 @@ multiple different shrinkage estimates are provided (and fetched by
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="left">LTVKA</td>
 <td align="left">Absorption rate</td>
 <td align="left">1/h</td>
@@ -1010,7 +1010,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="left">LTVV2</td>
 <td align="left">Central volume</td>
 <td align="left">L</td>
@@ -1021,7 +1021,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="left">LTVCL</td>
 <td align="left">Clearance</td>
 <td align="left">L/h</td>
@@ -1032,7 +1032,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="left">LTVV3</td>
 <td align="left">Peripheral volume</td>
 <td align="left">L</td>
@@ -1043,7 +1043,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="left">LTVQ</td>
 <td align="left">Intercomparmental clearance</td>
 <td align="left">L/h</td>
@@ -1054,7 +1054,7 @@ multiple different shrinkage estimates are provided (and fetched by
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="left">AGEEFF</td>
 <td align="left">Age effect on clearance</td>
 <td align="left"></td>
@@ -1148,7 +1148,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="left">LTVKA</td>
 <td align="right">0</td>
 <td align="left">Absorption rate</td>
@@ -1158,7 +1158,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="left">LTVV2</td>
 <td align="right">0</td>
 <td align="left">Central volume</td>
@@ -1168,7 +1168,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="left">LTVCL</td>
 <td align="right">0</td>
 <td align="left">Clearance</td>
@@ -1178,7 +1178,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="left">LTVV3</td>
 <td align="right">0</td>
 <td align="left">Peripheral volume</td>
@@ -1188,7 +1188,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="left">LTVQ</td>
 <td align="right">0</td>
 <td align="left">Intercomparmental clearance</td>
@@ -1198,7 +1198,7 @@ variance-covariance matrices <code>$SIGMA</code> and
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="left">AGEEFF</td>
 <td align="right">0</td>
 <td align="left">Age effect on clearance</td>
@@ -1261,7 +1261,22 @@ This can easily be merged onto the parameter table as needed.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/NMreadInits.html">NMreadInits</a></span><span class="op">(</span><span class="va">file.mod</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <table class="table">
+<colgroup>
+<col width="14%">
+<col width="14%">
+<col width="11%">
+<col width="3%">
+<col width="3%">
+<col width="9%">
+<col width="13%">
+<col width="7%">
+<col width="7%">
+<col width="7%">
+<col width="5%">
+</colgroup>
 <thead><tr class="header">
+<th align="left">parameter</th>
+<th align="left">par.name</th>
 <th align="left">par.type</th>
 <th align="right">i</th>
 <th align="right">j</th>
@@ -1274,6 +1289,8 @@ This can easily be merged onto the parameter table as needed.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="left">THETA</td>
 <td align="right">1</td>
 <td align="right">NA</td>
@@ -1285,6 +1302,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="left">THETA</td>
 <td align="right">2</td>
 <td align="right">NA</td>
@@ -1296,6 +1315,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="left">THETA</td>
 <td align="right">3</td>
 <td align="right">NA</td>
@@ -1307,6 +1328,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="left">THETA</td>
 <td align="right">4</td>
 <td align="right">NA</td>
@@ -1318,6 +1341,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="left">THETA</td>
 <td align="right">5</td>
 <td align="right">NA</td>
@@ -1329,6 +1354,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="left">THETA</td>
 <td align="right">6</td>
 <td align="right">NA</td>
@@ -1340,6 +1367,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">OMEGA(1,1)</td>
+<td align="left">OMEGA(1,1)</td>
 <td align="left">OMEGA</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1351,6 +1380,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 </tr>
 <tr class="even">
+<td align="left">OMEGA(2,2)</td>
+<td align="left">OMEGA(2,2)</td>
 <td align="left">OMEGA</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1362,6 +1393,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">OMEGA(3,2)</td>
+<td align="left">OMEGA(3,2)</td>
 <td align="left">OMEGA</td>
 <td align="right">3</td>
 <td align="right">2</td>
@@ -1373,6 +1406,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">OMEGA(3,3)</td>
+<td align="left">OMEGA(3,3)</td>
 <td align="left">OMEGA</td>
 <td align="right">3</td>
 <td align="right">3</td>
@@ -1384,6 +1419,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">OMEGA(4,4)</td>
+<td align="left">OMEGA(4,4)</td>
 <td align="left">OMEGA</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -1395,6 +1432,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 </tr>
 <tr class="even">
+<td align="left">OMEGA(5,5)</td>
+<td align="left">OMEGA(5,5)</td>
 <td align="left">OMEGA</td>
 <td align="right">5</td>
 <td align="right">5</td>
@@ -1406,6 +1445,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
+<td align="left">SIGMA(1,1)</td>
+<td align="left">SIGMA(1,1)</td>
 <td align="left">SIGMA</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -1417,6 +1458,8 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">SIGMA(2,2)</td>
+<td align="left">SIGMA(2,2)</td>
 <td align="left">SIGMA</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1474,7 +1517,6 @@ after finalizing the control stream.</p>
 <col width="4%">
 <col width="3%">
 <col width="3%">
-<col width="1%">
 <col width="3%">
 <col width="2%">
 <col width="3%">
@@ -1507,7 +1549,6 @@ after finalizing the control stream.</p>
 <th align="right">seStdDevCor</th>
 <th align="right">stdDevCor</th>
 <th align="right">termStat</th>
-<th align="right">row</th>
 <th align="right">est</th>
 <th align="right">iblock</th>
 <th align="right">blocksize</th>
@@ -1529,7 +1570,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA1</td>
-<td align="left">THETA1</td>
+<td align="left">THETA(1)</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1541,7 +1582,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">1</td>
 <td align="right">0.8028730</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1562,7 +1602,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA2</td>
-<td align="left">THETA2</td>
+<td align="left">THETA(2)</td>
 <td align="right">2</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1574,7 +1614,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">2</td>
 <td align="right">4.3165400</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1595,7 +1634,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA3</td>
-<td align="left">THETA3</td>
+<td align="left">THETA(3)</td>
 <td align="right">3</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1607,7 +1646,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">3</td>
 <td align="right">2.5524100</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1628,7 +1666,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA4</td>
-<td align="left">THETA4</td>
+<td align="left">THETA(4)</td>
 <td align="right">4</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1640,7 +1678,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">4</td>
 <td align="right">5.1554800</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1661,7 +1698,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA5</td>
-<td align="left">THETA5</td>
+<td align="left">THETA(5)</td>
 <td align="right">5</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1673,7 +1710,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">5</td>
 <td align="right">2.1515900</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1694,7 +1730,7 @@ after finalizing the control stream.</p>
 <td align="left">IMP</td>
 <td align="left">THETA</td>
 <td align="left">THETA6</td>
-<td align="left">THETA6</td>
+<td align="left">THETA(6)</td>
 <td align="right">6</td>
 <td align="right">NA</td>
 <td align="right">0</td>
@@ -1706,7 +1742,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0000000</td>
 <td align="right">0.000000</td>
 <td align="right">0</td>
-<td align="right">6</td>
 <td align="right">0.4427680</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
@@ -1739,7 +1774,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0374549</td>
 <td align="right">0.416864</td>
 <td align="right">0</td>
-<td align="right">12</td>
 <td align="right">0.1737760</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1772,7 +1806,6 @@ after finalizing the control stream.</p>
 <td align="right">0.1135310</td>
 <td align="right">-0.227702</td>
 <td align="right">0</td>
-<td align="right">14</td>
 <td align="right">-0.0478580</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1805,7 +1838,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0430343</td>
 <td align="right">0.504188</td>
 <td align="right">0</td>
-<td align="right">15</td>
 <td align="right">0.2542050</td>
 <td align="right">2</td>
 <td align="right">2</td>
@@ -1838,7 +1870,6 @@ after finalizing the control stream.</p>
 <td align="right">0.0095256</td>
 <td align="right">0.285130</td>
 <td align="right">0</td>
-<td align="right">7</td>
 <td align="right">0.0812994</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -2265,14 +2296,14 @@ clearance</td>
 <span></span>
 <span><span class="va">pars.aug</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">par.name</span>,<span class="va">symbol</span>,<span class="va">FIX</span>,<span class="va">label</span>,<span class="va">unit</span>,Estimate<span class="op">=</span><span class="va">value.trans</span>,RSE<span class="op">=</span><span class="va">se</span><span class="op">/</span><span class="va">value</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <div class="kable-table">
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
 <col width="11%">
 <col width="10%">
 <col width="4%">
-<col width="46%">
+<col width="45%">
 <col width="5%">
-<col width="11%">
+<col width="12%">
 <col width="11%">
 </colgroup>
 <thead><tr class="header">
@@ -2286,56 +2317,56 @@ clearance</td>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">THETA1</td>
-<td align="left">NA</td>
+<td align="left">THETA(1)</td>
+<td align="left">LTVKA</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="right">0.8028730</td>
+<td align="left">Absorption rate</td>
+<td align="left">1/h</td>
+<td align="right">2.2319441</td>
 <td align="right">0.0799855</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
-<td align="left">NA</td>
+<td align="left">THETA(2)</td>
+<td align="left">LTVV2</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="right">4.3165400</td>
+<td align="left">Central volume</td>
+<td align="left">L</td>
+<td align="right">74.9289252</td>
 <td align="right">0.0135819</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
-<td align="left">NA</td>
+<td align="left">THETA(3)</td>
+<td align="left">LTVCL</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="right">2.5524100</td>
+<td align="left">Clearance</td>
+<td align="left">L/h</td>
+<td align="right">12.8380061</td>
 <td align="right">0.0359016</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
-<td align="left">NA</td>
+<td align="left">THETA(4)</td>
+<td align="left">LTVV3</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="right">5.1554800</td>
+<td align="left">Peripheral volume</td>
+<td align="left">L</td>
+<td align="right">173.3790087</td>
 <td align="right">0.0494198</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
-<td align="left">NA</td>
+<td align="left">THETA(5)</td>
+<td align="left">LTVQ</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="right">2.1515900</td>
+<td align="left">Intercompartmental clearance</td>
+<td align="left">L/h</td>
+<td align="right">8.5985192</td>
 <td align="right">0.0300979</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
-<td align="left">NA</td>
+<td align="left">THETA(6)</td>
+<td align="left">AGEEFF</td>
 <td align="right">0</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">Age effect on clearance</td>
+<td align="left"></td>
 <td align="right">0.4427680</td>
 <td align="right">0.3174168</td>
 </tr>
@@ -2451,50 +2482,50 @@ of a few models.</p>
 <td align="right">0.0812994</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(1)</td>
+<td align="left">LTVKA</td>
+<td align="left">Absorption rate</td>
+<td align="left">1/h</td>
 <td align="right">0.8134230</td>
 <td align="right">0.8028730</td>
 </tr>
 <tr class="even">
-<td align="left">THETA2</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(2)</td>
+<td align="left">LTVV2</td>
+<td align="left">Central volume</td>
+<td align="left">L</td>
 <td align="right">4.3236000</td>
 <td align="right">4.3165400</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA3</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(3)</td>
+<td align="left">LTVCL</td>
+<td align="left">Clearance</td>
+<td align="left">L/h</td>
 <td align="right">2.4710300</td>
 <td align="right">2.5524100</td>
 </tr>
 <tr class="even">
-<td align="left">THETA4</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(4)</td>
+<td align="left">LTVV3</td>
+<td align="left">Peripheral volume</td>
+<td align="left">L</td>
 <td align="right">5.4265500</td>
 <td align="right">5.1554800</td>
 </tr>
 <tr class="odd">
-<td align="left">THETA5</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(5)</td>
+<td align="left">LTVQ</td>
+<td align="left">Intercompartmental clearance</td>
+<td align="left">L/h</td>
 <td align="right">2.2274200</td>
 <td align="right">2.1515900</td>
 </tr>
 <tr class="even">
-<td align="left">THETA6</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">THETA(6)</td>
+<td align="left">AGEEFF</td>
+<td align="left">Age effect on clearance</td>
+<td align="left"></td>
 <td align="right">0.4197470</td>
 <td align="right">0.4427680</td>
 </tr>

@@ -19,7 +19,7 @@ it's a number, we can pad some zeros if wanted. The separator
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.904</span>
       </span>
     </div>
 
@@ -91,7 +91,15 @@ it's a number, we can pad some zeros if wanted. The separator
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span><span class="va">fn</span>, <span class="va">x</span>, pad0 <span class="op">=</span> <span class="fl">0</span>, sep <span class="op">=</span> <span class="st">"_"</span>, collapse <span class="op">=</span> <span class="va">sep</span>, allow.noext <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fnAppend</span><span class="op">(</span></span>
+<span>  <span class="va">fn</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  pad0 <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"_"</span>,</span>
+<span>  collapse <span class="op">=</span> <span class="va">sep</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"append"</span>,</span>
+<span>  allow.noext <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -103,7 +111,9 @@ it's a number, we can pad some zeros if wanted. The separator
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A character string or a numeric to add to the file name</p></dd>
+<dd><p>A character string or a numeric to add to the file
+name. If a vector, the vector is collapsed to a single string,
+using `sep` as separator in the collapsed string.</p></dd>
 
 
 <dt id="arg-pad-">pad0<a class="anchor" aria-label="anchor" href="#arg-pad-"></a></dt>
@@ -125,6 +135,10 @@ separator. See the `collapse` argument to `?paste`. If you
 want to treat them as separate strings, use `collapse=NULL`
 which will lead to generation of separate file names. However,
 currently `fn` or `x` must be of length 1.</p></dd>
+
+
+<dt id="arg-position">position<a class="anchor" aria-label="anchor" href="#arg-position"></a></dt>
+<dd><p>"append" (default) or "prepend".</p></dd>
 
 
 <dt id="arg-allow-noext">allow.noext<a class="anchor" aria-label="anchor" href="#arg-allow-noext"></a></dt>
@@ -149,6 +163,11 @@ be appended to fn in these cases.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_one.png"</span>
 <span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot"</span>,<span class="st">"one"</span>,allow.noext<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_one"</span>
+<span class="r-in"><span><span class="co">## multiple x gives one collapsed string</span></span></span>
+<span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot.png"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_1_2.png"</span>
+<span class="r-in"><span><span class="fu">fnAppend</span><span class="op">(</span><span class="st">"plot.png"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,pad0<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "plot_01_02.png"</span>
 </code></pre></div>
     </div>
   </div>
