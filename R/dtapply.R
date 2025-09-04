@@ -19,13 +19,16 @@
 ## NMsim:::dtapply(setNames(1:4,letters[1:4]),sqrt)
 
 dtapply <- function(X,FUN,value.names=NULL,element.name="element",...){
+
+    name <- NULL
+
     nms.x <- names(X)
     if(is.null(nms.x)){
         if(is.character(X)) {
             nms.x <- X
-            } else {
-                nms.x <- as.character(1:length(X))
-            }
+        } else {
+            nms.x <- as.character(1:length(X))
+        }
     }
     ## todo run in try
     res.list <- lapply(X,FUN,...)
@@ -36,9 +39,6 @@ dtapply <- function(X,FUN,value.names=NULL,element.name="element",...){
     ## todo remove NULL and zro row elements
 
     
-    ## res <- data.table(name=nms.x,res=unlist(res.list))
-    
-
     if(!is.null(value.names)){
         res.list <- lapply(res.list,setnames,new=value.names)
     }
@@ -48,15 +48,8 @@ dtapply <- function(X,FUN,value.names=NULL,element.name="element",...){
         res.list[[I]]
     })
     
-    ## res.list <- lapply(nms.x,function(I){
-    ##     res.list[[I]][,name:=I]
-    ##     res.list[[I]]
-    ##     })
-    
 
- res <- rbindlist(res.list,fill=TRUE)
-    
-    
+    res <- rbindlist(res.list,fill=TRUE)
 
     setnames(res,"name",element.name)
     setcolorder(res,element.name)
