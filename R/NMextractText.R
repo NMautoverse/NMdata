@@ -150,17 +150,16 @@ NMextractText <- function(file, lines, text, section, char.section,
         idx.starts <- (1:length(lines))[grepl(paste0("^ *",char.section,section,"[^A-Z]*"),lines) &
                                         !grepl(paste0("^ *",char.section,section,"[A-Z]+"),lines) ]
     } else {
-        
-        idx.starts <- ## (1:length(lines))[
+        ## idx.starts <- (1:length(lines))[grepl(paste0("^ *",char.section,section,"[^A-Z]*"),lines)]
+        idx.starts <- 
             grep(
                 ##paste0("^ *",char.section,section,"([^[A-Z]]*.*)*")
                 paste0("^ *",char.section,section," *.*")
                ,
                 lines,
                 ignore.case=TRUE
-                ,perl=FALSE
+               ,perl=FALSE
             )
-            
     }
     idx.ends <- grep(paste0("^ *",char.end),lines)
 

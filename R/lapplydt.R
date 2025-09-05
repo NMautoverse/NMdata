@@ -22,13 +22,14 @@
 
 
 lapplydt <- function(data,by,fun,drop.null=FALSE){
-
+    
     if(!is.data.table(data)) data <- as.data.table
     
     dt.split <- split(data,by=by,drop=TRUE)
     nms.by <- names(dt.split)
     
     res.l <- lapply(nms.by,function(.nm){
+        
         dt.m <- dt.split[[.nm]]
         
         ## Create a new function environment that contains `.nm`
