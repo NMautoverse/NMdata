@@ -31,12 +31,22 @@ lapplydt <- function(data,by,fun,drop.null=FALSE){
     res.l <- lapply(nms.by,function(.nm){
         dt.m <- dt.split[[.nm]]
         
-        ## Create a new function environment that contains `.nm`
+        ## ## Create a new function environment that contains `.nm`
+        ## fun2 <- fun
+        ## env <- new.env(parent = environment(fun2))
+        ## env$.nm <- .nm
+        ## environment(fun2) <- env
+
+        ## Make a copy of the function and inject `.nm` into its environment
         fun2 <- fun
-        env <- new.env(parent = environment(fun2))
+        parent_env <- environment(fun2)
+        if (is.null(parent_env)) {
+            parent_env <- emptyenv()  ## safe fallback for primitives
+        }
+        env <- new.env(parent = parent_env)
         env$.nm <- .nm
         environment(fun2) <- env
-
+        
         fun2(dt.m)
 
     })
