@@ -55,7 +55,9 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
-    any.ignores <- any(grepl("IGN",text3))
+    any.ignores <- any(grepl("IGN",text3))||length(conds.sc)
+#### this looks wrong. Why return data if nothing found? Seems like
+#### empty set of filters should be returned.
     ## if no filters found, just return data as is
     if(!any.accepts && !any.ignores && length(conds.sc)==0) return(data)
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
