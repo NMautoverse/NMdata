@@ -1,5 +1,7 @@
 context("NMreadFilters")
 
+NMdataConf(reset=TRUE)
+NMdataConf(as.fun="data.table")
 
 test_that("basic",{
     fileRef <- "testReference/NMreadFilters_01.rds"
@@ -8,4 +10,10 @@ test_that("basic",{
 
     expect_equal_to_reference(res,fileRef)
 
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        }
+    
 })
