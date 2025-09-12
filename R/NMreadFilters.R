@@ -11,7 +11,7 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
     
     . <- NULL
-    data <- NULL
+    ## data <- NULL
     variable <- NULL
     value <- NULL
     
@@ -59,7 +59,8 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
 #### this looks wrong. Why return data if nothing found? Seems like
 #### empty set of filters should be returned.
     ## if no filters found, just return data as is
-    if(!any.accepts && !any.ignores && length(conds.sc)==0) return(data)
+    ## if(!any.accepts && !any.ignores && length(conds.sc)==0) return(data)
+
     if(any.accepts&&any.ignores) stop("IGNORE and ACCEPT are not allowed together according to Nonmem documentation.")
     
     if(any.ignores) {
