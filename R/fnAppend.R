@@ -62,7 +62,8 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     ## fnAppend supports strings in fn that do not have file name
     ## extensions (not in a str/ing.ext format). An extension can be
     ## required to ensure paths are meaningful.
-    has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
+    ## has.ext <- grepl(".*[^\\.]\\.[a-zA-Z0-9]+",fn)
+    has.ext <- grepl(".*\\.[a-zA-Z0-9]+$",fn)
     if( !all(has.ext) && !allow.noext){
         stop("Elements in fn have no extension and allow.noext=FALSE")
     }
@@ -71,7 +72,8 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     if(position=="append"){
         
         allext <- rep("",length(fn))
-        allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+        ## allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+        allext[has.ext] <- sub(".*\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
         allext[has.ext] <- paste0(".",allext[has.ext])
 
         fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
