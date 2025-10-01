@@ -18,7 +18,7 @@
 ### examples
 ## NMsim:::dtapply(setNames(1:4,letters[1:4]),sqrt)
 
-dtapply <- function(X,FUN,value.names=NULL,element.name="element",...){
+dtapply <- function(X,FUN,value.names=NULL,element.name="element",fill=TRUE,...){
 
     name <- NULL
 
@@ -42,14 +42,14 @@ dtapply <- function(X,FUN,value.names=NULL,element.name="element",...){
     if(!is.null(value.names)){
         res.list <- lapply(res.list,setnames,new=value.names)
     }
-
+    
     res.list <- lapply(1:length(res.list),function(I){
         res.list[[I]][,name:=nms.x[I]]
         res.list[[I]]
     })
     
 
-    res <- rbindlist(res.list,fill=TRUE)
+    res <- rbindlist(res.list,fill=fill)
 
     setnames(res,"name",element.name)
     setcolorder(res,element.name)
