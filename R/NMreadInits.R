@@ -275,7 +275,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
     ## if(length(lines)==0) return(NULL)
     
 
-    all.sections <- c("THETA","OMEGA","SIGMA","THETAP","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
+    all.sections <- c("THETA","OMEGA","SIGMA","THETAP","THETAPV","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
     if(all(section=="ALL")){
         section <- all.sections
     }
@@ -390,7 +390,6 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         res
     })
 
-    
     res <- rbindlist(res.list)
     res <- addParameter(res)
     setcolorder(res,c("parameter","par.name","par.type","i","j"))
@@ -441,12 +440,17 @@ initsToExt <- function(elements){
     
     pars <- dcast(elements[type.elem%in%cc(init,lower,upper,FIX)],parameter+par.name+par.type+i+j+iblock+blocksize~type.elem,value.var="value.elem")
 
+    setorder(pars,par.type,i,j)
 ###  init=SAME may not work for blocksizes>1
     if("init"%in%colnames(pars)){
+        pars[,init.char:=init]
         suppressWarnings(pars[,init.num:=as.numeric(init)])
-        pars[!is.na(init.num)|init=="SAME",init.num:=nafill(init.num,type="locf")]
+        pars[,init.num.tmp:=nafill(init.num,type="locf")]
+        pars[!is.na(init.num)|init=="SAME",init.num:=init.num.tmp]
         pars[,init:=init.num]
         pars[,init.num:=NULL]
+        pars[,SAME:=0]
+        pars[init.char=="SAME",SAME:=1]
     } else {
         ## not sure this will ever happen
         pars[,init:=NA_real_]
@@ -458,11 +462,13 @@ initsToExt <- function(elements){
     if(!"lower"%in% colnames(pars)) pars[,lower:=NA_real_]
     if(!"upper"%in% colnames(pars)) pars[,upper:=NA_real_]
     
-    pars <- pars[,.(parameter,par.name,par.type,i,j,iblock,blocksize,init,lower,upper,FIX)]
+    cols <- c("parameter","par.name","par.type","i","j","iblock","blocksize","init","lower","upper","FIX","SAME")
+    cols <- intersect(cols,colnames(pars))
+    pars <- pars[,cols,with=FALSE]
 
     pars <- pars[
         order(match(par.type,
-                    c("THETA","OMEGA","SIGMA","THETAP","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")) ,i,j)]
+                    c("THETA","OMEGA","SIGMA","THETAP","THETAPV","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")) ,i,j)]
     
     pars[]
 }
