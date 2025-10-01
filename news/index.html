@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.907</span>
       </span>
     </div>
 
@@ -87,6 +87,21 @@
 <h3 id="new-features-0-2-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-2"></a></h3>
 <ul><li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> supports initial value syntax with missing values like <code>$THETA (,1,) ; TVCL</code>. There is still a limitation that the lower limit, the initial value and the upper limit for a single parameter must be on the same line.</p></li>
 <li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> can read prior parameters like <code>$THETAP</code>, <code>$THETAPV</code>, etc.</p></li>
+<li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> adds a <code>SAME</code> (0/1) column to parameter table.</p></li>
+<li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now both append and prepend strings to file names. See the new <code>position</code> argument which defaults to <code>"append"</code>.</p></li>
+<li><p>New function, <code><a href="../reference/dtapply.html">dtapply()</a></code> takes a vector or a list (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), runs a function (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), and returns a <code>data.table</code> with column containing values or names of character vector or list in addition to columns with function results.</p></li>
+<li><p><code>1applydt()</code> takes a data.table, runs a function in subsets (as defined by a <code>by</code> column), returns a list. This is because <code>dt[i,j,by]</code> only works if all subsets defined by <code>by</code> returns compatible lists. <code><a href="../reference/lapplydt.html">lapplydt()</a></code> works anyway, even for other structures like plots.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-2-2">Other Improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-2"></a></h3>
+<ul><li>
+<code><a href="../reference/fnAppend.html">fnAppend()</a></code> gains support for modifying strings like ending in dots, like <code>string...</code>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bugfixes-0-2-2">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-2"></a></h3>
+<ul><li>
+<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> would classify single-character filters as accept statements. Fixed.</li>
 </ul></div>
 </div>
     <div class="section level2">
