@@ -54,7 +54,8 @@ NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){
     dt.relate <- rbindlist(list.relate)
     dt.relate[,par.type:=factor(par.type,levels=c("THETA","OMEGA","SIGMA"))]
     setorderv(dt.relate,c(col.model,"par.type"))
-    dt.relate[,par.type:=as.character(par.type)]
+    ## dt.relate[,par.type:=as.character(par.type)]
+    dt.relate <- addParType(dt.relate)
 
     as.fun(dt.relate)  
 }

@@ -27,6 +27,12 @@ test_that("Find all",{
     res <- NMrelate(file=file.mod)
     
     expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        }
 })
 
 
@@ -61,6 +67,26 @@ test_that("merge with NMreadExt results",{
            ,
             ref$ext.all$parameter
         )
+
+        expect_equal(
+            head(res$labs.all)
+           ,
+            head(ref$labs.all)
+        )
+
+expect_equal(
+            head(res$ext.nofix)
+           ,
+            head(ref$ext.nofix)
+        )
+
+
+
+        compareCols(
+            res
+           ,
+            ref
+                    )
     }
     
 })
@@ -80,6 +106,12 @@ test_that("2 models",{
     expect_equal_to_reference(res,fileRef)
 
     ##    NMrelateOne(file.mod[2])
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+}
 })
 
 

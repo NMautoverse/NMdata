@@ -474,6 +474,8 @@ NMreadParsText <- function(file,lines,format,
     }
 
     if("linenum" %in% colnames(pt1)) pt1[,linenum:=NULL]
+
+    pt1 <- addParType(pt1)
     
     cols.last <- intersect(c("par.type","i","j","col.idx","parameter",col.model),colnames(pt1))
     setcolorder(pt1,c(setdiff(colnames(pt1),cols.last),cols.last))

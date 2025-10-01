@@ -27,6 +27,12 @@ test_that("basic",{
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    if(F){
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        ref.pars
+        res1$pars
+    }
+
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
@@ -38,9 +44,6 @@ test_that("basic",{
         ref.elems
         res1$elements
 
-        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
-        ref.pars
-        res1$pars
     }
     
 })
@@ -59,6 +62,12 @@ test_that("with OMEGA block",{
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    if(F){
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        ref.pars
+        res1$pars
+    }
+
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
@@ -68,11 +77,7 @@ test_that("with OMEGA block",{
         compareCols(ref.elems,res1$elements)
         ref.elems
         res1$elements
-        ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))
-
-        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
-        ref.pars
-        res1$pars
+        ##expect_equal_to_reference(res1$elements[,!("parameter")],fnAppend(fileRef,"elems"))    
     }
 
 
@@ -99,6 +104,12 @@ $OMEGA  BLOCK(1) SAME")
 
     ## expect_equal_to_reference(res1,fileRef)
     expect_equal_to_reference(res1$pars,fnAppend(fileRef,"pars"))
+    if(F){
+        ref.pars <- readRDS(fnAppend(fileRef,"pars"))
+        ref.pars
+        res1$pars
+    }
+
     expect_equal_to_reference(res1$elements,fnAppend(fileRef,"elems"))
     expect_equal_to_reference(res1$lines,fnAppend(fileRef,"lines"))
 
