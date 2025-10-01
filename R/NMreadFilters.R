@@ -83,24 +83,6 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     ## name.c1 <- colnames(data)[1]
     scs <- sub(paste0("IGN"," *=* *(.+)"),"\\1",conds.sc)
     scs.all <- scs
-    ## expressions.sc <- c()
-    ## if(length(scs)&&grepl("@",scs)) {
-### NM manual: @ means first non-blank is a-z or A-Z.
-    ##     expressions.sc <- c(expressions.sc,paste0("!grepl(\"^ *[A-Za-z]\",",name.c1,")"))
-    ##     scs <- scs[!grepl("@",scs)]
-    ## }
-    
-    
-### other single character ignores can be any character - except for space
-    ## regstring <- "[[:punct:]]|[[:alpha:]]"
-
-    ## if(length(scs)&&any(grepl(regstring,scs))) {
-    ##     scs2 <- regmatches(scs,regexpr(regstring,scs))
-    ##     expressions.sc <- c(expressions.sc,paste0("!grepl('^[",scs2,"]',`",name.c1,"`)"))
-    ##     scs <- scs[!grepl(regstring,scs)]
-    ## }
-
-    ## if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
 
     
     ## translating expression-style ones
