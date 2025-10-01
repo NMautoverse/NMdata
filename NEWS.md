@@ -7,7 +7,32 @@
   lower limit, the initial value and the upper limit for a single
   parameter must be on the same line.
 
-* `NMreadInits()` can read prior parameters like `$THETAP`, `$THETAPV`, etc.
+* `NMreadInits()` can read prior parameters like `$THETAP`,
+  `$THETAPV`, etc.
+  
+* `NMreadInits()` adds a `SAME` (0/1) column to parameter table. 
+
+* `fnAppend()` can now both append and prepend strings to file
+  names. See the new `position` argument which defaults to `"append"`.
+
+* New function, `dtapply()` takes a vector or a list (like
+  `lapply()`), runs a function (like `lapply()`), and returns a
+  `data.table` with column containing values or names of character
+  vector or list in addition to columns with function results.
+
+* `1applydt()` takes a data.table, runs a function in subsets (as
+  defined by a `by` column), returns a list. This is because
+  `dt[i,j,by]` only works if all subsets defined by `by` returns
+  compatible lists. `lapplydt()` works anyway, even for other
+  structures like plots.
+
+## Other Improvements
+* `fnAppend()` gains support for modifying strings like ending in
+  dots, like `string...`
+
+## Bugfixes
+* `NMreadFilters()` would classify single-character filters as accept
+  statements. Fixed.
 
 # NMdata 0.2.1
 
