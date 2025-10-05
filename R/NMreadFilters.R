@@ -53,9 +53,10 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
 ### getting rid of single char conditions
     text3 <- gsub("(?<![[:alnum:]])IGN *=* *[^ (+=]","",perl=TRUE,text3)
     
+#### any.accepts, any.ignores, and type.condition only relate to expression-type conditions. ACCEPT can be combined with single-character ignore.
     ## check if IGNORE or ACCEPT are found. If both found, it is an error. 
     any.accepts <- any(grepl("ACCEPT",text3))
-    any.ignores <- any(grepl("IGN",text3))||length(conds.sc)
+    any.ignores <- any(grepl("IGN",text3)) ##||length(conds.sc)
 #### this looks wrong. Why return data if nothing found? Seems like
 #### empty set of filters should be returned.
     ## if no filters found, just return data as is
@@ -97,7 +98,7 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
         dt.filters <- rbind(
             dt.filters
            ,
-            data.table(type=type.condition,class="single-char",cond=scs.all)
+            data.table(type="IGN",class="single-char",cond=scs.all)
         )
     }
     if(length(conds.char)){
