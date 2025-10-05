@@ -7,7 +7,7 @@
 lapplydt(data, by, fun, drop.null = FALSE)
 }
 \arguments{
-\item{data}{Data set to process.}
+\item{data}{Data set to process. Must be a data.frame-like structure.}
 
 \item{by}{Column to split data by.}
 

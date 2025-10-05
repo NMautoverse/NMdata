@@ -4,7 +4,15 @@
 \alias{dtapply}
 \title{Apply function and return a data.table}
 \usage{
-dtapply(X, FUN, value.names = NULL, element.name = "element", fill = TRUE, ...)
+dtapply(
+  X,
+  FUN,
+  value.names = NULL,
+  element.name = "element",
+  fill = TRUE,
+  as.fun,
+  ...
+)
 }
 \arguments{
 \item{value.names}{If supplied, setnames will be run on each element returned by lapply wit value.names as the `new` argument.}
