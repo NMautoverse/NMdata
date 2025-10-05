@@ -544,7 +544,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
             
             data.input.full[,(col.row.merge):=.I]
 ### we need to know what input rows passed the filters. It's not enough to filter and end up with a subset of data. This should be done above where we for now filter the data. Add the row counter up there. Apply filter, then cbind the rows counter column to output. In case !recover.rows, only keep filtered input.
-            data.input <- NMapplyFilters(data.input.full,file=file,as.fun="data.table",quiet=TRUE)
+            data.input <- NMapplyFilters(data=data.input.full,file=file,as.fun="data.table",quiet=TRUE)
 ### Even though we include all rows from input, the filters have been
 ### used to merge with output data, so we attach the filters to
 ### NMinfo.

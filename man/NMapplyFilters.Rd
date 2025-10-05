@@ -4,7 +4,7 @@
 \alias{NMapplyFilters}
 \title{Translate filters in Nonmem and apply to data}
 \usage{
-NMapplyFilters(data, file, text, lines, invert = FALSE, as.fun, quiet)
+NMapplyFilters(data, file, lines, filters, invert = FALSE, as.fun, quiet)
 }
 \arguments{
 \item{data}{An input data object. Could be read with NMreadCsv or
@@ -13,8 +13,6 @@ NMscanInput.}
 \item{file}{Path to mod/lst file. Only one of file, text, or lines to be
 given. See ?NMreadSection for understanding when to use, file, text, or
 lines.}
-
-\item{text}{The mod/lst as characters.}
 
 \item{lines}{The mod/lst as character, line by line.}
 

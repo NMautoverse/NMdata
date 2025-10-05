@@ -92,12 +92,17 @@ test_that("single-char ignore",{
     file.lst <- "testData/nonmem/estim_debug.lst"
 
     ## inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
-    res <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)fnExtension(x,".ctl"))
+    res <- NMscanInput(file=file.lst,apply.filters=T,file.mod=function(x)fnExtension(x,".ctl"))
     expect_equal(nrow(res),98)
     
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(F){
+        ref <- readRDS(fileRef)
+        NMinfo(res,"input.filters")
+        NMinfo(ref,"input.filters")
+        }
 })
 
 

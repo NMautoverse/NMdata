@@ -54,6 +54,19 @@ test_that("basic",{
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
     ## data.table(attributes(readRDS(fileRef))$meta$variables$variable,attributes(res1)$meta$variables$variable)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        filters.ref <- NMinfo(ref)$input.filters
+        filters.res <- NMinfo(res)$input.filters
+
+        filters.ref
+        filters.res
+filters.ref$R
+        filters.res$R
+        
+        res
+        }
 })
 
 
@@ -68,7 +81,8 @@ test_that("Modifications to column names in $INPUT",{
     res1 <- NMscanData(file=file.lst, check.time = FALSE, merge.by.row=FALSE, quiet=T)
 
     res <- list(
-        NMinfo(res1,"input.colnames"),
+        NMinfo(res1,"input.colnames")
+       ,
         NMinfo(res1,"columns"),
         colnames(res1)
     )
@@ -76,6 +90,9 @@ test_that("Modifications to column names in $INPUT",{
     expect_equal_to_reference(res,fileRef,version=2)
     ## without meta
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
+    if(F){
+        ref <- readRDS(fileRef)
+        }
 
 })
 
@@ -719,6 +736,12 @@ test_that("A filter without operator",{
     expect_equal_to_reference(
         res1,fileRef,version=2
     )
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        NMinfo(ref)$input.filters
+        NMinfo(res1)$input.filters
+}
     
 })
 
@@ -777,6 +800,11 @@ test_that("redundant output",{
     )
 
     ## inp1 <- NMscanInput(file=file.lst)
+    if(F){
+        ref <- readRDS(fileRef)
+        NMinfo(ref,"input.filters")
+        NMinfo(res1,"input.filters")
+}
     
 }
 )
