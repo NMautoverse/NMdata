@@ -9,7 +9,7 @@
 ##' is because the input is a data.table.
 ##'
 ##' 
-##' @param data Data set to process.
+##' @param data Data set to process. Must be a data.frame-like structure. 
 ##' @param by Column to split data by.
 ##' @param fun function to pass to `lapply()`.
 ##' @param drop.null If some subsets return NULL, drop the empty

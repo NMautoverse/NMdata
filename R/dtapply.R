@@ -18,8 +18,10 @@
 ### examples
 ## NMsim:::dtapply(setNames(1:4,letters[1:4]),sqrt)
 
-dtapply <- function(X,FUN,value.names=NULL,element.name="element",fill=TRUE,...){
+dtapply <- function(X,FUN,value.names=NULL,element.name="element",fill=TRUE,as.fun,...){
 
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+    
     name <- NULL
 
     nms.x <- names(X)
@@ -48,10 +50,10 @@ dtapply <- function(X,FUN,value.names=NULL,element.name="element",fill=TRUE,...)
         res.list[[I]]
     })
     
-
     res <- rbindlist(res.list,fill=fill)
-
+  
     setnames(res,"name",element.name)
     setcolorder(res,element.name)
-    res
+
+    as.fun(res)
 }

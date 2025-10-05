@@ -1,7 +1,6 @@
-
-
 context("lapplydt")
 
+NMdataConf(reset=TRUE)
 
 test_that("basic",{
     fileRef <- "testReference/lapplydt_01.rds"
