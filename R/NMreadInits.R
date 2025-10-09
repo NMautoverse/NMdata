@@ -172,12 +172,12 @@ count_ij <- function(res){
         
         this.bsize <- 1
 
-        if(res[parnum==parcount,unique(inblock)==TRUE]){
+        if(res[parnum==parcount,unique(inblock)==TRUE&all(blocksize>1)]){
             ## assign i and j to all
             this.parblock <- res[parnum==parcount,unique(parblock)]
             this.res <- res[ parblock==this.parblock  & type.elem%in%c("init","lower","upper")]
             this.bsize <- this.res[,unique(blocksize)]
-
+            
             this.dt.ij <- data.table(parnum=parcount+seq(0,triagSize(this.bsize)-1),
                                      i=itriag(this.bsize,istart=icount),
                                      j=jtriag(this.bsize,istart=icount))

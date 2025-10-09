@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMapplyFilters.R
 \name{NMapplyFilters}
 \alias{NMapplyFilters}
-\title{Translate filters in Nonmem and apply to data}
+\title{Translate Nonmem filters to R code and apply to data}
 \usage{
 NMapplyFilters(data, file, lines, filters, invert = FALSE, as.fun, quiet)
 }
@@ -10,33 +10,41 @@ NMapplyFilters(data, file, lines, filters, invert = FALSE, as.fun, quiet)
 \item{data}{An input data object. Could be read with NMreadCsv or
 NMscanInput.}
 
-\item{file}{Path to mod/lst file. Only one of file, text, or lines to be
-given. See ?NMreadSection for understanding when to use, file, text, or
-lines.}
+\item{file}{Path to mod/lst file. Only one of file or lines
+to be given. See `?NMreadSection` for understanding when to use,
+file, or lines. Only used when `filters` not provided.}
 
 \item{lines}{The mod/lst as character, line by line.}
 
-\item{invert}{Invert the filters? This means read what Nonmem would
-disregard, and disregard what Nonmem would read.}
+\item{filters}{A `data.frame` with filters as returned by
+`NMreadFilters()`. If not supplied, filters will be read from
+`file`/`lines`.}
 
-\item{as.fun}{The default is to return data as a data.frame. Pass a function
-(say tibble::as_tibble) in as.fun to convert to something else. If
-data.tables are wanted, use as.fun="data.table". The default can be
-configured using NMdataConf.}
+\item{invert}{Invert the filters? This means read what Nonmem
+would disregard, and disregard what Nonmem would read.}
 
-\item{quiet}{Don't report information along the way if no warnings or
-errors. Default is FALSE.}
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function (say tibble::as_tibble) in as.fun to convert to
+something else. If data.tables are wanted, use
+as.fun="data.table". The default can be configured using
+NMdataConf.}
+
+\item{quiet}{Don't report information along the way if no warnings
+or errors. Default is FALSE.}
 }
 \value{
 data with filters applied
 }
 \description{
-Translate filters in Nonmem and apply to data
+Translate Nonmem filters to R code and apply to data
 }
 \details{
-This is not bulletproof. Nested conditions are not supported altogether.
+This is not bulletproof. Nested conditions are not
+    supported altogether.
 }
 \seealso{
+NMreadFilters
+
 Other Nonmem: 
 \code{\link{NMextractText}()},
 \code{\link{NMgenText}()},
