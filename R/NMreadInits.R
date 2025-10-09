@@ -426,7 +426,9 @@ initsToExt <- function(elements){
     FIX <- NULL
     iblock <- NULL
     init <- NULL
+    init.char <- NULL
     init.num <- NULL
+    init.num.tmp <- NULL
     i <- NULL
     j <- NULL
     lower <- NULL
@@ -434,6 +436,7 @@ initsToExt <- function(elements){
     par.type <- NULL
     parameter <- NULL
     par.name <- NULL
+    SAME <- NULL
     type.elem <- NULL
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks

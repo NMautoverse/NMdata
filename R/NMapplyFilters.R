@@ -33,9 +33,10 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
     
     . <- NULL
     cond <- NULL
+    type <- NULL
     variable <- NULL
     value <- NULL
-    type <- NULL
+
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
     
