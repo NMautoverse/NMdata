@@ -20,11 +20,18 @@
   `data.table` with column containing values or names of character
   vector or list in addition to columns with function results.
 
-* `1applydt()` takes a data.table, runs a function in subsets (as
+* `lapplydt()` takes a data.table, runs a function in subsets (as
   defined by a `by` column), returns a list. This is because
   `dt[i,j,by]` only works if all subsets defined by `by` returns
   compatible lists. `lapplydt()` works anyway, even for other
   structures like plots.
+  
+* Support for application of data filters on columns that contain
+  missing values.  `NMapplyFilters()` is an internal function that
+  runs these filters on (R) data sets. This used to throw warnings
+  when columns with missing values were being used in the
+  filters. This situation is now handled. A message is still thrown to
+  encourage the user to use a row identifier. 
 
 ## Other Improvements
 * `fnAppend()` gains support for modifying strings like ending in

@@ -21,3 +21,8 @@ NMexec("../nonmem/xgxr053.mod",sge=F)
 
 ## PREDPP model
 NMexec("../nonmem/pred030.mod",sge=FALSE)
+
+## IGNORE on column with NA
+NMexec("../nonmem/xgxr054.mod",sge=FALSE)
+
+NMexec("../nonmem/xgxr055.mod",sge=FALSE)

@@ -44,7 +44,8 @@ test_that("basic",{
     file.lst <- "testData/nonmem/xgxr001.lst"
     ## NMreadSection(NMdata_filepath("examples/nonmem/run001.lst"),section="DATA")
 
-    res <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE)
+    res <- NMscanData(file=file.lst, quiet=T, order.columns = F,
+                      merge.by.row=FALSE, check.time = FALSE)
     ## res2 <- NMscanData(file=file.lst, quiet=T, order.columns = F, merge.by.row=FALSE, check.time = FALSE,rep.count=T)
     ## dim(res)
 
@@ -62,11 +63,11 @@ test_that("basic",{
 
         filters.ref
         filters.res
-filters.ref$R
+        filters.ref$R
         filters.res$R
         
         res
-        }
+    }
 })
 
 
@@ -92,7 +93,7 @@ test_that("Modifications to column names in $INPUT",{
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
     if(F){
         ref <- readRDS(fileRef)
-        }
+    }
 
 })
 
@@ -741,7 +742,7 @@ test_that("A filter without operator",{
         ref <- readRDS(fileRef)
         NMinfo(ref)$input.filters
         NMinfo(res1)$input.filters
-}
+    }
     
 })
 
@@ -804,7 +805,7 @@ test_that("redundant output",{
         ref <- readRDS(fileRef)
         NMinfo(ref,"input.filters")
         NMinfo(res1,"input.filters")
-}
+    }
     
 }
 )
@@ -1038,6 +1039,7 @@ test_that("csv vs rds vs fst",{
 })
 
 test_that("inside lappy",{
+    
 ### there are issues running NMdata functions in lapply - probably due to getArgs
     lsts <- c(    "testData/nonmem/xgxr014.lst",    "testData/nonmem/xgxr032.lst")
 
@@ -1059,3 +1061,27 @@ test_that("inside lappy",{
 })
 
 
+
+#### 
+## res <- NMscanData("testData/nonmem/xgxr054.mod") IGNORE=(CWNA.LE.0)
+
+
+test_that("NMtran seems treat NA as zero",{
+
+    fileRef <- "testReference/NMscanData_33.rds"
+    
+    res1 <- expect_message(NMscanData("testData/nonmem/xgxr054.mod",merge.by.row = F))
+    NMinfo(res1,"input.filters")
+    ## IGNORE=(CWNA.LT.0)
+    res2 <- expect_message(NMscanData("testData/nonmem/xgxr055.mod",merge.by.row = F))
+    NMinfo(res2,"input.filters")
+
+    
+    
+    res <- dims(
+        res1,res2
+    )
+
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})

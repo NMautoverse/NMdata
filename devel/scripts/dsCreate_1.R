@@ -140,6 +140,7 @@ xgxr2_flag0_nocolnames.csv,2 FLAG==0 no colnames in csv
 xgxr3.csv,duplic column names
 xgxr4.csv,1 without ROW
 xgxr5.csv,2 char and .
+xgxr6.csv,2 CWNA with NAs
 ")
 
 ## dir.testdata <- file.data.test()##"testData/data/"
@@ -324,4 +325,21 @@ nmcode <- NMwriteData(pk2,
 
 
 ### Section end: Version with AMT in microgram
+
+
+#### Section start: NA's in numeric values, filters to be tested on them ####
+
+d6 <- readRDS(file.data.test("xgxr2.rds"))
+d6[,CWNA:=as.numeric(NOMTIME)]
+d6[CWNA%in%c(0,.5),CWNA:=NA]
+d6 <- NMorderColumns(d6)
+
+## d6
+fn.data <- "xgxr6.csv"
+dt.data[file.data==fn.data,
+        nmCode:=list(list(
+            NMwriteData(d6,file=file.data.test(fn.data),write.csv=writeOutput,write.rds=writeOutput,args.rds=list(version=2))
+        ))]
+
+### Section end: NA's in numeric values, filters to be tested on them
 
