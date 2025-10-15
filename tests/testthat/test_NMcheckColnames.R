@@ -7,12 +7,16 @@ test_that("basic",{
 
     file.lst <- system.file("examples/nonmem/xgxr001.lst" ,package="NMdata")
 
-    ## lines.data <- NMreadSection(file=file.lst,section="DATA",keep.name=FALSE,keep.comments=FALSE,keep.empty=FALSE)
-    
     res1 <- NMcheckColnames(file=file.lst,quiet=TRUE)
-    ## dim(res1)
 
     expect_equal_to_reference(res1,fileRef,version=2)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref
+        res1
+    }
+    
 })
 
 test_that("results as data.frame",{
@@ -24,5 +28,13 @@ test_that("results as data.frame",{
     res1 <- NMcheckColnames(file=file.lst,as.fun=as.data.frame, quiet=TRUE)
 
     expect_equal_to_reference(res1,fileRef,version=2)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref
+        res1
+    }
+
+    
 })
 

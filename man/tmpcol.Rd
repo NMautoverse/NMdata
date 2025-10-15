@@ -9,6 +9,7 @@ tmpcol(
   names = NULL,
   base = "tmpcol",
   i1 = 1,
+  sep = "",
   max.it = 100,
   prefer.plain = TRUE
 )
@@ -25,6 +26,8 @@ name is not already in use.}
 
 \item{i1}{Where to start the search for a smallest available index
 number to add to `base` if necessary.}
+
+\item{sep}{Delimitor to use when appending intergers. Default is none.}
 
 \item{max.it}{Maximum number of iterations on element name.}
 

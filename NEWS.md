@@ -32,6 +32,9 @@
   when columns with missing values were being used in the
   filters. This situation is now handled. A message is still thrown to
   encourage the user to use a row identifier. 
+  
+* `tmpcol()` adds support for multiple variables, providing unique
+  variable names for all, taking into account existing variables.
 
 ## Other Improvements
 * `fnAppend()` gains support for modifying strings like ending in

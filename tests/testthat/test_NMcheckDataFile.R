@@ -54,6 +54,10 @@ test_that("Using control stream file",{
         ref <- readRDS(fileRef)
         ref$datafile
         res1a$datafile
+    
+        ref$input.colnames
+        res1a$input.colnames
+        
     }
     
     ## res.ref <- readRDS(fileRef)

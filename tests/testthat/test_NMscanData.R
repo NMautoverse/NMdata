@@ -58,6 +58,10 @@ test_that("basic",{
 
     if(FALSE){
         ref <- readRDS(fileRef)
+
+        NMinfo(ref)$input.colnames
+        NMinfo(res)$input.colnames
+
         filters.ref <- NMinfo(ref)$input.filters
         filters.res <- NMinfo(res)$input.filters
 
@@ -97,6 +101,7 @@ test_that("Modifications to column names in $INPUT",{
 
 })
 
+### BBW seems to be translated independently of translate.input
 test_that("No translation of column names in $INPUT",{
 
     fileRef <- "testReference/NMscanData_02b.rds"
@@ -109,6 +114,13 @@ test_that("No translation of column names in $INPUT",{
 
     dt.cnames <- data.table(colnames(res1),colnames(res2))
     expect_equal_to_reference(dt.cnames,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        dt.cnames
+    }
+
 
 })
 
@@ -605,10 +617,28 @@ test_that("Duplicate columns in input data",{
     res <- expect_warning(
         NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE, quiet=T)
     )
+    ## res <- NMscanData(file=file.lst,merge.by.row=FALSE,check.time = FALSE, quiet=T)
+    
     fix.time(res)
     ## names(res$row)
     
     expect_equal_to_reference(res,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        dims(res,ref)
+        NMinfo(ref)
+        NMinfo(res)
+
+        NMinfo(ref,"input.colnames")
+        NMinfo(res,"input.colnames")
+
+        NMinfo(ref,"details")
+        NMinfo(res,"details")
+
+        
+    }
+
 })
 
 
@@ -851,6 +881,7 @@ test_that("$INPUT copy",{
     
     file.lst.1 <- "testData/nonmem/xgxr022.lst"
     res.1 <- NMscanData(file.lst.1, quiet=T)
+    ## res.1 <- NMscanData(file.lst.1, quiet=T,translate.input = T)
 
     ## NMinfo(res,"input.colname")
     NMinfo(res.1,"input.colnames")
@@ -861,6 +892,9 @@ test_that("$INPUT copy",{
 
     expect_equal(ncol(res.1)-ncol(res.2),1)
     expect_equal(setdiff(colnames(res.1),colnames(res.2)),c("COMP","EFF0"))
+    expect_equal(
+        setdiff(colnames(res.2),colnames(res.1))
+                ,c("eff0"))
 
     cols.1 <- NMinfo(res.1,"columns")
     cols.2 <- NMinfo(res.2,"columns")

@@ -73,7 +73,7 @@ test_that("single = filter",{
 
 
 test_that("Duplicate columns in input data",{
-    fileRef <- "testReference/NMscanInput3.rds"
+    fileRef <- "testReference/NMscanInput_03.rds"
     ## file.lst <- system.file("examples/nonmem/xgxr015.lst", package="NMdata")
     file.lst <- "testData/nonmem/xgxr015.lst"
 
@@ -82,8 +82,12 @@ test_that("Duplicate columns in input data",{
 
     ## load_all("../../")
     ## debugonce(NMscanInput)
-    inpdat <- expect_warning(NMscanInput(file=file.lst))
+    res <- expect_warning(
+        NMscanInput(file=file.lst)
+    )
     
+    fix.time(res)
+    expect_equal_to_reference(res,fileRef,version=2)
 })
 
 test_that("single-char ignore",{
@@ -102,7 +106,7 @@ test_that("single-char ignore",{
         ref <- readRDS(fileRef)
         NMinfo(res,"input.filters")
         NMinfo(ref,"input.filters")
-        }
+    }
 })
 
 
@@ -201,13 +205,17 @@ test_that("ID only from pseudonym",{
     inp <- fix.time(inp)    
     
     expect_equal_to_reference(inp,fileRef,version=2)
-    expect_equal(setdiff(colnames(inp),c(colnames(inp2))),c("DV","ID"))
+    expect_equal(
+        setdiff(colnames(inp),c(colnames(inp2)))
+       ,c("DV","ID"))
 
     if(F){
         ref <- readRDS(fileRef)
         ref
         inp
-        }
+        NMinfo(inp,"input.colnames")
+        NMinfo(ref,"input.colnames")
+    }
     
     inp3 <- NMscanInput(file.mod,translate=T,recover.cols = FALSE)
     expect_equal(colnames(inp),colnames(inp3))
@@ -288,19 +296,75 @@ test_that("Combinations of translate and recover.cols",{
     all.res <- lapply(all.res,fix.time)
 
     expect_equal_to_reference(all.res,fileRef,version=2)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref[[1]]
+        all.res[[1]]
+    }
+    
 })
 
-if(F){ ## while waiting for 054
-    test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
-        NMdataConf(reset=TRUE)
-        fileRef <- "testReference/NMscanInput_14.rds"
-        file.mod <- "testData/nonmem/xgxr054.mod"
+test_that("Copy pseudonym when translate=T and recover.cols=TRUE",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_14.rds"
+    file.mod <- "testData/nonmem/xgxr054.mod"
 
-        res1 <-
-            NMscanInput(file=file.mod,file.mod=identity,apply.filters = F,as.fun="data.table",
-                        translate=TRUE,recover.cols=FALSE)
+    res1 <-
+        NMscanInput(file=file.mod,file.mod=identity,
+                    apply.filters = FALSE,as.fun="data.table",
+                    translate=TRUE,recover.cols=FALSE)
+    fix.time(res1)
+    ## res1
+    expect_equal_to_reference(res1,fileRef,version=2)
 
-        ## res1
-        expect_equal_to_reference(res1,fileRef,version=2)
-    })
-}
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res1
+    }
+})
+
+
+
+test_that("The first DV is renamed to DV_DROP. DOSE=DV results in DV and DOSE.",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_15.rds"
+
+    ## $INPUT ROW ID NOMTIME TIME EVID CMT AMT DV=DROP FLAG STUDY
+    ## BLQ CYCLE=DROP DOSE=DV PART PROFDAY PROFTIME BBW eff0
+
+    file.mod <- "testData/nonmem/xgxr057.mod"
+
+    res <-
+        NMscanInput(file=file.mod,apply.filters = T,as.fun="data.table")
+    fix.time(res)
+    colnames(res)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+
+    if(FALSE){
+        ref <- readRDS(fileRef)
+        ref
+    }
+
+})
+
+test_that("overlap with data file",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_16.rds"
+
+    ## like 057, but with overlap with data file
+    file.mod <- "testData/nonmem/xgxr058.mod"
+
+    res <- expect_warning(
+        NMscanInput(file=file.mod,apply.filters = T,as.fun="data.table")
+    )
+    fix.time(res)
+    
+    colnames(res)
+    head(res)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+
+})
