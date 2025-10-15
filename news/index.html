@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.909</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.911</span>
       </span>
     </div>
 
@@ -92,6 +92,7 @@
 <li><p>New function, <code><a href="../reference/dtapply.html">dtapply()</a></code> takes a vector or a list (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), runs a function (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), and returns a <code>data.table</code> with column containing values or names of character vector or list in addition to columns with function results.</p></li>
 <li><p><code><a href="../reference/lapplydt.html">lapplydt()</a></code> takes a data.table, runs a function in subsets (as defined by a <code>by</code> column), returns a list. This is because <code>dt[i,j,by]</code> only works if all subsets defined by <code>by</code> returns compatible lists. <code><a href="../reference/lapplydt.html">lapplydt()</a></code> works anyway, even for other structures like plots.</p></li>
 <li><p>Support for application of data filters on columns that contain missing values. <code><a href="../reference/NMapplyFilters.html">NMapplyFilters()</a></code> is an internal function that runs these filters on (R) data sets. This used to throw warnings when columns with missing values were being used in the filters. This situation is now handled. A message is still thrown to encourage the user to use a row identifier.</p></li>
+<li><p><code><a href="../reference/tmpcol.html">tmpcol()</a></code> adds support for multiple variables, providing unique variable names for all, taking into account existing variables.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-2-2">Other Improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-2"></a></h3>
