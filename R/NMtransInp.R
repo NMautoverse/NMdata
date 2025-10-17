@@ -158,8 +158,9 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
         ## dt.cols[is.na(nonmem)&!is.na(copy.right),nonmem:=copy.right]
         ## dt.cols[is.na(nonmem)&!is.na(copy.1),nonmem:=copy.1]
 
-### argument to exclude dropped variables? 
+        ### drop means NONMEM doesnt see them
         dt.cols[drop==TRUE,nonmem:=NA]
+### argument to exclude dropped variables from result?  
         
         if(translate){
             ## dt.cols[,result:=sub(".*=(.*)","\\1",result)]
@@ -324,6 +325,10 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
 #### Reduce to unique column names
         
         ## data <- data[,dt.cols[!is.na(result),col.data],with=FALSE]
+        if(translate){
+            dt.cols[,file.only:=is.na(str.input)]
+            setorder(dt.cols,file.only,i.input,i.data)
+        }
         data <- data[,dt.cols[!is.na(result)&!is.na(i.data),i.data],with=FALSE]
         setnames(data,dt.cols[!is.na(result)&!is.na(i.data),result])
 
