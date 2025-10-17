@@ -4,7 +4,14 @@
 \alias{NMtransInp}
 \title{translate the column names according to the $INPUT section of a control stream}
 \usage{
-NMtransInp(data, file, translate = TRUE, recover.cols = TRUE, quiet = FALSE)
+NMtransInp(
+  data,
+  file,
+  lines,
+  translate = TRUE,
+  recover.cols = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{data}{the data to translate}

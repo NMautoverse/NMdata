@@ -161,6 +161,14 @@ test_that("CYCLE=DROP",{
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        nm1
+    }
+
+    
 })
 
 
@@ -207,12 +215,13 @@ test_that("ID only from pseudonym",{
     expect_equal_to_reference(inp,fileRef,version=2)
     expect_equal(
         setdiff(colnames(inp),c(colnames(inp2)))
-       ,c("DV","ID"))
+       ,c("ID","DV"))
 
     if(F){
         ref <- readRDS(fileRef)
         ref
         inp
+        inp2
         NMinfo(inp,"input.colnames")
         NMinfo(ref,"input.colnames")
     }
@@ -229,6 +238,7 @@ test_that("Missing control stream",{
 })
 
 test_that("apply.filters=F and recover.rows=FALSE",{
+    NMdataConf(as.fun="data.table")
 
     fileRef <- "testReference/NMscanInput_11.rds"
     ##file.lst <- system.file("examples/nonmem/xgxr002.lst",package="NMdata")
@@ -242,6 +252,13 @@ test_that("apply.filters=F and recover.rows=FALSE",{
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        nm1
+    }
+
 })
 
 test_that("Space CYCLE =DROP",{
@@ -257,6 +274,13 @@ test_that("Space CYCLE =DROP",{
     fix.time(res)
     nm1 <- NMinfo(res)
     expect_equal_to_reference(nm1,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        nm1
+    }
+
 })
 
 
@@ -301,6 +325,9 @@ test_that("Combinations of translate and recover.cols",{
         ref <- readRDS(fileRef)
         ref[[1]]
         all.res[[1]]
+
+        NMinfo(ref[[3]])
+        NMinfo(all.res[[3]])
     }
     
 })
@@ -345,7 +372,11 @@ test_that("The first DV is renamed to DV_DROP. DOSE=DV results in DV and DOSE.",
 
     if(FALSE){
         ref <- readRDS(fileRef)
+        NMinfo(ref,"input.colnames")
+        NMinfo(res,"input.colnames")
+        res
         ref
+        res
     }
 
 })
@@ -356,6 +387,38 @@ test_that("overlap with data file",{
 
     ## like 057, but with overlap with data file
     file.mod <- "testData/nonmem/xgxr058.mod"
+
+    res <- expect_warning(
+        NMscanInput(file=file.mod,apply.filters = T,as.fun="data.table")
+    )
+    fix.time(res)
+    
+    colnames(res)
+    head(res)
+
+    expect_equal_to_reference(res,fileRef,version=2)
+
+    if(F){
+        ref <- readRDS(fileRef)
+
+        compareCols(ref,res)
+        colnames(ref)
+        colnames(res)
+        head(ref)
+        head(res)
+        NMinfo(ref,"input.colnames")
+        NMinfo(res,"input.colnames")
+    }
+
+})
+
+
+test_that("overlap with data file",{
+    NMdataConf(reset=TRUE)
+    fileRef <- "testReference/NMscanInput_17.rds"
+
+    ## like 057, but with overlap with data file
+    file.mod <- "testData/nonmem/xgxr059.mod"
 
     res <- expect_warning(
         NMscanInput(file=file.mod,apply.filters = T,as.fun="data.table")

@@ -28,7 +28,9 @@
 
 ## test DV=OBS, DROP=OBS
 
-NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
+## compare result to col.data? How about copied variables? They should be OK.
+
+NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     
 #### Section start: Dummy variables, only not to get NOTE's in package checks ####
 
@@ -62,14 +64,24 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
         warning("Duplicate column names in input data file.")
     }
     nminfo.data.0 <- NMinfoDT(data)
+
+    reserved.labels <- c(
+        "ID", "L2", "DV", "MDV",
+        "MRG_", "RAW_", "RPT_",
+        "TIME", "EVID", "AMT", "RATE", "SS", "II", "ADDL", "CMT", "PCMT", "CALL", "CONT",
+        "DATE", "DAT1", "DAT2", "DAT3", "L1")
     
 #### this should be supported now
     ##    if( !translate && !recover.cols ) {messageWrap("recover.rows=FALSE is only allowed when translate=TRUE.",fun.msg=stop)}
+
+    if(missing(file)) file <- NULL
+    if(missing(lines)) lines <- NULL
+    lines0 <- lines
     
-    ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.    
-    lines <- NMreadSection(file,section="INPUT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
+    ## According to NM manual IV-1, $INPUT and $INFILE are the same thing.
+    lines <- NMreadSection(file,lines,section="INPUT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
     if(is.null(lines)) {
-        lines <- NMreadSection(file,section="INPT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
+        lines <- NMreadSection(file,lines0,section="INPT",keep.name=FALSE,keep.comments=FALSE,clean.spaces=TRUE)
     }
     if(is.null(lines)) {stop("Could not find $INPUT or $INPT section in control stream. Cannot interpret data. Is file really the path to a valid nonmem control stream?")}
 
@@ -104,10 +116,15 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
         ##     ## result is exactly what?
         ##    ,result:=str.input]
         ## dt.cols[,result:=str.input]
-        
-        dt.cols[,drop:=grepl("= *(DROP|SKIP)",str.input)]
-        dt.cols[,result:=sub("(.*)= *(DROP|SKIP)","\\1",str.input)]
+        dt.cols[,result:=str.input]
 
+        dt.cols[,drop:=FALSE]
+        dt.cols[grepl("= *(DROP|SKIP)",str.input),drop:=TRUE]
+        dt.cols[grepl("(DROP|SKIP) *=",str.input),drop:=TRUE]
+        dt.cols[drop==TRUE,result:=sub("= *(DROP|SKIP)","",result)]
+        dt.cols[drop==TRUE,result:=sub("(DROP|SKIP) *=","",result)]
+
+        
 #### issue: nms1 should be called nonmem. However, it should be reflective of whats available in Nonmem. 
         
 ### define pseudonyms
@@ -116,26 +133,46 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
         ## this has to come right after handling DROP
         dt.cols[,copy.left := NA_character_]
         dt.cols[,copy.right:= NA_character_]
+        dt.cols[,copy := FALSE]
+        dt.cols[grepl(".*=.*",result),copy := TRUE]
+        expr.reserved <- paste0("(",paste(reserved.labels,collapse="|"),")")
+        ## dt.cols[copy==TRUE&grepl(pattern=expr.reserved,result),copy1:=sub(paste0("\\(",expr.reserved,"\\)")),"\\1"]
+        ## dt.cols[copy==TRUE&grepl(pattern=expr.reserved,result),reserved.found:=sub(paste0("\\(",expr.reserved,"\\)"),"\\1")]
+        
+
         dt.cols[grepl(".*=.*",result),copy.left := sub("(.*)=(.*)","\\1",result)]
         dt.cols[grepl(".*=.*",result),copy.right:= sub("(.*)=(.*)","\\2",result)]
-
+        dt.cols[,copy.1:=copy.right]
+        dt.cols[,copy.2:=copy.left]
+        dt.cols[copy==TRUE&grepl(pattern=expr.reserved,copy.left),(c("copy.1","copy.2")):=.(copy.left,copy.right)]
+        
+        dt.cols[copy==TRUE,result := copy.1]
+        dt.cols[is.na(nonmem)&!is.na(copy.1),result:=copy.1]
         
         ## this is the names as read in nonmem. Keep them for reporting.
-        dt.cols[,nonmem:=str.input]
+        ## dt.cols[,nonmem:=str.input]
+        dt.cols[,nonmem:=result]
         ## second/right is "main"
-        dt.cols[grepl(".*=.*",str.input),nonmem := sub("(.*) *= *(.*)","\\2",result)]
-        dt.cols[is.na(nonmem)&!is.na(copy.right),nonmem:=copy.right]
+        ## dt.cols[grepl(".*=.*",str.input),nonmem := sub("(.*) *= *(.*)","\\2",result)]
+        ## dt.cols[copy==TRUE,nonmem := copy.1]
+        ## dt.cols[is.na(nonmem)&!is.na(copy.right),nonmem:=copy.right]
+        ## dt.cols[is.na(nonmem)&!is.na(copy.1),nonmem:=copy.1]
 
+### argument to exclude dropped variables? 
+        dt.cols[drop==TRUE,nonmem:=NA]
         
         if(translate){
-            dt.cols[,result:=sub(".*=(.*)","\\1",result)]
+            ## dt.cols[,result:=sub(".*=(.*)","\\1",result)]
+            dt.cols[copy==TRUE,result:=copy.1]
         } else {
             dt.cols[,result:=col.data]
         }
-        if(!recover.cols) dt.cols[is.na(str.input),result:=NA]
+        if(!recover.cols) {
+            dt.cols[is.na(str.input),result:=NA]
+        }
 
         ##  copy/pseudonyms/synononyms            
-        dtc.copy <- dt.cols[!is.na(copy.left)&!is.na(copy.right)]
+        dtc.copy <- dt.cols[!is.na(copy.1)&!is.na(copy.2)]
         if(translate && nrow(dtc.copy)){
             ##apply(dtc.copy,1,function(x)
             ## dtc.copy
@@ -143,13 +180,16 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
                              dtc.copy[,.(
                                  col.data,
                                  str.input,
-                                 nonmem=copy.left,
-                                 result=ifelse(translate,copy.left,NA),
+                                 ## nonmem=copy.left,
+                                 nonmem=copy.2,
+                                 result=ifelse(translate,copy.2,NA),
                                  i.data,
                                  i.input,
                                  drop,
                                  copy.left,
-                                 copy.right)]
+                                 copy.right,
+                                 copy.1,
+                                 copy.2)]
                             ,fill=TRUE)
             
             
@@ -172,9 +212,9 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
         dt.drop <- dt.cols[drop==TRUE]
         dt.drop
         dt.nodrop.dup <- merge(dt.drop[,.(result)],
-                             dt.cols[!ROW%in%dt.drop[!is.na(str.input),ROW]]
-                            ,
-                             by="result")
+                               dt.cols[!ROW%in%dt.drop[!is.na(str.input),ROW]]
+                              ,
+                               by="result")
         if(nrow(dt.nodrop.dup)){
             dt.drop.dup <- dt.drop[result%in%dt.nodrop.dup[,result]]
             for(r in 1:nrow(dt.drop.dup)){
@@ -187,7 +227,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
 
 ### checks and modifications for unique naming
         if(translate){
-
+            
             if(dt.cols[,any(is.na(col.data)&!is.na(str.input))]){
                 if(!quiet){
                     messageWrap("More column names specified in Nonmem $INPUT than found in data file. The additional names have been disregarded.",fun.msg=warning)
@@ -213,7 +253,7 @@ NMtransInp <- function(data,file,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
             rows.dup <- dt.cols[
                 !is.na(str.input)][
                 duplicated(result)]
-                
+            
 
             ## new name to be unique for those with str.input
             if(nrow(rows.dup)){

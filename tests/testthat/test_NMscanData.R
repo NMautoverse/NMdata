@@ -891,7 +891,7 @@ test_that("$INPUT copy",{
     res.2 <- NMscanData(file.lst.2, quiet=T)
 
     expect_equal(ncol(res.1)-ncol(res.2),1)
-    expect_equal(setdiff(colnames(res.1),colnames(res.2)),c("COMP","EFF0"))
+    expect_equal(setdiff(colnames(res.1),colnames(res.2)),c("EFF0","COMP"))
     expect_equal(
         setdiff(colnames(res.2),colnames(res.1))
                 ,c("eff0"))
@@ -899,7 +899,7 @@ test_that("$INPUT copy",{
     cols.1 <- NMinfo(res.1,"columns")
     cols.2 <- NMinfo(res.2,"columns")
 
-    expect_equal(setdiff(cols.1$variable,cols.2$variable),c("COMP","EFF0"))
+    expect_equal(setdiff(cols.1$variable,cols.2$variable),c("EFF0","COMP"))
     expect_equal(setdiff(cols.2$variable,cols.1$variable),c("eff0"))
 
 })
@@ -939,6 +939,8 @@ test_that("Two firstonly, one full-length",{
         dims(ref,res)
         NMinfo(ref)$tables
         NMinfo(res)$tables
+        NMinfo(ref)$input.colnames
+        NMinfo(res)$input.colnames
 
     }
 })
@@ -1099,8 +1101,7 @@ test_that("inside lappy",{
 #### 
 ## res <- NMscanData("testData/nonmem/xgxr054.mod") IGNORE=(CWNA.LE.0)
 
-
-test_that("NMtran seems treat NA as zero",{
+test_that("NMtran seems to treat NA as zero",{
 
     fileRef <- "testReference/NMscanData_33.rds"
     
