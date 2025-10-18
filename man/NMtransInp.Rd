@@ -18,9 +18,9 @@ NMtransInp(
 
 \item{file}{the list file or control stream}
 
-\item{translate}{logical. Do translation according to Nonmem code
-or not? If not, an overview of column names in data and in
-Nonmem code is still returned with the data.}
+\item{translate}{Do translation according to Nonmem code or not
+(default `TRUE`)? If not, an overview of column names in data
+and in Nonmem code is still returned with the data.}
 
 \item{recover.cols}{recover columns that were not used in the
 NONMEM control stream? Default is TRUE. Can only be negative
@@ -35,5 +35,47 @@ data with column names translated as specified by nonmem
 }
 \description{
 translate the column names according to the $INPUT section of a control stream
+}
+\details{
+If `translate=FALSE`, data is returned with column names
+    as in data file (not informed by the control stream `$INPUT`
+    section). If `translate=TRUE`, `NMtransInp` renames and copies
+    columns as specified in `$INPUT`. This means that
+
+Renamed columns
+if the first column is called SUBJID in the data set but the control stream says `$INPUT ID...`, the first column in the resultin data set will be called `ID`, not `SUBJID`.
+
+## Copied columns
+
+if the first column is called SUBJID in the data set but the
+control stream says `$INPUT SUBJID=ID...`, the first column in the
+resultin data set will be called `ID`. `SUBJID` will be included
+to the right of the other variables defined in `$INPUT`. Normally,
+Nonmem should only allow copying if one of the created variable
+names is one of the reserved data labels, such as `ID`, `DV`,
+`AMT`, etc. `NMtransInp()` will prioritize the reserved labels and
+use those first, and put the non-recognized name to the right.
+
+Dropped columns
+
+Dropped columns are recreated. If the first column is called
+SUBJID in the data set but the control stream says `$INPUT ID=DROP
+ID=USUBJID2 ...`, the first column in the resulting data set is
+called `ID_DROP` and the second is called `ID`. `USUBJID2` will
+also be included as already described.
+
+Renaming of variables to get unique column names.
+
+With options to DROP variables, rename variables copy variables, and recover variables from the data set on file, there are many ways duplicate variable names can be introduced. NMtransInp is supposed to avoid duplicate column names. The way it does so, it prioritizes variables to keep their original name based on a few criteria.
+
+A variable defined in INPUT is prioritized. If one is dropped say
+and then introduced with a new variable, say `$INPUT DV=DROP
+OBS=DV`, you will get column names `DV_DROP`, `DV` and `OBS` (obs
+will come further to the right if more variables are defined in
+`$INPUT`). Also, say the data file now also contains a variable
+called DV further to the right that was never read by
+`$INPUT`. That variable will be included called `DV_FILE` because
+`DV` is already taken. If needed, variables will be numbered, say
+`DV_FILE`, `DV_FILE2`, etc.
 }
 \keyword{internal}

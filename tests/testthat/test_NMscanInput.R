@@ -430,4 +430,12 @@ test_that("overlap with data file",{
 
     expect_equal_to_reference(res,fileRef,version=2)
 
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        colnames(ref)
+        colnames(res)
+}
+
 })
