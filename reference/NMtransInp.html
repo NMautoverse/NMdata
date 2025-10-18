@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.911</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.912</span>
       </span>
     </div>
 
@@ -110,9 +110,9 @@
 
 
 <dt id="arg-translate">translate<a class="anchor" aria-label="anchor" href="#arg-translate"></a></dt>
-<dd><p>logical. Do translation according to Nonmem code
-or not? If not, an overview of column names in data and in
-Nonmem code is still returned with the data.</p></dd>
+<dd><p>Do translation according to Nonmem code or not
+(default `TRUE`)? If not, an overview of column names in data
+and in Nonmem code is still returned with the data.</p></dd>
 
 
 <dt id="arg-recover-cols">recover.cols<a class="anchor" aria-label="anchor" href="#arg-recover-cols"></a></dt>
@@ -130,6 +130,41 @@ when translate=FALSE.</p></dd>
     <p>data with column names translated as specified by nonmem
     control stream. Class same as for 'data' argument. Class
     data.table.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>If `translate=FALSE`, data is returned with column names
+    as in data file (not informed by the control stream `$INPUT`
+    section). If `translate=TRUE`, `NMtransInp` renames and copies
+    columns as specified in `$INPUT`. This means that</p>
+<p>Renamed columns
+if the first column is called SUBJID in the data set but the control stream says `$INPUT ID...`, the first column in the resultin data set will be called `ID`, not `SUBJID`.</p>
+<p>## Copied columns</p>
+<p>if the first column is called SUBJID in the data set but the
+control stream says `$INPUT SUBJID=ID...`, the first column in the
+resultin data set will be called `ID`. `SUBJID` will be included
+to the right of the other variables defined in `$INPUT`. Normally,
+Nonmem should only allow copying if one of the created variable
+names is one of the reserved data labels, such as `ID`, `DV`,
+`AMT`, etc. `NMtransInp()` will prioritize the reserved labels and
+use those first, and put the non-recognized name to the right.</p>
+<p>Dropped columns</p>
+<p>Dropped columns are recreated. If the first column is called
+SUBJID in the data set but the control stream says `$INPUT ID=DROP
+ID=USUBJID2 ...`, the first column in the resulting data set is
+called `ID_DROP` and the second is called `ID`. `USUBJID2` will
+also be included as already described.</p>
+<p>Renaming of variables to get unique column names.</p>
+<p>With options to DROP variables, rename variables copy variables, and recover variables from the data set on file, there are many ways duplicate variable names can be introduced. NMtransInp is supposed to avoid duplicate column names. The way it does so, it prioritizes variables to keep their original name based on a few criteria.</p>
+<p>A variable defined in INPUT is prioritized. If one is dropped say
+and then introduced with a new variable, say `$INPUT DV=DROP
+OBS=DV`, you will get column names `DV_DROP`, `DV` and `OBS` (obs
+will come further to the right if more variables are defined in
+`$INPUT`). Also, say the data file now also contains a variable
+called DV further to the right that was never read by
+`$INPUT`. That variable will be included called `DV_FILE` because
+`DV` is already taken. If needed, variables will be numbered, say
+`DV_FILE`, `DV_FILE2`, etc.</p>
     </div>
 
   </div>
