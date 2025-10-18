@@ -91,8 +91,10 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
     DATA <- NULL
     dup.dat <- NULL
     dup.inp <- NULL
+    file.only <- NULL
     i.data <- NULL
     i.input <- NULL
+    is.copy <- NULL
     INPUT <- NULL
     nonmem <- NULL
     result <- NULL
