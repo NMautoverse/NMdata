@@ -27,7 +27,10 @@ is because the input is a data.table.
 }
 \details{
 the name of the current dataset can be reached with the
-    `.nm` variable. like fun=function(x) {
+    `.nm` variable. like
+\dontrun{
+fun=function(x) {
     message("this is subset",.nm) nrow(x) }
+}
 }
 \keyword{internal}

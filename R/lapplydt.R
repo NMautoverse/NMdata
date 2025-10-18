@@ -15,8 +15,11 @@
 ##' @param drop.null If some subsets return NULL, drop the empty
 ##'     elements in the returned list?
 ##' @details the name of the current dataset can be reached with the
-##'     `.nm` variable. like fun=function(x) {
+##'     `.nm` variable. like
+##' \dontrun{
+##' fun=function(x) {
 ##'     message("this is subset",.nm) nrow(x) }
+##' }
 ##' @import data.table
 ##' @keywords internal
 
