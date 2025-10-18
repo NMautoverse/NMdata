@@ -1,4 +1,4 @@
-##' apply function of subsets of dt, return named list
+##' Apply function of subsets of `data.frame`, return named list
 ##'
 ##' Based on columns in data, run function on subsets of data and
 ##' return the results in a list, carrying names of the subsets. Say a
@@ -16,12 +16,15 @@
 ##'     elements in the returned list?
 ##' @details the name of the current dataset can be reached with the
 ##'     `.nm` variable. like
-##' \dontrun{
-##' fun=function(x) {
-##'     message("this is subset",.nm) nrow(x) }
-##' }
+##' 
 ##' @import data.table
-##' @keywords internal
+##' @examples
+##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' lapplydt(pk,by="DOSE",fun=function(x) {
+##'     message("this is subset",.nm)
+##'     nrow(x) 
+##' })
+##' @export
 
 
 lapplydt <- function(data,by,fun,drop.null=FALSE){

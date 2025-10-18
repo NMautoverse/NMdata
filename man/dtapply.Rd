@@ -2,7 +2,7 @@
 % Please edit documentation in R/dtapply.R
 \name{dtapply}
 \alias{dtapply}
-\title{Apply function and return a data.table}
+\title{Apply function and return a data.frame}
 \usage{
 dtapply(
   X,
@@ -15,7 +15,29 @@ dtapply(
 )
 }
 \arguments{
-\item{value.names}{If supplied, setnames will be run on each element returned by lapply wit value.names as the `new` argument.}
+\item{X}{Like for `lapply()`, an object to process (typically a
+vector or a list). Passed to `lapply()`.}
+
+\item{FUN}{Function to run for each element in `X`. Passed to
+`lapply()`.}
+
+\item{value.names}{If supplied, setnames will be run on each
+element returned by lapply wit value.names as the `new`
+argument.}
+
+\item{element.name}{What to call the column holding the values or
+the names of `X`? Default is "element". What goes into this
+column depends on the class of `X`. If `X` is a character
+vector, it will be the values of `X`. If `X` is a list, it
+will be the names of the elements in the list.}
+
+\item{fill}{Fill resulting data with `NA`s in order to combine
+into a single `data.frame`? Default is TRUE.}
+
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function in as.fun to convert to something else. If
+data.tables are wanted, use `as.fun="data.table"`. The default
+can be configured using `NMdataConf()`.}
 
 \item{...}{arguments passed to lapply}
 }
@@ -23,7 +45,8 @@ dtapply(
 a data.table
 }
 \description{
-A convenience function that returns a data.table with a column##' representing the input values and a column with results. This is
+A convenience function that returns a data.frame with a column
+representing the input values and a column with results. This is
 still experimental and will not work for many input structures.
 }
 \details{
@@ -31,4 +54,3 @@ Only functions that return vectors are currently
     supported. dtapply should support functions that return
     data.frames.
 }
-\keyword{internal}
