@@ -2,18 +2,63 @@
 ##'
 ##' @param data the data to translate
 ##' @param file the list file or control stream
-##' @param translate logical. Do translation according to Nonmem code
-##'     or not? If not, an overview of column names in data and in
-##'     Nonmem code is still returned with the data.
+##' @param translate Do translation according to Nonmem code or not
+##'     (default `TRUE`)? If not, an overview of column names in data
+##'     and in Nonmem code is still returned with the data.
 ##' @param recover.cols recover columns that were not used in the
 ##'     NONMEM control stream? Default is TRUE. Can only be negative
 ##'     when translate=FALSE.
 ##' @param quiet Suppress warnings about data columns?
+##' @details If `translate=FALSE`, data is returned with column names
+##'     as in data file (not informed by the control stream `$INPUT`
+##'     section). If `translate=TRUE`, `NMtransInp` renames and copies
+##'     columns as specified in `$INPUT`. This means that
+##'
+##' Renamed columns
+##' if the first column is called SUBJID in the data set but the control stream says `$INPUT ID...`, the first column in the resultin data set will be called `ID`, not `SUBJID`.
+##'
+##' ## Copied columns
+##'
+##' if the first column is called SUBJID in the data set but the
+##' control stream says `$INPUT SUBJID=ID...`, the first column in the
+##' resultin data set will be called `ID`. `SUBJID` will be included
+##' to the right of the other variables defined in `$INPUT`. Normally,
+##' Nonmem should only allow copying if one of the created variable
+##' names is one of the reserved data labels, such as `ID`, `DV`,
+##' `AMT`, etc. `NMtransInp()` will prioritize the reserved labels and
+##' use those first, and put the non-recognized name to the right.
+##'
+##' Dropped columns
+##'
+##' Dropped columns are recreated. If the first column is called
+##' SUBJID in the data set but the control stream says `$INPUT ID=DROP
+##' ID=USUBJID2 ...`, the first column in the resulting data set is
+##' called `ID_DROP` and the second is called `ID`. `USUBJID2` will
+##' also be included as already described.
+##'
+##' Renaming of variables to get unique column names.
+##'
+##' With options to DROP variables, rename variables copy variables, and recover variables from the data set on file, there are many ways duplicate variable names can be introduced. NMtransInp is supposed to avoid duplicate column names. The way it does so, it prioritizes variables to keep their original name based on a few criteria.
+##'
+##' A variable defined in INPUT is prioritized. If one is dropped say
+##' and then introduced with a new variable, say `$INPUT DV=DROP
+##' OBS=DV`, you will get column names `DV_DROP`, `DV` and `OBS` (obs
+##' will come further to the right if more variables are defined in
+##' `$INPUT`). Also, say the data file now also contains a variable
+##' called DV further to the right that was never read by
+##' `$INPUT`. That variable will be included called `DV_FILE` because
+##' `DV` is already taken. If needed, variables will be numbered, say
+##' `DV_FILE`, `DV_FILE2`, etc. 
+
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
 ##' @import data.table
 ##' @keywords internal
+
+
+
+
 
 ## don't export. An internal function used by NMscanInput. 
 
@@ -172,6 +217,7 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
             dt.cols[is.na(str.input),result:=NA]
         }
 
+        dt.cols[,is.copy:=FALSE]
         ##  copy/pseudonyms/synononyms            
         dtc.copy <- dt.cols[!is.na(copy.1)&!is.na(copy.2)]
         if(translate && nrow(dtc.copy)){
@@ -190,7 +236,8 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
                                  copy.left,
                                  copy.right,
                                  copy.1,
-                                 copy.2)]
+                                 copy.2,
+                                 is.copy=TRUE)]
                             ,fill=TRUE)
             
             
@@ -326,8 +373,10 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
         
         ## data <- data[,dt.cols[!is.na(result),col.data],with=FALSE]
         if(translate){
+            
             dt.cols[,file.only:=is.na(str.input)]
-            setorder(dt.cols,file.only,i.input,i.data)
+            ## dt.cols[,file.only:=is.na(str.input)]
+            setorder(dt.cols,file.only,is.copy,i.input,i.data)
         }
         data <- data[,dt.cols[!is.na(result)&!is.na(i.data),i.data],with=FALSE]
         setnames(data,dt.cols[!is.na(result)&!is.na(i.data),result])

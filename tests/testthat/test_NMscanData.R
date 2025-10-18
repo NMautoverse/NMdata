@@ -97,6 +97,8 @@ test_that("Modifications to column names in $INPUT",{
     ## expect_equal(unNMdata(res),unNMdata(readRDS(fileRef)))
     if(F){
         ref <- readRDS(fileRef)
+ref[[1]]
+        res[[1]]
     }
 
 })
@@ -959,6 +961,14 @@ test_that("Two firstonly, one full-length with col.nmrep",{
     
     expect_equal_to_reference(res,fileRef,version=2)
     
+    if(F){
+        ref <- readRDS(fileRef)
+
+        NMinfo(ref)$input.colnames
+        NMinfo(res)$input.colnames
+
+    }
+
 })
 
 
