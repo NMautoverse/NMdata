@@ -83,6 +83,8 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
     .ESSBP. <- NULL
     col.data <- NULL
     compare <- NULL
+    copy.1 <- NULL
+    copy.2 <- NULL
     copy.left <- NULL
     copy.right <- NULL
     datafile <- NULL

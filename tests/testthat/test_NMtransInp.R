@@ -14,7 +14,11 @@ if(FALSE){
 
 test_that("basic",{
 
-        fileRef <- "testReference/NMtransInp_01.rds"
+    fileRef <- "testReference/NMtransInp_01.rds"
+
+    file.mod <- "testData/nonmem/xgxr054.mod"
+    inp <- NMscanInput(file.mod,translate=F,as.fun="data.table")
+
 
     res <- list(
         ##  USUBJ comes last - ID prefered. OK.
