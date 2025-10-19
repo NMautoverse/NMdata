@@ -21,23 +21,8 @@
 ##' @keywords internal
 
 
-
-
-
 ## don't export. An internal function used by NMscanInput. 
 
-### compare=diff for copied variables
-## nonmem is ID=SUBJ for copied variables
-## selecting based on col.data will not work if input data has non-unique column names
-## after copying, result is the same for both left and right variable. 
-### here
-## sort returned columns - prioritize variables defined in $INPUT (incl copies) if translating
-
-## Identify Nonmem standard variable in copies, like OBS=DV. Put the other as the copy.
-
-## test DV=OBS, DROP=OBS
-
-## compare result to col.data? How about copied variables? They should be OK.
 
 NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     
