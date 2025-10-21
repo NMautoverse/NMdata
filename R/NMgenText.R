@@ -279,6 +279,7 @@ NMgenText <- function(data,
 
     res <- list(INPUT=text.nm.input
                ,DATA=text.nm.data
+
                 )
     if(!quiet){
         return(invisible(res))
