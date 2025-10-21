@@ -42,7 +42,7 @@ section. Default is to reuse `format`.}
 section. Default is to reuse `format.omega`.}
 
 \item{spaces.split}{Is a blank in `fields` to be treated as a
-field seperator? Default is not to (i.e. neglect spaces in
+field separator? Default is not to (i.e. neglect spaces in
 `fields`).}
 
 \item{unique.matches}{If TRUE, each line in the control stream is

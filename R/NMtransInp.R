@@ -2,33 +2,27 @@
 ##'
 ##' @param data the data to translate
 ##' @param file the list file or control stream
-##' @param translate logical. Do translation according to Nonmem code
-##'     or not? If not, an overview of column names in data and in
-##'     Nonmem code is still returned with the data.
+##' @param translate Do translation according to Nonmem code or not
+##'     (default `TRUE`)? If not, an overview of column names in data
+##'     and in Nonmem code is still returned with the data.
 ##' @param recover.cols recover columns that were not used in the
 ##'     NONMEM control stream? Default is TRUE. Can only be negative
 ##'     when translate=FALSE.
 ##' @param quiet Suppress warnings about data columns?
+##' @details If `translate=FALSE`, data is returned with column names
+##'     as in data file (not informed by the control stream `$INPUT`
+##'     section). If `translate=TRUE`, `NMtransInp` renames and copies
+##'     columns as specified in `$INPUT`. This means that
+##'
 ##' @return data with column names translated as specified by nonmem
 ##'     control stream. Class same as for 'data' argument. Class
 ##'     data.table.
 ##' @import data.table
 ##' @keywords internal
 
+
 ## don't export. An internal function used by NMscanInput. 
 
-### compare=diff for copied variables
-## nonmem is ID=SUBJ for copied variables
-## selecting based on col.data will not work if input data has non-unique column names
-## after copying, result is the same for both left and right variable. 
-### here
-## sort returned columns - prioritize variables defined in $INPUT (incl copies) if translating
-
-## Identify Nonmem standard variable in copies, like OBS=DV. Put the other as the copy.
-
-## test DV=OBS, DROP=OBS
-
-## compare result to col.data? How about copied variables? They should be OK.
 
 NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FALSE){
     
@@ -38,14 +32,18 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
     .ESSBP. <- NULL
     col.data <- NULL
     compare <- NULL
+    copy.1 <- NULL
+    copy.2 <- NULL
     copy.left <- NULL
     copy.right <- NULL
     datafile <- NULL
     DATA <- NULL
     dup.dat <- NULL
     dup.inp <- NULL
+    file.only <- NULL
     i.data <- NULL
     i.input <- NULL
+    is.copy <- NULL
     INPUT <- NULL
     nonmem <- NULL
     result <- NULL
@@ -172,6 +170,7 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
             dt.cols[is.na(str.input),result:=NA]
         }
 
+        dt.cols[,is.copy:=FALSE]
         ##  copy/pseudonyms/synononyms            
         dtc.copy <- dt.cols[!is.na(copy.1)&!is.na(copy.2)]
         if(translate && nrow(dtc.copy)){
@@ -190,7 +189,8 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
                                  copy.left,
                                  copy.right,
                                  copy.1,
-                                 copy.2)]
+                                 copy.2,
+                                 is.copy=TRUE)]
                             ,fill=TRUE)
             
             
@@ -326,8 +326,10 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
         
         ## data <- data[,dt.cols[!is.na(result),col.data],with=FALSE]
         if(translate){
+            
             dt.cols[,file.only:=is.na(str.input)]
-            setorder(dt.cols,file.only,i.input,i.data)
+            ## dt.cols[,file.only:=is.na(str.input)]
+            setorder(dt.cols,file.only,is.copy,i.input,i.data)
         }
         data <- data[,dt.cols[!is.na(result)&!is.na(i.data),i.data],with=FALSE]
         setnames(data,dt.cols[!is.na(result)&!is.na(i.data),result])

@@ -33,7 +33,7 @@
 ##'     on V, then we know that `OMEGA(2,1)` is covariance of (BSV on)
 ##'     CL and V.
 ##' @param spaces.split Is a blank in `fields` to be treated as a
-##'     field seperator? Default is not to (i.e. neglect spaces in
+##'     field separator? Default is not to (i.e. neglect spaces in
 ##'     `fields`).
 ##' @param use.idx The default method is to automatically identify
 ##'     element numbering (`i` for THETAs, `i` and `j` for OMEGAs and

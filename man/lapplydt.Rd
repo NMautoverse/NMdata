@@ -2,7 +2,7 @@
 % Please edit documentation in R/lapplydt.R
 \name{lapplydt}
 \alias{lapplydt}
-\title{apply function of subsets of dt, return named list}
+\title{Apply function of subsets of `data.frame`, return named list}
 \usage{
 lapplydt(data, by, fun, drop.null = FALSE)
 }
@@ -27,7 +27,12 @@ is because the input is a data.table.
 }
 \details{
 the name of the current dataset can be reached with the
-    `.nm` variable. like fun=function(x) {
-    message("this is subset",.nm) nrow(x) }
+    `.nm` variable. like
 }
-\keyword{internal}
+\examples{
+pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+lapplydt(pk,by="DOSE",fun=function(x) {
+    message("this is subset",.nm)
+    nrow(x) 
+})
+}

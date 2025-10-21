@@ -18,9 +18,9 @@ NMtransInp(
 
 \item{file}{the list file or control stream}
 
-\item{translate}{logical. Do translation according to Nonmem code
-or not? If not, an overview of column names in data and in
-Nonmem code is still returned with the data.}
+\item{translate}{Do translation according to Nonmem code or not
+(default `TRUE`)? If not, an overview of column names in data
+and in Nonmem code is still returned with the data.}
 
 \item{recover.cols}{recover columns that were not used in the
 NONMEM control stream? Default is TRUE. Can only be negative
@@ -35,5 +35,11 @@ data with column names translated as specified by nonmem
 }
 \description{
 translate the column names according to the $INPUT section of a control stream
+}
+\details{
+If `translate=FALSE`, data is returned with column names
+    as in data file (not informed by the control stream `$INPUT`
+    section). If `translate=TRUE`, `NMtransInp` renames and copies
+    columns as specified in `$INPUT`. This means that
 }
 \keyword{internal}
