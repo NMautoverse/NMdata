@@ -320,3 +320,128 @@ $OMEGA BLOCK(1) SAME ; IOV3.D1	; lognormal 	; 14	; IOV		; Between-occasion varia
 
 
 })
+
+
+test_that("format from ctl",{
+
+    fileRef <- "testReference/NMreadParText_10.rds"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+
+    text <- c("
+;; format: %init;%symbol ;%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+$OMEGA
+0.15		; IIV.KA	; lognormal 	; 7	; IIV		; Between-subject variability on KA 	; -
+$OMEGA BLOCK(1)
+0.15		; IOV1.KA	; lognormal 	; 8	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1)
+SAME ; IOV2.KA	; lognormal 	; 9	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1) SAME ; IOV3.KA	; lognormal 	; 10	; IOV		; Between-occasion variability on KA 	; -
+$OMEGA BLOCK(1)
+0.2		; IIV.D1	; lognormal 	; 11	; IIV		; Between-subject variability on D1 	; -
+$OMEGA BLOCK(1)
+0.3		; IOV1.D1	; lognormal 	; 12	; IOV		; Between-occasion variability on D1 	; -
+$OMEGA BLOCK(1) SAME ; IOV2.D1	; lognormal 	; 13	; IOV		; Between-occasion variability on D1 	; -
+$OMEGA BLOCK(1) SAME ; IOV3.D1	; lognormal 	; 14	; IOV		; Between-occasion variability on D1 	; -
+")
+
+
+    lines <- strsplit(text,split="\n")[[1]]
+    as.NMctl(lines,lines=T)
+    res <- NMreadParsText(lines=lines)
+
+    expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        
+    }
+
+
+})
+
+
+
+test_that("no init",{
+
+    fileRef <- "testReference/NMreadParText_11.rds"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+
+    text <- c("
+;; format: %symbol ;%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+$OMEGA
+0.15		; IIV.KA	; lognormal 	; 7	; IIV		; Between-subject variability on KA 	; -
+$OMEGA BLOCK(1)
+0.15		; IOV1.KA	; lognormal 	; 8	; IOV		; Between-occasion variability on KA 	; -
+")
+
+
+    lines <- strsplit(text,split="\n")[[1]]
+    as.NMctl(lines,lines=T)
+    res <- NMreadParsText(lines=lines)
+
+    expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        
+    }
+
+
+})
+
+
+test_that("no ",{
+
+    fileRef <- "testReference/NMreadParText_12.rds"
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+
+    text <- c("
+;; format: -%symbol ;-%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; -CL		; -none		
+$OMEGA
+0.15		; -IIV.KA	; -lognormal
+$OMEGA BLOCK(1)
+0.15		; -IOV1.KA	; -lognormal
+")
+
+
+    lines <- strsplit(text,split="\n")[[1]]
+    as.NMctl(lines,lines=T)
+    NMextractFormats(ctl=    as.NMctl(lines,lines=T))
+
+    res <- NMreadParsText(lines=lines)
+
+    res2 <- NMreadParsText(lines=lines,format="-%symbol ;-%trans; %idx; %panel; %label;%unit")
+    expect_equal(res,res2)
+    
+    
+    expect_equal_to_reference(res,fileRef)
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        res2    
+    }
+
+
+})
+

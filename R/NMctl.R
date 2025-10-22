@@ -13,14 +13,15 @@ readCtl <- function(x,...){
 ##' @import NMdata
 ##' @export
 readCtl.character <- function(x,...){
+    
     ## ctl <- NMreadSection(file=x)
     
     dots <- list(...)
     if("lines"%in%names(dots)){
         
         ### this only supports one ctl. Generalize?
-        x <- strsplit(x,"\\n")[[1]]
-        ctl <- x
+        x2 <- do.call(c,strsplit(x,"\\n"))
+        ctl <- x2
     } else {
         
         ctl <- readLines(x,warn=FALSE)

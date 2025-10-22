@@ -14,6 +14,7 @@ NMreadParsText(
   unique.matches = TRUE,
   field.idx = "idx",
   use.idx = FALSE,
+  add.init = TRUE,
   modelname,
   col.model,
   as.fun,
@@ -82,6 +83,11 @@ counter in all sections, and a character vector like
 such a counter from the control stream. When using a counter
 on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
 `i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.}
+
+\item{add.init}{If `TRUE` (default), a field will automatically be
+added to the formats for the initial value string. This will
+be called "initstr". It will only happen if the first field is
+not called either "initstr" or "init".}
 
 \item{modelname}{See ?NMscanData}
 

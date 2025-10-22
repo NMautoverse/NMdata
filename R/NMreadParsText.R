@@ -49,6 +49,12 @@
 ##'     such a counter from the control stream. When using a counter
 ##'     on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
 ##'     `i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.
+##' @param add.init If `TRUE` (default), a field will automatically be
+##'     added to the formats for the initial value string. This will
+##'     be called "initstr". It will only happen if the first field is
+##'     not called either "initstr" or "init". The only situation
+##'     where one would use `add.init=FALSE` is if a different name
+##'     for the initial value field is already included in formats.
 ##' @param field.idx If an index field is manually provided in the
 ##'     control stream comments, define the name of that field in
 ##'     `format` and tell `NMreadParsTab()` to use this idx to
@@ -131,6 +137,7 @@ NMreadParsText <- function(file,lines,format,
                            unique.matches=TRUE,
                            field.idx="idx",
                            use.idx=FALSE,
+                           add.init=TRUE,
                            modelname,
                            col.model,
                            as.fun,
@@ -233,31 +240,48 @@ NMreadParsText <- function(file,lines,format,
     
     ## if not provided in arguments, read formats from control stream
 
+
     if(missing(format.omega)) format.omega <- NULL
     if(is.null(format.omega)) format.omega <- format
     if(missing(format.sigma)) format.sigma <- NULL
     if(is.null(format.sigma)) format.sigma <- format.omega
+
     
     formats.res <- list(
         format=format,
         format.omega=format.omega,
         format.sigma=format.sigma
     )
+    formats.res <- formats.res[!sapply(formats.res,is.null)]
 
+    
+    
 #### if not provided in arguments, read formats from control stream
 ### todo use function to combine two lists into one.
-    formats.ctl <- NMextractFormats(ctl=as.NMctl(lines,lines=TRUE))
+    formats.ctl <- NMextractFormats(ctl=
+                                        as.NMctl(lines,lines=TRUE)
+                                    )
     formats.res <- modifyList(formats.ctl,formats.res)
 
     
+    
+    
     if(is.null(formats.res$format)){
-        formats.res$format <- "%init;%idx;%symbol;%label;%unit"
+        formats.res$format <- "%initstr;%idx;%symbol;%label;%unit"
     }
     
     formats.res <- lapply(formats.res,function(x){
         if(is.function(x)) x <- x(lines)
         x
     })
+
+    
+    ##if(missing(formats.res$format.omega)) formats.res$format.omega <- NULL
+    if(is.null(formats.res$format.omega)) formats.res$format.omega <- formats.res$format
+    ## if(missing(formats.res$format.sigma)) formats.res$format.sigma <- NULL
+    if(is.null(formats.res$format.sigma)) formats.res$format.sigma <- formats.res$format.omega
+
+    
     ## if(is.function(format)) format <- format(lines)
     ## if(is.function(format.omega)) format.omega <- format.omega(lines)
     ## if(is.function(format.sigma)) format.sigma <- format.sigma(lines)
@@ -283,6 +307,7 @@ NMreadParsText <- function(file,lines,format,
         items <- c()
         
         for(I in 1:nsplitters.x){
+            
             spl <- format$splitters[I]
             spl.raw <- format$splitters.raw[I]
             ## this.item.all <- sub(sprintf("([^%s]*)%s.*",
@@ -403,9 +428,22 @@ NMreadParsText <- function(file,lines,format,
         omegas
     }
 
+
     
     
     rm.idx <- TRUE
+    if(add.init){
+        formats.res <- lapply(formats.res,function(format){
+            fields <- splitFields(format,spaces.split=spaces.split)
+
+            if(!fields$fields[1]%in%c("init","initstr")){
+                
+                format <- paste0("%initstr;",format)
+            }
+            format
+        })
+    }
+    
     thetas <- get.theta.comments(lines=lines,section="THETA",format=formats.res$format,
                                  use.theta.idx=use.theta.idx)
     
@@ -517,7 +555,7 @@ escape.charclass <- function(x) {
 ##' @keywords internal
 splitFields <- function(format,spaces.split=FALSE){
 
-
+    
     
     ## number of fields defined in format
     nfields.string <- nchar(gsub("[^%]","",format))
