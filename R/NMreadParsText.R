@@ -229,18 +229,38 @@ NMreadParsText <- function(file,lines,format,
         format.sigma <- fields.sigma
     }
 
-    if(is.null(format)){
-        format <- "%init;%idx;%symbol;%label;%unit"
-    }
+
+    
+    ## if not provided in arguments, read formats from control stream
+
     if(missing(format.omega)) format.omega <- NULL
     if(is.null(format.omega)) format.omega <- format
     if(missing(format.sigma)) format.sigma <- NULL
     if(is.null(format.sigma)) format.sigma <- format.omega
+    
+    formats.res <- list(
+        format=format,
+        format.omega=format.omega,
+        format.sigma=format.sigma
+    )
+
+#### if not provided in arguments, read formats from control stream
+### todo use function to combine two lists into one.
+    formats.ctl <- NMextractFormats(ctl=as.NMctl(lines,lines=TRUE))
+    formats.res <- modifyList(formats.ctl,formats.res)
 
     
-    if(is.function(format)) format <- format(lines)
-    if(is.function(format.omega)) format.omega <- format.omega(lines)
-    if(is.function(format.sigma)) format.sigma <- format.sigma(lines)
+    if(is.null(formats.res$format)){
+        formats.res$format <- "%init;%idx;%symbol;%label;%unit"
+    }
+    
+    formats.res <- lapply(formats.res,function(x){
+        if(is.function(x)) x <- x(lines)
+        x
+    })
+    ## if(is.function(format)) format <- format(lines)
+    ## if(is.function(format.omega)) format.omega <- format.omega(lines)
+    ## if(is.function(format.sigma)) format.sigma <- format.sigma(lines)
 
     
     ## function to extact however many format are available in a commented
@@ -386,15 +406,15 @@ NMreadParsText <- function(file,lines,format,
     
     
     rm.idx <- TRUE
-    thetas <- get.theta.comments(lines=lines,section="THETA",format=format,
+    thetas <- get.theta.comments(lines=lines,section="THETA",format=formats.res$format,
                                  use.theta.idx=use.theta.idx)
     
     
 #### get.omega.comments must return line numbers
     ## why is idx there?
     
-    omegas <- get.omega.comments(lines=lines,section="omega",format=format.omega)
-    sigmas <- get.omega.comments(lines=lines,section="sigma",format=format.sigma)
+    omegas <- get.omega.comments(lines=lines,section="omega",format=formats.res$format.omega)
+    sigmas <- get.omega.comments(lines=lines,section="sigma",format=formats.res$format.sigma)
 
     auto.idx <- setdiff(c("THETA","OMEGA","SIGMA"),use.idx)
     

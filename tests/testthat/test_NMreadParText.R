@@ -26,6 +26,10 @@ data.table::setDTthreads(1)
 
 readRef <- FALSE
 
+NMdataConf(reset=T)
+NMdataConf(as.fun="data.table")
+
+
 
 test_that("muref SAEM",{
 
@@ -33,17 +37,16 @@ test_that("muref SAEM",{
     file.mod <- "testData/nonmem/xgxr032.mod"
     
     
-    NMdataConf(reset=T)
-    NMdataConf(as.fun="data.table")
-    
     res <- NMreadParsText(file.mod,format="%init;%symbol")
     
     expect_equal_to_reference(res,fileRef)
     
     if(F){
         NMreadSection(file.mod,section="theta")
+        ref <- readRDS(fileRef)
+        ref
         res
-        readRDS(fileRef)
+
     }
     
 })

@@ -1,5 +1,16 @@
+##' @keywords internal
+
 NMextractFormats <- function(ctl,section=NULL,as.dt=FALSE) {
     
+#### Section start: Dummy variables, only not to get NOTE's in pacakge checks  ####
+
+    line <- NULL
+    type <- NULL
+
+### Section end: Dummy variables, only not to get NOTE's in pacakge checks 
+
+
+
     lines <- as.NMctl(ctl,warn=FALSE)
     dt.format <- data.table(line=lines[grepl(" *;+ *format(\\.[a-zA-Z])*",lines)])
     ## classify them as format, format.omega, format.sigma
@@ -11,7 +22,7 @@ NMextractFormats <- function(ctl,section=NULL,as.dt=FALSE) {
     dt.format[,first:=!duplicated(type)]
 
 
-    ### todo look for duplicates, warn, remove
+### todo look for duplicates, warn, remove
     
     
     ## Derive formats 
@@ -26,20 +37,22 @@ NMextractFormats <- function(ctl,section=NULL,as.dt=FALSE) {
     if(as.dt){
         return(dt.format[])
     }
-    with(dt.format[first==TRUE],setNames(as.list(format),type))
+    res.list <- with(dt.format[first==TRUE],setNames(as.list(format),type))
+    res.list
+    
 }
 
 
-if(F){
-    library(devtools)
+if(FALSE){
+    ## library(devtools)
 
     
-    file.mod <- "/data/home/philipde/wdirs/suitcase/sandbox/correlate_without_paired_obs/nonmem/run011.mod"
+    ##     file.mod <- "/data/home/philipde/wdirs/suitcase/sandbox/correlate_without_paired_obs/nonmem/run011.mod"
 
-    load_all("~/wdirs/NMdata")
-    lines <- ";;format %init;%idx;%symbol;%trans
-;;format.omega %init;%idx;%symbol"
-    ctl <- as.NMctl(x=lines,lines=TRUE)
-    NMextractFormats(ctl)
+    ##     load_all("~/wdirs/NMdata")
+    ##     lines <- ";;format %init;%idx;%symbol;%trans
+    ## ;;format.omega %init;%idx;%symbol"
+    ##     ctl <- as.NMctl(x=lines,lines=TRUE)
+    ##     NMextractFormats(ctl)
 
 }
