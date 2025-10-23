@@ -22,7 +22,7 @@ values as obtained with `NMreadExt`."><meta property="og:image" content="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.914</span>
       </span>
     </div>
 
@@ -107,6 +107,7 @@ values as obtained with `NMreadExt`.</p>
 <span>  unique.matches <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  field.idx <span class="op">=</span> <span class="st">"idx"</span>,</span>
 <span>  use.idx <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  add.init <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">modelname</span>,</span>
 <span>  <span class="va">col.model</span>,</span>
 <span>  <span class="va">as.fun</span>,</span>
@@ -196,6 +197,15 @@ counter in all sections, and a character vector like
 such a counter from the control stream. When using a counter
 on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
 `i-j`, like `2-1` for OMEGA(2,1). See `field.idx` too.</p></dd>
+
+
+<dt id="arg-add-init">add.init<a class="anchor" aria-label="anchor" href="#arg-add-init"></a></dt>
+<dd><p>If `TRUE` (default), a field will automatically be
+added to the formats for the initial value string. This will
+be called "initstr". It will only happen if the first field is
+not called either "initstr" or "init". The only situation
+where one would use `add.init=FALSE` is if a different name
+for the initial value field is already included in formats.</p></dd>
 
 
 <dt id="arg-modelname">modelname<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>

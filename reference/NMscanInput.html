@@ -23,7 +23,7 @@ text file used by Nonmem."><meta property="og:image" content="https://nmautovers
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.912</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.914</span>
       </span>
     </div>
 
@@ -274,30 +274,30 @@ provided (though not recommended), this will overwrite
     <p>Columns that are dropped (using `DROP` or `SKIP` in
     `$INPUT`) in the model will be included in the output.</p>
 
-<p>Renamed columns
-if the first column is called SUBJID in the data set but the control stream says `$INPUT ID...`, the first column in the resultin data set will be called `ID`, not `SUBJID`.</p>
-<p>## Copied columns</p>
-<p>if the first column is called SUBJID in the data set but the
-control stream says `$INPUT SUBJID=ID...`, the first column in the
-resultin data set will be called `ID`. `SUBJID` will be included
-to the right of the other variables defined in `$INPUT`. Normally,
-Nonmem should only allow copying if one of the created variable
-names is one of the reserved data labels, such as `ID`, `DV`,
-`AMT`, etc. `NMtransInp()` will prioritize the reserved labels and
-use those first, and put the non-recognized name to the right.</p>
-<p>Dropped columns</p>
-<p>Dropped columns are recreated. If the first column is called
-SUBJID in the data set but the control stream says `$INPUT ID=DROP
-ID=USUBJID2 ...`, the first column in the resulting data set is
-called `ID_DROP` and the second is called `ID`. `USUBJID2` will
-also be included as already described.</p>
-<p>Renaming of variables to get unique column names.</p>
-<p>With options to DROP variables, rename variables copy variables,
-and recover variables from the data set on file, there are many
-ways duplicate variable names can be introduced. NMtransInp is
-supposed to avoid duplicate column names. The way it does so, it
-prioritizes variables to keep their original name based on a few
-criteria.</p>
+<p><strong>Renamed columns</strong>. if the first column is called SUBJID in
+the data set but the control stream says `$INPUT ID...`, the first
+column in the resultin data set will be called `ID`, not `SUBJID`.</p>
+<p><strong>Copied columns</strong>. If the first column is called SUBJID in
+the data set but the control stream says `$INPUT SUBJID=ID...`,
+the first column in the resultin data set will be called
+`ID`. `SUBJID` will be included to the right of the other
+variables defined in `$INPUT`. Normally, Nonmem should only allow
+copying if one of the created variable names is one of the
+reserved data labels, such as `ID`, `DV`, `AMT`,
+etc. `NMtransInp()` will prioritize the reserved labels and use
+those first, and put the non-recognized name to the right.</p>
+<p><strong>Dropped columns</strong>. Dropped columns are recreated. If the
+first column is called SUBJID in the data set but the control
+stream says `$INPUT ID=DROP ID=USUBJID2 ...`, the first column in
+the resulting data set is called `ID_DROP` and the second is
+called `ID`. `USUBJID2` will also be included as already
+described.</p>
+<p><strong>Unique column names</strong>. With options to DROP variables,
+rename variables copy variables, and recover variables from the
+data set on file, there are many ways duplicate variable names can
+be introduced. NMtransInp is supposed to avoid duplicate column
+names. The way it does so, it prioritizes variables to keep their
+original name based on a few criteria.</p>
 <p>A variable defined in INPUT is prioritized. If one is dropped say
 and then introduced with a new variable, say `$INPUT DV=DROP
 OBS=DV`, you will get column names `DV_DROP`, `DV` and `OBS` (obs

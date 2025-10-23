@@ -57,6 +57,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addParType.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addParameter.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addTAPD.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/as.NMctl.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/cc.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/checkColRow.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/cl.html</loc></url>
@@ -95,6 +96,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/messageWrap.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/message_dt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/print.summary_NMdata.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/readCtl.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/reduceTables.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/renameByContents.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/searchColRow.html</loc></url>
