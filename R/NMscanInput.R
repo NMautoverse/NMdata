@@ -95,11 +95,11 @@
 ##'     `$INPUT`) in the model will be included in the output.
 ##'
 ##'
-##' \strong{Renamed columns}. if the first column is called SUBJID in
+##' \strong{Renamed columns} if the first column is called SUBJID in
 ##' the data set but the control stream says `$INPUT ID...`, the first
 ##' column in the resultin data set will be called `ID`, not `SUBJID`.
 ##'
-##' \strong{Copied columns}. If the first column is called SUBJID in
+##' \strong{Copied columns} If the first column is called SUBJID in
 ##' the data set but the control stream says `$INPUT SUBJID=ID...`,
 ##' the first column in the resultin data set will be called
 ##' `ID`. `SUBJID` will be included to the right of the other
@@ -109,14 +109,14 @@
 ##' etc. `NMtransInp()` will prioritize the reserved labels and use
 ##' those first, and put the non-recognized name to the right.
 ##'
-##' \strong{Dropped columns}. Dropped columns are recreated. If the
+##' \strong{Dropped columns} Dropped columns are recreated. If the
 ##' first column is called SUBJID in the data set but the control
 ##' stream says `$INPUT ID=DROP ID=USUBJID2 ...`, the first column in
 ##' the resulting data set is called `ID_DROP` and the second is
 ##' called `ID`. `USUBJID2` will also be included as already
 ##' described.
 ##'
-##' \strong{Unique column names}. With options to DROP variables,
+##' \strong{Unique column names} With options to DROP variables,
 ##' rename variables copy variables, and recover variables from the
 ##' data set on file, there are many ways duplicate variable names can
 ##' be introduced. NMtransInp is supposed to avoid duplicate column
