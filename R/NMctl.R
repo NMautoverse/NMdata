@@ -3,7 +3,7 @@
 ##' @param x object to read.
 ##' @param ... Not used.
 ##' @return An object of class `NMctl`.
-##' @export
+##' @keywords internal
 readCtl <- function(x,...){
     UseMethod("readCtl",x)
 }
@@ -11,7 +11,7 @@ readCtl <- function(x,...){
 ##readCtl(x="run1.mod")
 
 ##' @import NMdata
-##' @export
+##' @keywords internal
 readCtl.character <- function(x,...){
     
     ## ctl <- NMreadSection(file=x)
@@ -31,12 +31,12 @@ readCtl.character <- function(x,...){
     ctl
 }
 
-##' @export
+##' @keywords internal
 readCtl.NMctl <- function(x,...){
     x
 }
 
-##' @export
+##' @keywords internal
 print.NMctl <- function(x,...) {
    
     if(!is.list(x)) x <- list(x)
@@ -51,17 +51,17 @@ print.NMctl <- function(x,...) {
 ##' @param x object to convert
 ##' @param ... Not used
 ##' @return An object of class `NMctl`.
-##' @export
+##' @keywords internal
 as.NMctl <- function(x,...){
     UseMethod("as.NMctl",x)
 }
 
-##' @export
+##' @keywords internal
 as.NMctl.character <- function(x,...){
     readCtl(x,...)
 }
 
-##' @export
+##' @keywords internal
 as.NMctl.NMctl <- function(x,...){
     x
 }

@@ -87,7 +87,9 @@ on OMEGA and SIGMA, off-diagonal elements MUST be denoted by
 \item{add.init}{If `TRUE` (default), a field will automatically be
 added to the formats for the initial value string. This will
 be called "initstr". It will only happen if the first field is
-not called either "initstr" or "init".}
+not called either "initstr" or "init". The only situation
+where one would use `add.init=FALSE` is if a different name
+for the initial value field is already included in formats.}
 
 \item{modelname}{See ?NMscanData}
 

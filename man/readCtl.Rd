@@ -17,3 +17,4 @@ An object of class `NMctl`.
 \description{
 Read as class NMctl
 }
+\keyword{internal}

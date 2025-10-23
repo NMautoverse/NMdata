@@ -86,7 +86,7 @@ NMreadFilters <- function(file,lines,filters.only=TRUE,as.fun) {
     scs.all <- scs
 
     
-    ## translating expression-style ones
+    ## translating expression-style ones - they can be separated by commas
     conds.list <- strsplit(
         gsub(paste0(type.condition," *=* *\\((.+)\\)"),"\\1",conds.expr)
        ,split=",")

@@ -14,7 +14,7 @@ test_that("basic",{
         ref <- readRDS(fileRef)
         ref
         res
-        }
+    }
     
 })
 
@@ -30,6 +30,17 @@ test_that("no filters",{
         ref <- readRDS(fileRef)
         ref
         res
-        }
+    }
     
+})
+
+test_that("Nested - multiple filters in one set of parentheses",{
+
+    lines1 <- "$DATA      xgxr2.csv IGNORE=@ IGNORE=(FLAG.NE.0) IGNORE(DOSE.LT.30)"
+    res1 <- NMreadFilters(lines=lines1)
+    lines2 <- "$DATA      xgxr2.csv IGNORE=@ IGNORE=(FLAG.NE.0,DOSE.LT.30)"
+    res2 <- NMreadFilters(lines=lines2)
+
+    expect_equal(res1,res2)
+
 })

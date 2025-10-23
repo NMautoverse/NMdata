@@ -351,7 +351,7 @@ $OMEGA BLOCK(1) SAME ; IOV3.D1	; lognormal 	; 14	; IOV		; Between-occasion varia
 
 
     lines <- strsplit(text,split="\n")[[1]]
-    as.NMctl(lines,lines=T)
+    NMdata:::as.NMctl(lines,lines=T)
     res <- NMreadParsText(lines=lines)
 
     expect_equal_to_reference(res,fileRef)
@@ -388,7 +388,7 @@ $OMEGA BLOCK(1)
 
 
     lines <- strsplit(text,split="\n")[[1]]
-    as.NMctl(lines,lines=T)
+    NMdata:::as.NMctl(lines,lines=T)
     res <- NMreadParsText(lines=lines)
 
     expect_equal_to_reference(res,fileRef)
@@ -424,8 +424,8 @@ $OMEGA BLOCK(1)
 
 
     lines <- strsplit(text,split="\n")[[1]]
-    as.NMctl(lines,lines=T)
-    NMextractFormats(ctl=    as.NMctl(lines,lines=T))
+    NMdata:::as.NMctl(lines,lines=T)
+    NMextractFormats(ctl=NMdata:::as.NMctl(lines,lines=T))
 
     res <- NMreadParsText(lines=lines)
 
