@@ -130,7 +130,7 @@ addParameter <- function(pars,overwrite=FALSE){
     i <- NULL
     j <- NULL
 
-    allpars <- c("THETA","OMEGA","SIGMA","THETAP","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
+    allpars <- c("THETA","OMEGA","SIGMA","THETAP","THETAPV","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
     allpars.mat <- setdiff(allpars,"THETA")
     col.parameter <- "parameter"
     col.par.type <- "par.type"
