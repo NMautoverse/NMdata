@@ -72,7 +72,7 @@ While `NMdata` does not organize all results into single objects that can be fur
 * `NMscanData()` Read and combine `$TABLE` output and input
   data. Feature-rich with support for the vast majority of models. Builds on `NMscanInput()` to automatically read input data and `NMscanTables()` to read all the output tables.  
 * `NMreadExt()` A feature-rich processor of ext files. Provides final parameter estimates with uncertainties and everything else provided in the ext file, iterations, objective function value and termination status  
-* `NMreadParsText()` Very flexible processer of comments in control stream parameter sections. As long as the comments provide consistent parameter information in almost any format, `NMreadParsText()` can turn it into a table.  
+* `NMreadParsText()` Very flexible processor of comments in control stream parameter sections. As long as the comments provide consistent parameter information in almost any format, `NMreadParsText()` can turn it into a table.  
 * `NMreadInits()` Read and tabulate initial values, lower, upper limits, FIX and block structures based on parameter sections of control streams.  
 * `NMrelate()`  Automatically connect parameters to variable names used in control stream code (say, `CL=EXP(THETA(1)+ETA(1))` in control stream and NMrelate will "relate" `THETA(1)` and `ETA(1)` to `CL`. Powerful for QC and even simple parameter table generation.  
 * `NMreadPhi()` Reads individual posthoc estimates into a `data.frame`  

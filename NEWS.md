@@ -2,6 +2,56 @@
 
 ## New Features
 
+* New function, `dtapply()` takes a vector or a list (like
+  `lapply()`), runs a function (like `lapply()`), and returns a
+  `data.frame` with column containing values or names of character
+  vector or list in addition to columns with function results.
+
+* New function, `lapplydt()` takes a `data.frame`, runs a function in
+  subsets (as defined by a `by` column), returns a list. This is
+  because `dt[i,j,by]` only works if all subsets defined by `by`
+  returns compatible lists. `lapplydt()` works anyway, even for other
+  structures like plots.
+  
+* `NMreadParsText()` now scans the control stream for a specified
+formats. As `NMreadParsText()` reads control stream parameter sections
+and turns comments into a `data.frame`, the format of the tabulated
+information is central information. This can now be provided in the
+control stream (where the comments are defined) instead of in the
+postprocessing script (which is ideally reused between
+models). Control stream example:
+
+``` 
+;; format: %idx - %symbol [%unit]; %trans 
+$THETA (0, 4.4) ; 1 - CL [L/h] ; none 
+;; format.omega:
+%symbol ; %trans $OMEGA 0.15 ; IIV.KA ; lognormal 
+``` 
+
+The first occurrance of each of `format`, `format.omega`, and
+`format.sigma` is used. Like before `format.sigma` inherits from
+`format.omega` if not specified, like `format.omega` inherits from
+`format`.
+
+Also, `NMreadParsText()` formats are no longer expected to include a
+field dedicated to the initial value information (like `(0, 0.44)`
+above. It will automatically assign this to a field called `initstr`
+(for "initial value string"). It will still look at the format, and if
+the first field is named either `init` or `initstr`, it will use this
+field for the initial value string. A new argument `add.init` is added
+to control this behavior.
+
+Notice, `NMreadInits()` is another NMdata function that processes
+these fields and would in this case separate this into `lower=0` and
+`init=4.4`.
+
+* Support for application of data filters on columns that contain
+  missing values.  `NMapplyFilters()` is an internal function that
+  runs these filters on (R) data sets. This used to throw warnings
+  when columns with missing values were being used in the
+  filters. This situation is now handled. A message is still thrown to
+  encourage the user to use a row identifier. 
+
 * `NMreadInits()` supports initial value syntax with missing values
   like `$THETA (,1,) ; TVCL`. There is still a limitation that the
   lower limit, the initial value and the upper limit for a single
@@ -13,32 +63,12 @@
 * `NMreadInits()` adds a `SAME` (0/1) column to parameter table. 
 
 * `fnAppend()` can now both append and prepend strings to file
-  names. See the new `position` argument which defaults to `"append"`.
+  names. See the new `position` argument which defaults to
+  `"append"`. `fnAppend()` also gains support for modifying strings
+  ending in dots, like `string...`
 
-* New function, `dtapply()` takes a vector or a list (like
-  `lapply()`), runs a function (like `lapply()`), and returns a
-  `data.table` with column containing values or names of character
-  vector or list in addition to columns with function results.
-
-* `lapplydt()` takes a data.table, runs a function in subsets (as
-  defined by a `by` column), returns a list. This is because
-  `dt[i,j,by]` only works if all subsets defined by `by` returns
-  compatible lists. `lapplydt()` works anyway, even for other
-  structures like plots.
-  
-* Support for application of data filters on columns that contain
-  missing values.  `NMapplyFilters()` is an internal function that
-  runs these filters on (R) data sets. This used to throw warnings
-  when columns with missing values were being used in the
-  filters. This situation is now handled. A message is still thrown to
-  encourage the user to use a row identifier. 
-  
 * `tmpcol()` adds support for multiple variables, providing unique
   variable names for all, taking into account existing variables.
-
-## Other Improvements
-* `fnAppend()` gains support for modifying strings like ending in
-  dots, like `string...`
 
 ## Bugfixes
 * `NMreadFilters()` would classify single-character filters as accept
@@ -74,9 +104,9 @@
   flexibility. Thanks to Brian Reilly for reporting this important
   gap.
   
-* Better identification of delimitors in output tables. Especially,
+* Better identification of delimiters in output tables. Especially,
   this helps identifying when tabulator characters er used as
-  delimtors. Until this fix, this would fail in some cases. It may
+  delimiters. Until this fix, this would fail in some cases. It may
   still not be bulletproof but it should now support most cases.
 
 ## Other improvements
@@ -253,9 +283,9 @@ where `file.mod` is a path to a control stream.
   generally. `NMreadPartab()` reads the comments in `$THETA`, `$OMEGA`
   and `$SIGMA` sections, splits them into variables, and organizes
   those variables in a parameter table. With this upgrade, pretty much
-  any structure should be supported as long as delimitors are not
+  any structure should be supported as long as delimiters are not
   alphabetic or numeric (so any special characters should
-  work). Notice, delimitors can change between fields . Example:
+  work). Notice, delimiters can change between fields . Example:
   `"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"` would be matched by
   `NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")`
   which would then return a table including columns init, idx, symbol,
@@ -458,7 +488,7 @@ NMreadPhi.
 * NMreadCov is a "new" function that reads NONMEM .cov files
   (parameter uncertainty as estimated by a covariance step). The
   function is not really new. It was developed by Matt Fidler for
-  nonmem2rx based on NMdata's NMreadTab. It has been only slightly
+  `nonmem2rx` based on NMdata's NMreadTab. It has been only slightly
   modified since. Thanks Matt!
 * NMscanInput supports all combinations of `translate` and
   `recover.cols`.
@@ -557,7 +587,7 @@ This release provides a few bugfixes, nothing major.
 ## New features
 * `NMwriteSection()` includes argument `location`. In combination with
   `section`, this determines where the new section is
-  inserter. Possible values are "replace" (default), "before", "after",
+  inserted. Possible values are "replace" (default), "before", "after",
   "first", "last".
   
 * `NMreadSection()` adds support for partial matching of section
@@ -579,7 +609,7 @@ pseudonym is being used to generate an `ID` column in `$INPUT`.
 
 # NMdata 0.0.15
 This update is of no difference to users. A technicality has been
-chaned to ensure consistent test results once data.table 1.14.7 is
+changed to ensure consistent test results once data.table 1.14.7 is
 
 # NMdata 0.0.14
 ## New features
@@ -605,10 +635,10 @@ chaned to ensure consistent test results once data.table 1.14.7 is
   csv file for NONMEM while keeping columns of non-numeric class like
   character and factor for post-processing.
   
-* `NMwriteData()` has got an arguement 'genText' to control whether text
-  for NONMEM should be generated. Default is to do so. Also, support
-  is added for `script=NULL` which now means the same as not specifying
-  script.
+* `NMwriteData()` has got an argument 'genText' to control whether
+  text for NONMEM should be generated. Default is to do so. Also,
+  support is added for `script=NULL` which now means the same as not
+  specifying script.
   
 * `addTAPD()` now includes `SDOS`, a scalar to be applied when computing
   last dose amount and cumulative dose amount from `AMT`. Sometimes, `AMT`

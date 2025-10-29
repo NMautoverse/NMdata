@@ -16,13 +16,16 @@ lapplydt(data, by, fun, drop.null = FALSE)
 \item{drop.null}{If some subsets return NULL, drop the empty
 elements in the returned list?}
 }
+\value{
+a list
+}
 \description{
 Based on columns in data, run function on subsets of data and
 return the results in a list, carrying names of the subsets. Say a
 column is `model` and you want to create a plot, run a regression
 or anything on the data for each model. In that case
 lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
-l in lapplydt is beause a list is returned (like lapply), the dt
+l in lapplydt is because a list is returned (like lapply), the dt
 is because the input is a data.table.
 }
 \details{

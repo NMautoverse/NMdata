@@ -35,7 +35,7 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
     par.name <- NULL
     parameter <- NULL
 
-    allpars <- c("THETA","OMEGA","SIGMA","THETAP","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
+    allpars <- c("THETA","OMEGA","SIGMA","THETAP","THETAPV","OMEGAP","OMEGAPD","SIGMAP","SIGMAPD")
     allpars.mat <- setdiff(allpars,"THETA")
 
     

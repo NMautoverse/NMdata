@@ -152,7 +152,7 @@ column in the resultin data set will be called `ID`, not `SUBJID`.
 
 \strong{Copied columns} If the first column is called SUBJID in
 the data set but the control stream says `$INPUT SUBJID=ID...`,
-the first column in the resultin data set will be called
+the first column in the resulting data set will be called
 `ID`. `SUBJID` will be included to the right of the other
 variables defined in `$INPUT`. Normally, Nonmem should only allow
 copying if one of the created variable names is one of the

@@ -57,7 +57,7 @@
 ##'     for the initial value field is already included in formats.
 ##' @param field.idx If an index field is manually provided in the
 ##'     control stream comments, define the name of that field in
-##'     `format` and tell `NMreadParsTab()` to use this idx to
+##'     `format` and tell `NMreadParsText()` to use this idx to
 ##'     organize especially OMEGA and SIGMA elements by pointing to it
 ##'     with `field.idx`. The default is to look for a variable called
 ##'     `idx`. If the index has values like 1-2 on an OMEGA or SIGMA

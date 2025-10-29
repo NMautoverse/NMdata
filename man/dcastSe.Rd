@@ -15,7 +15,7 @@ be long/vertical in these variables.}
 \item{r}{left-hand side variables as character vector. Result will
 be wide in these variables.}
 
-\item{...}{Additional arguments paseed to `data.table::dcast()`.}
+\item{...}{Additional arguments passed to `data.table::dcast()`.}
 }
 \description{
 A standard-evaluation interface to `data.table::dcast()`

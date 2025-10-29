@@ -27,7 +27,7 @@ name is not already in use.}
 \item{i1}{Where to start the search for a smallest available index
 number to add to `base` if necessary.}
 
-\item{sep}{Delimitor to use when appending intergers. Default is none.}
+\item{sep}{Delimiter to use when appending integers. Default is none.}
 
 \item{max.it}{Maximum number of iterations on element name.}
 

@@ -48,9 +48,9 @@ defining a set of columns that you want to end up with by
 combining a number of data sets.}
 
 \item{fun.class}{the function that will be run on each column to
-check for differences. base::class is default. Notice that the
-alternative `base::typeof` is different in certain ways. For
-instance, `typeof` will not report a difference on numeric vs
+check for differences. \code{base::class} is default. Notice that the
+alternative \code{base::typeof} is different in certain ways. For
+instance, \code{typeof} will not report a difference on numeric vs
 difftime. You could basically submit any function that takes a
 vector and returns a single value.}
 

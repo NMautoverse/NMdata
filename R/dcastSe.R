@@ -5,7 +5,7 @@
 ##'     be long/vertical in these variables.
 ##' @param r left-hand side variables as character vector. Result will
 ##'     be wide in these variables.
-##' @param ... Additional arguments paseed to `data.table::dcast()`.
+##' @param ... Additional arguments passed to `data.table::dcast()`.
 ##' @importFrom data.table dcast
 ##' @importFrom stats as.formula
 ##' @keywords internal 

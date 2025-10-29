@@ -11,11 +11,11 @@
 ##'     objective function value at final estimate is returned. If
 ##'     \code{return="all"}, all er returned, though in separate
 ##'     data.frames compiled in a list.
-##' @param as.fun The default is to return data as a data.frame. Pass
-##'     a function (say `tibble::as_tibble`) in as.fun to convert to
+##' @param as.fun The default is to return data as a \code{data.frame}. Pass
+##'     a function in as.fun to convert to
 ##'     something else. If `data.table`s are wanted, use
 ##'     `as.fun="data.table"`. The default can be configured using
-##'     `NMdataConf()`.
+##'     \code{NMdataConf()}.
 ##' @param tableno In case the ext file contains multiple tables, this
 ##'     argument controls which one to choose. The options are
 ##'     \itemize{
@@ -27,21 +27,21 @@
 ##' \item "min" Pick results from the first table available.
 ##'
 ##' \item "all" Keep all results. The tables can be distinguished by
-##' the `tableno` column.
+##' the \code{tableno} column.
 ##'
 ##' \item an integer greater than 0, in which case the table with this
 ##' table number will be picked.  }
 ##' @param modelname See `?NMscanData`
 ##' @param col.model See `?NMscanData`
 ##' @param auto.ext If `TRUE` (default) the extension will
-##'     automatically be modified using `NMdataConf()$file.ext`. This
+##'     automatically be modified using \code{NMdataConf()$file.ext}. This
 ##'     means `file` can be the path to an input or output control
-##'     stream, and `NMreadExt` will still read the `.ext` file.
+##'     stream, and \code{NMreadExt} will still read the `.ext` file.
 ##' @param file.ext Deprecated. Please use \code{file} instead.
 ##' @param slow Use a slow but more robust method to read tables? If
 ##'     missing or `NULL`, the fast method will be tried first, and if
 ##'     any issues are seen, the method will switch to `slow=TRUE`. If
-##'     `FALSE`,it will also swich in case of issues, but a warning is
+##'     `FALSE`,it will also switch in case of issues, but a warning is
 ##'     issued. In other words, it should be safe to not use this
 ##'     argument.
 ##' @details The parameter table returned if \code{return="pars"} or
@@ -49,14 +49,14 @@
 ##'     7.5 manual. It defines codes for different parameter-level
 ##'     values. They are:
 ##'
-##' -1e+09: se
-##' -1000000002: eigCor
-##' -1000000003: cond
-##' -1000000004: stdDevCor
-##' -1000000005: seStdDevCor
-##' -1000000006: FIX
-##' -1000000007: termStat
-##' -1000000008: partLik
+##' \code{-1e+09: se}
+##' \code{-1000000002: eigCor}
+##' \code{-1000000003: cond}
+##' \code{-1000000004: stdDevCor}
+##' \code{-1000000005: seStdDevCor}
+##' \code{-1000000006: FIX}
+##' \code{-1000000007: termStat}
+##' \code{-1000000008: partLik}
 ##'
 ##' The parameter name is in the \code{parameter} column. The
 ##' "parameter type", like "THETA", "OMEGA", "SIGMA" are available in
@@ -69,7 +69,7 @@
 ##' Notice that in case multiple tables are available in the `ext`
 ##' file, the column names are taken from the first table. E.g., in
 ##' case of SAEM/IMP estimation, the objective function values will be
-##' in the `SAEMOBJ` column, even for the IMP step. This may change in
+##' in the \code{SAEMOBJ} column, even for the IMP step. This may change in
 ##' the future.
 ##' 
 ##' @return If \code{return="all"}, a list with a final parameter

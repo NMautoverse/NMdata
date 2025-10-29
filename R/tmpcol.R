@@ -7,7 +7,7 @@
 ##'     name is not already in use.
 ##' @param i1 Where to start the search for a smallest available index
 ##'     number to add to `base` if necessary.
-##' @param sep Delimitor to use when appending intergers. Default is none.
+##' @param sep Delimiter to use when appending integers. Default is none.
 ##' @param max.it Maximum number of iterations on element name.
 ##' @param prefer.plain If base isn't in use already, use it without a
 ##'     digit appended?

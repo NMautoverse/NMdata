@@ -5,7 +5,7 @@
 ##' column is `model` and you want to create a plot, run a regression
 ##' or anything on the data for each model. In that case
 ##' lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
-##' l in lapplydt is beause a list is returned (like lapply), the dt
+##' l in lapplydt is because a list is returned (like lapply), the dt
 ##' is because the input is a data.table.
 ##'
 ##' 
@@ -24,6 +24,7 @@
 ##'     message("this is subset",.nm)
 ##'     nrow(x) 
 ##' })
+##' @return a list 
 ##' @export
 
 
