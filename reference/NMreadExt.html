@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.915</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.921</span>
       </span>
     </div>
 
@@ -122,11 +122,11 @@ data.frames compiled in a list.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
-<dd><p>The default is to return data as a data.frame. Pass
-a function (say `tibble::as_tibble`) in as.fun to convert to
+<dd><p>The default is to return data as a <code>data.frame</code>. Pass
+a function in as.fun to convert to
 something else. If `data.table`s are wanted, use
 `as.fun="data.table"`. The default can be configured using
-`NMdataConf()`.</p></dd>
+<code><a href="NMdataConf.html">NMdataConf()</a></code>.</p></dd>
 
 
 <dt id="arg-modelname">modelname<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
@@ -139,9 +139,9 @@ something else. If `data.table`s are wanted, use
 
 <dt id="arg-auto-ext">auto.ext<a class="anchor" aria-label="anchor" href="#arg-auto-ext"></a></dt>
 <dd><p>If `TRUE` (default) the extension will
-automatically be modified using `NMdataConf()$file.ext`. This
+automatically be modified using <code>NMdataConf()$file.ext</code>. This
 means `file` can be the path to an input or output control
-stream, and `NMreadExt` will still read the `.ext` file.</p></dd>
+stream, and <code>NMreadExt</code> will still read the `.ext` file.</p></dd>
 
 
 <dt id="arg-tableno">tableno<a class="anchor" aria-label="anchor" href="#arg-tableno"></a></dt>
@@ -151,7 +151,7 @@ number. This typically means the results from the last
 `$ESTIMATION` step are used.</p></li>
 <li><p>"min" Pick results from the first table available.</p></li>
 <li><p>"all" Keep all results. The tables can be distinguished by
-the `tableno` column.</p></li>
+the <code>tableno</code> column.</p></li>
 <li><p>an integer greater than 0, in which case the table with this
 table number will be picked.</p></li>
 </ul></dd>
@@ -165,7 +165,7 @@ table number will be picked.</p></li>
 <dd><p>Use a slow but more robust method to read tables? If
 missing or `NULL`, the fast method will be tried first, and if
 any issues are seen, the method will switch to `slow=TRUE`. If
-`FALSE`,it will also swich in case of issues, but a warning is
+`FALSE`,it will also switch in case of issues, but a warning is
 issued. In other words, it should be safe to not use this
 argument.</p></dd>
 
@@ -186,14 +186,14 @@ argument.</p></dd>
     <code>return="all"</code> will contain columns based on the Nonmem
     7.5 manual. It defines codes for different parameter-level
     values. They are:</p>
-<p>-1e+09: se
--1000000002: eigCor
--1000000003: cond
--1000000004: stdDevCor
--1000000005: seStdDevCor
--1000000006: FIX
--1000000007: termStat
--1000000008: partLik</p>
+<p><code>-1e+09: se</code>
+<code>-1000000002: eigCor</code>
+<code>-1000000003: cond</code>
+<code>-1000000004: stdDevCor</code>
+<code>-1000000005: seStdDevCor</code>
+<code>-1000000006: FIX</code>
+<code>-1000000007: termStat</code>
+<code>-1000000008: partLik</code></p>
 <p>The parameter name is in the <code>parameter</code> column. The
 "parameter type", like "THETA", "OMEGA", "SIGMA" are available in
 the <code>par.type</code> column. Counters are available in <code>i</code> and
@@ -203,7 +203,7 @@ the <code>par.type</code> column. Counters are available in <code>i</code> and
 <p>Notice that in case multiple tables are available in the `ext`
 file, the column names are taken from the first table. E.g., in
 case of SAEM/IMP estimation, the objective function values will be
-in the `SAEMOBJ` column, even for the IMP step. This may change in
+in the <code>SAEMOBJ</code> column, even for the IMP step. This may change in
 the future.</p>
     </div>
 

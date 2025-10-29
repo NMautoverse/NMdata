@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.915</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.921</span>
       </span>
     </div>
 
@@ -85,20 +85,22 @@
 <h2 class="page-header" data-toc-text="0.2.2" id="nmdata-022">NMdata 0.2.2<a class="anchor" aria-label="anchor" href="#nmdata-022"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-2"></a></h3>
-<ul><li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> supports initial value syntax with missing values like <code>$THETA (,1,) ; TVCL</code>. There is still a limitation that the lower limit, the initial value and the upper limit for a single parameter must be on the same line.</p></li>
+<ul><li><p>New function, <code><a href="../reference/dtapply.html">dtapply()</a></code> takes a vector or a list (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), runs a function (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), and returns a <code>data.frame</code> with column containing values or names of character vector or list in addition to columns with function results.</p></li>
+<li><p>New function, <code><a href="../reference/lapplydt.html">lapplydt()</a></code> takes a <code>data.frame</code>, runs a function in subsets (as defined by a <code>by</code> column), returns a list. This is because <code>dt[i,j,by]</code> only works if all subsets defined by <code>by</code> returns compatible lists. <code><a href="../reference/lapplydt.html">lapplydt()</a></code> works anyway, even for other structures like plots.</p></li>
+<li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now scans the control stream for a specified formats. As <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> reads control stream parameter sections and turns comments into a <code>data.frame</code>, the format of the tabulated information is central information. This can now be provided in the control stream (where the comments are defined) instead of in the postprocessing script (which is ideally reused between models). Control stream example:</p></li>
+</ul><pre><code>;; format: %idx - %symbol [%unit]; %trans
+$THETA (0, 4.4) ; 1 - CL [L/h] ; none
+;; format.omega:
+%symbol ; %trans $OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
+<p>The first occurrance of each of <code>format</code>, <code>format.omega</code>, and <code>format.sigma</code> is used. Like before <code>format.sigma</code> inherits from <code>format.omega</code> if not specified, like <code>format.omega</code> inherits from <code>format</code>.</p>
+<p>Also, <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> formats are no longer expected to include a field dedicated to the initial value information (like <code>(0, 0.44)</code> above. It will automatically assign this to a field called <code>initstr</code> (for “initial value string”). It will still look at the format, and if the first field is named either <code>init</code> or <code>initstr</code>, it will use this field for the initial value string. A new argument <code>add.init</code> is added to control this behavior.</p>
+<p>Notice, <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> is another NMdata function that processes these fields and would in this case separate this into <code>lower=0</code> and <code>init=4.4</code>.</p>
+<ul><li><p>Support for application of data filters on columns that contain missing values. <code><a href="../reference/NMapplyFilters.html">NMapplyFilters()</a></code> is an internal function that runs these filters on (R) data sets. This used to throw warnings when columns with missing values were being used in the filters. This situation is now handled. A message is still thrown to encourage the user to use a row identifier.</p></li>
+<li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> supports initial value syntax with missing values like <code>$THETA (,1,) ; TVCL</code>. There is still a limitation that the lower limit, the initial value and the upper limit for a single parameter must be on the same line.</p></li>
 <li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> can read prior parameters like <code>$THETAP</code>, <code>$THETAPV</code>, etc.</p></li>
 <li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> adds a <code>SAME</code> (0/1) column to parameter table.</p></li>
-<li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now both append and prepend strings to file names. See the new <code>position</code> argument which defaults to <code>"append"</code>.</p></li>
-<li><p>New function, <code><a href="../reference/dtapply.html">dtapply()</a></code> takes a vector or a list (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), runs a function (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), and returns a <code>data.table</code> with column containing values or names of character vector or list in addition to columns with function results.</p></li>
-<li><p><code><a href="../reference/lapplydt.html">lapplydt()</a></code> takes a data.table, runs a function in subsets (as defined by a <code>by</code> column), returns a list. This is because <code>dt[i,j,by]</code> only works if all subsets defined by <code>by</code> returns compatible lists. <code><a href="../reference/lapplydt.html">lapplydt()</a></code> works anyway, even for other structures like plots.</p></li>
-<li><p>Support for application of data filters on columns that contain missing values. <code><a href="../reference/NMapplyFilters.html">NMapplyFilters()</a></code> is an internal function that runs these filters on (R) data sets. This used to throw warnings when columns with missing values were being used in the filters. This situation is now handled. A message is still thrown to encourage the user to use a row identifier.</p></li>
+<li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now both append and prepend strings to file names. See the new <code>position</code> argument which defaults to <code>"append"</code>. <code><a href="../reference/fnAppend.html">fnAppend()</a></code> also gains support for modifying strings ending in dots, like <code>string...</code></p></li>
 <li><p><code><a href="../reference/tmpcol.html">tmpcol()</a></code> adds support for multiple variables, providing unique variable names for all, taking into account existing variables.</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="other-improvements-0-2-2">Other Improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-2"></a></h3>
-<ul><li>
-<code><a href="../reference/fnAppend.html">fnAppend()</a></code> gains support for modifying strings like ending in dots, like <code>string...</code>
-</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-2">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-2"></a></h3>
@@ -119,7 +121,7 @@
 <ul><li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> would in some situations with multiple estimation steps not be able to read the <code>.ext</code> file. This has been fixed.</p></li>
 <li><p><code><a href="../reference/NMscanTables.html">NMscanTables()</a></code> - and hence <code><a href="../reference/NMscanData.html">NMscanData()</a></code> would fail on some output formats - especially it would not always detect if tabulators were used as separators. More checks have been included to detect this.</p></li>
 <li><p><code><a href="../reference/NMreadCov.html">NMreadCov()</a></code> adds proper support for <code>.cov</code> files with multiple tables. The function has been re-written for added flexibility. Thanks to Brian Reilly for reporting this important gap.</p></li>
-<li><p>Better identification of delimitors in output tables. Especially, this helps identifying when tabulator characters er used as delimtors. Until this fix, this would fail in some cases. It may still not be bulletproof but it should now support most cases.</p></li>
+<li><p>Better identification of delimiters in output tables. Especially, this helps identifying when tabulator characters er used as delimiters. Until this fix, this would fail in some cases. It may still not be bulletproof but it should now support most cases.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-2-1">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-1"></a></h3>
@@ -206,7 +208,7 @@
 <h2 class="page-header" data-toc-text="0.1.7" id="nmdata-017">NMdata 0.1.7<small>2024-08-26</small><a class="anchor" aria-label="anchor" href="#nmdata-017"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-7"></a></h3>
-<ul><li><p><code>NMreadPartab()</code> has been generalized to support comment formats very generally. <code>NMreadPartab()</code> reads the comments in <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections, splits them into variables, and organizes those variables in a parameter table. With this upgrade, pretty much any structure should be supported as long as delimitors are not alphabetic or numeric (so any special characters should work). Notice, delimitors can change between fields . Example: <code>"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"</code> would be matched by <code>NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")</code> which would then return a table including columns init, idx, symbol, label, and unit. The comments must be systematic within say <code>$THETA</code> but the format can be different for <code>$OMEGA</code> and <code>$SIGMA</code>. See examples in <code>?NMreadParTab</code>.</p></li>
+<ul><li><p><code>NMreadPartab()</code> has been generalized to support comment formats very generally. <code>NMreadPartab()</code> reads the comments in <code>$THETA</code>, <code>$OMEGA</code> and <code>$SIGMA</code> sections, splits them into variables, and organizes those variables in a parameter table. With this upgrade, pretty much any structure should be supported as long as delimiters are not alphabetic or numeric (so any special characters should work). Notice, delimiters can change between fields . Example: <code>"$THETA 1.4 ; 3 - CL (Clearance) [L/h]"</code> would be matched by <code>NMreadPartab(...,format="%init ;%idx-%symbol(%label)[%unit]")</code> which would then return a table including columns init, idx, symbol, label, and unit. The comments must be systematic within say <code>$THETA</code> but the format can be different for <code>$OMEGA</code> and <code>$SIGMA</code>. See examples in <code>?NMreadParTab</code>.</p></li>
 <li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> is a new automated approach to label parameters. It interprets NONMEM code and provides labels used in the control stream. If the line <code>TVCL=THETA(1)</code> is the only line in the code that references THETA(1), <code><a href="../reference/NMrelate.html">NMrelate()</a></code> will return a label <code>TVCL</code>.</p></li>
 <li><p>Improved support for character-coded <code>TIME</code> and <code>DATE</code> arguments. The default behavior is to allow (not require) <code>TIME</code> and <code>DATE</code> columns to be non-numeric. This is to support the NONMEM character format of DATE and TIME. It affects sorting of columns (<code>NMorderColumn()</code>) and the auto-generated <code>$INPUT</code> section suggestions. Where applicable, the <code>allow.char.TIME</code> argument controls this behavior. Set to <code>allow.char.TIME=FALSE</code> to require <code>TIME</code> and <code>DATE</code> columns be numeric. Thanks to Sanaya Shroff for the request, enabling <code>NMsim</code> to simulate using data sets with one or more of these columns coded as character.</p></li>
 <li>
@@ -291,7 +293,7 @@
 <h3 id="new-features-0-1-2">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h3>
 <ul><li>NMreadExt is a new function that reads parameter estimates, uncertainties if available, estimation iterations and other information from .ext files.</li>
 <li>NMreadPhi is a new function that reads contents of NONMEM phi files.</li>
-<li>NMreadCov is a “new” function that reads NONMEM .cov files (parameter uncertainty as estimated by a covariance step). The function is not really new. It was developed by Matt Fidler for nonmem2rx based on NMdata’s NMreadTab. It has been only slightly modified since. Thanks Matt!</li>
+<li>NMreadCov is a “new” function that reads NONMEM .cov files (parameter uncertainty as estimated by a covariance step). The function is not really new. It was developed by Matt Fidler for <code>nonmem2rx</code> based on NMdata’s NMreadTab. It has been only slightly modified since. Thanks Matt!</li>
 <li>NMscanInput supports all combinations of <code>translate</code> and <code>recover.cols</code>.</li>
 </ul></div>
 <div class="section level3">
@@ -332,7 +334,7 @@
 <h2 class="page-header" data-toc-text="0.0.16" id="nmdata-0016">NMdata 0.0.16<small>2023-03-26</small><a class="anchor" aria-label="anchor" href="#nmdata-0016"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-16">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-16"></a></h3>
-<ul><li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> includes argument <code>location</code>. In combination with <code>section</code>, this determines where the new section is inserter. Possible values are “replace” (default), “before”, “after”, “first”, “last”.</p></li>
+<ul><li><p><code><a href="../reference/NMwriteSection.html">NMwriteSection()</a></code> includes argument <code>location</code>. In combination with <code>section</code>, this determines where the new section is inserted. Possible values are “replace” (default), “before”, “after”, “first”, “last”.</p></li>
 <li><p><code><a href="../reference/NMreadSection.html">NMreadSection()</a></code> adds support for partial matching of section names. Specifically, this means that the first three characters will be matched only, i.e. allowing say <code>$SIMULATION</code> to match <code>$SIM</code> or <code>$ESTIMATION</code> to match <code>$EST</code>.</p></li>
 </ul></div>
 <div class="section level3">
@@ -344,7 +346,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.15" id="nmdata-0015">NMdata 0.0.15<small>2022-12-01</small><a class="anchor" aria-label="anchor" href="#nmdata-0015"></a></h2>
-<p>This update is of no difference to users. A technicality has been chaned to ensure consistent test results once data.table 1.14.7 is</p>
+<p>This update is of no difference to users. A technicality has been changed to ensure consistent test results once data.table 1.14.7 is</p>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.14" id="nmdata-0014">NMdata 0.0.14<small>2022-11-16</small><a class="anchor" aria-label="anchor" href="#nmdata-0014"></a></h2>
@@ -353,7 +355,7 @@
 <ul><li><p><code><a href="../reference/fnExtension.html">fnExtension()</a></code> has been generalized. It now ignores leading spaces in new extension, and extensions with zero or one leading period are treated identically (so asking for <code>xml</code> or <code>.xml</code> is the same). Also, by providing “” as the new extension will now remove the extension, and if extension is not provided, fnExtension will retrieve the extension rather than replace it.</p></li>
 <li><p><code><a href="../reference/NMscanData.html">NMscanData()</a></code> now supports repeated output tables, like those created using the <code>SUBPROBLEM</code> option.</p></li>
 <li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has a new argument <code>csv.trunc.as.nm</code>. If <code>TRUE</code>, csv file will be truncated horizontally (columns will be dropped) to match the <code>$INPUT</code> text generated for NONMEM (<code>genText</code> must be <code>TRUE</code> for this option to be allowed). This can be a great advantage when dealing with large datasets that can create problems in parallellization. Combined with <code>write.rds=TRUE</code>, the full data set will still be written to an rds file, so this can be used when combining output and input data when reading model results. This is done by default by <code><a href="../reference/NMscanData.html">NMscanData()</a></code>. This means writing a lean (narrow) csv file for NONMEM while keeping columns of non-numeric class like character and factor for post-processing.</p></li>
-<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has got an arguement ‘genText’ to control whether text for NONMEM should be generated. Default is to do so. Also, support is added for <code>script=NULL</code> which now means the same as not specifying script.</p></li>
+<li><p><code><a href="../reference/NMwriteData.html">NMwriteData()</a></code> has got an argument ‘genText’ to control whether text for NONMEM should be generated. Default is to do so. Also, support is added for <code>script=NULL</code> which now means the same as not specifying script.</p></li>
 <li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> now includes <code>SDOS</code>, a scalar to be applied when computing last dose amount and cumulative dose amount from <code>AMT</code>. Sometimes, <code>AMT</code> is in one unit, and other variables related to doses is in another. Say that dose is in mg and concentrations are in ng/mL, then <code>AMT</code> should be in mcg. But you may want everything else related to doses to be in mg. Then use <code>SDOS=1000</code>.</p></li>
 <li><p><code><a href="../reference/addTAPD.html">addTAPD()</a></code> includes convenient prefix.cols and suffix.cols arguments that will prepend or append strings to all created columns. This is useful if dosing more than one drug, and you want to run <code><a href="../reference/addTAPD.html">addTAPD()</a></code> for both (different suffixes?), or if you want to run for nominal and actual time (prefix A and N?).</p></li>
 <li><p><code><a href="../reference/flagsAssign.html">flagsAssign()</a></code> now reports that data is empty and return the data if nothing is left after applying subset. It used to return an error.</p></li>
