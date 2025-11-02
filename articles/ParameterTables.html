@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.921</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.931</span>
       </span>
     </div>
 
@@ -1278,18 +1278,20 @@ This can easily be merged onto the parameter table as needed.</p>
 <div class="kable-table">
 <table class="table">
 <colgroup>
-<col width="13%">
-<col width="13%">
-<col width="11%">
-<col width="3%">
-<col width="3%">
+<col width="10%">
+<col width="10%">
 <col width="8%">
-<col width="12%">
-<col width="7%">
-<col width="7%">
-<col width="7%">
-<col width="4%">
+<col width="2%">
+<col width="2%">
 <col width="6%">
+<col width="9%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="3%">
+<col width="4%">
+<col width="9%">
+<col width="10%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">parameter</th>
@@ -1300,10 +1302,12 @@ This can easily be merged onto the parameter table as needed.</p>
 <th align="right">iblock</th>
 <th align="right">blocksize</th>
 <th align="right">init</th>
-<th align="right">lower</th>
-<th align="right">upper</th>
+<th align="left">lower</th>
+<th align="left">upper</th>
 <th align="right">FIX</th>
 <th align="right">SAME</th>
+<th align="right">sameblock</th>
+<th align="right">Nsameblock</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -1315,8 +1319,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">0.10</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1329,8 +1335,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">3.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1343,8 +1351,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="right">1.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1357,8 +1367,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">4</td>
 <td align="right">1</td>
 <td align="right">4.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1371,8 +1383,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">5</td>
 <td align="right">1</td>
 <td align="right">-1.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1385,8 +1399,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">6</td>
 <td align="right">1</td>
 <td align="right">0.10</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1399,9 +1415,11 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">0.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -1413,8 +1431,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">0.10</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1427,8 +1447,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">0.01</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1441,8 +1463,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">0.10</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1455,9 +1479,11 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">4</td>
 <td align="right">1</td>
 <td align="right">0.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
@@ -1469,9 +1495,11 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">5</td>
 <td align="right">1</td>
 <td align="right">0.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -1483,8 +1511,10 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">0.10</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1497,9 +1527,11 @@ This can easily be merged onto the parameter table as needed.</p>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">0.00</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 </tr>
 </tbody>
