@@ -164,3 +164,39 @@ $OMEGA  BLOCK(2) FIX
     
 })
 
+
+test_that("BLOCK(2) SAME",{
+
+    fileRef <- "testReference/NMreadInits_05.rds"
+
+#### 
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+
+    text <- c("
+$THETA
+(0,0.1) ;  1 ; 1st theta
+ (0,4.2) ; 2 ; 2nd theta
+$OMEGA  0.08   ;    IIV.TH1  ; 1  ;IIV
+;; A block(2) + SAME
+$OMEGA  BLOCK(2)
+ 0.547465  .01 .3     ; 2+3
+$OMEGA  BLOCK(2) SAME ; 4+5
+")
+    as.NMctl(text,lines=T)
+
+
+    res1  <- NMreadInits(lines=text,return="all")
+
+###  elemnum should not inc because there is only one observed element
+###  (SAME only written once in control stream)
+    res1
+
+    expect_equal_to_reference(res1$pars,
+                              fileRef)
+
+
+})
+
