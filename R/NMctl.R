@@ -8,10 +8,8 @@ readCtl <- function(x,...){
     UseMethod("readCtl",x)
 }
 
-##readCtl(x="run1.mod")
-
 ##' @import NMdata
-##' @export
+##' @keywords internal
 readCtl.character <- function(x,...){
     dots <- list(...)
     if("lines"%in%names(dots)){
@@ -26,7 +24,7 @@ readCtl.character <- function(x,...){
     ctl
 }
 
-##' @export
+##' @keywords internal
 readCtl.NMctl <- function(x,...){
     x
 }
@@ -50,12 +48,12 @@ as.NMctl <- function(x,...){
     UseMethod("as.NMctl",x)
 }
 
-##' @export
+##' @keywords internal
 as.NMctl.character <- function(x,...){
     readCtl(x,...)
 }
 
-##' @export
+##' @keywords internal
 as.NMctl.NMctl <- function(x,...){
     x
 }

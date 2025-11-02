@@ -90,6 +90,8 @@ reference:
   - NMinfo
   - addCor
   - addOmegaCorr
+  - as.NMctl
+  - readCtl
 - title: Checking and Debugging
   desc: Functions for checking data and input control streams
   contents:

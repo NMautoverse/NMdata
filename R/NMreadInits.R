@@ -10,6 +10,7 @@
 ##' @examples
 ##' triagSize(1:5)
 ##' @export 
+
 triagSize <- function(diagSize){
     ((diagSize^2)-diagSize)/2+diagSize
 }
@@ -342,7 +343,6 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         dt.match
     }
 
-    
     dt.matches <- dt.lines[,getMatches(.SD),by=.(par.type)]
     
     res <- dt.matches[,classify_matches(string,patterns),by=.(par.type,linenum,elemnum)]
@@ -350,7 +350,6 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
     ## count parameter number - init,ll,ul,FIX will all be assigned to one parameter number
     res.list <- split(res,by="par.type")
     res.list <- lapply(res.list,function(res){
-        
         res[,parnum:=NA_integer_]
         this.parnum <- 0
         prev.type <- "init"
