@@ -64,7 +64,7 @@ NMreadTab <- function(file,col.tableno,col.nmrep,col.table.name,header=TRUE,skip
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
 
 ### todo: Keep track of whether to keep col.nmrep and col.table.name
-
+    
 ### Default is to keep TABLENO
     if(missing(col.nmrep) || is.null(col.nmrep) || isTRUE(col.nmrep) ){
         col.nmrep <- "NMREP"

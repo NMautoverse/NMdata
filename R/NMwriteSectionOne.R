@@ -45,7 +45,6 @@ NMwriteSectionOne <- function(file0,lines,section,location=c("replace","before",
     replaceOnePart <- function(lines,section,newlines,quiet=FALSE){
         
         if(!quiet && write && !is.null(newfile) ) message(paste("Writing",newfile))
-        
         ## make sure section is capital and does not start with $.
         section <- gsub(" ","",section)
         section <- sub("^\\$","",section)

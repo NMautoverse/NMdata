@@ -127,6 +127,8 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
     if(is.null(tableno)) tableno <- "max"
 
+    
+    
     if( (is.character(tableno)&& !tableno%in%c("min","max","all") ) ||
         (is.numeric(tableno) && (tableno<=0 || tableno%%1!=0) )){
         stop("tableno must be either one of the character strings \"min\", \"max\", \"all\" or an integer greater than zero.")
@@ -222,9 +224,6 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     }
 
     
-
-
-
 
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
     dt.n <- unique(res.NMdat[,c("modelno",col.model),wit=FALSE])[,.(Nmodel=uniqueN(get(col.model)),Nmodelno=uniqueN(modelno),.N)]

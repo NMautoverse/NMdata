@@ -3,7 +3,7 @@
 ##' @param x object to read.
 ##' @param ... Not used.
 ##' @return An object of class `NMctl`.
-##' @keywords internal
+##' @export
 readCtl <- function(x,...){
     UseMethod("readCtl",x)
 }
@@ -11,19 +11,14 @@ readCtl <- function(x,...){
 ##readCtl(x="run1.mod")
 
 ##' @import NMdata
-##' @keywords internal
+##' @export
 readCtl.character <- function(x,...){
-    
-    ## ctl <- NMreadSection(file=x)
-    
     dots <- list(...)
     if("lines"%in%names(dots)){
-        
         ### this only supports one ctl. Generalize?
-        x2 <- do.call(c,strsplit(x,"\\n"))
-        ctl <- x2
+        x <- do.call(c,strsplit(x,"\\n"))
+        ctl <- x
     } else {
-        
         ctl <- readLines(x,warn=FALSE)
     }
     ## class(ctl) <- "NMctl"
@@ -31,14 +26,13 @@ readCtl.character <- function(x,...){
     ctl
 }
 
-##' @keywords internal
+##' @export
 readCtl.NMctl <- function(x,...){
     x
 }
 
-##' @keywords internal
+##' @export
 print.NMctl <- function(x,...) {
-   
     if(!is.list(x)) x <- list(x)
     res <- lapply(x,function(x){
         x <- x[!grepl("^ *$",x)]
@@ -51,17 +45,17 @@ print.NMctl <- function(x,...) {
 ##' @param x object to convert
 ##' @param ... Not used
 ##' @return An object of class `NMctl`.
-##' @keywords internal
+##' @export
 as.NMctl <- function(x,...){
     UseMethod("as.NMctl",x)
 }
 
-##' @keywords internal
+##' @export
 as.NMctl.character <- function(x,...){
     readCtl(x,...)
 }
 
-##' @keywords internal
+##' @export
 as.NMctl.NMctl <- function(x,...){
     x
 }
