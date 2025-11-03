@@ -398,7 +398,6 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
             rbindlist(res.sameblocks)
         )
         setorder(res,elemnum)
-
         
         res <- count_ij(res)
         res[,parblock:=NULL]
@@ -494,9 +493,8 @@ initsToExt <- function(elements){
     pars[]
 }
 
-
-##' create a variable in inits to keep track of SAME blocks
-##' i.e. parameters that are part of a single distribution
+##' Create a variable in inital value table to keep track of SAME
+##' blocks i.e. parameters that are part of a single distribution
 ##'
 ##' @param inits Table of initial values as created by NMreadInits().
 ##'
@@ -524,8 +522,6 @@ addSameBlocks <- function(inits) {
     sameblock <- NULL
 
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
-
-
 
     inits = copy(as.data.table(inits))
     inits[,startSameBlock := ifelse(SAME==0 & data.table::shift(SAME,type="lead") == 1, 1, 0)]

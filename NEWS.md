@@ -12,14 +12,18 @@
   because `dt[i,j,by]` only works if all subsets defined by `by`
   returns compatible lists. `lapplydt()` works anyway, even for other
   structures like plots.
-  
+
+* `$NMtransInp()` has been improved to consistently and fully support
+  `VAR=DROP` and `VAR1=VAR2` notations in `$INPUT`. This improves
+  `NMscanInput()` and `NMscanData()`.
+
 * `NMreadParsText()` now scans the control stream for a specified
-formats. As `NMreadParsText()` reads control stream parameter sections
-and turns comments into a `data.frame`, the format of the tabulated
-information is central information. This can now be provided in the
-control stream (where the comments are defined) instead of in the
-postprocessing script (which is ideally reused between
-models). Control stream example:
+  formats. As `NMreadParsText()` reads control stream parameter sections
+  and turns comments into a `data.frame`, the format of the tabulated
+  information is central information. This can now be provided in the
+  control stream (where the comments are defined) instead of in the
+  postprocessing script (which is ideally reused between
+  models). Control stream example:
 
 ``` 
 ;; format: %idx - %symbol [%unit]; %trans 
@@ -28,22 +32,22 @@ $THETA (0, 4.4) ; 1 - CL [L/h] ; none
 %symbol ; %trans $OMEGA 0.15 ; IIV.KA ; lognormal 
 ``` 
 
-The first occurrance of each of `format`, `format.omega`, and
-`format.sigma` is used. Like before `format.sigma` inherits from
-`format.omega` if not specified, like `format.omega` inherits from
-`format`.
+  The first occurrance of each of `format`, `format.omega`, and
+  `format.sigma` is used. Like before `format.sigma` inherits from
+  `format.omega` if not specified, like `format.omega` inherits from
+  `format`.
 
-Also, `NMreadParsText()` formats are no longer expected to include a
-field dedicated to the initial value information (like `(0, 0.44)`
-above. It will automatically assign this to a field called `initstr`
-(for "initial value string"). It will still look at the format, and if
-the first field is named either `init` or `initstr`, it will use this
-field for the initial value string. A new argument `add.init` is added
-to control this behavior.
+  Also, `NMreadParsText()` formats are no longer expected to include a
+  field dedicated to the initial value information (like `(0, 0.44)`
+  above. It will automatically assign this to a field called `initstr`
+  (for "initial value string"). It will still look at the format, and if
+  the first field is named either `init` or `initstr`, it will use this
+  field for the initial value string. A new argument `add.init` is added
+  to control this behavior.
 
-Notice, `NMreadInits()` is another NMdata function that processes
-these fields and would in this case separate this into `lower=0` and
-`init=4.4`.
+  Notice, `NMreadInits()` is another NMdata function that processes
+  these fields and would in this case separate this into `lower=0` and
+  `init=4.4`.
 
 * Support for application of data filters on columns that contain
   missing values.  `NMapplyFilters()` is an internal function that
@@ -60,7 +64,10 @@ these fields and would in this case separate this into `lower=0` and
 * `NMreadInits()` can read prior parameters like `$THETAP`,
   `$THETAPV`, etc.
   
-* `NMreadInits()` adds a `SAME` (0/1) column to parameter table. 
+* `NMreadInits()` adds a `SAME` (0/1) column to parameter table. Also
+  adds `sameblock` (counting sequences of `$OMEGA` blocks connecting
+  with `SAME`) and `Nsameblock` (The number of `SAME` repetitions).
+  Thanks to Brian Reilly for working on this.
 
 * `fnAppend()` can now both append and prepend strings to file
   names. See the new `position` argument which defaults to
@@ -68,11 +75,18 @@ these fields and would in this case separate this into `lower=0` and
   ending in dots, like `string...`
 
 * `tmpcol()` adds support for multiple variables, providing unique
-  variable names for all, taking into account existing variables.
+  variable names for all, taking into account existing variables. Also
+  gains an argument, `sep`, to control separator between base and a
+  possible counter (to ensure uniquenes).
 
 ## Bugfixes
 * `NMreadFilters()` would classify single-character filters as accept
   statements. Fixed.
+  
+* `NMreadInits()` gains support for `OMEGA BLOCK(N) SAME` structures
+  where `N` is a positive integer. Notice, the `SAME(N)` notation,
+  meaning `N` repetition of the `SAME` block structure, is still not
+  supported.
 
 # NMdata 0.2.1
 
