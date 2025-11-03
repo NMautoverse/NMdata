@@ -87,6 +87,7 @@
 <h3 id="new-features-0-2-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-2"></a></h3>
 <ul><li><p>New function, <code><a href="../reference/dtapply.html">dtapply()</a></code> takes a vector or a list (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), runs a function (like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>), and returns a <code>data.frame</code> with column containing values or names of character vector or list in addition to columns with function results.</p></li>
 <li><p>New function, <code><a href="../reference/lapplydt.html">lapplydt()</a></code> takes a <code>data.frame</code>, runs a function in subsets (as defined by a <code>by</code> column), returns a list. This is because <code>dt[i,j,by]</code> only works if all subsets defined by <code>by</code> returns compatible lists. <code><a href="../reference/lapplydt.html">lapplydt()</a></code> works anyway, even for other structures like plots.</p></li>
+<li><p><code>$NMtransInp()</code> has been improved to consistently and fully support <code>VAR=DROP</code> and <code>VAR1=VAR2</code> notations in <code>$INPUT</code>. This improves <code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> and <code><a href="../reference/NMscanData.html">NMscanData()</a></code>.</p></li>
 <li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now scans the control stream for a specified formats. As <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> reads control stream parameter sections and turns comments into a <code>data.frame</code>, the format of the tabulated information is central information. This can now be provided in the control stream (where the comments are defined) instead of in the postprocessing script (which is ideally reused between models). Control stream example:</p></li>
 </ul><pre><code>;; format: %idx - %symbol [%unit]; %trans
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none
@@ -98,14 +99,14 @@ $THETA (0, 4.4) ; 1 - CL [L/h] ; none
 <ul><li><p>Support for application of data filters on columns that contain missing values. <code><a href="../reference/NMapplyFilters.html">NMapplyFilters()</a></code> is an internal function that runs these filters on (R) data sets. This used to throw warnings when columns with missing values were being used in the filters. This situation is now handled. A message is still thrown to encourage the user to use a row identifier.</p></li>
 <li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> supports initial value syntax with missing values like <code>$THETA (,1,) ; TVCL</code>. There is still a limitation that the lower limit, the initial value and the upper limit for a single parameter must be on the same line.</p></li>
 <li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> can read prior parameters like <code>$THETAP</code>, <code>$THETAPV</code>, etc.</p></li>
-<li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> adds a <code>SAME</code> (0/1) column to parameter table.</p></li>
+<li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> adds a <code>SAME</code> (0/1) column to parameter table. Also adds <code>sameblock</code> (counting sequences of <code>$OMEGA</code> blocks connecting with <code>SAME</code>) and <code>Nsameblock</code> (The number of <code>SAME</code> repetitions). Thanks to Brian Reilly for working on this.</p></li>
 <li><p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> can now both append and prepend strings to file names. See the new <code>position</code> argument which defaults to <code>"append"</code>. <code><a href="../reference/fnAppend.html">fnAppend()</a></code> also gains support for modifying strings ending in dots, like <code>string...</code></p></li>
-<li><p><code><a href="../reference/tmpcol.html">tmpcol()</a></code> adds support for multiple variables, providing unique variable names for all, taking into account existing variables.</p></li>
+<li><p><code><a href="../reference/tmpcol.html">tmpcol()</a></code> adds support for multiple variables, providing unique variable names for all, taking into account existing variables. Also gains an argument, <code>sep</code>, to control separator between base and a possible counter (to ensure uniquenes).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-2">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-2"></a></h3>
-<ul><li>
-<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> would classify single-character filters as accept statements. Fixed.</li>
+<ul><li><p><code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> would classify single-character filters as accept statements. Fixed.</p></li>
+<li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> gains support for <code>OMEGA BLOCK(N) SAME</code> structures where <code>N</code> is a positive integer. Notice, the <code>SAME(N)</code> notation, meaning <code>N</code> repetition of the <code>SAME</code> block structure, is still not supported.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
