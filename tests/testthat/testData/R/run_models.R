@@ -29,4 +29,6 @@ NMexec("../nonmem/xgxr055.mod",sge=FALSE)
 ### dropping, then overwriting nomtime. using a new name in filters
 NMexec("../nonmem/xgxr056.mod",sge=FALSE)
 
-NMexec("../nonmem/xgxr059.mod",sge=FALSE)
+### this produces a huge lst file. lst omitted from Rbuildignore.
+# NMexec("../nonmem/xgxr059.mod",sge=FALSE)
+# NMcheckColnames("../nonmem/xgxr059.mod")

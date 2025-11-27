@@ -24,8 +24,11 @@ possible which is \code{c("THETA","OMEGA","SIGMA")}.}
 
 \item{col.model}{Name of the column containing the model name.}
 
-\item{sections}{Sections of the control stream to
-consider. Default is all of \code{c("PRED","PK","ERROR")}.}
+\item{sections}{Not implemented. Sections of the control stream to
+process. Default is all of
+\code{c("PRED","PK","ERROR")}. Notice, this denotes what
+sections to search for relationships, not what paramter types
+(like THETA, OMEGA, SIGMA) to search for.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass
 a function (say tibble::as_tibble) in as.fun to convert to
