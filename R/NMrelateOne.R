@@ -52,6 +52,8 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     lines <- unlist(lines.list)
        
     dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines,ignore.case=TRUE)])
+
+    if(is.null(dt.code) || nrow(dt.code)==0) return(NULL)
     ## remove spaces
     dt.code[,line2:=gsub(" ","",line.var)]
 

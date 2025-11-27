@@ -1,3 +1,17 @@
+# NMdata 0.2.3
+* `NMreadParsText()` supports formats including periods (.). There may
+  still be some special characters that are not supported.
+
+* `NMrelate()` supports models that don't have all of `$THETA`,
+  `$OMEGA`, and `$SIGMA` sections.
+
+## Bugfixes
+* `NMrelate()` did not consider the `sections` argument. It does now
+  but with an important limitation: it can only be of lenght one. This
+  is of minor importance since it is only needed in the special case
+  that a parameter gets assigned to different variable names in
+  different sections. Normally, leaving out the argument is fine. 
+
 # NMdata 0.2.2
 
 ## New Features
@@ -28,8 +42,8 @@
 ``` 
 ;; format: %idx - %symbol [%unit]; %trans 
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none 
-;; format.omega:
-%symbol ; %trans $OMEGA 0.15 ; IIV.KA ; lognormal 
+;; format.omega: %symbol ; %trans 
+$OMEGA 0.15 ; IIV.KA ; lognormal 
 ``` 
 
   The first occurrance of each of `format`, `format.omega`, and

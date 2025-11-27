@@ -11,8 +11,11 @@
 ##'     path. The default is dropping the file name extension on the
 ##'     control stream file name.
 ##' @param col.model Name of the column containing the model name.
-##' @param sections Sections of the control stream to
-##'     consider. Default is all of \code{c("PRED","PK","ERROR")}.
+##' @param sections Not implemented. Sections of the control stream to
+##'     process. Default is all of
+##'     \code{c("PRED","PK","ERROR")}. Notice, this denotes what
+##'     sections to search for relationships, not what paramter types
+##'     (like THETA, OMEGA, SIGMA) to search for.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to
 ##'     something else. If data.tables are wanted, use
@@ -40,18 +43,30 @@ NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){
     if(missing(par.type)) par.type <- NULL
     if(is.null(par.type)) par.type <- cl("THETA","OMEGA","SIGMA")    
 
+    if(missing(sections)) sections <- NULL
+
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
 
 
     lines <- getLines(file=file,lines=lines,col.model=col.model,modelname=modelname,as.one=TRUE)
+
     
+    
+### this is not working. NMreadSection must be updated to support length(section)>1 first.
+    ## lines <- lines[,.(text=NMreadSection(lines=text,section=c("pk","error"))),by=model]
+    if(!is.null(sections)){
+        if(length(sections)>1) stop("sections cannot be of length>1 for now. Omit sections to scan the full control stream.")
+        lines <- lines[,.(text=NMreadSection(lines=text,section=sections)),by=model]
+    }
+    
+
     list.relate <- lapply(par.type,function(tp) {
-        lines[,NMrelateOne(lines=text,par.type=tp,as.fun="data.table"),by=col.model]
+        try(lines[,NMrelateOne(lines=text,par.type=tp,as.fun="data.table"),by=col.model])
     })
 
     
-    dt.relate <- rbindlist(list.relate)
+    dt.relate <- rbindlist(list.relate,fill=TRUE)
     dt.relate[,par.type:=factor(par.type,levels=c("THETA","OMEGA","SIGMA"))]
     setorderv(dt.relate,c(col.model,"par.type"))
     ## dt.relate[,par.type:=as.character(par.type)]
