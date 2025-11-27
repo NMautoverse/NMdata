@@ -168,7 +168,7 @@ NMreadParsText <- function(file,lines,format,
     if(!xor(is.null(file),is.null(lines))){
         stop("Exactly one of file and lines must be provided.")
     }
-
+    
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
 
@@ -252,12 +252,13 @@ NMreadParsText <- function(file,lines,format,
         format.omega=format.omega,
         format.sigma=format.sigma
     )
+    ## drop null formats
     formats.res <- formats.res[!sapply(formats.res,is.null)]
-
+    ## a tab is treated like a space
+    formats.res <- lapply(formats.res,function(x)gsub("\\t"," ",x))
     
     
 #### if not provided in arguments, read formats from control stream
-### todo use function to combine two lists into one.
     formats.ctl <- NMextractFormats(ctl=
                                         as.NMctl(lines,lines=TRUE)
                                     )
@@ -543,9 +544,11 @@ NMreadParsText <- function(file,lines,format,
 }
 
 
+##' Escape selected special characters with backslashes
+##' @param x a character string
 ##' @keywords internal
 escape.charclass <- function(x) {
-    gsub("([][\\\\^(\\\\^-])", "\\\\\\1", x)
+    gsub("([].[\\\\^(\\\\^-])", "\\\\\\1", x)
 }
 
 
@@ -554,8 +557,6 @@ escape.charclass <- function(x) {
 ##' fields, it is not looking at control stream text,
 ##' @keywords internal
 splitFields <- function(format,spaces.split=FALSE){
-
-    
     
     ## number of fields defined in format
     nfields.string <- nchar(gsub("[^%]","",format))

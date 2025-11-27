@@ -404,7 +404,7 @@ $OMEGA BLOCK(1)
 })
 
 
-test_that("no ",{
+test_that("delim includes -",{
 
     fileRef <- "testReference/NMreadParText_12.rds"
 
@@ -445,3 +445,4 @@ $OMEGA BLOCK(1)
 
 })
 
+splitFields("%initstr; %idx. %symbol")

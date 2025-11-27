@@ -12,6 +12,7 @@ readCtl <- function(x,...){
 ##' @export
 readCtl.character <- function(x,...){
     dots <- list(...)
+    
     if("lines"%in%names(dots)){
         ### this only supports one ctl. Generalize?
         x <- do.call(c,strsplit(x,"\\n"))

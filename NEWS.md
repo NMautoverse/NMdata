@@ -1,11 +1,17 @@
 # NMdata 0.2.3
 * `NMreadParsText()` supports formats including periods (.). There may
-  still be some special characters that are not supported.
+  still be some special characters that are not supported. 
 
 * `NMrelate()` supports models that don't have all of `$THETA`,
   `$OMEGA`, and `$SIGMA` sections.
 
 ## Bugfixes
+* `NMextractFormats()` was failing to capture format definitions
+  "format.omega" and "format.sigma" in control streams. Format
+  definitions including tabulator characters would also create
+  problems. A format definition is a comment documenting the format,
+  like "format: %idx - %symbol". Fixed.
+
 * `NMrelate()` did not consider the `sections` argument. It does now
   but with an important limitation: it can only be of lenght one. This
   is of minor importance since it is only needed in the special case

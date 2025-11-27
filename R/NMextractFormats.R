@@ -28,7 +28,7 @@ NMextractFormats <- function(ctl,section=NULL,as.dt=FALSE) {
     ## dt.format[,format:=sub(" *;+ format.*","",line)]
     ## dt.format[,format:=regmatches(line, regexpr("%.*", line))]
     ## dt.format[,format:=regmatches(line, regexpr("%.*", line))]
-    dt.format[,format:=sub(" *;+ *format(\\.[a-zA-Z])*[[:punct:]]* *","",line)]
+    dt.format[,format:=sub(" *;+ *format(\\.[a-zA-Z]*)*[[:punct:]]* *","",line)]
     
     ## organize in list (or dt?)
     ## list(format=format,
