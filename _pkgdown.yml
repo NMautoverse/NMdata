@@ -54,6 +54,7 @@ reference:
   - listMissings
   - uniquePresent
   - mergeCheck
+  - mergeCoal
   - renameByContents
   - flagsAssign
   - flagsCount
