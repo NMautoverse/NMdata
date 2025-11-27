@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.902</span>
       </span>
     </div>
 
@@ -111,14 +111,14 @@
 Input Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.2.2/vignettes/NMscanData.Rmd" class="external-link"><code>vignettes/NMscanData.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMscanData.Rmd" class="external-link"><code>vignettes/NMscanData.Rmd</code></a></small>
       <div class="hidden name"><code>NMscanData.Rmd</code></div>
 
     </div>
 
     
     
-<p>Built 2025-11-06 using NMdata 0.2.2.</p>
+<p>Built 2025-11-27 using NMdata 0.2.2.902.</p>
 <p>Please make sure to see latest vignette version available <a href="https://nmautoverse.github.io/NMdata/">here</a>.</p>
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
@@ -195,7 +195,7 @@ well use base R or <code>dplyr</code> if you prefer. Then
 <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nmautoverse.github.io/NMdata/">NMdata</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; NMdata 0.2.2. Browse NMdata documentation at</span></span>
+<span><span class="co">#&gt; NMdata 0.2.2.902. Browse NMdata documentation at</span></span>
 <span><span class="co">#&gt; https://NMautoverse.github.io/NMdata/</span></span>
 <span><span class="co">## not necessary for NMdata to run, but we use thse in the examples</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
@@ -501,7 +501,7 @@ represents the geometric mean of population prediction
 <span><span class="co">## sample time. In dplyr, use group_by, summarize, and ifelse?</span></span>
 <span><span class="va">res1.dt</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span>,<span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>     by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/plotres1.dt-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/plotres1.dt-1.png" class="r-plt" width="672"></p>
 <p>Notice, how little data is shown on the small doses. Remember, only
 905 of the 1502 rows in the input data were used? Most of the rows
 excluded in the analysis are so due to observation being below the
@@ -555,7 +555,7 @@ Nonmem.</p>
 <span><span class="va">res2</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,</span>
 <span>     <span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>     by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/plot-res2-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/plot-res2-1.png" class="r-plt" width="672"></p>
 <p>Obviously, we were lucky that meaningful values were assigned to
 <code>DV</code> for the BLQ and pre-dose samples in input data, so we in
 this case could easily plot all the data.</p>
@@ -601,7 +601,7 @@ combined.</p>
 <span><span class="va">res.mult</span><span class="op">[</span><span class="va">EVID</span><span class="op">==</span><span class="fl">0</span><span class="op">&amp;</span><span class="va">nmout</span><span class="op">==</span><span class="cn">TRUE</span>,</span>
 <span>         <span class="va">gmPRED</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">PRED</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>         by<span class="op">=</span><span class="fu">.</span><span class="op">(</span><span class="va">model</span>,<span class="va">trtact</span>,<span class="va">NOMTIME</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p><img src="NMscanData_files/figure-html/plot-resmult-1.png" width="672"></p>
+<p><img src="NMscanData_files/figure-html/plot-resmult-1.png" class="r-plt" width="672"></p>
 <p>In this, we specifically wanted to rename one model for illustration
 of the <code>modelname</code> argument. We can pass a function to
 customize how <code>NMscanData</code> derives it from the list file
@@ -853,7 +853,7 @@ change anything in the way you work to make use of
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

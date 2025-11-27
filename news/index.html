@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.902</span>
       </span>
     </div>
 
@@ -78,9 +78,19 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.2.2/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.3" id="nmdata-023">NMdata 0.2.3<a class="anchor" aria-label="anchor" href="#nmdata-023"></a></h2>
+<ul><li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> supports formats including periods (.). There may still be some special characters that are not supported.</p></li>
+<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> supports models that don’t have all of <code>$THETA</code>, <code>$OMEGA</code>, and <code>$SIGMA</code> sections.</p></li>
+</ul><div class="section level3">
+<h3 id="bugfixes-0-2-3">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-3"></a></h3>
+<ul><li><p><code>NMextractFormats()</code> was failing to capture format definitions “format.omega” and “format.sigma” in control streams. Format definitions including tabulator characters would also create problems. A format definition is a comment documenting the format, like “format: %idx - %symbol”. Fixed.</p></li>
+<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> did not consider the <code>sections</code> argument. It does now but with an important limitation: it can only be of lenght one. This is of minor importance since it is only needed in the special case that a parameter gets assigned to different variable names in different sections. Normally, leaving out the argument is fine.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.2" id="nmdata-022">NMdata 0.2.2<small>2025-11-04</small><a class="anchor" aria-label="anchor" href="#nmdata-022"></a></h2>
 <div class="section level3">
@@ -91,8 +101,8 @@
 <li><p><code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> now scans the control stream for a specified formats. As <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> reads control stream parameter sections and turns comments into a <code>data.frame</code>, the format of the tabulated information is central information. This can now be provided in the control stream (where the comments are defined) instead of in the postprocessing script (which is ideally reused between models). Control stream example:</p></li>
 </ul><pre><code>;; format: %idx - %symbol [%unit]; %trans
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none
-;; format.omega:
-%symbol ; %trans $OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
+;; format.omega: %symbol ; %trans
+$OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
 <p>The first occurrance of each of <code>format</code>, <code>format.omega</code>, and <code>format.sigma</code> is used. Like before <code>format.sigma</code> inherits from <code>format.omega</code> if not specified, like <code>format.omega</code> inherits from <code>format</code>.</p>
 <p>Also, <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> formats are no longer expected to include a field dedicated to the initial value information (like <code>(0, 0.44)</code> above. It will automatically assign this to a field called <code>initstr</code> (for “initial value string”). It will still look at the format, and if the first field is named either <code>init</code> or <code>initstr</code>, it will use this field for the initial value string. A new argument <code>add.init</code> is added to control this behavior.</p>
 <p>Notice, <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> is another NMdata function that processes these fields and would in this case separate this into <code>lower=0</code> and <code>init=4.4</code>.</p>
@@ -606,7 +616,7 @@ $THETA (0, 4.4) ; 1 - CL [L/h] ; none
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
