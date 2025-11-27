@@ -24,7 +24,7 @@ Nonmem (e.g. observations or subjects that are not part of the analysis)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.903</span>
       </span>
     </div>
 
@@ -345,10 +345,10 @@ list of known limitations:</p>
 <dd><p>If Nonmem is used to translate DAY and a character TIME column, TIME has to be available in an output table. NMscanData does not do the translation to numeric.</p></dd>
 
  <dt>RECORDS</dt>
-<dd><p>The RECORDS option to limit the part of the input data being used is not searched for. Using merge.by.row=TRUE will work unaffectedly.</p></dd>
+<dd><p>The RECORDS option to limit the part of the input data being used is not searched for. Using `merge.by.row=TRUE` will work unaffectedly.</p></dd>
 
  <dt>NULL</dt>
-<dd><p>The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.).</p></dd>
+<dd><p>The NULL argument to specify missing value string in input data is not respected. If delimited input data is read (as opposed to rds files), missing values are assumed to be represented by dots (.). This is used for conversion of missing values to `NA` before returning to user.</p></dd>
 
 
 </dl></div>

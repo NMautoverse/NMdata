@@ -23,7 +23,7 @@ the results are consistent with the simple merge described above."><meta propert
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.902</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.903</span>
       </span>
     </div>
 
@@ -149,11 +149,11 @@ differently. by or by.x and by.y must be supplied.</p></dd>
 
 
 <dt id="arg-common-cols">common.cols<a class="anchor" aria-label="anchor" href="#arg-common-cols"></a></dt>
-<dd><p>If common columns are found in x and y, and
+<dd><p>If common columns are found in `x` and `y`, and
 they are not used in `by`, this will by default create columns
-named like col.x and col.y in result (see ?merge). Often, this
+named like `col.x` and <code>col.y</code> in result (see `?merge`). Often, this
 is a mistake, and the default is to throw a warning if this
-happens. If using `mergeCheck` in programming, you may want to
+happens. If using `mergeCheck()` in programming, you may want to
 make sure this is not happening and use
 common.cols=stop. If you want nothing to happen, you can do
 common.cols=NULL. You can also use `common.cols="drop.x"`
@@ -214,7 +214,7 @@ function in as.fun to convert to something else.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments passed to data.table::merge. If
-all is among them, an error will be returned.</p></dd>
+`all` is among them, an error will be returned.</p></dd>
 
 </dl></div>
     <div id="value">
