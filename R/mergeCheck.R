@@ -18,11 +18,11 @@
 ##'     differently. by or by.x and by.y must be supplied.
 ##' @param by.y If the columns to merge by in x and y are named
 ##'     differently. by or by.x and by.y must be supplied.
-##' @param common.cols If common columns are found in x and y, and
+##' @param common.cols If common columns are found in `x` and `y`, and
 ##'     they are not used in `by`, this will by default create columns
-##'     named like col.x and col.y in result (see ?merge). Often, this
+##'     named like `col.x` and \code{col.y} in result (see `?merge`). Often, this
 ##'     is a mistake, and the default is to throw a warning if this
-##'     happens. If using `mergeCheck` in programming, you may want to
+##'     happens. If using `mergeCheck()` in programming, you may want to
 ##'     make sure this is not happening and use
 ##'     common.cols=stop. If you want nothing to happen, you can do
 ##'     common.cols=NULL. You can also use `common.cols="drop.x"`
@@ -53,7 +53,7 @@
 ##' @param df2 Deprecated. Use y.
 ##' @param fun.commoncols Deprecated. Please use `common.cols`.
 ##' @param ... additional arguments passed to data.table::merge. If
-##'     all is among them, an error will be returned.
+##'     `all` is among them, an error will be returned.
 ##' @details Besides merging and checking rows, `mergeCheck` makes sure
 ##'     the order in x is retained in the resulting data (both rows
 ##'     and column order). Also, a warning is given if column names
