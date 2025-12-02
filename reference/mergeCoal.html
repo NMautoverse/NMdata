@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.904</span>
       </span>
     </div>
 
@@ -109,6 +109,13 @@
 <dt id="arg-cols-coal">cols.coal<a class="anchor" aria-label="anchor" href="#arg-cols-coal"></a></dt>
 <dd><p>Columns to overwrite values from `y` if available.</p></dd>
 
+
+<dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
+<dd><p>Pass a function (say tibble::as_tibble) in as.fun to convert
+to something else. If data.tables are wanted, use
+as.fun="data.table". The default is to return data as a
+data.frame. Modify the defaul using `NMdataConf()`.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -125,6 +132,7 @@ be done sequentially.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>idx<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xa"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,b<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xb"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>idx<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ya1"</span>,<span class="cn">NA</span><span class="op">)</span>,b<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="st">"yb2"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mergeCoal</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,by<span class="op">=</span><span class="st">"idx"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Both 'by' and '..by' exist in calling scope. Please remove the '..by' variable in calling scope for clarity.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx   a   b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 ya1 xb1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   2 xa2 yb2</span>
@@ -133,6 +141,7 @@ be done sequentially.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>idx<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,grp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xa"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,b<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xb"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>grp<span class="op">=</span><span class="fl">1</span>,a<span class="op">=</span><span class="st">"y1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mergeCoal</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,by<span class="op">=</span><span class="st">"grp"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Both 'by' and '..by' exist in calling scope. Please remove the '..by' variable in calling scope for clarity.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx grp   b   a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1   1 xb1  y1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   2   1 xb2  y1</span>
@@ -141,6 +150,7 @@ be done sequentially.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>idx<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xa"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,b<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"xb"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>idx<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ya1"</span>,<span class="cn">NA</span><span class="op">)</span>,b<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="st">"yb2"</span><span class="op">)</span>,c<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mergeCoal</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,by<span class="op">=</span><span class="st">"idx"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Both 'by' and '..by' exist in calling scope. Please remove the '..by' variable in calling scope for clarity.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx   a   b  c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 ya1 xb1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   2 xa2 yb2  1</span>
