@@ -14,6 +14,11 @@ mergeCoal(x, y, by, cols.coal, as.fun)
 \item{by}{Columns to merge by}
 
 \item{cols.coal}{Columns to overwrite values from `y` if available.}
+
+\item{as.fun}{Pass a function (say tibble::as_tibble) in as.fun to convert
+to something else. If data.tables are wanted, use
+as.fun="data.table". The default is to return data as a
+data.frame. Modify the defaul using `NMdataConf()`.}
 }
 \description{
 Repair x with y

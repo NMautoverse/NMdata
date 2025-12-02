@@ -6,6 +6,10 @@
 ##' @param y A data.frame to prioritize overc `x`.
 ##' @param by Columns to merge by
 ##' @param cols.coal Columns to overwrite values from `y` if available.
+##' @param as.fun Pass a function (say tibble::as_tibble) in as.fun to convert
+##'     to something else. If data.tables are wanted, use
+##'     as.fun="data.table". The default is to return data as a
+##'     data.frame. Modify the defaul using `NMdataConf()`.
 ##'
 ##' @details Non-na values in y will be used o overwrite columns in x
 ##'     at the rows matched using `by` columns.
@@ -31,6 +35,18 @@
 
 mergeCoal <- function(x,y,by,cols.coal,as.fun){
 
+#### Dummy variables, only not to get NOTE's in pacakge checks ####
+
+    ..by <- NULL
+    value <- NULL
+    value.x <- NULL
+    value.y <- NULL
+
+### End: Dummy variables, only not to get NOTE's in pacakge checks ###
+
+
+
+    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
