@@ -21,7 +21,8 @@
 ##' Merges must be done using the same "by" columns for all rows. If
 ##' rows needs to be merged using varying by columns, the merges must
 ##' be done sequentially.
-##' 
+##'
+##' Will try to guess by and cols.coal. 
 ##' @examples
 ##' library(data.table)
 ##' x <- data.table(idx=1:3,a=paste0("xa",1:3),b=paste0("xb",1:3))
@@ -59,7 +60,8 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     if(missing(cols.coal)) cols.coal <- NULL
     
     if(is.null(by)&&is.null(cols.coal)){
-        stop("At least one of arguments `by` and `cols.coal` must be provided.")
+        by <- setdiff(intersect(colnames(x),colnames(y)))
+        message("Neither of `by` and `cols.coal` provided. Using all common columns in x and y as by variables.")
     }
     
     x <- copy(as.data.table(x))
@@ -90,11 +92,13 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     }
     
 
-    if(!is.null(by)){
-        if(anyNA(y[,..by])){
-            stop("missing values are not allowed in by columns of y.")
-        }
+    if(is.null(by)){
+        stop("No by variables found. By must be supplied and point to columns present in both x and y.")
     }
+    if(anyNA(y[,..by])){
+        stop("missing values are not allowed in by columns of y.")
+    }
+
 
     ## columnns in y that are not in x will be added (merged) using the same by columns
     if(add.new){
