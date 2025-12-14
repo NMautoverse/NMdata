@@ -14,6 +14,12 @@
   `$OMEGA`, and `$SIGMA` sections.
 
 ## Bugfixes
+* `NMcanInput` (and downstream functions like `NMscanData` did not copy Nonmem
+  columns (`$INPUT` elements like `DV=OBS`) correctly. It would not name the
+  secondary column as expected (which is, if name it `OBS` if not used in other Nonmem
+  column names, otherwise `OBSX` where `X` is an integer making `OBSX` a unique
+  column name). Fixed.
+
 * `NMextractFormats()` was failing to capture format definitions
   "format.omega" and "format.sigma" in control streams. Format
   definitions including tabulator characters would also create

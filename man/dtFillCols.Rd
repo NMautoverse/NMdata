@@ -2,7 +2,7 @@
 % Please edit documentation in R/dtFillObs.R
 \name{dtFillCols}
 \alias{dtFillCols}
-\title{Create a data table with columns of unequal length}
+\title{Create a data table with input columns of unequal length}
 \usage{
 dtFillCols(...)
 }
@@ -10,6 +10,9 @@ dtFillCols(...)
 \item{...}{Vectors to put into data.table}
 }
 \description{
-Create a data table with columns of unequal length
+All columns are filled with NA to max length of all input variables. This is
+useful when constructing partially completed variables where 1) variables
+are complete up to their length and 2) the missing values should be set to
+NA.
 }
 \keyword{internal}
