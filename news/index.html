@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.905</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.911</span>
       </span>
     </div>
 
@@ -91,7 +91,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-3">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-3"></a></h3>
-<ul><li><p><code>NMextractFormats()</code> was failing to capture format definitions “format.omega” and “format.sigma” in control streams. Format definitions including tabulator characters would also create problems. A format definition is a comment documenting the format, like “format: %idx - %symbol”. Fixed.</p></li>
+<ul><li><p><code>NMcanInput</code> (and downstream functions like <code>NMscanData</code> did not copy Nonmem columns (<code>$INPUT</code> elements like <code>DV=OBS</code>) correctly. It would not name the secondary column as expected (which is, if name it <code>OBS</code> if not used in other Nonmem column names, otherwise <code>OBSX</code> where <code>X</code> is an integer making <code>OBSX</code> a unique column name). Fixed.</p></li>
+<li><p><code>NMextractFormats()</code> was failing to capture format definitions “format.omega” and “format.sigma” in control streams. Format definitions including tabulator characters would also create problems. A format definition is a comment documenting the format, like “format: %idx - %symbol”. Fixed.</p></li>
 <li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> did not consider the <code>sections</code> argument. It does now but with an important limitation: it can only be of lenght one. This is of minor importance since it is only needed in the special case that a parameter gets assigned to different variable names in different sections. Normally, leaving out the argument is fine.</p></li>
 </ul></div>
 </div>
