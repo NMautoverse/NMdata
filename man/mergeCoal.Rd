@@ -35,6 +35,8 @@ Non-na values in y will be used o overwrite columns in x
 Merges must be done using the same "by" columns for all rows. If
 rows needs to be merged using varying by columns, the merges must
 be done sequentially.
+
+Will try to guess by and cols.coal.
 }
 \examples{
 library(data.table)
