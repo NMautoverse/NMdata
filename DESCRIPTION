@@ -16,19 +16,20 @@ Imports:
   data.table,
   fst
 Suggests:
-  testthat,
-  knitr,
-  NMsim,
-  NMcalc,
-  formatR,
-  mime,
-  rmarkdown,
-  ggplot2,
-  tibble,
-  covr,
-  htmltools,
-  spelling
+    testthat (>= 2.0.0),
+    knitr,
+    NMsim,
+    NMcalc,
+    formatR,
+    mime,
+    rmarkdown,
+    ggplot2,
+    tibble,
+    covr,
+    htmltools,
+    spelling
 Encoding: UTF-8
 BugReports: https://github.com/nmautoverse/NMdata/issues
 Language: en-US
 URL: https://nmautoverse.github.io/NMdata/
+Config/testthat/edition: 2

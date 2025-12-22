@@ -1,6 +1,7 @@
 library(data.table)
 context("addCor")
 
+
 test_that("basic",{
 
     fileRef <- "testReference/addCor_01.rds"
@@ -10,8 +11,8 @@ test_that("basic",{
 
     res1 <- addCor(ext)
 
-    ## res1
-    expect_equal_to_reference(res1,fileRef)
+    ## expect_snapshot_value(res1, style = "serialize")
+    expect_equal_to_reference(res1, fileRef)
 
     if(F){
         ref <- readRDS(fileRef)
@@ -21,5 +22,5 @@ test_that("basic",{
 
     }
 
-        
+    
 })
