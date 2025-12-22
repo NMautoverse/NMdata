@@ -10,7 +10,7 @@ library(testthat)
 library(NMdata)
 
 # Set testthat edition 2 (classic behavior)
-testthat::edition_set(2)
+# testthat::edition_set(2)
 
 options(testthat.deprecation = FALSE)
 
