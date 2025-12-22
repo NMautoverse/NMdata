@@ -1,11 +1,25 @@
 # NMdata 0.2.3
-* `NMreadParsText()` supports formats including periods (.). There may
-  still be some special characters that are not supported. 
+
+## New Features
+
+* New function, `mergeCoal()` is a coalesce-like merge
+  function. `mergeCoal(x,y,...)` overwrites values in `x` with those in `y`, if
+  not `NA`. This is a flexible way to edit multiple values in a `data.frame`
+  through a single interface.
+
+* `NMreadParsText()` supports formats including periods (.). There may still be
+  some special characters that are not supported.
 
 * `NMrelate()` supports models that don't have all of `$THETA`,
   `$OMEGA`, and `$SIGMA` sections.
 
 ## Bugfixes
+* `NMcanInput` (and downstream functions like `NMscanData` did not copy Nonmem
+  columns (`$INPUT` elements like `DV=OBS`) correctly. It would not name the
+  secondary column as expected (which is, if name it `OBS` if not used in other Nonmem
+  column names, otherwise `OBSX` where `X` is an integer making `OBSX` a unique
+  column name). Fixed.
+
 * `NMextractFormats()` was failing to capture format definitions
   "format.omega" and "format.sigma" in control streams. Format
   definitions including tabulator characters would also create

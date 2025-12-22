@@ -182,7 +182,7 @@ NMtransInp <- function(data,file,lines,translate=TRUE,recover.cols=TRUE,quiet=FA
                                  str.input,
                                  ## nonmem=copy.left,
                                  nonmem=copy.2,
-                                 result=ifelse(translate,copy.2,NA),
+                                 result=ifelse(rep(translate,.N),copy.2,NA),
                                  i.data,
                                  i.input,
                                  drop,

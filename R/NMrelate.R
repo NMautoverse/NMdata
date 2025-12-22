@@ -30,8 +30,12 @@
 ##' @export
 
 NMrelate <- function(file,lines,modelname,par.type,col.model,sections,as.fun){
-    
+
+#### Dummy variables, only not to get NOTE's in pacakge checks ####
+    . <- NULL
+    model <- NULL
     text <- NULL
+### End: Dummy variables, only not to get NOTE's in pacakge checks ###
     
     if(missing(file)) file <- NULL
     if(missing(lines)) lines <- NULL

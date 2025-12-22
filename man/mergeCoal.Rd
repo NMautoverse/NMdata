@@ -4,19 +4,29 @@
 \alias{mergeCoal}
 \title{Overwrite values in one data.frame as available in another.}
 \usage{
-mergeCoal(x, y, by, cols.coal, as.fun)
+mergeCoal(x, y, by, cols.coal, add.new = TRUE, as.fun)
 }
 \arguments{
 \item{x}{The initial data.frame}
 
 \item{y}{A data.frame to prioritize overc `x`.}
 
-\item{by}{Columns to merge by}
+\item{by}{Columns to merge by. A character vector, with names to columns present in both `x` and `y`. At least one of by and cols.merge must be provided.}
 
-\item{cols.coal}{Columns to overwrite values from `y` if available.}
+\item{cols.coal}{Columns to overwrite values from `y` if
+available. cols.coal must be present in y and may be present in x.}
+
+\item{add.new}{If columns in y are ne to x, merge them in? Default is to do
+so.}
+
+\item{as.fun}{Pass a function (say tibble::as_tibble) in as.fun to convert
+to something else. If data.tables are wanted, use
+as.fun="data.table". The default is to return data as a
+data.frame. Modify the defaul using `NMdataConf()`.}
 }
 \description{
-Repair x with y
+Repair data.frame x with values present in data.frame y. Columns to match by
+must be provided.
 }
 \details{
 Non-na values in y will be used o overwrite columns in x
@@ -25,6 +35,8 @@ Non-na values in y will be used o overwrite columns in x
 Merges must be done using the same "by" columns for all rows. If
 rows needs to be merged using varying by columns, the merges must
 be done sequentially.
+
+Will try to guess by and cols.coal.
 }
 \examples{
 library(data.table)
