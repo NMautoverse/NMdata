@@ -20,9 +20,9 @@
 ##' @import data.table
 ##' @examples
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-##' lapplydt(pk,by="DOSE",fun=function(x) {
+##' lapplydt(pk,by="DOSE",fun=function(x,.nm) {
 ##'     message("this is subset",.nm)
-##'     nrow(x) 
+##'     message(paste("Result:",nrow(x)))
 ##' })
 ##' @return a list 
 ##' @export

@@ -50,7 +50,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
     lines.list <- lines.list[names(lines.list)%in%sections]
     ## lines <- do.call(c,lines.list)
     lines <- unlist(lines.list)
-       
+    
     dt.code <- data.table(line.var = lines[grepl(str.regex.find,lines,ignore.case=TRUE)])
 
     if(is.null(dt.code) || nrow(dt.code)==0) return(NULL)
@@ -73,7 +73,7 @@ NMrelateOne <- function(file,lines,par.type="OMEGA",sections=c("PRED","PK","ERRO
 
 
     dt.code[var.type%in%c("ETA","THETA","ERR","EPS"),
-            i:=as.numeric(sub(paste0(".*",var.type,"\\(([1-9][0-9]*)\\)"),"\\1",x=var.name,ignore.case=TRUE)),
+            i:=as.numeric(sub(paste0(".*",first(var.type),"\\(([1-9][0-9]*)\\)"),"\\1",x=var.name,ignore.case=TRUE)),
             by=lineno]
 
     dt.code[,j:=NA_integer_]

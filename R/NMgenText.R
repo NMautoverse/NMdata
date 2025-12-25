@@ -231,8 +231,11 @@ NMgenText <- function(data,
         warning("No columns to use in Nonmem. Did you forget to order or drop columns")
         return(NULL)
     }
+
     
-    dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
+    ## dt.num.ok[include==TRUE,occ.cum:=1:.N,by=name.nm]
+    dt.num.ok[,occ.cum:=1:.N,by=name.nm]
+    dt.num.ok[include!=TRUE,occ.cum:=NA_real_]
     if(dt.num.ok[occ.cum>1,.N]>0) {
         warning(paste("Duplicated column name(s) in data for Nonmem:\n",
                       paste0(dt.num.ok[occ.cum>1,unique(name.nm)],collapse=", "),"\n",

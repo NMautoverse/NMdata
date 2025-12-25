@@ -896,10 +896,11 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 
 ######## End Default columns
     
-
+    
     ## ID-level checks
 ### Warning if the same ID is in non-consequtive rows
-    data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
+    ##data[,ID.jump:=c(0,diff(get(rowint))),by=col.id]
+    data[,ID.jump:=c(0,diff(.SD[[rowint]])),by=col.id]
     findings <- listEvents("ID.jump",colname=col.id,name="ID disjoint",fun=function(x) x<=1,events=findings,debug=FALSE)
 
     
