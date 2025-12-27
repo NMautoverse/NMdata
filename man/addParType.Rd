@@ -30,8 +30,9 @@ Add par.type, i, j to a data.table that has parameter already
 \item i: NA, 1, 1, NA, NA (j not defined for THETA)
 }
 
-As a last step, addParameter is called with overwrite=FALSE. This
-fills parameter and par.name. Combined, if parameter is in pars, it is used. If not, par.type, i, and j are used.
+As a last step, addParameter is called with overwrite=FALSE. This fills
+parameter and par.name. Combined, if parameter is in pars, it is used. If
+not, par.type, i, and j are used.
 
 In the provided data set, parameter is allowed to have thetas as
 THETA(1) (the par.name format). These will however be overwritten
