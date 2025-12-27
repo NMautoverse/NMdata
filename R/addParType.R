@@ -75,15 +75,15 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
     ## i,j 
     if(add.idx){
         if(overwrite || !"i"%in%colnames(pars)){
-            pars[.SD[[col.par.type]]=="THETA",i:=as.integer(sub("THETA([0-9][0-9]*)","\\1",.SD[[col.parameter]]))]
+            pars[pars[[col.par.type]]=="THETA",i:=as.integer(sub("THETA([0-9][0-9]*)","\\1",.SD[[col.parameter]]))]
 
             
             pars[,row:=.I]
-            pars[.SD[[col.par.type]]%in%allpars.mat,
+            pars[pars[[col.par.type]]%in%allpars.mat,
                  i:=as.integer(sub(
-                     pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]]),
+                     pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]][1L]),
                      replacement="\\1",
-                     x=.SD[[col.parameter]])),
+                     x=.SD[[col.parameter]][1L])),
                  by=row
                  ]
             pars[,row:=NULL]
@@ -95,11 +95,11 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
             if(any(pars[[col.par.type]]%in%allpars.mat)){
                 
                 pars[,row:=.I]
-                pars[.SD[[col.par.type]]%in%allpars.mat,
-                     j:=as.integer(sub(pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]]),
+                pars[pars[[col.par.type]]%in%allpars.mat,
+                     j:=as.integer(sub(pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]][1L]),
                                        replacement="\\2",
-                                       x=.SD[[col.parameter]]
-                                       )),by=row]
+                                       x=.SD[[col.parameter]][1L])),
+                     by=row]
                 pars[,row:=NULL]
             }
         }
