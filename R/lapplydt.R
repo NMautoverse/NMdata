@@ -6,20 +6,24 @@
 ##' or anything on the data for each model. In that case
 ##' lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
 ##' l in lapplydt is because a list is returned (like lapply), the dt
-##' is because the input is a data.table.
+##' is because the input is a data.table (anything that can be converted to
+##' such is OK).
 ##'
 ##' 
-##' @param data Data set to process. Must be a data.frame-like structure. 
+##' @param data Data set to process. Must be a data.frame-like structure.
 ##' @param by Column to split data by.
-##' @param fun function to pass to `lapply()`.
-##' @param drop.null If some subsets return NULL, drop the empty
-##'     elements in the returned list?
-##' @details the name of the current dataset can be reached with the
-##'     `.nm` variable. like
+##' @param fun function to pass to `lapply()`. If an argument called `.nm` is
+##'     defined, it gets a special meaning and can be used to retrieve the name
+##'     of the respective subset. See examples.
+##' @param drop.null If some subsets return `NULL`, drop the empty elements in the
+##'     returned list?
+##' @details the name of the current dataset can be reached with the `.nm`
+##'     variable, if such argument is defined in `fun`. Se examples.
 ##' 
 ##' @import data.table
 ##' @examples
 ##' pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+##' lapplydt(pk,by="DOSE",fun=nrow)
 ##' lapplydt(pk,by="DOSE",fun=function(x,.nm) {
 ##'     message("this is subset",.nm)
 ##'     message(paste("Result:",nrow(x)))
