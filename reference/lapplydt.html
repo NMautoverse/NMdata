@@ -5,7 +5,8 @@ column is `model` and you want to create a plot, run a regression
 or anything on the data for each model. In that case
 lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
 l in lapplydt is because a list is returned (like lapply), the dt
-is because the input is a data.table.'><meta property="og:image" content="https://nmautoverse.github.io/NMdata/reference/figures/apple-touch-icon-180x180.png"><meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+is because the input is a data.table (anything that can be converted to
+such is OK).'><meta property="og:image" content="https://nmautoverse.github.io/NMdata/reference/figures/apple-touch-icon-180x180.png"><meta property="og:image:alt" content="Efficient data preparation, consistency-checking and post-processing in PK/PD modeling"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -23,7 +24,7 @@ is because the input is a data.table.'><meta property="og:image" content="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.923</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2.931</span>
       </span>
     </div>
 
@@ -95,7 +96,8 @@ column is `model` and you want to create a plot, run a regression
 or anything on the data for each model. In that case
 lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
 l in lapplydt is because a list is returned (like lapply), the dt
-is because the input is a data.table.</p>
+is because the input is a data.table (anything that can be converted to
+such is OK).</p>
     </div>
 
     <div id="ref-usage">
@@ -115,12 +117,14 @@ is because the input is a data.table.</p>
 
 
 <dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
-<dd><p>function to pass to `lapply()`.</p></dd>
+<dd><p>function to pass to `lapply()`. If an argument called `.nm` is
+defined, it gets a special meaning and can be used to retrieve the name
+of the respective subset. See examples.</p></dd>
 
 
 <dt id="arg-drop-null">drop.null<a class="anchor" aria-label="anchor" href="#arg-drop-null"></a></dt>
-<dd><p>If some subsets return NULL, drop the empty
-elements in the returned list?</p></dd>
+<dd><p>If some subsets return `NULL`, drop the empty elements in the
+returned list?</p></dd>
 
 </dl></div>
     <div id="value">
@@ -129,13 +133,29 @@ elements in the returned list?</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>the name of the current dataset can be reached with the
-    `.nm` variable. like</p>
+    <p>the name of the current dataset can be reached with the `.nm`
+    variable, if such argument is defined in `fun`. Se examples.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples/data/xgxr2.rds"</span>,package<span class="op">=</span><span class="st">"NMdata"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">lapplydt</span><span class="op">(</span><span class="va">pk</span>,by<span class="op">=</span><span class="st">"DOSE"</span>,fun<span class="op">=</span><span class="va">nrow</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`3`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`10`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`30`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`100`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`300`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">lapplydt</span><span class="op">(</span><span class="va">pk</span>,by<span class="op">=</span><span class="st">"DOSE"</span>,fun<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">.nm</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"this is subset"</span>,<span class="va">.nm</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Result:"</span>,<span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
