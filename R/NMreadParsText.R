@@ -85,7 +85,7 @@
 ##' @examples
 ##'
 ##' ## setDTthreads() is only needed for CRAN. Users should not do this.
-##' data.table::setDTthreads(1)
+##' data.table::setDTthreads(1L)
 ##' ## end setDTthreads() for CRAN
 ##' 
 ##' ## notice, examples on explicitly stated lines. Most often in

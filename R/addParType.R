@@ -19,14 +19,15 @@
 ##' \item i: NA, 1, 1, NA, NA (j not defined for THETA)
 ##' }
 ##' 
-##' As a last step, addParameter is called with overwrite=FALSE. This
-##' fills parameter and par.name. Combined, if parameter is in pars, it is used. If not, par.type, i, and j are used.
+##' As a last step, addParameter is called with overwrite=FALSE. This fills
+##' parameter and par.name. Combined, if parameter is in pars, it is used. If
+##' not, par.type, i, and j are used.
 ##'
 ##' In the provided data set, parameter is allowed to have thetas as
 ##' THETA(1) (the par.name format). These will however be overwritten
 ##' with the described format above.
 
- 
+
 ##' @keywords internal
 addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
 
@@ -74,14 +75,15 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
     ## i,j 
     if(add.idx){
         if(overwrite || !"i"%in%colnames(pars)){
-            pars[get(col.par.type)=="THETA",i:=as.integer(sub("THETA([0-9][0-9]*)","\\1",get(col.parameter)))]
+            pars[pars[[col.par.type]]=="THETA",i:=as.integer(sub("THETA([0-9][0-9]*)","\\1",.SD[[col.parameter]]))]
 
+            
             pars[,row:=.I]
-            pars[get(col.par.type)%in%allpars.mat,
+            pars[pars[[col.par.type]]%in%allpars.mat,
                  i:=as.integer(sub(
-                     pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",get(col.par.type)),
+                     pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]][1L]),
                      replacement="\\1",
-                     x=get(col.parameter))),
+                     x=.SD[[col.parameter]][1L])),
                  by=row
                  ]
             pars[,row:=NULL]
@@ -90,15 +92,14 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
         
         
         if(overwrite || !"j"%in%colnames(pars) ){
-            if(any(pars[,get(col.par.type)%in%allpars.mat])){
+            if(any(pars[[col.par.type]]%in%allpars.mat)){
                 
                 pars[,row:=.I]
-                pars[get(col.par.type)%in%allpars.mat,
-                     j:=as.integer(sub(
-                         pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",get(col.par.type)),
-                         replacement="\\2",
-                         x=get(col.parameter)
-                     )),by=row]
+                pars[pars[[col.par.type]]%in%allpars.mat,
+                     j:=as.integer(sub(pattern=sprintf("%s\\(([0-9]+)\\,([0-9]+)\\)",.SD[[col.par.type]][1L]),
+                                       replacement="\\2",
+                                       x=.SD[[col.parameter]][1L])),
+                     by=row]
                 pars[,row:=NULL]
             }
         }
@@ -108,7 +109,6 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
     }
 
     pars <- addParameter(pars,overwrite=FALSE)
-    
     
     pars[]
 }
@@ -123,7 +123,7 @@ addParType <- function(pars,suffix,add.idx,overwrite=FALSE){
 ##' @keywords internal
 ##' 
 addParameter <- function(pars,overwrite=FALSE){
-        
+    
     par.name <- NULL
     par.type <- NULL
     parameter <- NULL

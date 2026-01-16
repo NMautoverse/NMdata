@@ -554,7 +554,8 @@ addSameBlocks <- function(inits) {
     }
     
                                         # add N of same group
-    df[, Nsameblock := ifelse(any(sameblock!=0), .N-1, 0), by=sameblock]
+    ## df[, Nsameblock := ifelse(any(sameblock!=0), .N-1, 0), by=sameblock]
+    df[, Nsameblock := if(any(sameblock!=0)) .N-1 else 0, by=sameblock]
 
     df <- df[,setdiff(colnames(df),c("startSameBlock","endSameBlock")),with=FALSE]
     

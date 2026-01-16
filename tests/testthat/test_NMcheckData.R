@@ -1,7 +1,7 @@
 context("NMcheckData")
 
 library(data.table)
-data.table::setDTthreads(1)
+data.table::setDTthreads(1L)
 
 ## meta is if x is metadata rather than an NMdata object
 fix.time <- function(x,meta=T){

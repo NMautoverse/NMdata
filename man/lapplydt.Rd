@@ -11,10 +11,12 @@ lapplydt(data, by, fun, drop.null = FALSE)
 
 \item{by}{Column to split data by.}
 
-\item{fun}{function to pass to `lapply()`.}
+\item{fun}{function to pass to `lapply()`. If an argument called `.nm` is
+defined, it gets a special meaning and can be used to retrieve the name
+of the respective subset. See examples.}
 
-\item{drop.null}{If some subsets return NULL, drop the empty
-elements in the returned list?}
+\item{drop.null}{If some subsets return `NULL`, drop the empty elements in the
+returned list?}
 }
 \value{
 a list
@@ -26,16 +28,18 @@ column is `model` and you want to create a plot, run a regression
 or anything on the data for each model. In that case
 lapplydt(data,by="model",fun=function(x)lm(lAUC~lDose,data=x)). The
 l in lapplydt is because a list is returned (like lapply), the dt
-is because the input is a data.table.
+is because the input is a data.table (anything that can be converted to
+such is OK).
 }
 \details{
-the name of the current dataset can be reached with the
-    `.nm` variable. like
+the name of the current dataset can be reached with the `.nm`
+    variable, if such argument is defined in `fun`. Se examples.
 }
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
-lapplydt(pk,by="DOSE",fun=function(x) {
+lapplydt(pk,by="DOSE",fun=nrow)
+lapplydt(pk,by="DOSE",fun=function(x,.nm) {
     message("this is subset",.nm)
-    nrow(x) 
+    message(paste("Result:",nrow(x)))
 })
 }
