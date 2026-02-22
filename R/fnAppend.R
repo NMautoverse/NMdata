@@ -77,8 +77,13 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
         allext[has.ext] <- paste0(".",allext[has.ext])
 
         fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
+
+        res <- rep("",length(fn))
+        res[fnroot!=""] <- paste0(fnroot[fnroot!=""],sep,x.string,allext)
+        res[fnroot==""] <- paste0(x.string,allext)
         
-        return(paste0(fnroot,sep,x.string,allext))
+        ##return(paste0(fnroot,sep,x.string,allext))
+        return(res)
     }
 
     if(position=="prepend"){
