@@ -2,7 +2,7 @@
 
 ## New Features
 
-* `NMreadExt()` includes columns `value`, `se`, `FIX`, and `termStat` in iterations object, to the extend found in the `.ext` file. Notice, this information and more was already included in the parameter estimate object from `NMreadExt()` but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use `return="all"` and then merge them over from `pars` to `iterations`.
+* `NMreadExt()` includes columns `estimate`, `se`, `FIX`, and `termStat` in iterations object, to the extend found in the `.ext` file. Notice, this information and more was already included in the parameter estimate object from `NMreadExt()` but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use `return="all"` and then merge them over from `pars` to `iterations`.
 
 # NMdata 0.2.3
 
