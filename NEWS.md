@@ -4,6 +4,9 @@
 
 * `NMreadExt()` includes columns `estimate`, `se`, `FIX`, and `termStat` in iterations object, to the extend found in the `.ext` file. Notice, this information and more was already included in the parameter estimate object from `NMreadExt()` but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use `return="all"` and then merge them over from `pars` to `iterations`.
 
+## Bugfixes 
+* `NMreadInits()`, `NMreadSection()` and related functions that read control streams would fail in case of non-ascii characters (such as Greek mu) in control streams. The current fix converts to ascii where possible and drops the non-ascii characters where not possible. Thank you to RichardHooijmaijers for reporting [issue 53](https://github.com/NMautoverse/NMdata/issues/53).
+
 # NMdata 0.2.3
 
 ## New Features

@@ -255,6 +255,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 
 ### this is assuming there is only one file, or that lines contains only one control stream.
     lines <- getLines(file=file,lines=lines)
+    ## lines <- iconv(lines, "latin1", "ASCII", sub="")
 
     if(missing(section)) section <- NULL
     if(is.null(section)) {

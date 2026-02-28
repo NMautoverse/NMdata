@@ -182,7 +182,8 @@ NMreadParsText <- function(file,lines,format,
             })
             return(res)
         } else {
-            lines <- readLines(file,warn=FALSE)
+            ## lines <- readLines(file,warn=FALSE)
+            lines <- getLines(file)
         }
         
     }

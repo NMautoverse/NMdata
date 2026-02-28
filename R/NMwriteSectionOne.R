@@ -9,20 +9,22 @@ NMwriteSectionOne <- function(file0,lines,section,location=c("replace","before",
     before <- NULL
     mad.dl <- NULL
 
-    
-    
+        
     location <- match.arg(location)
 
     if(missing(file0)) file0 <- NULL
     
     if(!is.null(file0)){
         file0 <- filePathSimple(file0)
-        stopifnot(file.exists(file0))
-        ## see below why we need to read the lines for now
-        lines <- readLines(file0,warn=FALSE)
+        ## stopifnot(file.exists(file0))
+        ## ## see below why we need to read the lines for now
+        ## lines <- readLines(file0,warn=FALSE)
         if(missing(newfile)) newfile <- file0
     }
     if(missing(write)) write <- !missing(file0)
+
+    lines <- getLines(file=file0,lines=lines,ensure.ascii=TRUE)
+
 
     if(missing(newfile)) newfile <- NULL
     if(!is.null(newfile)){
