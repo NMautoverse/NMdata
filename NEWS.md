@@ -1,5 +1,8 @@
 # NMdata 0.2.4
 
+## New Features
+New function `dcastSe()` included. data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
+
 ## Bugfixes
 * `NMcheckData()` would not summarize number of subjects without doses and number of subjects without observations correctly if using a `col.id` different from `ID`. Notice, the checks were correct but the shown summary was not. Fixed.
 
