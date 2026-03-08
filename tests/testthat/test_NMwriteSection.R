@@ -2,7 +2,7 @@ context("NMwriteSection")
 
 test_that("basic",{
 
-    fileRef <- "testReference/NMwriteSection_1.rds"
+    fileRef <- "testReference/NMwriteSection_01.rds"
     
     outfile <- "testOutput/xgxr011_update1.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
@@ -20,13 +20,16 @@ test_that("basic",{
         res[1:5]
         length(ref)
         length(res)
+        ref
+        res
     }
     
 })
 
 
 test_that("$section",{
-    fileRef <- "testReference/NMwriteSection_1.rds"
+    ## effectively same as first basic test, just $input instead of input
+    fileRef <- "testReference/NMwriteSection_01.rds"
     outfile <- "testOutput/xgxr011_update1b.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
     section <- "$input"
@@ -44,7 +47,7 @@ test_that("$section",{
 ## same, with list approach
 test_that("list.section",{
 
-    fileRef <- "testReference/NMwriteSection_2.rds"
+    fileRef <- "testReference/NMwriteSection_02.rds"
 
     outfile <- "testOutput/xgxr011_update2.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
@@ -62,6 +65,9 @@ test_that("list.section",{
         res[1:5]
         length(ref)
         length(res)
+
+        last(res,4)
+        last(ref,4)
     }
 
 
@@ -72,7 +78,7 @@ test_that("list.section",{
 
 test_that("Dependent on data.file",{
 
-    fileRef <- "testReference/NMwriteSection_3.rds"
+    fileRef <- "testReference/NMwriteSection_03.rds"
     
     outfile <- "testOutput/xgxr011_update3.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
@@ -93,6 +99,8 @@ test_that("Dependent on data.file",{
         res[1:5]
         length(ref)
         length(res)
+        last(res,4)
+        last(ref,4)
     }
 
 
@@ -133,7 +141,7 @@ test_that("No files matched",{
 
 test_that("basic - write file",{
 
-    fileRef <- "testReference/NMwriteSection_4.rds"
+    fileRef <- "testReference/NMwriteSection_04.rds"
     
     outfile <- "testOutput/xgxr011_update5.mod"
     newlines <- "$INPUT ROW ID TIME EVID CMT AMT DV FLAG STUDY EFF0"
@@ -151,6 +159,8 @@ test_that("basic - write file",{
         res[1:5]
         length(ref)
         length(res)
+        last(ref,4)
+        last(res,4)
     }
 
     
@@ -159,7 +169,7 @@ test_that("basic - write file",{
 
 
 test_that("update INPUT based on NMgenText",{
-    fileRef <- "testReference/NMwriteSection_5.rds"
+    fileRef <- "testReference/NMwriteSection_05.rds"
 
     text.nm <- NMgenText(NMreadCsv("testData/data/xgxr2.csv"),capitalize = T,width=95)
     res <- NMwriteSection("testData/nonmem/xgxr011.mod",
@@ -190,7 +200,7 @@ test_that("update INPUT based on NMgenText",{
 
 test_that("Insert new section before another",{
 
-    fileRef <- "testReference/NMwriteSection_6.rds"
+    fileRef <- "testReference/NMwriteSection_06.rds"
     
     outfile <- "testOutput/xgxr011_update6.mod"
     newlines <- "$MSFI FILE=file.msf"
@@ -209,6 +219,8 @@ test_that("Insert new section before another",{
         res[1:5]
         length(ref)
         length(res)
+        last(ref,4)
+        last(res,4)
     }
 
     

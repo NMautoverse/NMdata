@@ -440,6 +440,7 @@ issued. Once done, NMgetSection must be updated as well.
 **** DONE Rename ll to lower and ul to upper
 **** DONE classify_matches should maintain character values, not numeric
 *** NMreadExt
+**** DONE Add FIX column to iteration 
 **** DONE Support Laplacian
 Laplacian Conditional Estimation
 **** DONE Include model column same way as NMscanData

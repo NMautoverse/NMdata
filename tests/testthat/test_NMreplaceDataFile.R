@@ -23,7 +23,9 @@ test_that("basic",{
         ref[1:10]
         length(res)
         length(ref)
-    }
+    last(res,4)
+    last(ref,4)
+}
 
 })
 
@@ -51,6 +53,9 @@ test_that("missing newfile",{
         ref[[1]][1:10]
         length(res[[1]])
         length(ref[[1]])
+    last(res,4)
+    last(ref,4)
+
     }
 
     
