@@ -1,3 +1,11 @@
+# NMdata 0.2.4
+
+## Bugfixes
+* `NMcheckData()` would not summarize number of subjects without doses and number of subjects without observations correctly if using a `col.id` different from `ID`. Notice, the checks were correct but the shown summary was not. Fixed.
+
+## Other improvements
+* `flagsCount()` orders summary according to numeric exclusion flag value.
+
 # NMdata 0.2.3
 
 ## New Features

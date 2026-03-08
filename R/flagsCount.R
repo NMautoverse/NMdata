@@ -89,7 +89,8 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
                        by=NULL, flags.increasing=FALSE,
                        flagc.0="Analysis set",
                        name.all.data="All available data",
-                       grp.incomp="EVID",save=TRUE,
+                       grp.incomp="EVID",
+                       save=TRUE,
                        quiet=FALSE,
                        as.fun=NULL){
     
@@ -279,7 +280,7 @@ flagsCount <- function(data,tab.flags,file,col.id="ID",
     allres[is.na(Nobs.discard),Nobs.discard.0:=0]
     allres[,Nobs.disc.cum:=cumsum(Nobs.discard.0),by=by]
     allres[alldata==TRUE,`:=`(N.disc.cum=NA,Nobs.disc.cum=NA)]
-
+    allres[,flag := reorder(flag,-FLAG)]
 ### select columns to report, depending on argument
     allres[,`:=`(FLAG=NULL
                 ,notAll=NULL

@@ -42,7 +42,6 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
 
 #### Dummy variables, only not to get NOTE's in pacakge checks ####
 
-    ..by <- NULL
     value <- NULL
     value.x <- NULL
     value.y <- NULL

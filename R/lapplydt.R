@@ -32,39 +32,6 @@
 ##' @export
 
 
-## lapplydt <- function(data,by,fun,drop.null=FALSE){
-
-##     if(!is.data.table(data)) data <- as.data.table
-
-##     dt.split <- split(data,by=by,drop=TRUE)
-##     nms.by <- names(dt.split)
-
-##     res.l <- lapply(nms.by,function(.nm){
-
-##         dt.m <- dt.split[[.nm]]
-
-##         ## Make a copy of the function and inject `.nm` into its environment
-##         fun2 <- fun
-##         parent_env <- environment(fun2)
-##         if (is.null(parent_env)) {
-##             parent_env <- emptyenv()  ## safe fallback for primitives
-##         }
-##         env <- new.env(parent = parent_env)
-##         env$.nm <- .nm
-##         environment(fun2) <- env
-
-##         fun2(dt.m)
-
-##     })
-
-##     names(res.l) <- nms.by
-##     if(drop.null){
-##         res.l <- res.l[!sapply(res.l,is.null)]
-##     }
-
-##     res.l
-## }
-
 
 lapplydt <- function(data, by, fun,drop.null=FALSE) {
     if (!is.data.table(data)) data <- as.data.table(data)

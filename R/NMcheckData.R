@@ -118,8 +118,6 @@
 ##'     \code{EVID}, col.id (\code{ID}), col.cmt (\code{CMT}), and \code{col.mdv} (\code{MDV}): If present, elements must be non-missing
 ##'     and numeric.
 ##'
-##' \item col.time (TIME) must be non-negative
-##'
 ##' \item \code{EVID} must be in \{0,1,2,3,4\}.
 ##'
 ##' \item CMT must be positive integers. However, can be missing or zero for \code{EVID==3}.
@@ -150,6 +148,8 @@
 ##'     technically not a requirement in Nonmem but most often an
 ##'     error. Use a second ID column if you deliberately want to
 ##'     soften this check)
+##'
+##' \item col.time (TIME) must be non-negative
 ##'
 ##' \item TIME cannot be decreasing within ID, unless \code{EVID} in \{3,4\}.
 ##'
@@ -944,21 +944,25 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### subjects without doses
         all.ids <- data[,unique(get(col.id.orig))]
         tab.evid.id <- data[,.N,by=c(col.id.orig,col.evid)]
-        ids.no.doses <- setdiff(all.ids,tab.evid.id[EVID%in%c(1,4),get(col.id.orig)])
+        ids.no.doses <- setdiff(all.ids,tab.evid.id[get(col.evid)%in%c(1,4),get(col.id.orig)])
 
         if(length(ids.no.doses)>0){
-            findings <- rbind(findings ,
-                              data.table(check="Subject has no doses",column="EVID",ID=ids.no.doses,level="ID") ,
+            finds.nodos <- data.table(check="Subject has no doses",column="EVID",ID=ids.no.doses,level="ID")
+            setnames(finds.nodos,"ID",col.id)
+            findings <- rbind(findings,
+                              finds.nodos,
                               fill=TRUE)
         }
 ### subjects without observations    
         ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id.orig)])
         ids.no.sim <- setdiff(all.ids,tab.evid.id[EVID%in%c(2),get(col.id.orig)])
         if(type.data=="est"){
+            finds.noobs <- data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
+            setnames(finds.noobs,"ID",col.id)
             if(length(ids.no.obs)>0){
                 findings <- rbind(findings
                                  ,
-                                  data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
+                                finds.noobs
                                  ,fill=TRUE)
             }
         }

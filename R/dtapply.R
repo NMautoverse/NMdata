@@ -38,6 +38,7 @@
 
 dtapply <- function(X,FUN,value.names=NULL,element.name="element",fill=TRUE,as.fun,...){
 
+    if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
     name <- NULL
