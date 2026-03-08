@@ -173,8 +173,6 @@ non-missing, increasing integers.
     \code{EVID}, col.id (\code{ID}), col.cmt (\code{CMT}), and \code{col.mdv} (\code{MDV}): If present, elements must be non-missing
     and numeric.
 
-\item col.time (TIME) must be non-negative
-
 \item \code{EVID} must be in \{0,1,2,3,4\}.
 
 \item CMT must be positive integers. However, can be missing or zero for \code{EVID==3}.
@@ -205,6 +203,8 @@ records. \code{ADDL} must be present.
     technically not a requirement in Nonmem but most often an
     error. Use a second ID column if you deliberately want to
     soften this check)
+
+\item col.time (TIME) must be non-negative
 
 \item TIME cannot be decreasing within ID, unless \code{EVID} in \{3,4\}.
 

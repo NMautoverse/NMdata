@@ -9,11 +9,17 @@
 ##'     be wide in these variables.
 ##' @param ... Additional arguments passed to `data.table::dcast()`.
 ##' @details Only two of l, r, and value.var are needed (see ?data.table::dcast for value.var), and the others will be derived. However, if value.var is a function, both l and r are needed.
-##' @importFrom data.table dcast
+##' @import data.table 
 ##' @importFrom stats as.formula
-##' @keywords internal 
+##' @return a data.table
+##' @export
 
 dcastSe <- function(data,l,r,...){
+
+    if(!is.data.table(data)){
+        data <- as.data.table(data)
+    }
+
     if(missing(l)) l <- NULL
     if(missing(r)) r <- NULL
 

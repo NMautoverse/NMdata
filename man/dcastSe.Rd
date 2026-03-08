@@ -2,7 +2,7 @@
 % Please edit documentation in R/dcastSe.R
 \name{dcastSe}
 \alias{dcastSe}
-\title{A standard-evaluation interface to `data.table::dcast()`}
+\title{A standard-evaluation interface to `data.table::dcast()}
 \usage{
 dcastSe(data, l, r, ...)
 }
@@ -17,7 +17,12 @@ be wide in these variables.}
 
 \item{...}{Additional arguments passed to `data.table::dcast()`.}
 }
-\description{
-A standard-evaluation interface to `data.table::dcast()`
+\value{
+a data.table
 }
-\keyword{internal}
+\description{
+data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
+}
+\details{
+Only two of l, r, and value.var are needed (see ?data.table::dcast for value.var), and the others will be derived. However, if value.var is a function, both l and r are needed.
+}

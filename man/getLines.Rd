@@ -9,6 +9,7 @@ getLines(
   lines,
   linesep = "\\n",
   simplify = TRUE,
+  ensure.ascii = TRUE,
   col.model,
   modelname,
   as.one
@@ -19,14 +20,17 @@ getLines(
 
 \item{lines}{Text lines if file was already read.}
 
-\item{as.one}{If the `file` argument is used and if `as.one` is
-TRUE, the file(s) are read and put into a `data.table` with a
-model column and a `text` column. Default is FALSE. Be careful
-with this, as it returns different formats whether the `file`
-or the `lines` argument is used.}
+\item{ensure.ascii}{If `TRUE`, the result is converted to ascii characters.
+This is done to ensure some further processing will work but you may
+lose say greek characters from comments.}
+
+\item{as.one}{If the `file` argument is used and if `as.one` is TRUE, the
+file(s) are read and put into a `data.table` with a model column and a
+`text` column. Default is FALSE. Be careful with this, as it returns
+different formats whether the `file` or the `lines` argument is used.}
 }
 \description{
-Functions that take file and lines arguments can use this function
-to derive lines no matter what was provided.
+Functions that take file and lines arguments can use this function to derive
+lines no matter what was provided.
 }
 \keyword{internal}

@@ -956,15 +956,13 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### subjects without observations    
         ids.no.obs <- setdiff(all.ids,tab.evid.id[EVID%in%c(0),get(col.id.orig)])
         ids.no.sim <- setdiff(all.ids,tab.evid.id[EVID%in%c(2),get(col.id.orig)])
-        if(type.data=="est"){
+        if(type.data=="est" && length(ids.no.obs) > 0){
             finds.noobs <- data.table(check="Subject has no obs",column="EVID",ID=ids.no.obs,level="ID")
             setnames(finds.noobs,"ID",col.id)
-            if(length(ids.no.obs)>0){
                 findings <- rbind(findings
                                  ,
                                 finds.noobs
                                  ,fill=TRUE)
-            }
         }
         if(type.data=="sim"){
             if(length(ids.no.sim)>0){

@@ -4,12 +4,17 @@
 \alias{colLabels}
 \title{Extract column labels as defined in SAS}
 \usage{
-colLabels(x, sort = "alpha")
+colLabels(x, sort = "alpha", as.fun)
 }
 \arguments{
 \item{x}{object with elements containing label attributes.}
 
 \item{sort}{If sort="alpha", results are sorted alphabetically.}
+
+\item{as.fun}{The default is to return data as a data.frame. Pass
+a function in as.fun to convert to something else. If
+data.tables are wanted, use `as.fun="data.table"`. The default
+can be configured using `NMdataConf()`.}
 }
 \value{
 A data.frame with variable and their labels

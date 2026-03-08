@@ -28,10 +28,18 @@ test_that("basic",{
 
 ### and count the two different exclusions
     ## two obs are discarded due to negative time
-    tab.count <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag")
+    res <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag")
 
     fileRef <- "testReference/flagsCount_1.rds"
-    expect_equal_to_reference(tab.count,fileRef)
+    expect_equal_to_reference(res,fileRef)
+
+if(F){
+ref <- readRDS(fileRef)
+res
+ref
+sapply(res,class)
+sapply(ref,class)
+}
     
 })
 
@@ -51,13 +59,21 @@ test_that("alternative order",{
     pk <- flagsAssign(pk,col.flagn="FLAG2",col.flagc="flag2",subset.data="EVID==1",flagc.0="Dosing")
     
     ## all excluded due to below LLOQ
-    tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
+    res <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2")
 
     fileRef <- "testReference/flagsAssign_2.rds"
     expect_equal_to_reference(pk,fileRef)
     fileRef <- "testReference/flagsCount_2.rds"
-    expect_equal_to_reference(tab.count,fileRef)
-    
+    expect_equal_to_reference(res,fileRef)
+
+if(F){
+ref <- readRDS(fileRef)
+res
+ref
+sapply(res,class)
+sapply(ref,class)
+}
+      
 })
 
 
@@ -77,13 +93,22 @@ test_that("incresing order",{
     pk[EVID==1,flag2:="Dosing"]
 
     ## all excluded due to below LLOQ
-    tab.count <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2",flags.increasing=T)
+    res <- flagsCount(pk[EVID==0],dt.flags2,col.flagn="FLAG2",col.flagc="flag2",flags.increasing=T)
 
     fileRef <- "testReference/flagsAssign_3.rds"
     expect_equal_to_reference(pk,fileRef)
     fileRef <- "testReference/flagsCount_3.rds"
-    expect_equal_to_reference(tab.count,fileRef)
+    expect_equal_to_reference(res,fileRef)
     
+if(F){
+ref <- readRDS(fileRef)
+res
+ref
+sapply(res,class)
+sapply(ref,class)
+}
+  
+
 })
 
 test_that("Include EVID==1",{
@@ -101,12 +126,21 @@ test_that("Include EVID==1",{
                       col.flagn="flagn",col.flagc="flagc")
     
     ## all excluded due to below LLOQ
-    tab.count <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag",flags.increasing=T)
+    res <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag",flags.increasing=T)
 
     fileRef <- "testReference/flagsAssign_4.rds"
     expect_equal_to_reference(pk,fileRef)
     fileRef <- "testReference/flagsCount_4.rds"
-    expect_equal_to_reference(tab.count,fileRef)
+    expect_equal_to_reference(res,fileRef)
+
+if(F){
+ref <- readRDS(fileRef)
+res
+ref
+sapply(res,class)
+sapply(ref,class)
+}
+  
     
 })
 
@@ -165,8 +199,18 @@ test_that("count by",{
 
 ### and count the two different exclusions
     ## two obs are discarded due to negative time
-    tab.count <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag",by="TRTACT")
+    res <- flagsCount(pk[EVID==0],dt.flags,col.flagn="FLAG",col.flagc="flag",by="TRTACT")
 
-    expect_equal_to_reference(tab.count,fileRef)
+    expect_equal_to_reference(res,fileRef)
+
+if(F){
+ref <- readRDS(fileRef)
+res
+ref
+sapply(res,class)
+sapply(ref,class)
+}
+  
+
     
 })
