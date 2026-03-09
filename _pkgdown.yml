@@ -49,17 +49,18 @@ reference:
 - title: Data Preparation
   desc: Functions for preparation of PK/PD data sets
   contents:
+  - addTAPD
+  - mergeCheck
+  - mergeCoal
+  - NMexpandDoses
   - NMorderColumns
+  - flagsAssign
+  - flagsCount
+  - dcastSe
   - compareCols
   - listMissings
   - uniquePresent
-  - mergeCheck
-  - mergeCoal
   - renameByContents
-  - flagsAssign
-  - flagsCount
-  - addTAPD
-  - NMexpandDoses
   - editCharCols
   - colLabels
 - title: Write data
