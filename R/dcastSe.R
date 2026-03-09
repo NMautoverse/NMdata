@@ -14,7 +14,7 @@
 ##' @return a data.table
 ##' @export
 
-dcastSe <- function(data,l,r,...){
+dcastSe <- function(data,l,r,as.fun,...){
 
     if(!is.data.table(data)){
         data <- as.data.table(data)
@@ -22,6 +22,13 @@ dcastSe <- function(data,l,r,...){
 
     if(missing(l)) l <- NULL
     if(missing(r)) r <- NULL
+
+    if(missing(as.fun)) as.fun <- NULL
+
+    if(is.data.table(data) && is.null(as.fun)) as.fun <- "data.table"
+    as.fun <- NMdataDecideOption("as.fun",as.fun)
+
+
 
     dots <- list(...)
     if("value.var"%in%names(dots) && is.character(dots$value.var)){
@@ -38,5 +45,8 @@ dcastSe <- function(data,l,r,...){
 
     lhs <- paste(l,collapse="+")
     formula.char <- paste(lhs,r,sep="~")
-    dcast(data,formula=as.formula(formula.char),...)
+    res <- dcast(data,formula=as.formula(formula.char),...)
+
+    as.fun(res)
+
 }
