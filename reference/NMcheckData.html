@@ -19,7 +19,7 @@ but because they are typical dataset issues."><meta property="og:image" content=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.904</span>
       </span>
     </div>
 
@@ -296,7 +296,6 @@ non-missing, increasing integers.</p></li>
 <li><p>col.time (TIME),
     <code>EVID</code>, col.id (<code>ID</code>), col.cmt (<code>CMT</code>), and <code>col.mdv</code> (<code>MDV</code>): If present, elements must be non-missing
     and numeric.</p></li>
-<li><p>col.time (TIME) must be non-negative</p></li>
 <li><p><code>EVID</code> must be in {0,1,2,3,4}.</p></li>
 <li><p>CMT must be positive integers. However, can be missing or zero for <code>EVID==3</code>.</p></li>
 <li><p>MDV must be the binary (1/0) representation of <code>is.na(DV)</code> for
@@ -316,6 +315,7 @@ records. <code>ADDL</code> must be present.</p></li>
     technically not a requirement in Nonmem but most often an
     error. Use a second ID column if you deliberately want to
     soften this check)</p></li>
+<li><p>col.time (TIME) must be non-negative</p></li>
 <li><p>TIME cannot be decreasing within ID, unless <code>EVID</code> in {3,4}.</p></li>
 <li><p>all ID's must have doses (<code>EVID</code> in {1,4})</p></li>
 <li><p>all ID's must have observations (<code>EVID</code>==0)</p></li>

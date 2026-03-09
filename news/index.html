@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.904</span>
       </span>
     </div>
 
@@ -85,13 +85,17 @@
 <h2 class="page-header" data-toc-text="0.2.4" id="nmdata-024">NMdata 0.2.4<a class="anchor" aria-label="anchor" href="#nmdata-024"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-4"></a></h3>
-<ul><li>
-<code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> includes columns <code>estimate</code>, <code>se</code>, <code>FIX</code>, and <code>termStat</code> in iterations object, to the extend found in the <code>.ext</code> file. Notice, this information and more was already included in the parameter estimate object from <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use <code>return="all"</code> and then merge them over from <code>pars</code> to <code>iterations</code>.</li>
-</ul></div>
+<p>New function <code><a href="../reference/dcastSe.html">dcastSe()</a></code> included. data.table’s dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.</p>
+</div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-4">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-4"></a></h3>
-<ul><li>
-<code><a href="../reference/NMreadInits.html">NMreadInits()</a></code>, <code><a href="../reference/NMreadSection.html">NMreadSection()</a></code> and related functions that read control streams would fail in case of non-ascii characters (such as Greek mu) in control streams. The current fix converts to ascii where possible and drops the non-ascii characters where not possible. Thank you to RichardHooijmaijers for reporting <a href="https://github.com/NMautoverse/NMdata/issues/53" class="external-link">issue 53</a>.</li>
+<ul><li><p><code><a href="../reference/NMreadInits.html">NMreadInits()</a></code>, <code><a href="../reference/NMreadSection.html">NMreadSection()</a></code> and related functions that read control streams would fail in case of non-ascii characters (such as Greek mu) in control streams. The current fix converts to ascii where possible and drops the non-ascii characters where not possible. Thank you to RichardHooijmaijers for reporting <a href="https://github.com/NMautoverse/NMdata/issues/53" class="external-link">issue 53</a>.</p></li>
+<li><p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> would not summarize number of subjects without doses and number of subjects without observations correctly if using a <code>col.id</code> different from <code>ID</code>. Notice, the checks were correct but the shown summary was not. Fixed.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-improvements-0-2-4">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-4"></a></h3>
+<ul><li><p><code><a href="../reference/flagsCount.html">flagsCount()</a></code> orders summary according to numeric exclusion flag value.</p></li>
+<li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> includes columns <code>estimate</code>, <code>se</code>, <code>FIX</code>, and <code>termStat</code> in iterations object, to the extend found in the <code>.ext</code> file. Notice, this information and more was already included in the parameter estimate object from <code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use <code>return="all"</code> and then merge them over from <code>pars</code> to <code>iterations</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
