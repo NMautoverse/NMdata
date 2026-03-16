@@ -4,7 +4,7 @@
 \alias{dcastSe}
 \title{A standard-evaluation interface to `data.table::dcast()}
 \usage{
-dcastSe(data, l, r, ...)
+dcastSe(data, l, r, as.fun, ...)
 }
 \arguments{
 \item{data}{data set to transpose (widen)}
@@ -14,6 +14,8 @@ be long/vertical in these variables.}
 
 \item{r}{left-hand side variables as character vector. Result will
 be wide in these variables.}
+
+\item{as.fun}{An optional function to convert results with. If `data` is a `data.table`, the default is to return a `data.table`, and if not the default is to return a `data.frame`.}
 
 \item{...}{Additional arguments passed to `data.table::dcast()`.}
 }

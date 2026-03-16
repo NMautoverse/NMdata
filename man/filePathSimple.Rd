@@ -7,7 +7,7 @@
 filePathSimple(...)
 }
 \arguments{
-\item{...}{additional arguments passed to file.path().}
+\item{...}{additional arguments passed to file.path(). If empty (NULL or zero length vectors) are included they will be dropped. This can be convenient for programming.}
 }
 \value{
 A (character) file path

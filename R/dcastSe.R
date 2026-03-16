@@ -7,6 +7,7 @@
 ##'     be long/vertical in these variables.
 ##' @param r left-hand side variables as character vector. Result will
 ##'     be wide in these variables.
+##' @param as.fun An optional function to convert results with. If `data` is a `data.table`, the default is to return a `data.table`, and if not the default is to return a `data.frame`.
 ##' @param ... Additional arguments passed to `data.table::dcast()`.
 ##' @details Only two of l, r, and value.var are needed (see ?data.table::dcast for value.var), and the others will be derived. However, if value.var is a function, both l and r are needed.
 ##' @import data.table 

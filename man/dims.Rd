@@ -4,7 +4,7 @@
 \alias{dims}
 \title{Get dimensions of multiple objects}
 \usage{
-dims(..., list.data, keep.names = TRUE, as.fun = NULL, keepNames)
+dims(..., list.data, keep.names = TRUE, as.fun, keepNames)
 }
 \arguments{
 \item{...}{data sets}
