@@ -48,9 +48,6 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
 
 ### End: Dummy variables, only not to get NOTE's in pacakge checks ###
 
-
-
-    
     if(missing(as.fun)) as.fun <- NULL
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(by)) by <- NULL
@@ -59,7 +56,8 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     if(missing(cols.coal)) cols.coal <- NULL
     
     if(is.null(by)&&is.null(cols.coal)){
-        by <- setdiff(intersect(colnames(x),colnames(y)))
+        
+        by <- intersect(colnames(x),colnames(y))
         message("Neither of `by` and `cols.coal` provided. Using all common columns in x and y as by variables.")
     }
     
@@ -70,7 +68,7 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     col.row.x <- tmpcol(names=unique(c(colnames(x),colnames(y))),base="xrow")
     x[,(col.row.x):=.I]
 
-    if(!is.null(cols.coal)){
+    if(!is.null(cols.coal) && !(is.logical(cols.coal) && cols.coal==FALSE)){
         if(!all(cols.coal%in%colnames(y))){
             stop("cols.coal must be a character vector of column names found in y")
         }

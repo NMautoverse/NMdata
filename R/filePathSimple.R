@@ -24,11 +24,11 @@ filePathSimple <- function(...){
     ## removing redundant /'s that make it harder to compare paths. Not in beginning of paths, because they are network paths.
     slashes.lead <- sub("^(/*).*","\\1",fpath)
     after.slashes <- sub("^/+","",fpath)
-    after.slashes2 <-  gsub(pattern="//",replacement="/",after.slashes)
+    after.slashes2 <-  gsub(pattern="//+",replacement="/",after.slashes)
     fpath <- paste0(slashes.lead,after.slashes2)
 ##    fpath <- gsub(pattern="(?<!^)/+",replacement="/",fpath)
     ## a dir path should not end in a / (which again, makes comparissons more complicate)
-    fpath <- gsub(pattern="/+$",replacement="",x=fpath)
+    fpath <- gsub(pattern="([^/])/+$",replacement="\\1",x=fpath)
     
     
     ## Denote windows drives with capital letter
