@@ -66,3 +66,4 @@ tests_manual/testthat/testOutput
 *_input\.rds
 *\.xml
 NMdata_backup
+.aider*

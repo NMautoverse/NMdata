@@ -41,10 +41,14 @@ dcastSe <- function(data,l,r,as.fun,...){
         }
     } else {
         if(is.null(l) || is.null(r)) stop ("When value.var is not provided, both l and r must be provided.")
+        
     }
-
+    if(!length(l)) stop("No left-hand side. If you are sure what you are doing is valid, it's not supported by dcastSe().")
+if(!length(r)) stop("No right-hand side. If you are sure what you are doing is valid, it's not supported by dcastSe().")
+    
     lhs <- paste(l,collapse="+")
-    formula.char <- paste(lhs,r,sep="~")
+    rhs <- paste(r,collapse="+")
+    formula.char <- paste(lhs,rhs,sep="~")
     res <- dcast(data,formula=as.formula(formula.char),...)
 
     as.fun(res)
