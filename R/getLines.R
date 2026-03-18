@@ -35,8 +35,9 @@ getLines <- function(file,lines,linesep="\n",simplify=TRUE,ensure.ascii=TRUE,col
         if(!all(file.exists(file))) stop("When using the file argument, file has to point to an existing file.")
 
         lines <- lapply(file,function(ff){
-            readLines(ff,warn=FALSE) |>
-                fun.ens.ascii()
+            fun.ens.ascii(
+                readLines(ff,warn=FALSE)
+            )
         })
 
     }
@@ -58,7 +59,6 @@ getLines <- function(file,lines,linesep="\n",simplify=TRUE,ensure.ascii=TRUE,col
         
         names.models <- modelname(file)
         lines <- lapply(1:length(file),function(N)data.table( text=lines[[N]])[,(col.model):=names.models[N]])
-        ##lines[[N]][,(modelname):=names.models[N]])
         lines <- rbindlist(lines)
     }
     
