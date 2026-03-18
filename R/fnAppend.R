@@ -1,29 +1,29 @@
 ##' paste something before file name extension.
 ##' 
-##' Append a file name like file.mod to file_1.mod or file_pk.mod. If
-##' it's a number, we can pad some zeros if wanted. The separator
-##' (default is underscore) can be modified.
+##' Append a file name like file.mod to file_1.mod or file_pk.mod. If it's a
+##' number, we can pad some zeros if wanted. The separator (default is
+##' underscore) can be modified.
 ##' @param fn The file name or file names to modify.
-##' @param x A character string or a numeric to add to the file
-##'     name. If a vector, the vector is collapsed to a single string,
-##'     using `sep` as separator in the collapsed string.
-##' @param pad0 In case x is numeric, a number of zeros to pad before
-##'     the appended number. This is useful if you are generating say
-##'     more than 10 files, and your counter will be 01, 02,..,
-##'     10,... and not 1, 2,...,10,...
-##' @param sep The separator between the existing file name (until
-##'     extension) and the addition.
-##' @param collapse If `x` is of length greater than 1, the default is
-##'     to collapse the elements to a single string using `sep` as
-##'     separator. See the `collapse` argument to `?paste`. If you
-##'     want to treat them as separate strings, use `collapse=NULL`
-##'     which will lead to generation of separate file names. However,
-##'     currently `fn` or `x` must be of length 1.
+##' @param x A character string or a numeric to add to the file name. If a
+##'     vector, the vector is collapsed to a single string, using `sep` as
+##'     separator in the collapsed string.
+##' @param pad0 In case x is numeric, a number of zeros to pad before the
+##'     appended number. This is useful if you are generating say more than 10
+##'     files, and your counter will be 01, 02,.., 10,... and not 1,
+##'     2,...,10,...
+##' @param sep The separator between the existing file name (until extension)
+##'     and the addition.
+##' @param collapse If `x` is of length greater than 1, the default is to
+##'     collapse the elements to a single string using `sep` as separator. See
+##'     the `collapse` argument to `?paste`. If you want to treat them as
+##'     separate strings, use `collapse=NULL` which will lead to generation of
+##'     separate file names. If both `fn` and `x` are of length > 2, and
+##'     `collapse=NULL`, the outer product is generated. See examples.
 ##' @param position "append" (default) or "prepend".
-##' @param allow.noext Allow `fn` to be string(s) without extensions?
-##'     Default is `FALSE` in which case an error will be thrown if
-##'     `fn` contains strings without extensions. If `TRUE`, `x` will
-##'     be appended to fn in these cases.
+##' @param allow.noext Allow `fn` to be string(s) without extensions? Default is
+##'     `FALSE` in which case an error will be thrown if `fn` contains strings
+##'     without extensions. If `TRUE`, `x` will be appended to fn in these
+##'     cases.
 ##' @return A character (vector)
 ##'
 ##' @examples
@@ -34,6 +34,10 @@
 ##' ## multiple x gives one collapsed string
 ##' fnAppend("plot.png",1:2)
 ##' fnAppend("plot.png",1:2,pad0=2)
+##' ## multiple x with collapse=NULL gives multiple strings
+##' fnAppend("plot.png",1:2,collapse=NULL)
+##' ## outer/cross product if multiple files and multiple strings
+##' fnAppend(c("plot1.png","plot2.png"),1:2,collapse=NULL)
 ##' @export
 
 
@@ -53,9 +57,9 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     }
     x.string <- paste(x.string,collapse=collapse)
 
-    if(length(fn)>1 && length(x.string)>1){
-        stop("Both fn and x are of length>1. This is currently not supported. Is `collapse NULL`?")
-    }
+    ## if(length(fn)>1 && length(x.string)>1){
+    ##     stop("Both fn and x are of length>1. This is currently not supported. Is `collapse NULL`?")
+    ## }
     
     if(all(nchar(x.string))==0) return(fn)
 
@@ -70,20 +74,34 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
 
     
     if(position=="append"){
-        
-        allext <- rep("",length(fn))
-        ## allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
-        allext[has.ext] <- sub(".*\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
-        allext[has.ext] <- paste0(".",allext[has.ext])
+        dt.res <- CJ(fn,x.string)
+        dt.res[,has.ext :=  grepl(".*\\.[a-zA-Z0-9]+$",fn)]
+        dt.res[,allext := ""]
+        dt.res[has.ext==TRUE,allext := paste0(".",fnExtension(fn))]
+        dt.res[,fnroot := fnExtension(fn,"")]
 
-        fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
+        dt.res[,res := ""]
+        dt.res[fnroot!="",res := paste0(fnroot[fnroot!=""],sep,x.string,allext)]
+        dt.res[fnroot=="",res := paste0(x.string,allext)]
+        return(dt.res$res)
+        if(FALSE){
+            allext <- rep("",length(fn))
+            ## allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+            allext[has.ext] <- sub(".*\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
+            allext[has.ext] <- paste0(".",allext[has.ext])
+            
+            ## this is the same as fnExtension(fn,"")
+            fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
 
-        res <- rep("",length(fn))
-        res[fnroot!=""] <- paste0(fnroot[fnroot!=""],sep,x.string,allext)
-        res[fnroot==""] <- paste0(x.string,allext)
-        
-        ##return(paste0(fnroot,sep,x.string,allext))
-        return(res)
+            res <- rep("",length(fn))
+            
+
+            res[fnroot!=""] <- paste0(fnroot[fnroot!=""],sep,x.string,allext)
+            res[fnroot==""] <- paste0(x.string,allext)
+            
+            ##return(paste0(fnroot,sep,x.string,allext))
+            return(res)
+        }
     }
 
     if(position=="prepend"){
@@ -96,7 +114,7 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
                 dir
                ,paste(x.string,basename(fn),sep=sep)
             )
-            )
+        )
     }
     
 }
