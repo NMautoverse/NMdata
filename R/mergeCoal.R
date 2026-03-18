@@ -92,7 +92,7 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     if(is.null(by)){
         stop("No by variables found. By must be supplied and point to columns present in both x and y.")
     }
-    if(anyNA(y[,..by])){
+    if(anyNA(y[,by,with=FALSE])){
         stop("missing values are not allowed in by columns of y.")
     }
 
