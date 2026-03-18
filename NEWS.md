@@ -14,6 +14,9 @@ New function `dcastSe()` included. data.table's dcast() transforms from long to 
 
 * `NMreadExt()` includes columns `estimate`, `se`, `FIX`, and `termStat` in iterations object, to the extend found in the `.ext` file. Notice, this information and more was already included in the parameter estimate object from `NMreadExt()` but for convenience now carried over to the iterations object. If more columns from the parameter estimate table are needed, please use `return="all"` and then merge them over from `pars` to `iterations`.
 
+* `NMctl()` is a convenient reader of control stream files. It used to remove empty lines. This has now been changed so they are kept. The motivation is downstream use of the function where derived control streams may be desired to align more closely with their origin.
+
+* `fnAppend()` now returns the outer (or cross) product when both `fn` (file name) and `x` (string to append) are vectors, and `sep` is `NULL`.
 
 # NMdata 0.2.3
 
@@ -128,7 +131,7 @@ $OMEGA 0.15 ; IIV.KA ; lognormal
 * `tmpcol()` adds support for multiple variables, providing unique
   variable names for all, taking into account existing variables. Also
   gains an argument, `sep`, to control separator between base and a
-  possible counter (to ensure uniquenes).
+  possible counter (to ensure uniqueness).
 
 ## Bugfixes
 * `NMreadFilters()` would classify single-character filters as accept
