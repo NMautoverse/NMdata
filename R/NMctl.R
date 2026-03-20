@@ -14,9 +14,16 @@ readCtl.character <- function(x,...){
     dots <- list(...)
     
     if("lines"%in%names(dots)){
-        ### this only supports one ctl. Generalize?
-        x <- do.call(c,strsplit(x,"\\n"))
-        ctl <- x
+### this only supports one ctl. Generalize?
+        
+        xsplit <- strsplit(x,"\\n")
+## Since strsplit returns zero length elements which are dropped by z, we make
+## sure to preserve empty lines.
+        xsplit <- lapply(xsplit,function(x){
+            x[length(x)==0] <- ""
+            x
+        })
+        ctl <- do.call(c,xsplit)
     } else {
         ctl <- readLines(x,warn=FALSE)
     }
