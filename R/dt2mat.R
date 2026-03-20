@@ -29,6 +29,14 @@
 ##'     elements. 
 ##' @import data.table
 ##' @return a matrix
+##' @examples 
+##' dt.om <- NMreadInits(lines="$OMEGA BLOCK(3)
+##' 0.1000E+01
+##'                   0.4000E+01   0.1000E+01
+##'                   0.4000E+01   0.5000E+01   0.8000E+01
+##' ")
+##' dt2mat(dt.om,col.value="init") 
+##' 
 ##' @export
 
 dt2mat <- function(pars,dt.subset="unique",max.i,fill=0,col.value) {

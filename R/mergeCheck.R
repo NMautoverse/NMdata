@@ -130,6 +130,7 @@
 ##' mergeCheck(pk,dt.cov,by="ID")
 ##' }
 ##' @export
+##' @seealso mergeCoal egdt
 
 mergeCheck <- function(x,y,by,by.x,by.y,common.cols=base::warning,ncols.expect,track.msg=FALSE,quiet,df1,df2,subset.x,fun.na.by=base::stop,as.fun,fun.commoncols,...){
 

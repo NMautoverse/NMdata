@@ -52,3 +52,6 @@ x <- data.table(idx=1:3,a=paste0("xa",1:3),b=paste0("xb",1:3))
 y <- data.table(idx=1:2,a=c("ya1",NA),b=c(NA,"yb2"),c=1)
 mergeCoal(x,y,by="idx")
 }
+\seealso{
+mergeCheck egdt
+}

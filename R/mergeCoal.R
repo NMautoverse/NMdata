@@ -37,6 +37,7 @@
 ##' y <- data.table(idx=1:2,a=c("ya1",NA),b=c(NA,"yb2"),c=1)
 ##' mergeCoal(x,y,by="idx")
 ##' @export
+##' @seealso mergeCheck egdt
 
 mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
 
@@ -132,4 +133,4 @@ mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
     res[,(col.row.x):=NULL]
 
     as.fun(res)
-    }
+}

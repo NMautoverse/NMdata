@@ -172,6 +172,8 @@ mergeCheck(pk,dt.cov,by="ID")
 }
 }
 \seealso{
+mergeCoal egdt
+
 Other DataCreate: 
 \code{\link{NMorderColumns}()},
 \code{\link{NMstamp}()},
