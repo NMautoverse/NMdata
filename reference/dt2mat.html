@@ -18,7 +18,7 @@ further calculations."><meta property="og:image" content="https://nmautoverse.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.913</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4</span>
       </span>
     </div>
 
@@ -144,6 +144,21 @@ output from `NMreadExt()`.</p></dd>
     elements.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dt.om</span> <span class="op">&lt;-</span> <span class="fu"><a href="NMreadInits.html">NMreadInits</a></span><span class="op">(</span>lines<span class="op">=</span><span class="st">"$OMEGA BLOCK(3)</span></span></span>
+<span class="r-in"><span><span class="st">0.1000E+01</span></span></span>
+<span class="r-in"><span><span class="st">                  0.4000E+01   0.1000E+01</span></span></span>
+<span class="r-in"><span><span class="st">                  0.4000E+01   0.5000E+01   0.8000E+01</span></span></span>
+<span class="r-in"><span><span class="st">"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">dt2mat</span><span class="op">(</span><span class="va">dt.om</span>,col.value<span class="op">=</span><span class="st">"init"</span><span class="op">)</span> </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1    4    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    4    1    5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    4    5    8</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
