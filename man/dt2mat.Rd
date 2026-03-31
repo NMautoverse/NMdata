@@ -46,3 +46,12 @@ If pars does not contain all `i` values, they will be
     missing `j` elements will also give imputations of missing
     elements.
 }
+\examples{
+dt.om <- NMreadInits(lines="$OMEGA BLOCK(3)
+0.1000E+01
+                  0.4000E+01   0.1000E+01
+                  0.4000E+01   0.5000E+01   0.8000E+01
+")
+dt2mat(dt.om,col.value="init") 
+
+}

@@ -28,6 +28,7 @@
 ##' ## Dimensions are conveniently listed for interactive use
 ##' res <- egdt(as.data.table(df1),as.data.table(df2))
 ##' @import data.table
+##' @seealso mergeCheck mergeCoal 
 
 ##' @export
 

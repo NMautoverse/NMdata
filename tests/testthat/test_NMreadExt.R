@@ -148,3 +148,22 @@ test_that("slow",{
     }
     
 })
+
+
+test_that("only final pars",{
+
+
+    temp_ext <- tempfile(fileext = ".ext")
+    if(file.exists(temp_ext)) unlink(temp_ext)
+    cat("ITERATION THETA1 SIGMA(1,1) SIGMA(2,1) SIGMA(2,2)\n
+-1e+09 1 0.04 0 0.01",file=temp_ext)
+
+    ## write.table(ext_content, temp_ext, row.names = FALSE, quote = FALSE)
+
+    
+    pars <- NMreadExt(temp_ext,as.fun="data.table",return="pars")
+    expect_equal(nrow(pars),4)
+    expect_equal(ncol(pars),13)
+    expect_equal(pars$value,c(1,.04,0,.01))
+
+})
