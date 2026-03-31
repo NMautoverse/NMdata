@@ -1,4 +1,4 @@
-##' Extract columns that vary within values of other columns
+##' Extract columns that are constant within values of other columns (covariates)
 ##'
 ##' This function provides an automated method to extract covariate-like
 ##' columns. The user decides which columns these variables cannot vary
