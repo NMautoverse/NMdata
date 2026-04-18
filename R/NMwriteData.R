@@ -338,6 +338,7 @@ NMwriteData <- function(data,file,formats.write=c("csv","rds"),
     
     files.written=c()
     if(write.csv){
+      
         file.csv <- fnExtension(file,".csv")
         data.csv <- data.dt
         if(csv.trunc.as.nm){
@@ -366,7 +367,7 @@ Comma found in column(s):",paste(colnames(data.csv)[comma.ok==FALSE],collapse=",
 fun.msg=stop)
         }
 ### Check for commas done
-        
+      
         
         do.call(fwrite,append(list(x=data.csv,file=file.csv),args.fwrite))
 

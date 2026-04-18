@@ -9,8 +9,6 @@
 ##' @param args List of arguments in the function call to look for
 ##'     oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
 ##'     will be called from within `deprecatedArg`. See `which` too.
-##' @param which If calling `getArgs` this is passed along, referring
-##'     to how many environments to jump to look at arguments.
 ##' @return The coalesced value of arguments
 ##' @family arguments
 ##' @keywords internal
@@ -30,7 +28,7 @@
 ##'    )
 ##'}
 
-deprecatedArg <- function(oldarg,newarg,args,msg=NULL,which=2){
+deprecatedArg <- function(oldarg,newarg,args,msg=NULL){
     
     ## args <- callArgs(-2,env)
     if(missing(args) || is.null(args)){

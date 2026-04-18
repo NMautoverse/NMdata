@@ -55,7 +55,7 @@ NMreadPhi <- function(file,as.fun,modelname,col.model,auto.ext,file.phi){
     })
     res.NMdat <- rbindlist(res.NMdat,fill=TRUE)
 
-    res.NMdat <- addTableStep(res.NMdat,keep.table.name=FALSE)
+    res.NMdat <- addTableStep(res.NMdat,keep.table.name=FALSE,quiet=TRUE)
     
     pars <- melt(res.NMdat,id.vars=c("model","TABLENO","NMREP","table.step","SUBJECT_NO","ID"),variable.name="parameter")
 

@@ -254,7 +254,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     
     res.NMdat <- mergeCheck(res.NMdat,dt.codes,by=cc(ITERATION),all.x=T,quiet=TRUE)
     res.NMdat[ITERATION >(-1e9),variable := "iteration"]
-    res.NMdat <- addTableStep(res.NMdat,keep.table.name=FALSE)
+    res.NMdat <- addTableStep(res.NMdat,keep.table.name=FALSE,quiet=TRUE)
 
     ## pars <- res.NMdat[variable%in%dt.codes$variable,setdiff(colnames(res.NMdat),"OBJ"),with=FALSE]
     pars <- res.NMdat[variable%in%dt.codes$variable]
