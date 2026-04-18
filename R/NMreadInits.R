@@ -295,8 +295,10 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
           "ll.init"="\\( *(\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*)*,\\s*-?-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)", # (ll,init)
           "(init)"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s*\\)",  # (init)
           "init" = "(?<!\\d)-?(\\d+\\.\\d+|\\d+\\.|\\.\\d+|\\d+)([eE][+-]?\\d+)?(?!\\.)",
-          "fix"="\\bFIX(ED)?\\b",  # FIX(ED)
-          "same"="SAME"
+          "fix" = "\\bFIX(ED)?\\b",  # FIX
+          "init.fix"="\\(\\s*-?(?:\\d+(\\.\\d+)?|(?:\\d+)?\\.\\d+)([eE][+-]?\\d+)?\\s+FIX(ED)?\\s*\\)",  # (init FIX)
+          ## "same"="SAME()"
+          "same"="SAME\\s*(\\(\\d+\\))?"
           )
     
     dt.lines <- rbindlist(
@@ -384,7 +386,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         
 ### If SAME and blocksize>1, element must be repeated for all block elements
         res.sameblocks <- lapply(
-            split(res[value.elem=="SAME"&blocksize>1],by="elemnum")
+            split(res[grepl("SAME.*",value.elem)&blocksize>1],by="elemnum")
            ,
             function(x){
                 newelems <- egdt(x,data.table(isame=1:triagSize(x$blocksize)),quiet=T)
@@ -394,7 +396,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
             }
         )
         res <- rbind(
-            res[!(value.elem=="SAME"&blocksize>1)]
+            res[!(grepl("SAME.*",value.elem)&blocksize>1)]
            ,
             rbindlist(res.sameblocks)
         )
@@ -464,13 +466,16 @@ initsToExt <- function(elements){
 ###  init=SAME may not work for blocksizes>1
     if("init"%in%colnames(pars)){
         pars[,init.char:=init]
+        pars[,SAME:=0]
+        ## pars[init.char=="SAME",SAME:=1]
+        pars[grepl("^ *SAME *$",init.char),SAME:=1]
+       pars[grepl("^ *SAME(.+)",init.char),SAME := as.numeric(sub("SAME\\(( *[0-9]+ *)\\)", "\\1",init.char))]
+
         suppressWarnings(pars[,init.num:=as.numeric(init)])
         pars[,init.num.tmp:=nafill(init.num,type="locf")]
-        pars[!is.na(init.num)|init=="SAME",init.num:=init.num.tmp]
+        pars[!is.na(init.num)|SAME > 0,init.num:=init.num.tmp]
         pars[,init:=init.num]
         pars[,init.num:=NULL]
-        pars[,SAME:=0]
-        pars[init.char=="SAME",SAME:=1]
     } else {
         ## not sure this will ever happen
         pars[,init:=NA_real_]
@@ -510,6 +515,7 @@ initsToExt <- function(elements){
 ##' Nsameblock: The number of SAME calls used for a distribution
 ##' block. If SAME(N) notation is used, Nsameblock=N.
 ##' @author Brian Reilly
+##' @import data.table
 ##' @keywords internal
 
 addSameBlocks <- function(inits) {
@@ -525,8 +531,10 @@ addSameBlocks <- function(inits) {
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks ####
 
     inits = copy(as.data.table(inits))
-    inits[,startSameBlock := ifelse(SAME==0 & data.table::shift(SAME,type="lead") == 1, 1, 0)]
-    inits[,endSameBlock := ifelse(SAME==1 & data.table::shift(SAME,type="lead") == 0, 1, 0)]
+  inits[,startSameBlock := ifelse(SAME==0 & data.table::shift(SAME,type="lead") == 1, 1, 0)]
+  ## inits[,startSameBlock := ifelse(SAME==0 & data.table::shift(SAME,type="lead") > 0 , 1, 0)]
+  inits[,endSameBlock := ifelse(SAME==1 & data.table::shift(SAME,type="lead") == 0, 1, 0)]
+  ## inits[,endSameBlock := ifelse(SAME > 0 & data.table::shift(SAME,type="lead") == 0, 1, 0)]
     df = inits
     start <- as.integer(replace(df$startSameBlock, is.na(df$startSameBlock), 0))
     end   <- as.integer(replace(df$endSameBlock,   is.na(df$endSameBlock),   0))
@@ -556,7 +564,8 @@ addSameBlocks <- function(inits) {
     
                                         # add N of same group
     ## df[, Nsameblock := ifelse(any(sameblock!=0), .N-1, 0), by=sameblock]
-    df[, Nsameblock := if(any(sameblock!=0)) .N-1 else 0, by=sameblock]
+   df[, Nsameblock := if(any(sameblock!=0)) .N-1 else 0, by=sameblock]
+## df[, Nsameblock := if(any(sameblock!=0)) sum(SAME) else 0, by=sameblock]
 
     df <- df[,setdiff(colnames(df),c("startSameBlock","endSameBlock")),with=FALSE]
     
