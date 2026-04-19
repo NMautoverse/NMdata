@@ -56,6 +56,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addOmegaCorr.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addParType.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addParameter.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/addSameBlocks.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/addTAPD.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/as.NMctl.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/cc.html</loc></url>
@@ -74,6 +75,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/dtapply.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/editCharCols.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/egdt.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/escape.charclass.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/filePathSimple.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/findCovs.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/findVars.html</loc></url>

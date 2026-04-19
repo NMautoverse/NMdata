@@ -18,7 +18,7 @@ works for arguments that have been replaced by others."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.901</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.902</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ works for arguments that have been replaced by others.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">deprecatedArg</span><span class="op">(</span><span class="va">oldarg</span>, <span class="va">newarg</span>, <span class="va">args</span>, msg <span class="op">=</span> <span class="cn">NULL</span>, which <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">deprecatedArg</span><span class="op">(</span><span class="va">oldarg</span>, <span class="va">newarg</span>, <span class="va">args</span>, msg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -111,9 +111,8 @@ oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
 will be called from within `deprecatedArg`. See `which` too.</p></dd>
 
 
-<dt id="arg-which">which<a class="anchor" aria-label="anchor" href="#arg-which"></a></dt>
-<dd><p>If calling `getArgs` this is passed along, referring
-to how many environments to jump to look at arguments.</p></dd>
+<dt id="arg-msg">msg<a class="anchor" aria-label="anchor" href="#arg-msg"></a></dt>
+<dd><p>An additional message to provide to the user.</p></dd>
 
 </dl></div>
     <div id="value">
