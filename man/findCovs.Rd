@@ -2,7 +2,7 @@
 % Please edit documentation in R/findCovs.R
 \name{findCovs}
 \alias{findCovs}
-\title{Extract columns that vary within values of other columns}
+\title{Extract columns that are constant within values of other columns (covariates)}
 \usage{
 findCovs(data, by = NULL, cols.id, as.fun = NULL)
 }

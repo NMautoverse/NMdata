@@ -4,7 +4,7 @@
 \alias{deprecatedArg}
 \title{Report if an argument is deprecated.}
 \usage{
-deprecatedArg(oldarg, newarg, args, msg = NULL, which = 2)
+deprecatedArg(oldarg, newarg, args, msg = NULL)
 }
 \arguments{
 \item{oldarg}{The deprecated argument name (a character string).}
@@ -16,8 +16,7 @@ string).}
 oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
 will be called from within `deprecatedArg`. See `which` too.}
 
-\item{which}{If calling `getArgs` this is passed along, referring
-to how many environments to jump to look at arguments.}
+\item{msg}{An additional message to provide to the user.}
 }
 \value{
 The coalesced value of arguments

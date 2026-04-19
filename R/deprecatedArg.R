@@ -9,6 +9,7 @@
 ##' @param args List of arguments in the function call to look for
 ##'     oldarg and newarg. See `?getArgs`. If missing, `getArgs()`
 ##'     will be called from within `deprecatedArg`. See `which` too.
+##' @param msg An additional message to provide to the user.
 ##' @return The coalesced value of arguments
 ##' @family arguments
 ##' @keywords internal
