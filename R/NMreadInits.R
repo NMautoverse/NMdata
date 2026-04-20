@@ -389,12 +389,30 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
             split(res[isSAME(value.elem)&blocksize>1],by="elemnum")
            ,
             function(x){
+              
                 newelems <- egdt(x,data.table(isame=1:triagSize(x$blocksize)),quiet=T)
                 newelems[,parnum:=parnum+isame-1]
                 newelems[,isame:=NULL]
+                nsame <- unique(NSAME(x$value.elem))
+                if(length(nsame)==1 && nsame > 1){
+                  ## this could be done with egdt too
+                  res0 <- lapply(0:(nsame-1),function(thisnsame){
+                    
+                    sblock <- copy(newelems)
+                    
+                    sblock[,parnum := parnum+triagSize(blocksize)*thisnsame]
+                    sblock[,parblock := parblock+triagSize(blocksize)*thisnsame]
+                    sblock[,lastblockmax := lastblockmax+triagSize(blocksize)*thisnsame]
+                    sblock
+                  })
+                  
+                  ## newelems <- rbind(newelems,rbindlist(res0))
+                  newelems <- rbindlist(res0)
+                }
                 newelems
             }
         )
+        
         res <- rbind(
             res[!(isSAME(value.elem)&blocksize>1)]
            ,
@@ -409,25 +427,32 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         res
     })
     
-    res <- rbindlist(res.list)
-    res <- addParameter(res)
-    setcolorder(res,c("parameter","par.name","par.type","i","j"))
+    elems <- rbindlist(res.list)
+    elems <- addParameter(elems)
+    setcolorder(elems,c("parameter","par.name","par.type","i","j"))
     
-    pars <- initsToExt(res)
+    pars <- elemsToExt(elems)
     if(return=="pars") return(as.fun(pars))
     
     setcolorder(dt.lines,cc(par.type,linenum,text,text.clean,text.before,text.after))
     
     list(pars=as.fun(pars),
          lines=as.fun(dt.lines),
-         elements=as.fun(res)
+         elements=as.fun(elems)
          )
 
 }
 
+##' @keywords internal
+initsToExt <- function(...){
+  .Deprecated(new="elemsToExt")
+  elemsToExt(...)
+}
+
+
 ##' Convert inits elements to a parameter data.frame
 ##' @param elements The elements object produced by `NMreadInits()`.
-##' @details initsToExt is misleading. It is not a reference to the
+##' @details Function name changed from initsToExt which was misleading. It is not a reference to the
 ##'     initstab, but actually the elements object returned by
 ##'     NMreadInits. The elements object is more detailed as it
 ##'     contains information about where information is found in
@@ -436,7 +461,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
 ##'     `NMdata::NMreadExt()`.
 ##' @import data.table
 ##' @keywords internal
-initsToExt <- function(elements){
+elemsToExt <- function(elements){
 
 #### Section start: Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -469,7 +494,8 @@ initsToExt <- function(elements){
         pars[,SAME:=0]
         ## pars[init.char=="SAME",SAME:=1]
         pars[isSame(init.char),SAME:=1]
-       pars[grepl("^ *SAME(.+)",init.char),SAME := as.numeric(sub("SAME\\(( *[0-9]+ *)\\)", "\\1",init.char))]
+        ## This inserts N for SAME(N) which turns out to be confusing.
+        ## pars[grepl("^ *SAME(.+)",init.char),SAME := NSAME(init.char)]
 
         suppressWarnings(pars[,init.num:=as.numeric(init)])
         pars[,init.num.tmp:=nafill(init.num,type="locf")]
