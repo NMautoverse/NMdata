@@ -220,8 +220,11 @@ $OMEGA  BLOCK(1) SAME(2)")
 
 
     res2 <- NMreadInits(lines=text,return="all")
-
+    res2$pars
+    
 res2
+
+
 
     res2$lines[,text.before:=""]
 

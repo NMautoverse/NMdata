@@ -386,7 +386,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         
 ### If SAME and blocksize>1, element must be repeated for all block elements
         res.sameblocks <- lapply(
-            split(res[grepl("SAME.*",value.elem)&blocksize>1],by="elemnum")
+            split(res[isSAME(value.elem)&blocksize>1],by="elemnum")
            ,
             function(x){
                 newelems <- egdt(x,data.table(isame=1:triagSize(x$blocksize)),quiet=T)
@@ -396,7 +396,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
             }
         )
         res <- rbind(
-            res[!(grepl("SAME.*",value.elem)&blocksize>1)]
+            res[!(isSAME(value.elem)&blocksize>1)]
            ,
             rbindlist(res.sameblocks)
         )
@@ -468,7 +468,7 @@ initsToExt <- function(elements){
         pars[,init.char:=init]
         pars[,SAME:=0]
         ## pars[init.char=="SAME",SAME:=1]
-        pars[grepl("^ *SAME *$",init.char),SAME:=1]
+        pars[isSame(init.char),SAME:=1]
        pars[grepl("^ *SAME(.+)",init.char),SAME := as.numeric(sub("SAME\\(( *[0-9]+ *)\\)", "\\1",init.char))]
 
         suppressWarnings(pars[,init.num:=as.numeric(init)])
