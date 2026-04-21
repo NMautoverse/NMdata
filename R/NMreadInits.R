@@ -426,7 +426,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         res[par.type=="THETA",j:=NA]
         res
     })
-    
+  
     elems <- rbindlist(res.list)
     elems <- addParameter(elems)
     setcolorder(elems,c("parameter","par.name","par.type","i","j"))
@@ -493,7 +493,7 @@ elemsToExt <- function(elements){
         pars[,init.char:=init]
         pars[,SAME:=0]
         ## pars[init.char=="SAME",SAME:=1]
-        pars[isSame(init.char),SAME:=1]
+        pars[isSAME(init.char),SAME:=1]
         ## This inserts N for SAME(N) which turns out to be confusing.
         ## pars[grepl("^ *SAME(.+)",init.char),SAME := NSAME(init.char)]
 
