@@ -30,16 +30,6 @@ isSAME <- function(x) {
 ##' NSAME("SAME (a)")
 ##' NSAME("NOT SAME")
 
-## NSAME <- function(x){
-##   x <- cleanSpaces(x)
-##   res <- 0
-##   if(grepl("^\\s*SAME\\s*$" ,x)) res <- 1
-##   res.try <- suppressWarnings(
-##     as.numeric(sub("^\\s*SAME\\s*\\(\\s*([0-9]+)\\s*\\)\\s*", "\\1",x))
-##   )
-##   if(!is.na(res.try)) res <- res.try
-##   res
-## }
 
 NSAME <- function(x){
   x <- cleanSpaces(x)

@@ -13,13 +13,13 @@ isSAME(x)
 Test whether an initial value is of type SAME
 }
 \examples{
-isSame("SAME")
-isSame(" SAME ")
-isSame("SAME(1)")
-isSame("SAME (1)")
-isSame("  SAME   (  123 ) ")
-isSame("SAME()")
-isSame("SAME (a)")
-isSame("NOT SAME")
+isSAME("SAME")
+isSAME(" SAME ")
+isSAME("SAME(1)")
+isSAME("SAME (1)")
+isSAME("  SAME   (  123 ) ")
+isSAME("SAME()")
+isSAME("SAME (a)")
+isSAME("NOT SAME")
 }
 \keyword{internal}
