@@ -2,14 +2,14 @@
 ##' @param x A character string to test
 ##' @keywords internal
 ##' @examples
-##' isSAME("SAME")
-##' isSAME(" SAME ")
-##' isSAME("SAME(1)")
-##' isSAME("SAME (1)")
-##' isSAME("  SAME   (  123 ) ")
-##' isSAME("SAME()")
-##' isSAME("SAME (a)")
-##' isSAME("NOT SAME")
+##' NMdata:::isSAME("SAME")
+##' NMdata:::isSAME(" SAME ")
+##' NMdata:::isSAME("SAME(1)")
+##' NMdata:::isSAME("SAME (1)")
+##' NMdata:::isSAME("  SAME   (  123 ) ")
+##' NMdata:::isSAME("SAME()")
+##' NMdata:::isSAME("SAME (a)")
+##' NMdata:::isSAME("NOT SAME")
 
 isSAME <- function(x) {
   grepl("^\\s*SAME\\s*(\\(\\s*\\d+\\s*\\))?\\s*$", x)
@@ -21,14 +21,14 @@ isSAME <- function(x) {
 ##' @param x A character string to test
 ##' @keywords internal
 ##' @examples
-##' NSAME("SAME")
-##' NSAME(" SAME ")
-##' NSAME("SAME(1)")
-##' NSAME("SAME (1)")
-##' NSAME("  SAME   (  123 ) ")
-##' NSAME("SAME()")
-##' NSAME("SAME (a)")
-##' NSAME("NOT SAME")
+##' NMdata:::NSAME("SAME")
+##' NMdata:::NSAME(" SAME ")
+##' NMdata:::NSAME("SAME(1)")
+##' NMdata:::NSAME("SAME (1)")
+##' NMdata:::NSAME("  SAME   (  123 ) ")
+##' NMdata:::NSAME("SAME()")
+##' NMdata:::NSAME("SAME (a)")
+##' NMdata:::NSAME("NOT SAME")
 
 
 NSAME <- function(x){

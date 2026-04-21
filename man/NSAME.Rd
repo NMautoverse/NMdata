@@ -13,13 +13,13 @@ NSAME(x)
 How many SAME reps?
 }
 \examples{
-NSAME("SAME")
-NSAME(" SAME ")
-NSAME("SAME(1)")
-NSAME("SAME (1)")
-NSAME("  SAME   (  123 ) ")
-NSAME("SAME()")
-NSAME("SAME (a)")
-NSAME("NOT SAME")
+NMdata:::NSAME("SAME")
+NMdata:::NSAME(" SAME ")
+NMdata:::NSAME("SAME(1)")
+NMdata:::NSAME("SAME (1)")
+NMdata:::NSAME("  SAME   (  123 ) ")
+NMdata:::NSAME("SAME()")
+NMdata:::NSAME("SAME (a)")
+NMdata:::NSAME("NOT SAME")
 }
 \keyword{internal}
