@@ -75,6 +75,7 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/dtapply.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/editCharCols.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/egdt.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/elemsToExt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/escape.charclass.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/filePathSimple.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/findCovs.html</loc></url>
@@ -87,8 +88,8 @@
 <url><loc>https://nmautoverse.github.io/NMdata/reference/getFilePaths.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/getLines.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/index.html</loc></url>
-<url><loc>https://nmautoverse.github.io/NMdata/reference/initsToExt.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/is.NMdata.html</loc></url>
+<url><loc>https://nmautoverse.github.io/NMdata/reference/isSAME.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/itriag.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/jtriag.html</loc></url>
 <url><loc>https://nmautoverse.github.io/NMdata/reference/lapplydt.html</loc></url>
