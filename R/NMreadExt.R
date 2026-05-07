@@ -281,11 +281,15 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         
     }
     
+
+    if(return=="pars") return(pars)
+    if(return=="obj") return(obj)
+
     
     ## what to do about OBJ? Disregard? And keep in a iteration table instead?
     iterations <- res.NMdat[as.numeric(ITERATION)>(-1e9),!("variable")] 
     if(nrow(iterations)){
-        iterations <- addTableStep(iterations,keep.table.name=FALSE)
+        iterations <- addTableStep(iterations,keep.table.name=FALSE,quiet=TRUE)
         id.vars <- intersect(c(col.model,cc(TABLENO,NMREP,table.step,ITERATION,variable)),colnames(iterations))    
         iterations <- melt(iterations,id.vars=id.vars,variable.name="parameter")
         iterations <- addParType(iterations)
@@ -306,11 +310,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     res <- list(pars=pars,iterations=iterations,obj=obj)
     res <- lapply(res,as.fun)
 
-    
-    if(return=="pars") return(res$pars)
     if(return=="iterations") return(res$iterations)
-    if(return=="obj") return(res$obj)
-
     
     ## as.fun already applied
     res
