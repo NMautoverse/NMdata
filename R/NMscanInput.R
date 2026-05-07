@@ -183,6 +183,9 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     ## args <- getArgs()
     args <- getArgs(sys.call(),parent.frame())
     apply.filters <- deprecatedArg(oldarg="applyFilters",newarg="apply.filters",args=args)
+  if(apply.filters && !translate){
+    message("apply.filters is TRUE but will be ignored because translate is FALSE.")
+  }
     
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
@@ -245,14 +248,14 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
 ### not used
     ## nminfo.input.0 <- NMinfoDT(data.input)
     
+### cnames.input is the names of columns as in input data file
+    data.input         <- NMtransInp(data.input,  file,translate=translate,recover.cols=recover.cols)
+    data.input.0.trans <- NMtransInp(data.input.0,file,translate=translate,recover.cols=recover.cols,quiet=TRUE)
+
 ### filters must be applied here according to NM manual IV-1. They are applied before translating column names.
     if(apply.filters){
         data.input <- NMapplyFilters(data.input,file=file,invert=invert,quiet=quiet,as.fun="data.table")
     }
-    
-### cnames.input is the names of columns as in input data file
-    data.input         <- NMtransInp(data.input,  file,translate=translate,recover.cols=recover.cols)
-    data.input.0.trans <- NMtransInp(data.input.0,file,translate=translate,recover.cols=recover.cols,quiet=TRUE)
     
     col.id.inp <- col.id
     if(translate){
