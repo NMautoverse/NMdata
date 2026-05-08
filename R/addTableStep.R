@@ -3,8 +3,10 @@
 ## Do not export
 
 addTableStep <- function(dt,keep.table.name=FALSE,quiet=FALSE){
+  
 
-    table.name <- NULL
+
+  table.name <- NULL
     table.step <- NULL
 
     if(!quiet && !"table.name" %in% colnames(dt)){
