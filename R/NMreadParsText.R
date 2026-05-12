@@ -430,11 +430,18 @@ NMreadParsText <- function(file,lines,format,
         omegas
     }
 
-
+  
     
+  ## if starts with ; it has to be removed. Like
+## format: ;symbol; label
+        formats.res <- lapply(formats.res,function(format){
+          format <- sub(" *;* *","",format)
+          format
+        })
     
     rm.idx <- TRUE
-    if(add.init){
+
+  if(add.init){
         formats.res <- lapply(formats.res,function(format){
             fields <- splitFields(format,spaces.split=spaces.split)
 
