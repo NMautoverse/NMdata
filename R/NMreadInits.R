@@ -301,6 +301,7 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
           "same"="SAME\\s*(\\(\\d+\\))?"
           )
     
+  
     dt.lines <- rbindlist(
         lapply(section,function(sec){
             dt.l <- data.table(text=NMreadSection(lines=lines,section=sec,keep.empty=TRUE,keep.comments=TRUE))
@@ -312,7 +313,15 @@ NMreadInits <- function(file,lines,section,return="pars",as.fun) {
         })
        ,fill=TRUE
     )
-    
+
+  if(!nrow(dt.lines)){
+    return(
+      list(pars=NULL,
+           lines=NULL,
+           elements=NULL
+           )
+    )
+  }
     
     pattern <- paste(patterns,collapse="|")
 

@@ -349,7 +349,9 @@ NMreadParsText <- function(file,lines,format,
     get.theta.comments <- function(lines,section,format,use.theta.idx=FALSE){
 
         res.fields.theta <- splitFields(format,spaces.split=spaces.split)
-        get.comments(lines,section,res.fields=res.fields.theta,use.theta.idx=FALSE)
+      thetas <- get.comments(lines,section,res.fields=res.fields.theta,use.theta.idx=FALSE)
+      thetas[,j := NA_integer_]
+
     }
 
 ### applies processed fields on control stream sections. It does so by calling fun.get.fields
@@ -464,28 +466,28 @@ NMreadParsText <- function(file,lines,format,
     sigmas <- get.omega.comments(lines=lines,section="sigma",format=formats.res$format.sigma)
 
     auto.idx <- setdiff(c("THETA","OMEGA","SIGMA"),use.idx)
-    
+  
     
     if(length(sigmas)==0) auto.idx <- setdiff(auto.idx,"SIGMA")
     
-    if("THETA"%in%auto.idx){
-        
+    if("THETA"%in%auto.idx && !is.null(thetas) && nrow(thetas)){
+      
         elems.theta <- NMreadInits(lines=lines,section="THETA",return="all",as.fun="data.table")$elements
         thetas <- merge(
-            thetas[,setdiff(colnames(thetas),c("i","j")),with=FALSE]
+            thetas[,setdiff(colnames(thetas),c("i")),with=FALSE]
            ,
             elems.theta[type.elem=="init"
                        ,.(par.type,linenum,i)],
             by=c("par.type","linenum"),all.x=TRUE)
     }
-    if("OMEGA"%in%auto.idx){
+    if("OMEGA"%in%auto.idx && !is.null(omegas) && nrow(omegas) ){
         
         elems.omega <- NMreadInits(lines=lines,section="OMEGA",return="all",as.fun="data.table")$elements
         omegas <- merge(omegas[,setdiff(colnames(omegas),c("i","j")),with=FALSE],
                         elems.omega[type.elem=="init",.(par.type,linenum,i,j)],
                         by=c("par.type","linenum"),all.x=TRUE)
     }
-    if("SIGMA"%in%auto.idx){
+    if( "SIGMA"%in%auto.idx && !is.null(sigmas) && nrow(sigmas) ){
         
         elems.sigma <- NMreadInits(lines=lines,section="SIGMA",return="all",as.fun="data.table")$elements
         sigmas <- merge(sigmas[,setdiff(colnames(sigmas),c("i","j")),with=FALSE],
@@ -505,7 +507,7 @@ NMreadParsText <- function(file,lines,format,
     ## are specified by column, not by row.
     ## pt1[par.type%in%cc(OMEGA,SIGMA),`:=`(i=j,j=i)]
     
-    
+  
 ####### TODO: what if multiple elements are on one line? Assign comment to all or to the diagonals only? Maybe an argument to control.
 #### merges ij,j on each line. Risk is that single lines contain multiple elements, and hence are matched by multiple combinations of i,j.
 ###        pt1 <- merge(pt1[,setdiff(colnames(pt1),c("i","j")),with=FALSE],elems.all[type.elem=="init"],by=c("par.type","linenum"),all.x=TRUE)
@@ -516,7 +518,7 @@ NMreadParsText <- function(file,lines,format,
         ## pt1 <- pt1[frank(match(pt1$par.type,c("THETA","OMEGA","SIGMA")),i==j,i,j))
         ## pt.idx <- pt1[!par.type%in%auto.idx]
         ## pt.auto
-        
+      
         pt1 <- pt1[order(match(par.type,c("THETA","OMEGA","SIGMA")),i!=j,i,j)]
         pt2 <- unique(pt1,by=c("par.type","linenum"))
         pt2 <- pt2[order(match(par.type,c("THETA","OMEGA","SIGMA")),i,j)]

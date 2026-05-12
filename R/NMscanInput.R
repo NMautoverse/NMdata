@@ -268,8 +268,8 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
 
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     
-    if(details){
-        
+  if(details){
+
         meta <- list()
         meta$datafile <- info.datafile
         input.create.time <- NMinfo(data.input)$dataCreate$CreationTime
@@ -305,7 +305,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
             meta$tables$has.col.id <- col.id%in%meta$input.colnames[,result]
         }
 
-        setcolorder(meta$tables,intersect(c(col.model,"source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","idlevel","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
+        setcolorder(meta$tables,intersect(c(col.model,"source","name","nrow","ncol","firstonly","lastonly","firstlastonly","format","sep","nid","id level","has.row","maxLength","full.length","filetype","file.mtime","file.logtime","file"),colnames(meta$tables)))
 
         
         if(!is.null(col.id) && col.id%in%NMinfoDT(data.input,"input.colnames")[,result]) {
@@ -314,12 +314,14 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
                         ]
         }
 
-        data.input <- as.fun(data.input)
+    meta <- setOrderList(meta,first=c("datafile","tables","dataCreate","input.filters","input.colnames"))
+
+        ## data.input <- as.fun(data.input)
         writeNMinfo(data.input,meta,byRef=TRUE)
-        return(data.input)
-    } else {
-        data.input <- as.fun(data.input)
-    }
-    
-    return(data.input)
+    ## return(data.input)
+     } ##else {
+    ##     data.input <- as.fun(data.input)
+    ## }
+
+    return(as.fun(data.input))
 }

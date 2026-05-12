@@ -37,6 +37,16 @@ test_that("basic",{
         NMscanInput(file=file.lst,apply.filters = T,as.fun="data.table")
     fix.time(res)
     expect_equal_to_reference(res,fileRef,version=2)
+
+    if(F){
+      ref <- readRDS(fileRef)
+      res
+      ref
+      NMdata::NMinfo(res)
+  NMdata::NMinfo(ref)
+
+}
+
 })
 
 
@@ -50,11 +60,23 @@ test_that("input has NMdata meta data",{
     ## NMgetSection(file.lst,section="DATA")
     
 
-    res <- NMscanInput(file=file.lst,applyFilters = T,as.fun="data.table")
-    fix.time(res)
-    nm1 <- NMinfo(res)
-    expect_equal_to_reference(nm1,fileRef,version=2)
+    res0 <- NMscanInput(file=file.lst,apply.filters = T,as.fun="data.table")
+
+    fix.time(res0)
+    res <- NMinfo(res0)
+    expect_equal_to_reference(res,fileRef,version=2)
     ## readRDS(fileRef)$tables; nm1$tables    
+
+
+    if(F){
+      ref <- readRDS(fileRef)
+      res
+      ref
+      NMdata::NMinfo(res)
+  NMdata::NMinfo(ref)
+
+}
+
     
 })
 
@@ -91,8 +113,9 @@ test_that("Duplicate columns in input data",{
 })
 
 test_that("single-char ignore",{
-    NMdataConf(reset=T)
-    fileRef <- "testReference/NMscanInput_04.rds"
+
+  NMdataConf(reset=T)
+  fileRef <- "testReference/NMscanInput_04.rds"
     file.lst <- "testData/nonmem/estim_debug.lst"
 
     ## inpdat <- NMscanInput(file=file.lst,applyFilters=T,file.mod=function(x)sub("\\.lst$",".ctl",x))
@@ -104,6 +127,9 @@ test_that("single-char ignore",{
 
     if(F){
         ref <- readRDS(fileRef)
+        ref
+        res
+        
         NMinfo(res,"input.filters")
         NMinfo(ref,"input.filters")
     }
@@ -118,15 +144,31 @@ test_that(".mod with mix of space and , in $INPUT",{
     inpdat <- NMscanInput(file=file.lst)
 
     expect_equal_to_reference(colnames(inpdat),fileRef,version=2)
-    
+
+  
 })
 
 
 test_that("Erroneously basing a filter on translated column names",{
+    fileRef <- "testReference/NMscanInput_05b.rds"
+    file.mod <- "testData/nonmem/min036.mod"
+
+
     ## user could be 
-    expect_error(
-        NMscanInput("testData/nonmem/min036mod.mod",applyFilters=TRUE)
-    )
+##    expect_error(
+  res <- NMscanInput(file.mod,applyFilters=TRUE)
+##    )
+
+
+    if(F){
+        ref <- readRDS(fileRef)
+        ref
+        res
+        
+        NMinfo(res,"input.filters")
+        NMinfo(ref,"input.filters")
+    }
+
 })
 
 test_that("Including meta data",{

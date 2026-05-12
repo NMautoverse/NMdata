@@ -35,7 +35,11 @@ test_that("basic - all",{
         compareCols(ref[[2]],res[[2]])
         compareCols(ref[[3]],res[[3]])
         compareCols(ref$pars,res$pars)
-    }
+    
+        
+ref$iterations
+res$iterations
+}
 
 })
 

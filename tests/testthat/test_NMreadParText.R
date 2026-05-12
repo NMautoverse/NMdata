@@ -19,7 +19,7 @@ test_that("basic",{
 
 
 
-context("NMreadParText")
+context("NMreadParsText")
 
 library(data.table)
 data.table::setDTthreads(1)
@@ -445,4 +445,48 @@ $OMEGA BLOCK(1)
 
 })
 
-splitFields("%initstr; %idx. %symbol")
+## splitFields("%initstr; %idx. %symbol")
+
+test_that("redundant comment chars",{
+
+    NMdataConf(reset=T)
+    NMdataConf(as.fun="data.table")
+
+    ## no ;
+    text0 <- c("
+;; format: %symbol ;%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+")
+
+    ## 1 ;
+    text1 <- c("
+;; format: ;%symbol ;%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+")
+
+
+    ## 2 ;
+    text2 <- c("
+;; format: ;;%symbol ;%trans; %idx; %panel; %label;%unit
+$THETA
+(0, 4.4)	; CL		; none		; 1	; struct	; Clearance	; L/h
+")
+
+
+    lines0 <- strsplit(text0,split="\n")[[1]]
+    res0 <- NMreadParsText(lines=lines0)
+    lines1 <- strsplit(text1,split="\n")[[1]]
+    res1 <- NMreadParsText(lines=lines1)
+    lines2 <- strsplit(text2,split="\n")[[1]]
+    res2 <- NMreadParsText(lines=lines2)
+
+    expect_equal(res0,res1)
+    expect_equal(res0,res2)
+
+
+
+
+
+})
