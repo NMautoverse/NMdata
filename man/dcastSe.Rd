@@ -9,13 +9,16 @@ dcastSe(data, l, r, as.fun, ...)
 \arguments{
 \item{data}{data set to transpose (widen)}
 
-\item{l}{left-hand side variables as character vector. Result will
-be long/vertical in these variables.}
+\item{l}{left-hand side variables as character vector. Result will be
+long/vertical in these variables. The elements in `l` can be named in
+which case the resulting columns will be renamed accordingly.}
 
-\item{r}{left-hand side variables as character vector. Result will
-be wide in these variables.}
+\item{r}{left-hand side variables as character vector. Result will be wide
+in these variables.}
 
-\item{as.fun}{An optional function to convert results with. If `data` is a `data.table`, the default is to return a `data.table`, and if not the default is to return a `data.frame`.}
+\item{as.fun}{An optional function to convert results with. If `data` is a
+`data.table`, the default is to return a `data.table`, and if not the
+default is to return a `data.frame`.}
 
 \item{...}{Additional arguments passed to `data.table::dcast()`.}
 }
@@ -26,5 +29,19 @@ a data.table
 data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
 }
 \details{
-Only two of l, r, and value.var are needed (see ?data.table::dcast for value.var), and the others will be derived. However, if value.var is a function, both l and r are needed.
+Only two of l, r, and value.var are needed (see ?data.table::dcast
+  for value.var), and the others will be derived. However, if value.var is a
+  function, both l and r are needed.
+}
+\examples{
+dt <- data.table(
+  id = rep(1:3, each = 2),
+  time = rep(c(0, 1), 3),
+  value = 1:6
+)
+    
+# Cast to wide format
+dcastSe(dt, l = "id", r = "time", value.var = "value")
+# rename a "left" column
+dcastSe(dt, l = c(Subject="id"), r = "time", value.var = "value")
 }

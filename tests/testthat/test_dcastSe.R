@@ -181,3 +181,21 @@ test_that("dcastSe formula construction works correctly", {
     expect_s3_class(result, "data.table")
     expect_true(all(c("id", "group") %in% names(result)))
 })
+
+test_that("rename lhs columns",{
+    dt <- data.table(
+        id = rep(1:2, each = 2),
+        group = rep(c("A", "B"), 2),
+        time = rep(c(0, 1), 2),
+        value = 1:4
+    )
+    
+    # Multiple l variables should be joined with +
+    res1 <- dcastSe(dt, l = c(Subject="id", "group"), r = "time", value.var = "value")
+    res2 <- dcastSe(dt, l = c("id", "group"), r = "time", value.var = "value")
+
+    expect_equal(colnames(res1),c("Subject", "group" ,  "0" ,"1"))
+
+    setnames(res2,"id","Subject")
+    expect_equal(res1,res2)
+})
