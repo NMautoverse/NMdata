@@ -7,7 +7,7 @@
 ## Bugfixes 
 `NMreadInits()` will now handle models that only include a subset of parameter types `THETA`, `OMEGA` and `SIGMA`.
 
-`NMscanInput` could fail in cases where filters (`ACCEPT/IGNORE` statements) were applied to colums renamed in `$INPUT`. 
+`NMscanInput()` could fail in cases where filters (`ACCEPT/IGNORE` statements) were applied to colums renamed in `$INPUT`. 
 
 ## Other improvements
 Some benign but uninformative messaging that table steps were added to tables or not added to tables have been silenced.
