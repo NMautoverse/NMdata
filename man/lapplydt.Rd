@@ -34,6 +34,11 @@ such is OK).
 \details{
 the name of the current dataset can be reached with the `.nm`
     variable, if such argument is defined in `fun`. Se examples.
+
+When is lapplydt better than lapply(split(dt),...)? In some cases, the
+lapply() way may drop the names stemming from the values of the columns you
+are splitting by. Other advantages is the `.nm` feature described above, and
+that `lapplydt` can drop NULL results. That's about it.
 }
 \examples{
 pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
