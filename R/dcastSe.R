@@ -2,7 +2,7 @@
 ##'
 ##' data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
 ##'
-##' @param data data set to transpose (widen)
+##' @param data data set (data.frame) to transpose (widen). 
 ##' @param l left-hand side variables as character vector. Result will be
 ##'   long/vertical in these variables. The elements in `l` can be named in
 ##'   which case the resulting columns will be renamed accordingly.
@@ -19,7 +19,7 @@
 ##' @importFrom stats as.formula
 ##' @return a data.table
 ##' @examples
-##' dt <- data.table(
+##' dt <- data.frame(
 ##'   id = rep(1:3, each = 2),
 ##'   time = rep(c(0, 1), 3),
 ##'   value = 1:6
