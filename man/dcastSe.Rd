@@ -7,7 +7,7 @@
 dcastSe(data, l, r, as.fun, ...)
 }
 \arguments{
-\item{data}{data set to transpose (widen)}
+\item{data}{data set (data.frame) to transpose (widen).}
 
 \item{l}{left-hand side variables as character vector. Result will be
 long/vertical in these variables. The elements in `l` can be named in
@@ -34,7 +34,7 @@ Only two of l, r, and value.var are needed (see ?data.table::dcast
   function, both l and r are needed.
 }
 \examples{
-dt <- data.table(
+dt <- data.frame(
   id = rep(1:3, each = 2),
   time = rep(c(0, 1), 3),
   value = 1:6
