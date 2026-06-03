@@ -92,11 +92,11 @@ NMreadSection(system.file("examples/nonmem/xgxr001.lst", package="NMdata"),secti
 
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMapplyFilters}()},
-\code{\link{NMextractText}()},
-\code{\link{NMgenText}()},
-\code{\link{NMreplaceDataFile}()},
-\code{\link{NMwriteSection}()}
+Other Nonmem:
+\code{\link[=NMapplyFilters]{NMapplyFilters()}},
+\code{\link[=NMextractText]{NMextractText()}},
+\code{\link[=NMgenText]{NMgenText()}},
+\code{\link[=NMreplaceDataFile]{NMreplaceDataFile()}},
+\code{\link[=NMwriteSection]{NMwriteSection()}}
 }
 \concept{Nonmem}

@@ -43,16 +43,16 @@ generate a name for a new data column that is not already in use.
 \seealso{
 make.names
 
-Other DataCreate: 
-\code{\link{NMorderColumns}()},
-\code{\link{NMstamp}()},
-\code{\link{NMwriteData}()},
-\code{\link{addTAPD}()},
-\code{\link{findCovs}()},
-\code{\link{findVars}()},
-\code{\link{flagsAssign}()},
-\code{\link{flagsCount}()},
-\code{\link{mergeCheck}()}
+Other DataCreate:
+\code{\link[=NMorderColumns]{NMorderColumns()}},
+\code{\link[=NMstamp]{NMstamp()}},
+\code{\link[=NMwriteData]{NMwriteData()}},
+\code{\link[=addTAPD]{addTAPD()}},
+\code{\link[=findCovs]{findCovs()}},
+\code{\link[=findVars]{findVars()}},
+\code{\link[=flagsAssign]{flagsAssign()}},
+\code{\link[=flagsCount]{flagsCount()}},
+\code{\link[=mergeCheck]{mergeCheck()}}
 }
 \concept{DataCreate}
 \keyword{internal}

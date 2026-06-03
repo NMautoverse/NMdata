@@ -98,11 +98,11 @@ nm.drop, the list is stopped. Only exception is TIME which is not
 tested for whether character or not.
 }
 \seealso{
-Other Nonmem: 
-\code{\link{NMapplyFilters}()},
-\code{\link{NMextractText}()},
-\code{\link{NMreadSection}()},
-\code{\link{NMreplaceDataFile}()},
-\code{\link{NMwriteSection}()}
+Other Nonmem:
+\code{\link[=NMapplyFilters]{NMapplyFilters()}},
+\code{\link[=NMextractText]{NMextractText()}},
+\code{\link[=NMreadSection]{NMreadSection()}},
+\code{\link[=NMreplaceDataFile]{NMreplaceDataFile()}},
+\code{\link[=NMwriteSection]{NMwriteSection()}}
 }
 \concept{Nonmem}

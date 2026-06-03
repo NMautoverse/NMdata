@@ -45,12 +45,12 @@ This is not bulletproof. Nested conditions are not
 \seealso{
 NMreadFilters
 
-Other Nonmem: 
-\code{\link{NMextractText}()},
-\code{\link{NMgenText}()},
-\code{\link{NMreadSection}()},
-\code{\link{NMreplaceDataFile}()},
-\code{\link{NMwriteSection}()}
+Other Nonmem:
+\code{\link[=NMextractText]{NMextractText()}},
+\code{\link[=NMgenText]{NMgenText()}},
+\code{\link[=NMreadSection]{NMreadSection()}},
+\code{\link[=NMreplaceDataFile]{NMreplaceDataFile()}},
+\code{\link[=NMwriteSection]{NMwriteSection()}}
 }
 \concept{Nonmem}
 \keyword{internal}

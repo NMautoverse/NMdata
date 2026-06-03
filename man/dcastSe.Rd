@@ -23,7 +23,7 @@ default is to return a `data.frame`.}
 \item{...}{Additional arguments passed to `data.table::dcast()`.}
 }
 \value{
-a data.table
+a data.frame (see argument `as.fun`)
 }
 \description{
 data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.

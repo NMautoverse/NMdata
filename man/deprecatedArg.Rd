@@ -42,8 +42,8 @@ works for arguments that have been replaced by others.
 }
 }
 \seealso{
-Other arguments: 
-\code{\link{getArgs}()}
+Other arguments:
+\code{\link[=getArgs]{getArgs()}}
 }
 \concept{arguments}
 \keyword{internal}

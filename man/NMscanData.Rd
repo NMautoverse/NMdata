@@ -219,10 +219,10 @@ res1 <- NMscanData(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 }
 }
 \seealso{
-Other DataRead: 
-\code{\link{NMreadCsv}()},
-\code{\link{NMreadTab}()},
-\code{\link{NMscanInput}()},
-\code{\link{NMscanTables}()}
+Other DataRead:
+\code{\link[=NMreadCsv]{NMreadCsv()}},
+\code{\link[=NMreadTab]{NMreadTab()}},
+\code{\link[=NMscanInput]{NMscanInput()}},
+\code{\link[=NMscanTables]{NMscanTables()}}
 }
 \concept{DataRead}

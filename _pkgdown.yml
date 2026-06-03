@@ -57,6 +57,7 @@ reference:
   - flagsAssign
   - flagsCount
   - dcastSe
+  - reorder2
   - compareCols
   - listMissings
   - uniquePresent

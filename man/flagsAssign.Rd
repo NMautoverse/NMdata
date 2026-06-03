@@ -92,15 +92,15 @@ flagsCount(pk[EVID==0],dt.flags,col.flagn="flagn",col.flagc="flagc")
 }
 }
 \seealso{
-Other DataCreate: 
-\code{\link{NMorderColumns}()},
-\code{\link{NMstamp}()},
-\code{\link{NMwriteData}()},
-\code{\link{addTAPD}()},
-\code{\link{findCovs}()},
-\code{\link{findVars}()},
-\code{\link{flagsCount}()},
-\code{\link{mergeCheck}()},
-\code{\link{tmpcol}()}
+Other DataCreate:
+\code{\link[=NMorderColumns]{NMorderColumns()}},
+\code{\link[=NMstamp]{NMstamp()}},
+\code{\link[=NMwriteData]{NMwriteData()}},
+\code{\link[=addTAPD]{addTAPD()}},
+\code{\link[=findCovs]{findCovs()}},
+\code{\link[=findVars]{findVars()}},
+\code{\link[=flagsCount]{flagsCount()}},
+\code{\link[=mergeCheck]{mergeCheck()}},
+\code{\link[=tmpcol]{tmpcol()}}
 }
 \concept{DataCreate}

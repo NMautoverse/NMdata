@@ -17,7 +17,7 @@
 ##'   function, both l and r are needed.
 ##' @import data.table
 ##' @importFrom stats as.formula
-##' @return a data.table
+##' @return a data.frame (see argument `as.fun`)
 ##' @examples
 ##' dt <- data.frame(
 ##'   id = rep(1:3, each = 2),

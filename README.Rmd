@@ -22,7 +22,8 @@ NMscanData <- function(x,...)NMdata::NMscanData(file.path(system.file(paste0("ex
 # NMdata<a href='https://nmautoverse.github.io/NMdata/'><img src='man/figures/logo.png' align="right" height="120" /></a>
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) -->
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/nmautoverse/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/nmautoverse/NMdata/actions)
 [![Codecov test coverage](https://codecov.io/gh/NMautoverse/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/nmautoverse/NMdata?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/NMdata)](https://CRAN.R-project.org/package=NMdata)
@@ -123,8 +124,8 @@ been easier to find data bugs.
 
 ## Get the most recent version
 If your archive has not been updated since July 2021, you may not find
-`NMdata` if you try to install with `install.packages` (option 1). In that case you have two other options. You can
-explicitly select CRAN for the installation. Or if you should want a
+`NMdata` if you try to install with `install.packages` (Option 1). In that case you have two other options. You can
+explicitly select CRAN for the installation (Option 2). Or if you should want a
 version that has not yet reached CRAN, installing from Github is easy
 too. 
 

@@ -98,8 +98,8 @@ compareCols(...,fun.class=function(x)attributes(x)$label)
 
 }
 \seealso{
-Other DataWrangling: 
-\code{\link{dims}()},
-\code{\link{listMissings}()}
+Other DataWrangling:
+\code{\link[=dims]{dims()}},
+\code{\link[=listMissings]{listMissings()}}
 }
 \concept{DataWrangling}

@@ -32,8 +32,8 @@ A data.frame with dimensions of objects in ... Actual
 Get dimensions of multiple objects
 }
 \seealso{
-Other DataWrangling: 
-\code{\link{compareCols}()},
-\code{\link{listMissings}()}
+Other DataWrangling:
+\code{\link[=compareCols]{compareCols()}},
+\code{\link[=listMissings]{listMissings()}}
 }
 \concept{DataWrangling}

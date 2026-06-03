@@ -36,8 +36,8 @@ strings too. This function is experimental and design may change
 in future releases.
 }
 \seealso{
-Other DataWrangling: 
-\code{\link{compareCols}()},
-\code{\link{dims}()}
+Other DataWrangling:
+\code{\link[=compareCols]{compareCols()}},
+\code{\link[=dims]{dims()}}
 }
 \concept{DataWrangling}
