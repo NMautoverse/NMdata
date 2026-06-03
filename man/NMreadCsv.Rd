@@ -44,10 +44,10 @@ This is almost just a shortcut to fread so you don't have to remember how to rea
 \seealso{
 NMwriteData
 
-Other DataRead:
-\code{\link[=NMreadTab]{NMreadTab()}},
-\code{\link[=NMscanData]{NMscanData()}},
-\code{\link[=NMscanInput]{NMscanInput()}},
-\code{\link[=NMscanTables]{NMscanTables()}}
+Other DataRead: 
+\code{\link{NMreadTab}()},
+\code{\link{NMscanData}()},
+\code{\link{NMscanInput}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}

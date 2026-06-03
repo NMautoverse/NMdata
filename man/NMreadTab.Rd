@@ -80,10 +80,10 @@ The actual reading of data is based on
     data.table.
 }
 \seealso{
-Other DataRead:
-\code{\link[=NMreadCsv]{NMreadCsv()}},
-\code{\link[=NMscanData]{NMscanData()}},
-\code{\link[=NMscanInput]{NMscanInput()}},
-\code{\link[=NMscanTables]{NMscanTables()}}
+Other DataRead: 
+\code{\link{NMreadCsv}()},
+\code{\link{NMscanData}()},
+\code{\link{NMscanInput}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}

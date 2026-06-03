@@ -5,8 +5,10 @@
 
 <!-- badges: start -->
 
+<!-- [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) -->
+
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/nmautoverse/NMdata/workflows/R-CMD-check/badge.svg)](https://github.com/nmautoverse/NMdata/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/NMautoverse/NMdata/branch/master/graph/badge.svg)](https://app.codecov.io/gh/nmautoverse/NMdata?branch=master)
@@ -40,22 +42,22 @@ can be tedious, and mistakes can lead to hours of frustration. NMdata
 provides useful tools (including automated checks) for these trivial
 tasks. Highlights in data set preparation and data checking:
 
--   `mergeCheck()` Require left-join merging to only add columns - and
-    nothing else. If rows get duplicated or disappear, throw an error.  
--   `addTAPD()` Automatically add time after previous dose, previous
-    dose amount, cumulative number of doses and other related columns.
-    Works with `ADDL/II` notation too.  
--   `flagsAssign()` and `flagsCount()` Automatically assign exclusion
-    flags to data and tabulate number of subjects and observations
-    excluded and/or retained due to each step.  
--   `NMorderColumns` Order columns in a Nonmem data set consistently and
-    intuitively.  
--   `NMwriteData()` Feature-rich data writer for Nonmem data sets. Can
-    return text to be used for $INPUT and $DATA sections.  
--   `NMcheckData()` Rigorous and extensive checking for structural
-    errors and potential issues in Nonmem data sets.  
--   `NMcheckColnames.R()` Check data set against `INPUT` section of
-    control streams.
+- `mergeCheck()` Require left-join merging to only add columns - and
+  nothing else. If rows get duplicated or disappear, throw an error.  
+- `addTAPD()` Automatically add time after previous dose, previous dose
+  amount, cumulative number of doses and other related columns. Works
+  with `ADDL/II` notation too.  
+- `flagsAssign()` and `flagsCount()` Automatically assign exclusion
+  flags to data and tabulate number of subjects and observations
+  excluded and/or retained due to each step.  
+- `NMorderColumns` Order columns in a Nonmem data set consistently and
+  intuitively.  
+- `NMwriteData()` Feature-rich data writer for Nonmem data sets. Can
+  return text to be used for \$INPUT and \$DATA sections.  
+- `NMcheckData()` Rigorous and extensive checking for structural errors
+  and potential issues in Nonmem data sets.  
+- `NMcheckColnames.R()` Check data set against `INPUT` section of
+  control streams.
 
 Check out [this
 vignette](https://nmautoverse.github.io/NMdata/articles/DataPrepare.html)
@@ -70,30 +72,29 @@ return results in simple, consistent structures. Their results can
 easily be merged as needed. Notice, all of these functions basically
 just need a control stream path to run.
 
--   `NMscanData()` Read and combine `$TABLE` output and input data.
-    Feature-rich with support for the vast majority of models. Builds on
-    `NMscanInput()` to automatically read input data and
-    `NMscanTables()` to read all the output tables.  
--   `NMreadExt()` A feature-rich processor of ext files. Provides final
-    parameter estimates with uncertainties and everything else provided
-    in the ext file, iterations, objective function value and
-    termination status  
--   `NMreadParsText()` Very flexible processor of comments in control
-    stream parameter sections. As long as the comments provide
-    consistent parameter information in almost any format,
-    `NMreadParsText()` can turn it into a table.  
--   `NMreadInits()` Read and tabulate initial values, lower, upper
-    limits, FIX and block structures based on parameter sections of
-    control streams.  
--   `NMrelate()` Automatically connect parameters to variable names used
-    in control stream code (say, `CL=EXP(THETA(1)+ETA(1))` in control
-    stream and NMrelate will “relate” `THETA(1)` and `ETA(1)` to `CL`.
-    Powerful for QC and even simple parameter table generation.  
--   `NMreadPhi()` Reads individual posthoc estimates into a
-    `data.frame`  
--   `NMreadCov()` Reads an estimated variance-covariance matrix and
-    formats as a matrix  
--   `NMreadShk()` to read shrinkage tables
+- `NMscanData()` Read and combine `$TABLE` output and input data.
+  Feature-rich with support for the vast majority of models. Builds on
+  `NMscanInput()` to automatically read input data and `NMscanTables()`
+  to read all the output tables.  
+- `NMreadExt()` A feature-rich processor of ext files. Provides final
+  parameter estimates with uncertainties and everything else provided in
+  the ext file, iterations, objective function value and termination
+  status  
+- `NMreadParsText()` Very flexible processor of comments in control
+  stream parameter sections. As long as the comments provide consistent
+  parameter information in almost any format, `NMreadParsText()` can
+  turn it into a table.  
+- `NMreadInits()` Read and tabulate initial values, lower, upper limits,
+  FIX and block structures based on parameter sections of control
+  streams.  
+- `NMrelate()` Automatically connect parameters to variable names used
+  in control stream code (say, `CL=EXP(THETA(1)+ETA(1))` in control
+  stream and NMrelate will “relate” `THETA(1)` and `ETA(1)` to `CL`.
+  Powerful for QC and even simple parameter table generation.  
+- `NMreadPhi()` Reads individual posthoc estimates into a `data.frame`  
+- `NMreadCov()` Reads an estimated variance-covariance matrix and
+  formats as a matrix  
+- `NMreadShk()` to read shrinkage tables
 
 Vignettes:  
 [Flexible Creation of Parameter
@@ -111,6 +112,7 @@ It does not cover any features related to generation of parameter
 tables, so you may also want to take a look at that vignette.
 
 <!-- ![Cheatsheet](man/figures/cheatsheet_icon_0010.png){width="15%"} -->
+
 <!-- [Cheatsheet](https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/devel/NMdata-cheat.html) -->
 
 <a href="https://htmlpreview.github.io/?https://github.com/nmautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html"><img src="man/figures/cheatsheet_icon_0010.png" alt="CheatSheet" width="200"/></a>
@@ -152,10 +154,10 @@ has never been easier to find data bugs.
 ## Get the most recent version
 
 If your archive has not been updated since July 2021, you may not find
-`NMdata` if you try to install with `install.packages` (option 1). In
+`NMdata` if you try to install with `install.packages` (Option 1). In
 that case you have two other options. You can explicitly select CRAN for
-the installation. Or if you should want a version that has not yet
-reached CRAN, installing from Github is easy too.
+the installation (Option 2). Or if you should want a version that has
+not yet reached CRAN, installing from Github is easy too.
 
 ``` r
 ## Option 1: Install from your default repository

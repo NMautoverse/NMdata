@@ -1,6 +1,7 @@
 # NMdata 0.2.5
 ## New Features
-* `reorder2()`
+* New function `reorder2()`. Like `reorder()` but takes multiple ordering
+  arguments. The reordering can be with respect to expressions.
 
 * `setOrderList()` is a new convenient function that reorders elements in a list, much like `setcolorder()` for data.table's. It takes both `first` and `last` arguments to specify what elements to move where.
 

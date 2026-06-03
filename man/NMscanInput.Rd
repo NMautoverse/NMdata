@@ -185,10 +185,10 @@ called DV further to the right that was never read by
 `DV_FILE`, `DV_FILE2`, etc.
 }
 \seealso{
-Other DataRead:
-\code{\link[=NMreadCsv]{NMreadCsv()}},
-\code{\link[=NMreadTab]{NMreadTab()}},
-\code{\link[=NMscanData]{NMscanData()}},
-\code{\link[=NMscanTables]{NMscanTables()}}
+Other DataRead: 
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanData}()},
+\code{\link{NMscanTables}()}
 }
 \concept{DataRead}

@@ -52,15 +52,15 @@ findVars(findCovs(dt1,"ID"))
 findCovs(findVars(dt1,"ID"),c("ID","OCC"))
 }
 \seealso{
-Other DataCreate:
-\code{\link[=NMorderColumns]{NMorderColumns()}},
-\code{\link[=NMstamp]{NMstamp()}},
-\code{\link[=NMwriteData]{NMwriteData()}},
-\code{\link[=addTAPD]{addTAPD()}},
-\code{\link[=findCovs]{findCovs()}},
-\code{\link[=flagsAssign]{flagsAssign()}},
-\code{\link[=flagsCount]{flagsCount()}},
-\code{\link[=mergeCheck]{mergeCheck()}},
-\code{\link[=tmpcol]{tmpcol()}}
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{addTAPD}()},
+\code{\link{findCovs}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
 \concept{DataCreate}

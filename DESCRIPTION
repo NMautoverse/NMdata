@@ -33,3 +33,4 @@ Language: en-US
 URL: https://nmautoverse.github.io/NMdata/
 Config/testthat/edition: 2
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.2

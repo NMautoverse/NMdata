@@ -174,15 +174,15 @@ mergeCheck(pk,dt.cov,by="ID")
 \seealso{
 mergeCoal egdt
 
-Other DataCreate:
-\code{\link[=NMorderColumns]{NMorderColumns()}},
-\code{\link[=NMstamp]{NMstamp()}},
-\code{\link[=NMwriteData]{NMwriteData()}},
-\code{\link[=addTAPD]{addTAPD()}},
-\code{\link[=findCovs]{findCovs()}},
-\code{\link[=findVars]{findVars()}},
-\code{\link[=flagsAssign]{flagsAssign()}},
-\code{\link[=flagsCount]{flagsCount()}},
-\code{\link[=tmpcol]{tmpcol()}}
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{addTAPD}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{tmpcol}()}
 }
 \concept{DataCreate}

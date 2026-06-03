@@ -115,11 +115,11 @@ This function is planned to get a more general name and
 NMreadSection(system.file("examples/nonmem/xgxr001.lst", package = "NMdata"),section="DATA")
 }
 \seealso{
-Other Nonmem:
-\code{\link[=NMapplyFilters]{NMapplyFilters()}},
-\code{\link[=NMgenText]{NMgenText()}},
-\code{\link[=NMreadSection]{NMreadSection()}},
-\code{\link[=NMreplaceDataFile]{NMreplaceDataFile()}},
-\code{\link[=NMwriteSection]{NMwriteSection()}}
+Other Nonmem: 
+\code{\link{NMapplyFilters}()},
+\code{\link{NMgenText}()},
+\code{\link{NMreadSection}()},
+\code{\link{NMreplaceDataFile}()},
+\code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

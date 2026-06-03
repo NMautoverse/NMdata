@@ -24,8 +24,8 @@ NMdata:::getArgs(sys.call(),parent.frame())
 afun()
 }
 \seealso{
-Other arguments:
-\code{\link[=deprecatedArg]{deprecatedArg()}}
+Other arguments: 
+\code{\link{deprecatedArg}()}
 }
 \concept{arguments}
 \keyword{internal}

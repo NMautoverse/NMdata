@@ -103,11 +103,11 @@ NMwriteSection(dir="nonmem",
 }
 }
 \seealso{
-Other Nonmem:
-\code{\link[=NMapplyFilters]{NMapplyFilters()}},
-\code{\link[=NMextractText]{NMextractText()}},
-\code{\link[=NMgenText]{NMgenText()}},
-\code{\link[=NMreadSection]{NMreadSection()}},
-\code{\link[=NMreplaceDataFile]{NMreplaceDataFile()}}
+Other Nonmem: 
+\code{\link{NMapplyFilters}()},
+\code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
+\code{\link{NMreadSection}()},
+\code{\link{NMreplaceDataFile}()}
 }
 \concept{Nonmem}

@@ -100,10 +100,10 @@ Find and read all output data tables in Nonmem run
 tabs1 <- NMscanTables(system.file("examples/nonmem/xgxr001.lst", package="NMdata"))
 }
 \seealso{
-Other DataRead:
-\code{\link[=NMreadCsv]{NMreadCsv()}},
-\code{\link[=NMreadTab]{NMreadTab()}},
-\code{\link[=NMscanData]{NMscanData()}},
-\code{\link[=NMscanInput]{NMscanInput()}}
+Other DataRead: 
+\code{\link{NMreadCsv}()},
+\code{\link{NMreadTab}()},
+\code{\link{NMscanData}()},
+\code{\link{NMscanInput}()}
 }
 \concept{DataRead}

@@ -31,11 +31,11 @@ Lines for a new control stream (invisibly)
 Replace data file used in Nonmem control stream
 }
 \seealso{
-Other Nonmem:
-\code{\link[=NMapplyFilters]{NMapplyFilters()}},
-\code{\link[=NMextractText]{NMextractText()}},
-\code{\link[=NMgenText]{NMgenText()}},
-\code{\link[=NMreadSection]{NMreadSection()}},
-\code{\link[=NMwriteSection]{NMwriteSection()}}
+Other Nonmem: 
+\code{\link{NMapplyFilters}()},
+\code{\link{NMextractText}()},
+\code{\link{NMgenText}()},
+\code{\link{NMreadSection}()},
+\code{\link{NMwriteSection}()}
 }
 \concept{Nonmem}

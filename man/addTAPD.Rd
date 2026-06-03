@@ -132,15 +132,15 @@ addTAPD does not require the data to be ordered, and it
     assigned.
 }
 \seealso{
-Other DataCreate:
-\code{\link[=NMorderColumns]{NMorderColumns()}},
-\code{\link[=NMstamp]{NMstamp()}},
-\code{\link[=NMwriteData]{NMwriteData()}},
-\code{\link[=findCovs]{findCovs()}},
-\code{\link[=findVars]{findVars()}},
-\code{\link[=flagsAssign]{flagsAssign()}},
-\code{\link[=flagsCount]{flagsCount()}},
-\code{\link[=mergeCheck]{mergeCheck()}},
-\code{\link[=tmpcol]{tmpcol()}}
+Other DataCreate: 
+\code{\link{NMorderColumns}()},
+\code{\link{NMstamp}()},
+\code{\link{NMwriteData}()},
+\code{\link{findCovs}()},
+\code{\link{findVars}()},
+\code{\link{flagsAssign}()},
+\code{\link{flagsCount}()},
+\code{\link{mergeCheck}()},
+\code{\link{tmpcol}()}
 }
 \concept{DataCreate}
