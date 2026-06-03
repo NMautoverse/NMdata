@@ -58,6 +58,7 @@ reference:
   - flagsCount
   - dcastSe
   - reorder2
+  - setOrderList
   - compareCols
   - listMissings
   - uniquePresent
