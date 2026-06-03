@@ -24,7 +24,7 @@ such is OK).'><meta property="og:image" content="https://nmautoverse.github.io/N
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.908</span>
       </span>
     </div>
 
@@ -135,6 +135,10 @@ returned list?</p></dd>
     <h2>Details</h2>
     <p>the name of the current dataset can be reached with the `.nm`
     variable, if such argument is defined in `fun`. Se examples.</p>
+<p>When is lapplydt better than lapply(split(dt),...)? In some cases, the
+lapply() way may drop the names stemming from the values of the columns you
+are splitting by. Other advantages is the `.nm` feature described above, and
+that `lapplydt` can drop NULL results. That's about it.</p>
     </div>
 
     <div id="ref-examples">
