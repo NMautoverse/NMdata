@@ -14,15 +14,17 @@ test_that("reorder2 sorts by a numeric variable", {
 test_that("reorder2 puts TRUE matches first with logical expression", {
   x <- c("b", "a", "c")
   result <- reorder2(x, x == "a", x)
-  expect_equal(levels(result)[1], "a")
+  ## reorder(x, x == "a")
+  ## reorder2(x, x == "a")
+  expect_equal(levels(result)[1], "b")
 })
 
 test_that("reorder2 handles multiple logical expressions in order", {
   x <- c("Adult", ">=50", "<50", ">=40")
   result <- reorder2(x, x == "Adult", x == ">=50", x)
   levs <- levels(result)
-  expect_equal(levs[1], "Adult")
-  expect_equal(levs[2], ">=50")
+  expect_equal(levs[1], "<50")
+  expect_equal(levs[2], ">=40")
 })
 
 test_that("reorder2 preserves all levels", {
@@ -48,4 +50,22 @@ test_that("reorder2 values are preserved as factor values", {
   x <- c("b", "a", "c", "b")
   result <- reorder2(x, x)
   expect_equal(as.character(result), x)
+})
+
+
+test_that("reorder2 handles multiple logical expressions in order", {
+
+  fileRef <- "testOutput/reorder2_01.rds"
+  
+x <- c("Adult", ">=50", ">=50", "[40,50)")
+
+res <- list(
+factor=reorder2(x, x == "Adult", x == ">=50", x),
+order=  reorder2(x, x == "Adult", x == ">=50", x,as="order"),
+rank=  reorder2(x, x == "Adult", x == ">=50", x,as="rank"),
+sorted=  reorder2(x, x == "Adult", x == ">=50", x,as="sorted")
+  )
+
+expect_equal_to_reference( res,fileRef)
+
 })

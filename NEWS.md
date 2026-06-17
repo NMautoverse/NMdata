@@ -7,6 +7,8 @@
 
 * `dcastSe()` gains ability to rename left-hand-side columns directly. 
 
+* `NMwriteInits()` supports `fix=TRUE` (or `FALSE`). Previously, 0 or 1 was expected.
+
 ## Bugfixes 
 `NMreadInits()` will now handle models that only include a subset of parameter types `THETA`, `OMEGA` and `SIGMA`.
 

@@ -4,17 +4,47 @@
 \alias{reorder2}
 \title{reorder with respect to multiple vectors}
 \usage{
-reorder2(x, ...)
+reorder2(
+  x,
+  ...,
+  as = c("factor", "order", "rank", "sorted"),
+  decreasing = FALSE,
+  method = "auto"
+)
 }
 \arguments{
 \item{x}{The vector to be reordered.}
 
 \item{...}{vectors or expressions of vectors to reorder by.}
+
+\item{as}{One of the following strings and their results
+
+"factor" x as a factor with levels according to ...
+"order" the sorting order of x according to ...
+"rank" rank of x according to ...
+"sorted" x sorted according to ...}
+
+\item{decreasing}{passed to order}
+
+\item{method}{passed to order}
 }
 \value{
-A factor
+A factor, character, or numeric
 }
 \description{
-Like reorder() but takes multiple ordering arguments. The reordering can be
-with respect to expressions.
+Like reorder() but takes multiple ordering arguments. The reordering can be with respect to expressions.
+}
+\details{
+reorder2 uses order() and passes decreasing and method along. Notice, the default is increasing order. For logicals this means negative comes first (see example).
+
+`reorder2()` does not return the scores attribute (which is unlike `reorder()`).
+
+Use rank when assigning value to an ordering column in existing df.
+}
+\examples{
+df <- data.frame(char=letters[1:5],num=c(3,2,2,1,3),logic=c(TRUE,FALSE,TRUE,TRUE,FALSE))
+reorder2(df$char,df$num,df$logic)
+reorder2(df$char,df$num,df$logic,as="sorted")
+reorder2(df$char,df$num,df$logic,as="order")
+reorder2(df$char,df$num,df$logic,as="rank")
 }

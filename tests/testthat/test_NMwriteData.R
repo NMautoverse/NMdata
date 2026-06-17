@@ -36,7 +36,7 @@ test_that("nm.drop is an empty string - not allowed",{
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     ## not allowed
     expect_error(
-        res <- NMwriteData(pk
+        NMwriteData(pk
                           ,file="testOutput/NMwriteDataTmp.csv"
                           ,write.rds=F,write.csv=F
                           ,nm.drop=""
