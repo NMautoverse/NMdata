@@ -76,40 +76,32 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     if( !all(has.ext) && !allow.noext){
         stop("Elements in fn have no extension and allow.noext=FALSE")
     }
+  
 
-    
-    if(position=="append"){
-
-
-      dt.res <- CJ(fn,x.string)
+        dt.res <- CJ(fn,x.string)
         dt.res[,dir := dirname(fn)]
-      dt.res[dir=="."&!grepl("^\\.",fn),dir := ""]
+      dt.res[dir=="."&!grepl("^\\./",fn),dir := ""]
       dt.res[,fn := basename(fn)]
         dt.res[,has.ext :=  grepl(".*\\.[a-zA-Z0-9]+$",fn)]
         dt.res[,allext := ""]
         dt.res[has.ext==TRUE,allext := paste0(".",fnExtension(fn))]
         dt.res[,fnroot := fnExtension(fn,"")]
 
-        dt.res[,res := ""]
-        dt.res[fnroot!="",res := paste0(fnroot[fnroot!=""],sep,x.string,allext)]
-        dt.res[fnroot=="",res := paste0(x.string,allext)]
-      dt.res[dir=="."&!grepl("^\\./",fn),dir := ""]
-      dt.res[dir!="",res := paste0(dir,"/",res)]
-        return(dt.res$res)
+        dt.res[,res.fn := ""]
+
+    if(position=="append"){
+        dt.res[fnroot!="",res.fn := paste0(fnroot[fnroot!=""],sep,x.string,allext)]
+        dt.res[fnroot=="",res.fn := paste0(x.string,allext)]
     }
 
-    if(position=="prepend"){
-        dir <- dirname(fn)
-        dir[dir!="."] <- paste0(dir[dir!="."],"/")
-        dir[dir=="."] <- ""
-        
-        return(
-            paste0(
-                dir
-               ,paste(x.string,basename(fn),sep=sep)
-            )
-        )
+    if(position=="prepend"){        
+      dt.res[,res.fn := paste(x.string,basename(fn),sep=sep)]
     }
-    
+
+  dt.res[dir=="",res := res.fn]
+  dt.res[dir!="",res := paste0(dir,"/",res.fn)]
+
+  return(dt.res$res)
+     
 }
 
