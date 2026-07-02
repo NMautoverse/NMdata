@@ -63,4 +63,7 @@ fnAppend("plot.png",1:2,pad0=2)
 fnAppend("plot.png",1:2,collapse=NULL)
 ## outer/cross product if multiple files and multiple strings
 fnAppend(c("plot1.png","plot2.png"),1:2,collapse=NULL)
+## within subdirectories
+fnAppend("dir/plot.png","one")
+fnAppend("dir/.png","one")
 }

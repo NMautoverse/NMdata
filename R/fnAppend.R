@@ -38,6 +38,9 @@
 ##' fnAppend("plot.png",1:2,collapse=NULL)
 ##' ## outer/cross product if multiple files and multiple strings
 ##' fnAppend(c("plot1.png","plot2.png"),1:2,collapse=NULL)
+##' ## within subdirectories
+##' fnAppend("dir/plot.png","one")
+##' fnAppend("dir/.png","one")
 ##' @export
 
 
@@ -47,6 +50,8 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     
     if((!is.numeric(x)&&!is.character(x))) stop("x must be numeric or character vector.")
     position <- match.arg(position,choices=c("append","prepend")) 
+
+  
     
     if(is.numeric(x)){
         ## formating padding zeros. pad0 determines the format of x in sprintf. 
@@ -74,7 +79,12 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
 
     
     if(position=="append"){
-        dt.res <- CJ(fn,x.string)
+
+
+      dt.res <- CJ(fn,x.string)
+        dt.res[,dir := dirname(fn)]
+      dt.res[dir=="."&!grepl("^\\.",fn),dir := ""]
+      dt.res[,fn := basename(fn)]
         dt.res[,has.ext :=  grepl(".*\\.[a-zA-Z0-9]+$",fn)]
         dt.res[,allext := ""]
         dt.res[has.ext==TRUE,allext := paste0(".",fnExtension(fn))]
@@ -83,25 +93,9 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
         dt.res[,res := ""]
         dt.res[fnroot!="",res := paste0(fnroot[fnroot!=""],sep,x.string,allext)]
         dt.res[fnroot=="",res := paste0(x.string,allext)]
+      dt.res[dir=="."&!grepl("^\\./",fn),dir := ""]
+      dt.res[dir!="",res := paste0(dir,"/",res)]
         return(dt.res$res)
-        if(FALSE){
-            allext <- rep("",length(fn))
-            ## allext[has.ext] <- sub(".*[^\\.]\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
-            allext[has.ext] <- sub(".*\\.([a-zA-Z0-9]+)$","\\1",fn[has.ext])
-            allext[has.ext] <- paste0(".",allext[has.ext])
-            
-            ## this is the same as fnExtension(fn,"")
-            fnroot <- sub(paste0("\\.[a-zA-Z0-9]+$"),"",fn)
-
-            res <- rep("",length(fn))
-            
-
-            res[fnroot!=""] <- paste0(fnroot[fnroot!=""],sep,x.string,allext)
-            res[fnroot==""] <- paste0(x.string,allext)
-            
-            ##return(paste0(fnroot,sep,x.string,allext))
-            return(res)
-        }
     }
 
     if(position=="prepend"){
@@ -118,3 +112,4 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     }
     
 }
+

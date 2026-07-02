@@ -1,3 +1,7 @@
+# NMdata 0.2.6
+## New Features
+`fnAppend()` supports file names within sudirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
+
 # NMdata 0.2.5
 ## New Features
 * New function `reorder2()`. Like `reorder()` but takes multiple ordering

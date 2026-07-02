@@ -118,3 +118,20 @@ test_that("Attach multiple separate strings",{
     res <- fnAppend(c("file1.jpg","file2.jpg"), c("a","b"),collapse=NULL)
    expect_equal(res,c("file1_a.jpg", "file1_b.jpg", "file2_a.jpg", "file2_b.jpg"))  
 })
+
+test_that("dir/.png",{
+      fileRef <- "testReference/fnAppend_05.rds"
+
+
+    res1 <- list(
+        fnAppend("dir/.png","x",allow.noext=F)
+       ,fnAppend("dir/.png","x",allow.noext=F)
+       ,fnAppend("./.png","x",allow.noext=F)
+       ,fnAppend("dir/file","x",allow.noext=T)
+       ,fnAppend("dir/file","x",allow.noext=T)
+       ,fnAppend("./file","x",allow.noext=T)
+    )
+    res1
+    expect_equal_to_reference(res1,fileRef)
+
+})
