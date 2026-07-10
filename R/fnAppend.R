@@ -46,6 +46,7 @@
 
 fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.noext=FALSE){
 
+  if(is.null(fn)) fn <- ""
   if(is.null(x)) return(fn)
   
   if((!is.numeric(x)&&!is.character(x))) stop("x must be numeric or character vector.")
@@ -76,6 +77,7 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
   if( !all(has.ext) && !allow.noext){
     stop("Elements in fn have no extension and allow.noext=FALSE")
   }
+  
   
 
   dt.res <- CJ(fn,x.string)
