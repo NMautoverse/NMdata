@@ -13,7 +13,7 @@
 ##'     options are restored to default values. If NULL is passed to
 ##'     an argument, the argument is reset to default.  is See
 ##'     examples for how to use.
-##'
+##' @param args Same as `...` but in a list. `...` and `args` can be used in concert.
 ##' @param allow.unknown Allow to store configuration of variables
 ##'     that are not pre-defined in NMdata. This should only be needed
 ##'     in cases where say another package wants to use the NMdata
@@ -187,10 +187,23 @@
 ##' @import data.table
 ##' @export
 
-NMdataConf <- function(...,allow.unknown=FALSE,summarize=FALSE){
-
-    
-    dots <- list(...)
+NMdataConf <- function(...,args=list(),allow.unknown=FALSE,summarize=FALSE){
+  
+  dots <- list(...)
+  ## if(missing(List)) {
+  ##   list2 <- base::list()
+  ## } else {
+  ##   list2 <- List
+  ##   list <- base::list
+  ## }
+  dots <- modifyList(dots,args)
+  ## message("passed first list()")
+  ## if(length(dots) && !missing(list)) stop("Plese use either ... or list, not both")
+  ## if(!missing(list)) {
+  ##   dots <- list
+  ##   rm(list)
+  ## }
+  
     if(length(dots)==0){
         ## dump existing options
         return(.NMdata$options)

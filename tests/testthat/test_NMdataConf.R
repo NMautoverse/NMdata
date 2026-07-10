@@ -181,11 +181,31 @@ test_that("check reported summary of changes",{
     expect_equal_to_reference(res,fileRef,version=2)
 
     if(F){
-        res
-        readRDS(fileRef)
-        }
+      ref <- readRDS(fileRef)
+      res
+      ref
+    }
     ## compareCols(readRDS(fileRef),defaults)
     
 })
 
 
+
+test_that("provide args in list",{
+  NMdataConf(reset=TRUE)
+  res0 <- NMdataConf()
+  
+  myargs <- list(col.model="mod2")
+  NMdataConf(args=myargs)
+  res1 <- NMdataConf()
+  res <- res1$col.mod
+  ##res1 <- dropFuns(res1)
+  
+  expect_equal(res,"mod2")
+
+  if(F){
+    ref <- readRDS(fileRef)
+    res
+    ref
+  }
+})
