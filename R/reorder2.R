@@ -38,8 +38,10 @@ reorder2 <- function(x, ...,as=c("factor","order","rank","sorted"),decreasing=FA
   as <- match.arg(as)
 
   order.x <- do.call(order, args)
-  rank.x <- order(order.x)
-  x.ordered <- x[order.x]
+  ## rank.x <- order(order.x)
+  if(as%in%c("factor","sorted")){
+    x.ordered <- x[order.x]
+  }
 
   switch(as,
          factor={
@@ -47,7 +49,9 @@ reorder2 <- function(x, ...,as=c("factor","order","rank","sorted"),decreasing=FA
            factor(x, levels = levs)
          },
          order=order.x,
-         rank=rank.x,
+         rank={
+           order(order.x)
+         },
          sorted=x.ordered
          )
 }
