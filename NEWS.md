@@ -4,6 +4,8 @@
 
 `NMdataConf` takes argument in a list using the new argument `args`.
 
+`egdt()` support for data.frame's, generally. Was data.table only. Returns data.table, if first first input is a data.table.
+
 # NMdata 0.2.5
 ## New Features
 * New function `reorder2()`. Like `reorder()` but takes multiple ordering
