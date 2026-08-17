@@ -46,6 +46,15 @@
 
 fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.noext=FALSE){
 
+  #### Dummy variables, only not to get NOTE's in pacakge checks ####
+
+  allext <- NULL
+  fnroot <- NULL
+  res.fn <- NULL
+  res <- NULL
+
+  ### End: Dummy variables, only not to get NOTE's in pacakge checks ###
+  
   if(is.null(fn)) fn <- ""
   if(is.null(x)) return(fn)
   

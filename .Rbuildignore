@@ -50,6 +50,7 @@ NMdata_backup
 .*\.dir*
 .*MetaData\.rds
 
+^\.aider
 
 inst/examples/nonmem/.*.msf
 inst/examples/nonmem/.*.xml

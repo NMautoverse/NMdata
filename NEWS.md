@@ -1,8 +1,20 @@
 # NMdata 0.2.6
 ## New Features
+
+`NMdataConf()` takes argument in a list using the new argument `args`. Convenient for capturing, then restoring `NMdataConf()` settings, like
+```
+nmdat <- NMdataConf()
+NMdataConf(col.time="AFRLT")
+...
+NMdataConf(args=nmdat)
+```
+
+`NMgenText()` now filters out `until` values if not found as columns in data
+(with a message), rather than throwing an error. This can make reuse of scripts
+a little simpler.
+
 `fnAppend()` supports file names within sudirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
 
-`NMdataConf` takes argument in a list using the new argument `args`.
 
 # NMdata 0.2.5
 ## New Features

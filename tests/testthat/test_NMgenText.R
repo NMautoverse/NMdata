@@ -1,7 +1,7 @@
 context("NMgenText")
 
 test_that("basic",{
-    fileRef <- "testReference/NMgenText_1.rds"
+    fileRef <- "testReference/NMgenText_01.rds"
     ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     pk <- readRDS(file="testData/data/xgxr2.rds")
     res <- NMgenText(pk,width=95)
@@ -16,7 +16,7 @@ test_that("df vs dt",{
 
 
 test_that("dir.data",{
-    fileRef <- "testReference/NMgenText_2.rds"
+    fileRef <- "testReference/NMgenText_02.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv")
     res.dir <- NMgenText(pk,file="data1.csv",dir.data="../nonmem")
@@ -27,7 +27,7 @@ test_that("dir.data",{
 })
 
 test_that("pseudonyms",{
-    fileRef <- "testReference/NMgenText_3.rds"
+    fileRef <- "testReference/NMgenText_03.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
 #### wrong
     ## NMgenText(pk,file="data1.csv",pseudo=c(PART="SPART"))
@@ -37,21 +37,21 @@ test_that("pseudonyms",{
 })
 
 test_that("rename - same order as in pseudonym syntax",{
-    fileRef <- "testReference/NMgenText_4.rds"
+    fileRef <- "testReference/NMgenText_04.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",rename=c(SPART="PART"),width=90)
     expect_equal_to_reference(res,fileRef)
 })
 
 test_that("drop",{
-    fileRef <- "testReference/NMgenText_5.rds"
+    fileRef <- "testReference/NMgenText_05.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",drop=c("PART"),width=95)
     expect_equal_to_reference(res,fileRef)
 })
 
 test_that("capitalize",{
-    fileRef <- "testReference/NMgenText_6.rds"
+    fileRef <- "testReference/NMgenText_06.rds"
     pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
     res <- NMgenText(pk,file="data1.csv",capitalize=T,width=95)
     expect_equal_to_reference(res,fileRef)
@@ -64,4 +64,21 @@ test_that("basic - from file",{
     res.csv <- NMgenText(data="testData/data/xgxr2.csv")
     expect_equal(res.data,res.rds)
     expect_equal(res.rds,res.csv)
+})
+
+test_that("character until",{
+    fileRef <- "testReference/NMgenText_07.rds"
+    ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    res0 <- NMgenText(pk)
+    res <- NMgenText(pk,until="BLQ")
+    expect_equal_to_reference(res,fileRef)
+})
+
+test_that("character until unknown",{
+    ## pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    pk <- readRDS(file="testData/data/xgxr2.rds")
+    res0 <- NMgenText(pk)
+    res <- NMgenText(pk,until="DONTEXIST")
+    expect_equal(res0,res)
 })

@@ -177,16 +177,23 @@ NMgenText <- function(data,
     
     ## apply "until"
     if(!missing(until) && !is.null(until)){
-        
+      
         if(!is.numeric(until)&&!is.character(until)){
             messageWrap("until must be either numeric or character.")
         }
         if(is.character(until)){
-            ## convert to numeric
-            
+          ## convert to numeric
+            until.not.found <- until[!until%in%dt.num.ok[,name.nm]]
+          if(length(until.not.found)>0){
+            message(sprintf("Columns in `until` not found and ignored: %s",
+                            paste(until.not.found,collapse=", ")))
+            until <- setdiff(until,until.not.found)
+          }
             until <- match(until,dt.num.ok[,name.nm])
         }
-        until <- until[!is.na(until)]
+      until[until>nrow(dt.num.ok)] <- nrow(dt.num.ok)
+      until <- unique(until)
+      until <- until[!is.na(until)]
         if(length(until)){
             until <- max(until)
             dt.num.ok <- dt.num.ok[1:until]

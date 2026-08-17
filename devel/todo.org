@@ -138,7 +138,7 @@ Solved by alway passing call and environment
 **** Bad name, what could we call it?
 *** cc - create character vector function
 *** NMgenText
-**** TODO [#A] Test variables given in until arg exist
+**** DONE Test variables given in until arg exist
 Or only use those that do exist. Right now a strange error is returned
 **** TODO Handle until values not matching column names
 **** DONE Add a until argument to specify the last column to use in nonmem
