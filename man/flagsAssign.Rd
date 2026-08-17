@@ -36,7 +36,7 @@ value is FLAG and can be configured using NMdataConf.}
 
 \item{col.flagc}{The name of the column containing the character
 flag values in tab.flags. This will be added to data. Default
-value is flag and can be configured using NMdataConf.}
+value is flag and can be configured using `NMdataConf()`.}
 
 \item{flags.increasing}{The flags are applied by either decreasing
 (default) or increasing value of col.flagn. Decreasing order

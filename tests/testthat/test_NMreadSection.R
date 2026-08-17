@@ -1,8 +1,6 @@
 context("NMreadSection")
 
 
-
-
 test_that("basic",{
 
     fileRef <- "testReference/NMreadSection_01.rds"
