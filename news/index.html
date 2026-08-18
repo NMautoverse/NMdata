@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5.903</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5.905</span>
       </span>
     </div>
 
@@ -85,8 +85,13 @@
 <h2 class="page-header" data-toc-text="0.2.6" id="nmdata-026">NMdata 0.2.6<a class="anchor" aria-label="anchor" href="#nmdata-026"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-6">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-6"></a></h3>
+<p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> takes argument in a list using the new argument <code>args</code>. Convenient for capturing, then restoring <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> settings, like</p>
+<pre><code><span><span class="va">nmdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>col.time<span class="op">=</span><span class="st">"AFRLT"</span><span class="op">)</span></span>
+<span><span class="va">...</span></span>
+<span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>args<span class="op">=</span><span class="va">nmdat</span><span class="op">)</span></span></code></pre>
+<p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> now filters out <code>until</code> values if not found as columns in data (with a message), rather than throwing an error. This can make reuse of scripts a little simpler.</p>
 <p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> supports file names within sudirectories, like <code>dir/.png</code>. These are needed to auto-generate file names in the <code>tracee</code> package.</p>
-<p><code>NMdataConf</code> takes argument in a list using the new argument <code>args</code>.</p>
 </div>
 </div>
     <div class="section level2">
