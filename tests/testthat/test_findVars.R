@@ -44,3 +44,17 @@ test_that("deprecated cols.id",{
         findVars(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x",by="x")
     )
 })
+
+test_that("return.data",{
+
+    dt1 <- data.table(a=1,b=1:2)
+
+    v1 <- findVars(dt1)
+    v2 <- findVars(dt1,return.data=FALSE)
+
+    v1
+    v2
+
+    expect_equal(v2,colnames(v1))
+    
+})

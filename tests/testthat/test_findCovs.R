@@ -39,3 +39,16 @@ test_that("deprecated cols.id",{
         findCovs(data.frame(x=rep(1:2,each=2),y=c(rep(c("a"),2),"v","w")),cols.id="x",by="x")
     )
 })
+
+
+test_that("return.data",{
+
+    pk <- readRDS(file=system.file("examples/data/xgxr2.rds",package="NMdata"))
+    unNMdata(pk)
+    res1 <- findCovs(pk)
+    res2 <- findCovs(pk,return.data=FALSE)
+
+    expect_equal(res2,colnames(res1))
+    
+})
+

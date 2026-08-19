@@ -8,14 +8,15 @@
 ##' @param by optional covariates will be searched for in combinations of
 ##'     values in these columns. Often by will be either empty or ID. But
 ##'     it can also be both say c("ID","DRUG") or c("ID","TRT").
-##' @param cols.id Deprecated. Use by instead.
+##' @param return.data Return the data set with columns that vary? If FALSE, only the column names will be returned as a character vector. Default is TRUE.
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
-##'     be configured using NMdataConf.
+##'     be configured using `NMdataConf()`.
+##' @param cols.id Deprecated. Use by instead.
 ##' @details Use this to exclude columns that are constant within by. If
 ##'     by=ID, this could be to get only time-varying covariates.
-##' @return a data set with as many rows as in data.
+##' @return a data set with as many rows as in data. If return.data is FALSE, a character vector with column names.
 ##' @examples
 ##' dt1 <- data.frame(ID=c(1,1,2,2),
 ##'                   OCC=c(1,2,1,2),
@@ -39,7 +40,7 @@
 ##' @export
 
 
-findVars <- function(data,by=NULL,cols.id,as.fun=NULL){
+findVars <- function(data,by=NULL,return.data=TRUE,as.fun=NULL,cols.id){
 
     ## check arguments
 
@@ -68,13 +69,18 @@ findVars <- function(data,by=NULL,cols.id,as.fun=NULL){
         data[,(by):=1]
         rm.tmp <- TRUE
     }
-    
+  
     ## uniqueN > 1
     dt2 <- data[, .SD[, lapply(.SD, function(x)uniqueN(x)>1)], by=by]
     ## use any
     ifkeep <- dt2[,sapply(.SD,any),.SDcols=!(by)]
     keep <- c(by,setdiff(colnames(dt2),by)[ifkeep])
-    reduced <- unique(data[,keep,with=FALSE])
+  if(!return.data) {
+    if(rm.tmp) keep <- setdiff(keep,by)
+    return(keep)
+  }
+
+  reduced <- unique(data[,keep,with=FALSE])
 
     if(rm.tmp) reduced[,(by):=NULL]
 

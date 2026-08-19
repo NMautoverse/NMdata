@@ -2,14 +2,21 @@
 ## New Features
 `fnAppend()` supports file names within sudirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
 
-`NMdataConf` takes argument in a list using the new argument `args`.
+`findCovs()` and `findVars()` take argument `return.data`. `findCovs()` and `findVars()` are convenient functions to extract columns that are either constant or non-constant (optionally, within "by" columns). They used to always return a data.frame with the identified column. Now, if `return.data=FALSE` a character vector of identified column names is returned. This makes the functions faster to use on large data sets, if the goal is to test if certain columns are selected or not.
+
+`NMdataConf()` takes argument in a list using the new argument `args`.
 
 `egdt()` support for data.frame's, generally. Was data.table only. Returns data.table, if first first input is a data.table.
+
+`NMgenText()` compares the `until` argument to the columns available in the data set before applying it. The `until` argument is if you don't want Nonmem to read all data column but only "until" a set of column names or numbers have been read. `until` is now allowed to contain column names or numbers beyond what is found in data.
+
+## Other improvements
+`cleanFilesNames()` removes characters "[" and "]".
 
 # NMdata 0.2.5
 ## New Features
 * New function `reorder2()`. Like `reorder()` but takes multiple ordering
-  arguments. The reordering can be with respect to expressions.
+  arguments. The reordering can be with respect to expressions. Can return a factor like `reorder()`, order, rank, or sorted values.
 
 * `setOrderList()` is a new convenient function that reorders elements in a list, much like `setcolorder()` for data.table's. It takes both `first` and `last` arguments to specify what elements to move where.
 

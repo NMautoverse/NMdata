@@ -11,13 +11,14 @@
 ##' @param by covariates will be searched for in combinations of values in
 ##'     these columns. Often by will be either empty or ID. But it can also
 ##'     be both say c("ID","DRUG") or c("ID","TRT").
-##' @param cols.id Deprecated. Use by instead.
+##' @param return.data Return the data set with columns that do not vary? If FALSE, only the column names will be returned as a character vector. Default is TRUE.
 ##' @param as.fun The default is to return a data.table if data is a data.table
 ##'     and return a data.frame in all other cases. Pass a function in as.fun to
 ##'     convert to something else. If data is not a data.table, the default can
 ##'     be configured using NMdataConf.
+##' @param cols.id Deprecated. Use by instead.
 ##' @return a data set with one observation per combination of values of
-##'     variables listed in by.
+##'     variables listed in by. If return.data is FALSE, a character vector with column names.
 ##' @family DataCreate
 ##' @import data.table
 ##' @examples
@@ -49,8 +50,7 @@
 
 
 
-findCovs <- function(data,by=NULL,cols.id,as.fun=NULL){
-
+findCovs <- function(data,by=NULL,return.data=TRUE,as.fun=NULL,cols.id){
     
     ## check arguments
     ## args <- getArgs()
@@ -78,6 +78,7 @@ findCovs <- function(data,by=NULL,cols.id,as.fun=NULL){
     }
 
     names.covs <- cnames.to.use[unlist(lapply(cnames.to.use,function(x) nrow(unique(data[,c(by,x),with=FALSE]))==Nid))]
+  if(!return.data) return(names.covs)
 
     reduced <- unique(data[,c(by,names.covs),with=FALSE])
     if(!is.null(by)){

@@ -4,7 +4,7 @@
 \alias{findVars}
 \title{Extract columns that vary within values of other columns in a data.frame}
 \usage{
-findVars(data, by = NULL, cols.id, as.fun = NULL)
+findVars(data, by = NULL, return.data = TRUE, as.fun = NULL, cols.id)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
@@ -13,15 +13,17 @@ findVars(data, by = NULL, cols.id, as.fun = NULL)
 values in these columns. Often by will be either empty or ID. But
 it can also be both say c("ID","DRUG") or c("ID","TRT").}
 
-\item{cols.id}{Deprecated. Use by instead.}
+\item{return.data}{Return the data set with columns that vary? If FALSE, only the column names will be returned as a character vector. Default is TRUE.}
 
 \item{as.fun}{The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
-be configured using NMdataConf.}
+be configured using `NMdataConf()`.}
+
+\item{cols.id}{Deprecated. Use by instead.}
 }
 \value{
-a data set with as many rows as in data.
+a data set with as many rows as in data. If return.data is FALSE, a character vector with column names.
 }
 \description{
 If you want to look at the variability of a number of columns and you want
