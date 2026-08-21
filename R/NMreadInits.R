@@ -534,7 +534,7 @@ elemsToExt <- function(elements){
     pars[]
 }
 
-##' Create a variable in inital value table to keep track of SAME
+##' Create a variable in initial value table to keep track of SAME
 ##' blocks i.e. parameters that are part of a single distribution
 ##'
 ##' @param inits Table of initial values as created by NMreadInits().

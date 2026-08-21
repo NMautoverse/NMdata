@@ -39,7 +39,7 @@ merge(df1,df2)
 egdt(df1,df2,quiet=TRUE)
 library(data.table)
 ## This is not possible
-\outrun{
+\dontrun{
 merge(as.data.table(df1),as.data.table(df2),allow.cartesian=TRUE)
 }
 ## Use egdt instead

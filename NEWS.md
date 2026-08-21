@@ -1,6 +1,6 @@
 # NMdata 0.2.6
 ## New Features
-`fnAppend()` supports file names within sudirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
+`fnAppend()` supports file names within subdirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
 
 `findCovs()` and `findVars()` take argument `return.data`. `findCovs()` and `findVars()` are convenient functions to extract columns that are either constant or non-constant (optionally, within "by" columns). They used to always return a data.frame with the identified column. Now, if `return.data=FALSE` a character vector of identified column names is returned. This makes the functions faster to use on large data sets, if the goal is to test if certain columns are selected or not.
 
@@ -81,7 +81,7 @@ New function `dcastSe()` included. data.table's dcast() transforms from long to 
   like "format: %idx - %symbol". Fixed.
 
 * `NMrelate()` did not consider the `sections` argument. It does now
-  but with an important limitation: it can only be of lenght one. This
+  but with an important limitation: it can only be of length one. This
   is of minor importance since it is only needed in the special case
   that a parameter gets assigned to different variable names in
   different sections. Normally, leaving out the argument is fine. 
@@ -120,7 +120,7 @@ $THETA (0, 4.4) ; 1 - CL [L/h] ; none
 $OMEGA 0.15 ; IIV.KA ; lognormal 
 ``` 
 
-  The first occurrance of each of `format`, `format.omega`, and
+  The first occurrence of each of `format`, `format.omega`, and
   `format.sigma` is used. Like before `format.sigma` inherits from
   `format.omega` if not specified, like `format.omega` inherits from
   `format`.
@@ -256,7 +256,7 @@ where `file.mod` is a path to a control stream.
 * Functions to read (`NMreadSizes()`) and write (`NMwriteSizes()`) the
   `$SIZES` section of NONMEM control streams. `NMwriteSizes()` can
   either write the section from scratch (`wipe=TRUE`) or merge the new
-  sizes values in with exisiting values.
+  sizes values in with existing values.
 
 ## Bugfixes
 
@@ -455,7 +455,7 @@ of throwing an error.
 
 * A new option `nc` can be controlled with NMdataConf(). This is to
   serve `NMsim`. Please see `NMsim::NMexec`. `NMsim::NMsim()` does not
-  adhere to this setting because it does not parallellize by default.
+  adhere to this setting because it does not parallelize by default.
 
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no

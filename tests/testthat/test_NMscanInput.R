@@ -247,7 +247,7 @@ test_that("ID only from pseudonym",{
     fileRef <- "testReference/NMscanInput_10.rds"
     file.mod <- "testData/nonmem/pred030.mod"
     NMreadSection(file.mod,section="input")
-    NMextractDataFile(file.mod)$path.csv |> readLines(n=3)
+    ## NMextractDataFile(file.mod)$path.csv |> readLines(n=3)
 
     inp <- NMscanInput(file.mod)
     inp2 <- NMscanInput(file.mod,translate=F)

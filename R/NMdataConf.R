@@ -146,7 +146,7 @@
 ##' this would make little sense because it would translate all output control
 ##' streams model name.
 ##'
-##' \item{path.nonmem} Path (a character string) to a nonmem
+##' \item{path.nonmem} Path (a character string) to a Nonmem
 ##' executable. Not used by NMdata. Default is NULL.
 ##' 
 ##' \item{quiet} For non-interactive scripts, you can switch off the

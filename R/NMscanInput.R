@@ -97,7 +97,7 @@
 ##'
 ##' \strong{Renamed columns} if the first column is called SUBJID in
 ##' the data set but the control stream says `$INPUT ID...`, the first
-##' column in the resultin data set will be called `ID`, not `SUBJID`.
+##' column in the resulting data set will be called `ID`, not `SUBJID`.
 ##'
 ##' \strong{Copied columns} If the first column is called SUBJID in
 ##' the data set but the control stream says `$INPUT SUBJID=ID...`,

@@ -27,7 +27,7 @@ possible which is \code{c("THETA","OMEGA","SIGMA")}.}
 \item{sections}{Not implemented. Sections of the control stream to
 process. Default is all of
 \code{c("PRED","PK","ERROR")}. Notice, this denotes what
-sections to search for relationships, not what paramter types
+sections to search for relationships, not what parameter types
 (like THETA, OMEGA, SIGMA) to search for.}
 
 \item{as.fun}{The default is to return data as a data.frame. Pass

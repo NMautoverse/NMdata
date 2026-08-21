@@ -1,6 +1,6 @@
 ##' A standard-evaluation interface to `data.table::dcast()
 ##'
-##' data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
+##' data.table's dcast() transforms from long to wide format. It lacks a standard-evaluation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
 ##'
 ##' @param data data set (data.frame) to transpose (widen). 
 ##' @param l left-hand side variables as character vector. Result will be

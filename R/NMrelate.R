@@ -14,7 +14,7 @@
 ##' @param sections Not implemented. Sections of the control stream to
 ##'     process. Default is all of
 ##'     \code{c("PRED","PK","ERROR")}. Notice, this denotes what
-##'     sections to search for relationships, not what paramter types
+##'     sections to search for relationships, not what parameter types
 ##'     (like THETA, OMEGA, SIGMA) to search for.
 ##' @param as.fun The default is to return data as a data.frame. Pass
 ##'     a function (say tibble::as_tibble) in as.fun to convert to

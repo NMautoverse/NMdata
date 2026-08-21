@@ -2,7 +2,7 @@
 % Please edit documentation in R/NMreadInits.R
 \name{addSameBlocks}
 \alias{addSameBlocks}
-\title{Create a variable in inital value table to keep track of SAME
+\title{Create a variable in initial value table to keep track of SAME
 blocks i.e. parameters that are part of a single distribution}
 \usage{
 addSameBlocks(inits)
@@ -11,7 +11,7 @@ addSameBlocks(inits)
 \item{inits}{Table of initial values as created by NMreadInits().}
 }
 \description{
-Create a variable in inital value table to keep track of SAME
+Create a variable in initial value table to keep track of SAME
 blocks i.e. parameters that are part of a single distribution
 }
 \details{

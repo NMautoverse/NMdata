@@ -13,16 +13,20 @@ mergeCoal(x, y, by, cols.coal, add.new = TRUE, as.fun)
 
 \item{by}{Columns to merge by. A character vector, with names to columns present in both `x` and `y`. At least one of by and cols.merge must be provided.}
 
-\item{cols.coal}{Columns to overwrite values from `y` if
-available. cols.coal must be present in y and may be present in x.}
+\item{cols.coal}{Columns in `x` to overwrite with values from `y` if
+available. cols.coal must be present in `y` and may be present in `x`.}
 
-\item{add.new}{If columns in y are ne to x, merge them in? Default is to do
+\item{add.new}{If columns in `y` are new to `x`, merge them in? Default is to do
 so.}
 
 \item{as.fun}{Pass a function (say tibble::as_tibble) in as.fun to convert
 to something else. If data.tables are wanted, use
 as.fun="data.table". The default is to return data as a
-data.frame. Modify the defaul using `NMdataConf()`.}
+data.frame. Modify the default using `NMdataConf()`.}
+}
+\value{
+a data.frame resulting from merging x and y. Class as
+    defined by as.fun.
 }
 \description{
 Repair data.frame x with values present in data.frame y. Columns to match by

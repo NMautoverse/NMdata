@@ -44,8 +44,8 @@ if(F){
     ## library(devtools)
     ## load_all("~/wdirs/NMsim")
 
-    dt.sim <- NMcreateDoses(TIME=0,AMT=100) |>
-        addEVID2(TIME=2,CMT=2,as.fun="data.table")
+    dt.sim <- addEVID2(NMcreateDoses(TIME=0,AMT=100),
+        TIME=2,CMT=2,as.fun="data.table")
     dt.sim[,BBW:=80]
 
     res <- NMsim(file.mod=file.mod,

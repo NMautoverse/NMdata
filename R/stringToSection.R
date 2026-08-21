@@ -6,7 +6,7 @@
 ##' @keywords internal
 
 stringToSection <- function(x){
-      section <- NMdata:::cleanSpaces(section)
+      section <- cleanSpaces(section)
       section <- sub("^\\$","",section)
       section <- toupper(section)
       section
