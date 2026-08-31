@@ -118,7 +118,7 @@ New function `dcastSe()` included. data.table's dcast() transforms from long to 
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none 
 ;; format.omega: %symbol ; %trans 
 $OMEGA 0.15 ; IIV.KA ; lognormal 
-``` 
+```
 
   The first occurrence of each of `format`, `format.omega`, and
   `format.sigma` is used. Like before `format.sigma` inherits from
