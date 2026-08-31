@@ -1,3 +1,8 @@
+# NMdata 0.2.7
+
+## Other improvements
+`NMcheckData()` includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.
+
 # NMdata 0.2.6
 ## New Features
 `fnAppend()` supports file names within subdirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.

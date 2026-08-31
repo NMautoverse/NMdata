@@ -523,7 +523,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### special chars in col names
     are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
     cnames.num <- colnames(data)[are.cols.num]
-    cnames.spchars <- cnames.num[grep("[[:punct:]]",cnames.num)]
+    cnames.spchars <- cnames.num[grep("[[:punct:]]",
+                                      ## _ is OK
+                                      gsub("\\_","",cnames.num)
+                                      )]
     cnames.spchars <- setdiff(cnames.spchars,c("id.orig","row.orig"))
     if(length(cnames.spchars)>0){
         findings <- rbind(findings,
