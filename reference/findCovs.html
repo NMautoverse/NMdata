@@ -22,7 +22,7 @@ variables that do not vary within unique combinations of these."><meta property=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5.905</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ variables that do not vary within unique combinations of these."><meta property=
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract columns that are constant within values of other columns (covariates)</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/R/findCovs.R" class="external-link"><code>R/findCovs.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.2.6/R/findCovs.R" class="external-link"><code>R/findCovs.R</code></a></small>
     <div class="hidden name"><code>findCovs.Rd</code></div>
     </div>
 
@@ -97,7 +97,7 @@ variables that do not vary within unique combinations of these.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="cn">NULL</span>, return.data <span class="op">=</span> <span class="cn">TRUE</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">cols.id</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">findCovs</span><span class="op">(</span><span class="va">data</span>, by <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">cols.id</span>, as.fun <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,8 +114,8 @@ these columns. Often by will be either empty or ID. But it can also
 be both say c("ID","DRUG") or c("ID","TRT").</p></dd>
 
 
-<dt id="arg-return-data">return.data<a class="anchor" aria-label="anchor" href="#arg-return-data"></a></dt>
-<dd><p>Return the data set with columns that do not vary? If FALSE, only the column names will be returned as a character vector. Default is TRUE.</p></dd>
+<dt id="arg-cols-id">cols.id<a class="anchor" aria-label="anchor" href="#arg-cols-id"></a></dt>
+<dd><p>Deprecated. Use by instead.</p></dd>
 
 
 <dt id="arg-as-fun">as.fun<a class="anchor" aria-label="anchor" href="#arg-as-fun"></a></dt>
@@ -124,15 +124,11 @@ and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
 be configured using NMdataConf.</p></dd>
 
-
-<dt id="arg-cols-id">cols.id<a class="anchor" aria-label="anchor" href="#arg-cols-id"></a></dt>
-<dd><p>Deprecated. Use by instead.</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>a data set with one observation per combination of values of
-    variables listed in by. If return.data is FALSE, a character vector with column names.</p>
+    variables listed in by.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5.905</span>
       </span>
     </div>
 
@@ -78,36 +78,27 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.2.6/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.7" id="nmdata-027">NMdata 0.2.7<a class="anchor" aria-label="anchor" href="#nmdata-027"></a></h2>
-<div class="section level3">
-<h3 id="other-improvements-0-2-7">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-7"></a></h3>
-<p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.</p>
-</div>
-</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6" id="nmdata-026">NMdata 0.2.6<small>2026-08-23</small><a class="anchor" aria-label="anchor" href="#nmdata-026"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-6">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-6"></a></h3>
-<p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> supports file names within subdirectories, like <code>dir/.png</code>. These are needed to auto-generate file names in the <code>tracee</code> package.</p>
-<p><code><a href="../reference/findCovs.html">findCovs()</a></code> and <code><a href="../reference/findVars.html">findVars()</a></code> take argument <code>return.data</code>. <code><a href="../reference/findCovs.html">findCovs()</a></code> and <code><a href="../reference/findVars.html">findVars()</a></code> are convenient functions to extract columns that are either constant or non-constant (optionally, within “by” columns). They used to always return a data.frame with the identified column. Now, if <code>return.data=FALSE</code> a character vector of identified column names is returned. This makes the functions faster to use on large data sets, if the goal is to test if certain columns are selected or not.</p>
-<p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> takes argument in a list using the new argument <code>args</code>.</p>
-<p><code><a href="../reference/egdt.html">egdt()</a></code> support for data.frame’s, generally. Was data.table only. Returns data.table, if first first input is a data.table.</p>
-<p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> compares the <code>until</code> argument to the columns available in the data set before applying it. The <code>until</code> argument is if you don’t want Nonmem to read all data column but only “until” a set of column names or numbers have been read. <code>until</code> is now allowed to contain column names or numbers beyond what is found in data.</p>
-</div>
-<div class="section level3">
-<h3 id="other-improvements-0-2-6">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-6"></a></h3>
-<p><code>cleanFilesNames()</code> removes characters “[” and ”]”.</p>
+<p><code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> takes argument in a list using the new argument <code>args</code>. Convenient for capturing, then restoring <code><a href="../reference/NMdataConf.html">NMdataConf()</a></code> settings, like</p>
+<pre><code><span><span class="va">nmdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>col.time<span class="op">=</span><span class="st">"AFRLT"</span><span class="op">)</span></span>
+<span><span class="va">...</span></span>
+<span><span class="fu"><a href="../reference/NMdataConf.html">NMdataConf</a></span><span class="op">(</span>args<span class="op">=</span><span class="va">nmdat</span><span class="op">)</span></span></code></pre>
+<p><code><a href="../reference/NMgenText.html">NMgenText()</a></code> now filters out <code>until</code> values if not found as columns in data (with a message), rather than throwing an error. This can make reuse of scripts a little simpler.</p>
+<p><code><a href="../reference/fnAppend.html">fnAppend()</a></code> supports file names within sudirectories, like <code>dir/.png</code>. These are needed to auto-generate file names in the <code>tracee</code> package.</p>
 </div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.5" id="nmdata-025">NMdata 0.2.5<small>2026-06-17</small><a class="anchor" aria-label="anchor" href="#nmdata-025"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-2-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-5"></a></h3>
-<ul><li><p>New function <code><a href="../reference/reorder2.html">reorder2()</a></code>. Like <code><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder()</a></code> but takes multiple ordering arguments. The reordering can be with respect to expressions. Can return a factor like <code><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder()</a></code>, order, rank, or sorted values.</p></li>
+<ul><li><p>New function <code><a href="../reference/reorder2.html">reorder2()</a></code>. Like <code><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder()</a></code> but takes multiple ordering arguments. The reordering can be with respect to expressions.</p></li>
 <li><p><code><a href="../reference/setOrderList.html">setOrderList()</a></code> is a new convenient function that reorders elements in a list, much like <code><a href="https://rdrr.io/pkg/data.table/man/setcolorder.html" class="external-link">setcolorder()</a></code> for data.table’s. It takes both <code>first</code> and <code>last</code> arguments to specify what elements to move where.</p></li>
 <li><p><code><a href="../reference/dcastSe.html">dcastSe()</a></code> gains ability to rename left-hand-side columns directly.</p></li>
 <li><p><code>NMwriteInits()</code> supports <code>fix=TRUE</code> (or <code>FALSE</code>). Previously, 0 or 1 was expected.</p></li>
@@ -153,7 +144,7 @@
 <h3 id="bugfixes-0-2-3">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-3"></a></h3>
 <ul><li><p><code>NMcanInput</code> (and downstream functions like <code>NMscanData</code> did not copy Nonmem columns (<code>$INPUT</code> elements like <code>DV=OBS</code>) correctly. It would not name the secondary column as expected (which is, if name it <code>OBS</code> if not used in other Nonmem column names, otherwise <code>OBSX</code> where <code>X</code> is an integer making <code>OBSX</code> a unique column name). Fixed.</p></li>
 <li><p><code>NMextractFormats()</code> was failing to capture format definitions “format.omega” and “format.sigma” in control streams. Format definitions including tabulator characters would also create problems. A format definition is a comment documenting the format, like “format: %idx - %symbol”. Fixed.</p></li>
-<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> did not consider the <code>sections</code> argument. It does now but with an important limitation: it can only be of length one. This is of minor importance since it is only needed in the special case that a parameter gets assigned to different variable names in different sections. Normally, leaving out the argument is fine.</p></li>
+<li><p><code><a href="../reference/NMrelate.html">NMrelate()</a></code> did not consider the <code>sections</code> argument. It does now but with an important limitation: it can only be of lenght one. This is of minor importance since it is only needed in the special case that a parameter gets assigned to different variable names in different sections. Normally, leaving out the argument is fine.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -168,7 +159,7 @@
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none
 ;; format.omega: %symbol ; %trans
 $OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
-<p>The first occurrence of each of <code>format</code>, <code>format.omega</code>, and <code>format.sigma</code> is used. Like before <code>format.sigma</code> inherits from <code>format.omega</code> if not specified, like <code>format.omega</code> inherits from <code>format</code>.</p>
+<p>The first occurrance of each of <code>format</code>, <code>format.omega</code>, and <code>format.sigma</code> is used. Like before <code>format.sigma</code> inherits from <code>format.omega</code> if not specified, like <code>format.omega</code> inherits from <code>format</code>.</p>
 <p>Also, <code><a href="../reference/NMreadParsText.html">NMreadParsText()</a></code> formats are no longer expected to include a field dedicated to the initial value information (like <code>(0, 0.44)</code> above. It will automatically assign this to a field called <code>initstr</code> (for “initial value string”). It will still look at the format, and if the first field is named either <code>init</code> or <code>initstr</code>, it will use this field for the initial value string. A new argument <code>add.init</code> is added to control this behavior.</p>
 <p>Notice, <code><a href="../reference/NMreadInits.html">NMreadInits()</a></code> is another NMdata function that processes these fields and would in this case separate this into <code>lower=0</code> and <code>init=4.4</code>.</p>
 <ul><li><p>Support for application of data filters on columns that contain missing values. <code><a href="../reference/NMapplyFilters.html">NMapplyFilters()</a></code> is an internal function that runs these filters on (R) data sets. This used to throw warnings when columns with missing values were being used in the filters. This situation is now handled. A message is still thrown to encourage the user to use a row identifier.</p></li>
@@ -222,7 +213,7 @@ $OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
 <span><span class="op">)</span></span></code></pre>
 <p>where <code>file.mod</code> is a path to a control stream.</p>
 <ul><li><p>Functions to read (<code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code>) and write (<code>NMwriteFilters()</code>) data filter (<code>ACCEPT</code>/<code>IGNORE</code>) statements in a control stream have been included. <code><a href="../reference/NMreadFilters.html">NMreadFilters()</a></code> run on a path to a control stream returns a structured <code>data.frame</code> with the filter statements. <code>NMwriteFilters()</code> can take such a <code>data.frame</code> or just a string with filters and replace the data filters in a control stream with those.</p></li>
-<li><p>Functions to read (<code><a href="../reference/NMreadSizes.html">NMreadSizes()</a></code>) and write (<code>NMwriteSizes()</code>) the <code>$SIZES</code> section of NONMEM control streams. <code>NMwriteSizes()</code> can either write the section from scratch (<code>wipe=TRUE</code>) or merge the new sizes values in with existing values.</p></li>
+<li><p>Functions to read (<code><a href="../reference/NMreadSizes.html">NMreadSizes()</a></code>) and write (<code>NMwriteSizes()</code>) the <code>$SIZES</code> section of NONMEM control streams. <code>NMwriteSizes()</code> can either write the section from scratch (<code>wipe=TRUE</code>) or merge the new sizes values in with exisiting values.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-2-0">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-0"></a></h3>
@@ -300,7 +291,7 @@ $OMEGA 0.15 ; IIV.KA ; lognormal </code></pre>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds block information to <code>OMEGA</code> and <code>SIGMA</code> elements based on off-diagonal values. <code>iblock</code> identifies which block the element is in. <code>blocksize</code> is the size of the block the element is in. Thank you Brian Reilly for contributing to this.</p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> adds a <code>par.name</code> column which is provides consistent parameter naming. Instead of NONMEM’s <code>THETA1</code> which is found in the <code>parameter</code> column, the <code>par.name</code> column will contain <code>THETA(1)</code> consistent with the <code>OMEGA</code> and <code>SIGMA</code> naming like <code>OMEGA(1,1)</code></p></li>
 <li><p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> recognizes Laplacian estimation steps in addition to the already supported FO, FOCE(i), SAEM, and IMP.</p></li>
-<li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://nmautoverse.github.io/NMsim/reference/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://nmautoverse.github.io/NMsim/reference/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallelize by default.</p></li>
+<li><p>A new option <code>nc</code> can be controlled with NMdataConf(). This is to serve <code>NMsim</code>. Please see <code><a href="https://nmautoverse.github.io/NMsim/reference/NMexec.html" class="external-link">NMsim::NMexec</a></code>. <code><a href="https://nmautoverse.github.io/NMsim/reference/NMsim.html" class="external-link">NMsim::NMsim()</a></code> does not adhere to this setting because it does not parallellize by default.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bugfixes-0-1-7">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-1-7"></a></h3>

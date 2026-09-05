@@ -18,7 +18,7 @@ must be provided."><meta property="og:image" content="https://nmautoverse.github
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5.905</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@ must be provided."><meta property="og:image" content="https://nmautoverse.github
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Overwrite values in one data.frame as available in another.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/master/R/mergeCoal.R" class="external-link"><code>R/mergeCoal.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmautoverse/NMdata/blob/v0.2.6/R/mergeCoal.R" class="external-link"><code>R/mergeCoal.R</code></a></small>
     <div class="hidden name"><code>mergeCoal.Rd</code></div>
     </div>
 
@@ -109,12 +109,12 @@ must be provided.</p>
 
 
 <dt id="arg-cols-coal">cols.coal<a class="anchor" aria-label="anchor" href="#arg-cols-coal"></a></dt>
-<dd><p>Columns in `x` to overwrite with values from `y` if
-available. cols.coal must be present in `y` and may be present in `x`.</p></dd>
+<dd><p>Columns to overwrite values from `y` if
+available. cols.coal must be present in y and may be present in x.</p></dd>
 
 
 <dt id="arg-add-new">add.new<a class="anchor" aria-label="anchor" href="#arg-add-new"></a></dt>
-<dd><p>If columns in `y` are new to `x`, merge them in? Default is to do
+<dd><p>If columns in y are ne to x, merge them in? Default is to do
 so.</p></dd>
 
 
@@ -122,14 +122,9 @@ so.</p></dd>
 <dd><p>Pass a function (say tibble::as_tibble) in as.fun to convert
 to something else. If data.tables are wanted, use
 as.fun="data.table". The default is to return data as a
-data.frame. Modify the default using `NMdataConf()`.</p></dd>
+data.frame. Modify the defaul using `NMdataConf()`.</p></dd>
 
 </dl></div>
-    <div id="value">
-    <h2>Value</h2>
-    <p>a data.frame resulting from merging x and y. Class as
-    defined by as.fun.</p>
-    </div>
     <div id="details">
     <h2>Details</h2>
     <p>Non-na values in y will be used o overwrite columns in x
