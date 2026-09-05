@@ -39,4 +39,15 @@ test_that("section not matched",{
     
     expect_null(res)
 
+    newmod2 <- 
+        NMwriteSectionOne(lines=lines
+                         ,list.sections=
+                            setNames(as.list(rep("",length(section))),nm=section)
+                                )
+
+newmod2
+res2 <- NMreadSection(lines=newmod2,section=section)
+
+expect_equal(res,res2)
+
 })

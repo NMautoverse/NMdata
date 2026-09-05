@@ -1,25 +1,27 @@
+# NMdata 0.2.7
+
+## Other improvements
+`NMcheckData()` includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.
+
 # NMdata 0.2.6
 ## New Features
+`fnAppend()` supports file names within subdirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
 
-`NMdataConf()` takes argument in a list using the new argument `args`. Convenient for capturing, then restoring `NMdataConf()` settings, like
-```
-nmdat <- NMdataConf()
-NMdataConf(col.time="AFRLT")
-...
-NMdataConf(args=nmdat)
-```
+`findCovs()` and `findVars()` take argument `return.data`. `findCovs()` and `findVars()` are convenient functions to extract columns that are either constant or non-constant (optionally, within "by" columns). They used to always return a data.frame with the identified column. Now, if `return.data=FALSE` a character vector of identified column names is returned. This makes the functions faster to use on large data sets, if the goal is to test if certain columns are selected or not.
 
-`NMgenText()` now filters out `until` values if not found as columns in data
-(with a message), rather than throwing an error. This can make reuse of scripts
-a little simpler.
+`NMdataConf()` takes argument in a list using the new argument `args`.
 
-`fnAppend()` supports file names within sudirectories, like `dir/.png`. These are needed to auto-generate file names in the `tracee` package.
+`egdt()` support for data.frame's, generally. Was data.table only. Returns data.table, if first first input is a data.table.
 
+`NMgenText()` compares the `until` argument to the columns available in the data set before applying it. The `until` argument is if you don't want Nonmem to read all data column but only "until" a set of column names or numbers have been read. `until` is now allowed to contain column names or numbers beyond what is found in data.
+
+## Other improvements
+`cleanFilesNames()` removes characters "[" and "]".
 
 # NMdata 0.2.5
 ## New Features
 * New function `reorder2()`. Like `reorder()` but takes multiple ordering
-  arguments. The reordering can be with respect to expressions.
+  arguments. The reordering can be with respect to expressions. Can return a factor like `reorder()`, order, rank, or sorted values.
 
 * `setOrderList()` is a new convenient function that reorders elements in a list, much like `setcolorder()` for data.table's. It takes both `first` and `last` arguments to specify what elements to move where.
 
@@ -84,7 +86,7 @@ New function `dcastSe()` included. data.table's dcast() transforms from long to 
   like "format: %idx - %symbol". Fixed.
 
 * `NMrelate()` did not consider the `sections` argument. It does now
-  but with an important limitation: it can only be of lenght one. This
+  but with an important limitation: it can only be of length one. This
   is of minor importance since it is only needed in the special case
   that a parameter gets assigned to different variable names in
   different sections. Normally, leaving out the argument is fine. 
@@ -121,9 +123,9 @@ New function `dcastSe()` included. data.table's dcast() transforms from long to 
 $THETA (0, 4.4) ; 1 - CL [L/h] ; none 
 ;; format.omega: %symbol ; %trans 
 $OMEGA 0.15 ; IIV.KA ; lognormal 
-``` 
+```
 
-  The first occurrance of each of `format`, `format.omega`, and
+  The first occurrence of each of `format`, `format.omega`, and
   `format.sigma` is used. Like before `format.sigma` inherits from
   `format.omega` if not specified, like `format.omega` inherits from
   `format`.
@@ -259,7 +261,7 @@ where `file.mod` is a path to a control stream.
 * Functions to read (`NMreadSizes()`) and write (`NMwriteSizes()`) the
   `$SIZES` section of NONMEM control streams. `NMwriteSizes()` can
   either write the section from scratch (`wipe=TRUE`) or merge the new
-  sizes values in with exisiting values.
+  sizes values in with existing values.
 
 ## Bugfixes
 
@@ -458,7 +460,7 @@ of throwing an error.
 
 * A new option `nc` can be controlled with NMdataConf(). This is to
   serve `NMsim`. Please see `NMsim::NMexec`. `NMsim::NMsim()` does not
-  adhere to this setting because it does not parallellize by default.
+  adhere to this setting because it does not parallelize by default.
 
 ## Bugfixes
 * `NMscanInput()` and `NMreadCsv()` could fail if file names had no

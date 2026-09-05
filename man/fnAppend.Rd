@@ -10,7 +10,7 @@ fnAppend(
   pad0 = 0,
   sep = "_",
   collapse = sep,
-  position = "append",
+  position = c("append", "prepend"),
   allow.noext = FALSE
 )
 }

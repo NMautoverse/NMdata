@@ -6,14 +6,14 @@
 ##' @param x The initial data.frame
 ##' @param y A data.frame to prioritize overc `x`.
 ##' @param by Columns to merge by. A character vector, with names to columns present in both `x` and `y`. At least one of by and cols.merge must be provided.
-##' @param cols.coal Columns to overwrite values from `y` if
-##'     available. cols.coal must be present in y and may be present in x.
-##' @param add.new If columns in y are ne to x, merge them in? Default is to do
+##' @param cols.coal Columns in `x` to overwrite with values from `y` if
+##'     available. cols.coal must be present in `y` and may be present in `x`.
+##' @param add.new If columns in `y` are new to `x`, merge them in? Default is to do
 ##'     so.
 ##' @param as.fun Pass a function (say tibble::as_tibble) in as.fun to convert
 ##'     to something else. If data.tables are wanted, use
 ##'     as.fun="data.table". The default is to return data as a
-##'     data.frame. Modify the defaul using `NMdataConf()`.
+##'     data.frame. Modify the default using `NMdataConf()`.
 ##'
 ##' @details Non-na values in y will be used o overwrite columns in x
 ##'     at the rows matched using `by` columns.
@@ -22,7 +22,9 @@
 ##' rows needs to be merged using varying by columns, the merges must
 ##' be done sequentially.
 ##'
-##' Will try to guess by and cols.coal. 
+##' Will try to guess by and cols.coal.
+##' @return a data.frame resulting from merging x and y. Class as
+##'     defined by as.fun.
 ##' @examples
 ##' library(data.table)
 ##' x <- data.table(idx=1:3,a=paste0("xa",1:3),b=paste0("xb",1:3))
@@ -38,7 +40,6 @@
 ##' mergeCoal(x,y,by="idx")
 ##' @export
 ##' @seealso mergeCheck egdt
-
 mergeCoal <- function(x,y,by,cols.coal,add.new=TRUE,as.fun){
 
 #### Dummy variables, only not to get NOTE's in pacakge checks ####

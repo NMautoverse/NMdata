@@ -58,7 +58,7 @@
 ##'     text generated for Nonmem (genText must be TRUE for this
 ##'     option to be allowed). This can be a great advantage when
 ##'     dealing with large datasets that can create problems in
-##'     parallellization. Combined with write.rds=TRUE, the full data
+##'     parallelization. Combined with write.rds=TRUE, the full data
 ##'     set will still be written to an rds file, so this can be used
 ##'     when combining output and input data when reading model
 ##'     results. This is done by default by NMscanData. This means

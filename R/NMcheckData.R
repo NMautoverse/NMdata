@@ -193,6 +193,16 @@
 ##' column.
 ##'
 ##' }
+##'
+##'
+##' Explanations of (some) findings
+##'
+##' - Duplicated event ID, CMT, EVID, TIME (variables may vary): Multiple records with identical values of the mentioned variables found. This is not always a bug in the data set as resamples or coding of doses as separate events (say two tablets administered simultaneously coded as two doses) can cause this. However, bugs can also cause this, and it's worth understanding why each of these findings occur. Notice, you can add variables to `cols.dup` to distinguish between separate records. This could be `DVID` or any other variable.
+##'
+##' - Comma in character string: A character contains comma(s). This will cause issues when saving data as csv for Nonmem. Must be addressed if using `NMdata::NMwriteData()` or `NMsim`.
+##'
+##' - ID disjoint: The same ID value is found in at least two rows between which another ID is found. This typically means data is inadequately sorted, or ID has to be redefined.  
+##' 
 ##' @return A table with findings
 ##' @examples
 ##' \dontrun{
@@ -513,7 +523,10 @@ NMcheckData <- function(data,file,covs,covs.occ,cols.num,col.id="ID",
 ### special chars in col names
     are.cols.num <- sapply(data,NMisNumeric,na.strings=na.strings)
     cnames.num <- colnames(data)[are.cols.num]
-    cnames.spchars <- cnames.num[grep("[[:punct:]]",cnames.num)]
+    cnames.spchars <- cnames.num[grep("[[:punct:]]",
+                                      ## _ is OK
+                                      gsub("\\_","",cnames.num)
+                                      )]
     cnames.spchars <- setdiff(cnames.spchars,c("id.orig","row.orig"))
     if(length(cnames.spchars)>0){
         findings <- rbind(findings,

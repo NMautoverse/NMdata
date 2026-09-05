@@ -15,7 +15,7 @@
 cleanFileNames <- function(x,allow.slash=FALSE){
 
 
-    x <- gsub("[ +!?#:;<>&,\\{\\}\\|=\\(\\)]", "",x) 
+    x <- gsub("[ +!?#:;<>&,\\{\\}\\|=\\(\\)\\[\\]]", "",x,perl=TRUE)
     if(!allow.slash){
         x <- gsub("/", "",x) 
     }

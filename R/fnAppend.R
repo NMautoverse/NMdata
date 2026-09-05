@@ -44,7 +44,12 @@
 ##' @export
 
 
-fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.noext=FALSE){
+fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position=c("append","prepend"),allow.noext=FALSE){
+
+  allext <- NULL
+  fnroot <- NULL
+  res.fn <- NULL
+  res <- NULL
 
   #### Dummy variables, only not to get NOTE's in pacakge checks ####
 
@@ -61,8 +66,8 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
   if((!is.numeric(x)&&!is.character(x))) stop("x must be numeric or character vector.")
   position <- match.arg(position,choices=c("append","prepend")) 
 
-  
-  
+  position <- match.arg(position)
+
   if(is.numeric(x)){
     ## formating padding zeros. pad0 determines the format of x in sprintf. 
     fmt <- paste0("%0",pad0,"d")
@@ -87,8 +92,6 @@ fnAppend <- function(fn,x,pad0=0,sep="_",collapse=sep,position="append",allow.no
     stop("Elements in fn have no extension and allow.noext=FALSE")
   }
   
-  
-
   dt.res <- CJ(fn,x.string)
   dt.res[,dir := dirname(fn)]
   dt.res[dir=="."&!grepl("^\\./",fn),dir := ""]

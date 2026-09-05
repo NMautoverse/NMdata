@@ -4,7 +4,7 @@
 \alias{findCovs}
 \title{Extract columns that are constant within values of other columns (covariates)}
 \usage{
-findCovs(data, by = NULL, cols.id, as.fun = NULL)
+findCovs(data, by = NULL, return.data = TRUE, as.fun = NULL, cols.id)
 }
 \arguments{
 \item{data}{data.frame in which to look for covariates}
@@ -13,16 +13,18 @@ findCovs(data, by = NULL, cols.id, as.fun = NULL)
 these columns. Often by will be either empty or ID. But it can also
 be both say c("ID","DRUG") or c("ID","TRT").}
 
-\item{cols.id}{Deprecated. Use by instead.}
+\item{return.data}{Return the data set with columns that do not vary? If FALSE, only the column names will be returned as a character vector. Default is TRUE.}
 
 \item{as.fun}{The default is to return a data.table if data is a data.table
 and return a data.frame in all other cases. Pass a function in as.fun to
 convert to something else. If data is not a data.table, the default can
 be configured using NMdataConf.}
+
+\item{cols.id}{Deprecated. Use by instead.}
 }
 \value{
 a data set with one observation per combination of values of
-    variables listed in by.
+    variables listed in by. If return.data is FALSE, a character vector with column names.
 }
 \description{
 This function provides an automated method to extract covariate-like

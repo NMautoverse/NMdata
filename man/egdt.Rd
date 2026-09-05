@@ -35,6 +35,8 @@ Merging works mostly similarly for data.table and
 df1 <- data.frame(a=1:2,b=3:4)
 df2 <- data.frame(c=5:6,d=7:8)
 merge(df1,df2)
+## notice order of rows may be different:
+egdt(df1,df2,quiet=TRUE)
 library(data.table)
 ## This is not possible
 \dontrun{

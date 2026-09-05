@@ -26,7 +26,7 @@ default is to return a `data.frame`.}
 a data.frame (see argument `as.fun`)
 }
 \description{
-data.table's dcast() transforms from long to wide format. It lacks a standard-evalutation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
+data.table's dcast() transforms from long to wide format. It lacks a standard-evaluation interface for programming, and dcastSe() is an attempt to fill that gap, still using data.table::dcast() to perform the operation.
 }
 \details{
 Only two of l, r, and value.var are needed (see ?data.table::dcast

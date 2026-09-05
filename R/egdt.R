@@ -18,6 +18,8 @@
 ##' df1 <- data.frame(a=1:2,b=3:4)
 ##' df2 <- data.frame(c=5:6,d=7:8)
 ##' merge(df1,df2)
+##' ## notice order of rows may be different:
+##' egdt(df1,df2,quiet=TRUE)
 ##' library(data.table)
 ##' ## This is not possible
 ##' \dontrun{
@@ -36,7 +38,8 @@ egdt <- function(dt1,dt2,quiet){
 
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
-    
+
+  was.dt <- is.data.table(dt1)
     dt1 <- copy(as.data.table(dt1))
     dt2 <- copy(as.data.table(dt2))
     ## check for common columns
@@ -55,5 +58,8 @@ egdt <- function(dt1,dt2,quiet){
         dt2[,(tc):=NULL]    
         print(dims(dt1,dt2,result))
     }
-    result[]
+
+  if(!was.dt) return(as.data.frame(result))
+  result[]
+
 }
