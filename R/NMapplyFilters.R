@@ -110,12 +110,14 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
     if(length(vars.cond)){
         missings <- listMissings(data,cols=unique(vars.cond),quiet=TRUE,as.fun="data.table")
         if(!is.null(missings)&&nrow(missings)>0){
-            message(paste("Missing values found in columns used for ACCEPT/IGNORE statements. Please double-check dimensions of resulting data set. If at all possible, consider using a unique row identifier to merge by and/or make sure values are not missing in these colums.\n",
-                          paste(capture.output(
-                              print(
-                                  missings[,.N,by=.(variable,value)]
-                              )
-                          ),collapse="\n")))
+            ## message(paste("Missing values found in columns used for ACCEPT/IGNORE statements - those are interpreted as zeros. Please double-check dimensions of resulting data set. If at all possible, consider using a unique row identifier to merge by and/or make sure values are not missing in these colums.\n",
+            ##               paste(capture.output(
+            ##                   print(
+            ##                       missings[,.N,by=.(variable,value)]
+            ##                   )
+            ##               ),collapse="\n")))
+          message("Missing values found in columns used for ACCEPT/IGNORE statements - those are interpreted as zeros. Please double-check dimensions of resulting data set. If at all possible, consider using a unique row identifier to merge by and/or make sure values are not missing in these colums.")
+          message_dt(missings[,.N,by=.(variable,value)])
             ## missings
             vars.missing <- missings[,as.character(unique(variable))]
 ### numeric variables
@@ -124,6 +126,7 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
                 data.sc <- copy(data)
                 col.row.sc <- tmpcol(data=data.sc,base="row.sc")
                 data.sc[,(col.row.sc):=.I]
+                
                 for(var in vars.missing){
                     if(is.numeric(data.sc[,get(var)])){
                         data.sc[is.na(get(var)),(var):=0]

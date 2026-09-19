@@ -185,6 +185,7 @@ NMscanInput <- function(file, formats.read, file.mod, dir.data=NULL,
     apply.filters <- deprecatedArg(oldarg="applyFilters",newarg="apply.filters",args=args)
   if(apply.filters && !translate){
     message("apply.filters is TRUE but will be ignored because translate is FALSE.")
+    apply.filters <- FALSE
   }
     
     if(missing(quiet)) quiet <- NULL

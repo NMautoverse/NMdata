@@ -295,8 +295,7 @@ if(is.character(fun.commoncols)) fun.commoncols <- stop
         reorder <- FALSE
     }
 
-    
-    
+        
     df3 <- tryCatch(
         merge(x,y,by.x=by.x,by.y=by.y,sort=FALSE,...)
        ,error=identity)
