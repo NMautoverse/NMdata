@@ -5,7 +5,7 @@
 ##'     path format, i.e. paths that can be compared by simple string
 ##'     comparison. Redundant /'s removed. normalizePath is used to
 ##'     possibly shorten path.
-##' @param ... additional arguments passed to file.path(). If empty (NULL or zero length vectors) are included they will be dropped. This can be convenient for programming.
+##' @param ... arguments passed to file.path(). If empty (NULL or zero length vectors) are included they will be dropped. This can be convenient for programming.
 ##' @return A (character) file path
 ##' @family FileSystem
 ##' @keywords internal

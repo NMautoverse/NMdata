@@ -16,56 +16,72 @@
 
 getLines <- function(file,lines,linesep="\n",simplify=TRUE,ensure.ascii=TRUE,col.model,modelname,as.one){
 
-    if(missing(file)) file <- NULL
-    if(missing(lines)) lines <- NULL
-    if(missing(as.one)) as.one <- NULL
-    if(is.null(as.one)) as.one <- FALSE
+  if(missing(file)) file <- NULL
+  if(missing(lines)) lines <- NULL
+  if(missing(as.one)) as.one <- NULL
+  if(is.null(as.one)) as.one <- FALSE
+  
+  ## fun.ens.ascii <- function(x) iconv(x,"latin1", "ASCII", sub="")
+  fun.ens.ascii <- function(x) gsub("[^\x01-\x7f]", "", x)
 
-    fun.ens.ascii <- function(x) iconv(x,"latin1", "ASCII", sub="")
-    
-    if(missing(col.model)) col.model <- NULL 
-    col.model <- NMdataDecideOption("col.model",col.model)
-    if(missing(modelname)) modelname <- NULL
-    modelname <- NMdataDecideOption("modelname",modelname)
-    
+  
+  if(missing(col.model)) col.model <- NULL 
+  col.model <- NMdataDecideOption("col.model",col.model)
+  if(missing(modelname)) modelname <- NULL
+  modelname <- NMdataDecideOption("modelname",modelname)
+  
 
-    if(!xor(is.null(file),is.null(lines))) stop("Exactly one of file or lines must be supplied")
-    
-    if(!is.null(file)) {
-        if(!all(file.exists(file))) stop("When using the file argument, file has to point to an existing file.")
+  if(!xor(is.null(file),is.null(lines))) stop("Exactly one of file or lines must be supplied")
+  
+  if(!is.null(file)) {
+    if(!all(file.exists(file))) stop("When using the file argument, file has to point to an existing file.")
 
-        lines <- lapply(file,function(ff){
-            fun.ens.ascii(
-                readLines(ff,warn=FALSE)
-            )
-        })
+    ## lines <- lapply(file,function(ff){
+    ##     fun.ens.ascii(
+    ##         readLines(ff,warn=FALSE)
+    ##     )
+    ## })
 
+    ## read_ascii <- function(file) {
+    ##   x <- readBin(file, "raw", n = file.info(file)$size)
+    ##   x <- x[as.integer(x) <= 0x7f]
+    ##   readLines(textConnection(rawToChar(x)), warn = FALSE)
+
+    read_ascii <- function(file) {
+      x <- readLines(file, warn = FALSE, encoding = "bytes")
+      gsub("[^\x01-\x7f]", "", x, useBytes = TRUE)
     }
 
-    if(!is.list(lines)) lines <- list(lines)
+    lines <- lapply(file,function(ff){
+      read_ascii(ff)
+    })
 
-    if(is.null(file)&&ensure.ascii){
-        lines <- lapply(lines,fun.ens.ascii)
-    }
-    
-    ## this drops trailing empty lines
-    if(!isFALSE(linesep)) {
-        lines <- lapply(lines,function(x){
-            strsplit(paste(x,collapse=linesep),split=linesep)[[1]]
-        })
-    }
+  }
 
-    if(as.one && !is.null(file)){
-        
-        names.models <- modelname(file)
-        lines <- lapply(1:length(file),function(N)data.table( text=lines[[N]])[,(col.model):=names.models[N]])
-        lines <- rbindlist(lines)
-    }
+  if(!is.list(lines)) lines <- list(lines)
+
+  if(is.null(file)&&ensure.ascii){
+    lines <- lapply(lines,fun.ens.ascii)
+  }
+
+  ## this drops trailing empty lines
+  if(!isFALSE(linesep)) {
+    lines <- lapply(lines,function(x){
+      strsplit(paste(x,collapse=linesep),split=linesep)[[1]]
+    })
+  }
+
+  if(as.one && !is.null(file)){
     
-    if(simplify && length(lines)==1){
-        lines <- lines[[1]]
-    } 
-    
-    lines
+    names.models <- modelname(file)
+    lines <- lapply(1:length(file),function(N)data.table( text=lines[[N]])[,(col.model):=names.models[N]])
+    lines <- rbindlist(lines)
+  }
+
+  if(simplify && length(lines)==1){
+    lines <- lines[[1]]
+  } 
+
+  lines
 
 }
