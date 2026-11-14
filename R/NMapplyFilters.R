@@ -39,7 +39,7 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
 
     
 ### Section end: Dummy variables, only not to get NOTE's in pacakge checks
-    
+  
     if(missing(quiet)) quiet <- NULL
     quiet <- NMdataDecideOption("quiet",quiet)
     if(missing(as.fun)) as.fun <- NULL
@@ -50,7 +50,8 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
     
     data.meta <- NMinfoDT(data)
 
-    
+  if(!missing(filters)) filters <- as.data.table(filters)
+  
     if(missing(filters)||is.null(filters)){
         if(missing(lines)) lines <- NULL
         if(missing(file)) file <- NULL
@@ -61,11 +62,13 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
                                  filters.only=TRUE,as.fun="data.table")
     }
 
-    
+  
     
     ## translating single-charaters
     name.c1 <- colnames(data)[1]
-    scs <- sub(paste0("IGN"," *=* *(.+)"),"\\1",filters[class=="single-char",cond])
+  scs <- sub(paste0("IGN"," *=* *(.+)"),"\\1",
+             filters[class=="single-char",cond]
+             )
     scs.all <- scs
     expressions.sc <- c()
     if(length(scs)&&grepl("@",scs)) {
@@ -87,7 +90,7 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
     }
     
     if(length(scs)) stop(paste0("Not all single-character IGNORE statements were translated. This is left: ",scs))
-
+  
 
     ## expressions.list is not a list, it's a char vector with the filter "expressions", as R code
     
@@ -103,7 +106,8 @@ NMapplyFilters <- function(data,file,lines,filters,invert=FALSE,as.fun,quiet) {
     ## (DOSE 10) means (DOSE==10) in NMTRAN. 
     expressions.list <- sub("([[:alpha:]]+) +([[:alnum:]]+)","\\1==\\2",expressions.list)
 
-    vars.cond <- sub("([[:alnum:]])[^[:alnum:]]+.*","\\1",expressions.list)
+  ## What characters are allowed in a variable?
+    vars.cond <- sub("([[:alnum:]_])[^[:alnum:]_]+.*","\\1",expressions.list)
 
     copy.data <- FALSE
     data.sc <- data

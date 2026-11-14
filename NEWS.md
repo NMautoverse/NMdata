@@ -1,5 +1,10 @@
 # NMdata 0.2.7
 
+## Bugfixes
+* When failing `mergeCheck()` would not print the name of the data sets in overview table for diagnosis of merge problem.
+
+* `NMapplyFilters` gains support for Nonmem variable names containing underscores.
+
 ## Other improvements
 `NMcheckData()` includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.
 
