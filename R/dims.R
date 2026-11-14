@@ -26,18 +26,12 @@ dims <- function(...,list.data,keep.names=TRUE,as.fun,keepNames){
 
     if(missing(as.fun)) as.fun <- NULL
 
-    ## if(!missing(keepNames)){
-    ##     if(!keep.names) stop("keepNames is deprecated. Use only keep.names.")
-    ##     message("keepNames is deprecated. Please use keep.names.")
-    ##     keep.names <- keepNames
-    ## }
-    
     
     if(missing(list.data)){
         dots <- list(...)
-        if(keep.names){
-            names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
-        }
+        ## if(keep.names){
+        names.dots <- setdiff(as.character(match.call(expand.dots=TRUE)),as.character(match.call(expand.dots=FALSE)))
+        ## }
     } else {
         dots <- list.data
         names.dots <- names(dots)

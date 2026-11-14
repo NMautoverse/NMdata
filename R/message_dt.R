@@ -9,7 +9,10 @@
 ##' @importFrom utils modifyList
 ##' @keywords internal
 
-message_dt <- function(x,...){
+message_dt <- function(x,...,before,after,sep="\n"){
+
+  if(missing(before)) before <- NULL
+  if(missing(after)) after <- NULL
 
     if(!is.data.table(x)){
         x <- as.data.table(x)
@@ -24,10 +27,15 @@ message_dt <- function(x,...){
     ## prioritize dots
     dots <- modifyList(defaults,dots)
 
-    
-    message(paste(capture.output(
+msg <- 
+    paste(capture.output(
         do.call(print,c(list(x=x),dots))
-    ),collapse="\n"))
+    ),collapse="\n")
+
+  if(!is.null(before)) msg <- paste(before,msg,sep=sep)
+  if(!is.null(after)) msg <- paste(msg,after,sep=sep)
+
+message(msg)
 
     invisible(x)
 }

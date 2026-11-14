@@ -56,7 +56,7 @@ egdt <- function(dt1,dt2,quiet){
     if(!quiet){
         dt1[,(tc):=NULL]
         dt2[,(tc):=NULL]    
-        print(dims(dt1,dt2,result))
+        message_dt(dims(dt1,dt2,result),before="Overview of dimensions of input and output data:")
     }
 
   if(!was.dt) return(as.data.frame(result))

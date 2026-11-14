@@ -318,15 +318,18 @@ if(is.character(fun.commoncols)) fun.commoncols <- stop
         if(rows.dup) messageWrap("Rows duplicated during merge.",fun.msg=message,track.msg=track.msg)
         if(rows.created) messageWrap("New rows appeared during merge.",fun.msg=message,track.msg=track.msg)
 
-        
+      
         list.data.rep <- list(x[,setdiff(colnames(x),c(rowcol)),with=FALSE],y,df3[,setdiff(colnames(df3),c(rowcol)),with=FALSE])
-        setNames(list.data.rep,c(setdiff(name.x,rowcol),name.y,name.df3))
+        ## setNames(list.data.rep,c(setdiff(name.x,rowcol),name.y,name.df3))
+      names(list.data.rep) <- c(setdiff(name.x,rowcol),name.y,name.df3)
         dims.rep <- dims(list.data=list.data.rep)
         
-        message("Overview of dimensions of input and output data:\n",
-                paste0(capture.output(dims.rep), collapse = "\n"),"\n"
-                )
+        ## message("Overview of dimensions of input and output data:\n",
+        ##         paste0(capture.output(dims.rep), collapse = "\n"),"\n"
+        ##         )
         
+      message_dt(dims.rep,before="Overview of dimensions of input and output data:")
+
         dtcheck <- merge(
             x[,.N,by=by.x]
            ,
@@ -337,9 +340,11 @@ if(is.character(fun.commoncols)) fun.commoncols <- stop
         dtcheck[is.na(N.result),N.result:=0]
         dtcheck <- dtcheck[N.x!=N.result]
 
-        message("Overview of values of by where number of rows in x changes:\n",
-                paste0(capture.output(dtcheck), collapse = "\n"))
-        
+        ## message("Overview of values of by where number of rows in x changes:\n",
+        ##         paste0(capture.output(dtcheck), collapse = "\n"))
+
+      message_dt(dtcheck,before="\nOverview of values of by where number of rows in x changes:")
+
         stop("Merge added and/or removed rows.")
     }
 
