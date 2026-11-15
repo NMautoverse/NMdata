@@ -3,10 +3,12 @@
 ## Bugfixes
 * When failing `mergeCheck()` would not print the name of the data sets in overview table for diagnosis of merge problem.
 
-* `NMapplyFilters` gains support for Nonmem variable names containing underscores.
+* `NMapplyFilters` gains support for Nonmem variable names containing underscores. This lacking feature was affect other functions that read and process input data files, like `NMscanInput()` and `NMscanData()`.
 
 ## Other improvements
 `NMcheckData()` includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.
+
+`NMreadExt()` now allows for custom `col.model` values.
 
 # NMdata 0.2.6
 ## New Features

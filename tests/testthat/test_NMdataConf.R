@@ -175,7 +175,7 @@ test_that("check reported summary of changes",{
     NMdataConf(reset=TRUE)
     afun <- identity
     res <- capture_message(
-        NMdataConf(modelname=afun,quiet=FALSE,summarize=TRUE)
+      NMdataConf(modelname=afun,quiet=FALSE,summarize=TRUE)
     )
     
     expect_equal_to_reference(res,fileRef,version=2)

@@ -291,13 +291,15 @@ NMdataConf <- function(...,args=list(),allow.unknown=FALSE,summarize=FALSE){
     if(summarize){
         args.print <- args
         args.print <- lapply(args.print,function(x) {
-            if(is.function(x)) x <- capture.output(print(x))
+          if(is.function(x)) {
+            x <- capture.output(print(x))
             x <- sub("<bytecode:[^>]*>","",x)
             x <- sub("<environment:[^>]*>","",x)
-            x <- x[!grepl("^ *$",x)]
-            ## x <- capture.output(cat(paste(x,collapse="\n")))
-            x <- paste(x,collapse="\n ")
-            x
+            }
+          x <- x[!grepl("^ *$",x)]
+          ## x <- capture.output(cat(paste(x,collapse="\n")))
+          x <- paste(x,collapse="\n ")
+          x
         })
         
         pars.print <- data.table(arg=names.args,value=unlist(args.print))

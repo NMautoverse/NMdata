@@ -231,10 +231,10 @@ NMdataConf(as.fun="data.table")
 
 Three vignettes are available so far (see "Vignettes" tab when visiting URL above):
 
-* [Cheat sheet](https://htmlpreview.github.io/?https://github.com/philipdelff/NMdata/blob/master/vignettes/NMdata-cheat.html)
-* [Data creation tools](https://philipdelff.github.io/NMdata/articles/DataCreate.html)
-* [Automated and general reader of Nonmem data](https://philipdelff.github.io/NMdata/articles/NMscanData.html)
-* [FAQ](https://philipdelff.github.io/NMdata/articles/NMdata-FAQ.html)
+* [Cheat sheet](https://htmlpreview.github.io/?https://github.com/NMautoverse/NMdata/blob/master/vignettes/NMdata-cheat.html)
+* [Data creation tools](https://NMautoverse.github.io/NMdata/articles/DataCreate.html)
+* [Automated and general reader of Nonmem data](https://NMautoverse.github.io/NMdata/articles/NMscanData.html)
+* [FAQ](https://NMautoverse.github.io/NMdata/articles/NMdata-FAQ.html)
 
 <!-- dplyr users, please see FAQ for how to make all NMdata functions return tibbles. -->
 

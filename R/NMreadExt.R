@@ -120,7 +120,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
     as.fun <- NMdataDecideOption("as.fun",as.fun)
     if(missing(col.model)) col.model <- NULL 
     col.model <- NMdataDecideOption("col.model",col.model)
-    if(col.model!="model") stop("NMreadExt() currently only supports col.model=\"model\".")
+    ## if(col.model!="model") stop("NMreadExt() currently only supports col.model=\"model\".")
     if(missing(modelname)) modelname <- NULL
     modelname <- NMdataDecideOption("modelname",modelname)
     if(missing(auto.ext) || is.null(auto.ext)) auto.ext <- TRUE
@@ -277,7 +277,7 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
 
         pars <- pars[!parameter%in%c("SAEMOBJ","OBJ")]
 
-        pars <- addBlocks(pars)
+        pars <- addBlocks(pars,col.model=col.model)
         
     }
     
@@ -293,13 +293,13 @@ NMreadExt <- function(file,return,as.fun,modelname,col.model,auto.ext,tableno="m
         iterations <- addParType(iterations)
         
         if(nrow(pars)) {
-            names.cols <- intersect(colnames(pars),c("model","TABLENO","parameter","value","FIX","se","termStat"))
+            names.cols <- intersect(colnames(pars),c(col.model,"TABLENO","parameter","value","FIX","se","termStat"))
             pars.merge <- pars[,names.cols,with=FALSE]
             setnames(pars.merge,"value","estimate",skip_absent=FALSE)
 
             iterations <- mergeCheck(iterations,
                                      pars.merge,
-                                     by=intersect(names.cols,c("model","TABLENO","parameter")),
+                                     by=intersect(names.cols,c(col.model,"TABLENO","parameter")),
                                      all.x=TRUE,
                                      quiet=TRUE)
         }

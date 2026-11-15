@@ -171,3 +171,23 @@ test_that("only final pars",{
     expect_equal(pars$value,c(1,.04,0,.01))
 
 })
+
+test_that("col.model",{
+
+    fileRef <- "testReference/NMreadExt_08.rds"
+    file.ext <- "testData/nonmem/xgxr003.ext"
+    if(readRef) ref <- readRDS(fileRef)
+    
+    res <- NMreadExt(file=file.ext,as.fun="data.table",col.model="modelcol")
+
+    expect_true("modelcol"%in%colnames(res))
+    expect_false("model"%in%colnames(res))
+
+    if(F){
+        ref <- readRDS(fileRef)
+        compareCols(ref,res)
+        res[1:4]
+        ref[1:4]
+    }
+    
+})
