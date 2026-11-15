@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NMdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6.904</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6.905</span>
       </span>
     </div>
 
@@ -86,11 +86,12 @@
 <div class="section level3">
 <h3 id="bugfixes-0-2-7">Bugfixes<a class="anchor" aria-label="anchor" href="#bugfixes-0-2-7"></a></h3>
 <ul><li><p>When failing <code><a href="../reference/mergeCheck.html">mergeCheck()</a></code> would not print the name of the data sets in overview table for diagnosis of merge problem.</p></li>
-<li><p><code>NMapplyFilters</code> gains support for Nonmem variable names containing underscores.</p></li>
+<li><p><code>NMapplyFilters</code> gains support for Nonmem variable names containing underscores. This lacking feature was affect other functions that read and process input data files, like <code><a href="../reference/NMscanInput.html">NMscanInput()</a></code> and <code><a href="../reference/NMscanData.html">NMscanData()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="other-improvements-0-2-7">Other improvements<a class="anchor" aria-label="anchor" href="#other-improvements-0-2-7"></a></h3>
 <p><code><a href="../reference/NMcheckData.html">NMcheckData()</a></code> includes a check for special characters in column names. This check no longer flags underscores (_) since these are accepted by Nonmem. Thanks to Maxim Johnson for raising this.</p>
+<p><code><a href="../reference/NMreadExt.html">NMreadExt()</a></code> now allows for custom <code>col.model</code> values.</p>
 </div>
 </div>
     <div class="section level2">
