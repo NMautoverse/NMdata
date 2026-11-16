@@ -389,7 +389,7 @@ NMscanData <- function(file, col.row, use.input, merge.by.row,
     
     
     if(!is.null(col.model) && col.model%in%allnames){
-        messageWrap(paste0("column",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
+        messageWrap(paste0("column ",col.model," (value of col.model) existed and was overwritten. To avoid this, use argument col.model. To skip, use col.model=NULL."),fun.msg=warning)
     }
 
     ## col.nmout

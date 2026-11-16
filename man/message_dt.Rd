@@ -2,18 +2,33 @@
 % Please edit documentation in R/message_dt.R
 \name{message_dt}
 \alias{message_dt}
-\title{print a data.table}
+\title{Print a data.table as a message, optionally with surrounding text}
 \usage{
-message_dt(x, ...)
+message_dt(x, ..., before, after, sep = "\\n")
 }
 \arguments{
 \item{x}{a data.table or something to be converted to a
 data.table.}
 
 \item{...}{passed to print.data.table.}
+
+\item{before}{optional text (character string) to prepend before
+the printed table in the message.}
+
+\item{after}{optional text (character string) to append after
+the printed table in the message.}
+
+\item{sep}{separator (character string) used to join `before`,
+the printed table, and `after`. Default is `"\\n"`.}
 }
 \description{
-print a data.table
+A thin wrapper around `print.data.table` that captures the
+printed representation of `x` and emits it with `message()`
+instead of writing to standard output. This is useful for
+reporting tabular information (e.g. diagnostics or warnings)
+through R's condition system so it can be suppressed, caught, or
+redirected like other messages. `before` and `after` allow
+adding explanatory text around the printed table.
 }
 \details{
 defaults arguments to print.data.table (in addition to

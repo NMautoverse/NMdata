@@ -193,7 +193,7 @@ flagsAssign <- function(data, tab.flags, subset.data, col.flagn, col.flagc,
         covs.incomp <- findCovs(data.sub[,check.incomp,with=FALSE])
         if(length(check.incomp)>ncol(covs.incomp)){
             cols.incomp <- setdiff(check.incomp,colnames(covs.incomp))
-            stop(sprintf("Incompatible data included. Column(s) %s is non-unique. Consider running on a subset of data or see argument grp.incomp.",paste(cols.incomp,sep=", ")))
+            stop(sprintf("Incompatible data included. Column(s) %s is non-unique. Consider running on a subset of data or see argument grp.incomp.",paste(cols.incomp,collapse=", ")))
         }
     }
 
